@@ -53,7 +53,7 @@ export default function Dashboard() {
     try {
       // 1. Removed the "token" check here.
       // 2. Removed the "headers: { Authorization... }" from the fetch call.
-      const res = await fetch('http://localhost:5000/api/analyze', {
+      const res = await fetch('https://pandalime-backend.onrender.com/api/analyze', {
         method: 'POST',
         body: formData 
       });
@@ -94,7 +94,7 @@ export default function Dashboard() {
         }
 
         // Send the isDiscounted state to the backend
-        const orderRes = await fetch('http://localhost:5000/api/payment/create-order', {
+        const orderRes = await fetch('https://pandalime-backend.onrender.com/api/payment/create-order', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ reportId, isDiscounted }) 
@@ -116,7 +116,7 @@ export default function Dashboard() {
             order_id: orderData.order.id,
             handler: async function (response) {
                 try {
-                    const verifyRes = await fetch('http://localhost:5000/api/payment/verify', {
+                    const verifyRes = await fetch('https://pandalime-backend.onrender.com/api/payment/verify', {
                         method: 'POST',
                         headers: { 'Content-Type': 'application/json' },
                         body: JSON.stringify({
