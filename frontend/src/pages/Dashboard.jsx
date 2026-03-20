@@ -164,6 +164,12 @@ export default function Dashboard() {
             theme: { color: '#84cc16' }
         };
 
+
+        console.log("=== RAZORPAY DEBUG ===");
+console.log("1. Key ID being used:", import.meta.env.VITE_RAZORPAY_KEY_ID);
+console.log("2. Order ID from backend:", orderData.order.id);
+console.log("======================");
+
         const rzp = new window.Razorpay(options);
         rzp.on('payment.failed', function (response) {
             alert("Payment Failed: " + response.error.description);
