@@ -231,6 +231,45 @@ app.post('/api/reports/:id/make-public', async (req, res) => {
 });
 
 
+// Fetch comments for a specific roast
+app.get('/api/reports/:id/comments', async (req, res) => {
+    try {
+        const { id } = req.params;
+        const comments = await sql`
+            SELECT id, text_content, created_at 
+            FROM comments 
+            WHERE report_id = ${id} 
+            ORDER BY created_at ASC
+        `;
+        res.json({ success: true, comments });
+    } catch (error) {
+        console.error('Fetch Comments Error:', error);
+        res.status(500).json({ error: 'Failed to fetch comments' });
+    }
+});
+
+// Post a new anonymous comment
+app.post('/api/reports/:id/comments', async (req, res) => {
+    try {
+        const { id } = req.params;
+        const { text_content } = req.body;
+        
+        if (!text_content || text_content.trim() === '') {
+            return res.status(400).json({ error: 'Comment cannot be empty' });
+        }
+
+        const newComment = await sql`
+            INSERT INTO comments (report_id, text_content)
+            VALUES (${id}, ${text_content.substring(0, 300)}) /* Max 300 chars to prevent spam */
+            RETURNING id, text_content, created_at
+        `;
+        res.json({ success: true, comment: newComment[0] });
+    } catch (error) {
+        console.error('Post Comment Error:', error);
+        res.status(500).json({ error: 'Failed to post comment' });
+    }
+});
+
 
 
 // --- RAZORPAY PAYMENT ROUTES ---
