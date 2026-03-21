@@ -83,7 +83,73 @@ app.post('/api/auth/verify-otp', async (req, res) => {
     }
 });
 
-// --- FRICTIONLESS AI RESUME ANALYSIS ROUTE ---
+
+const axios = require('axios');
+const { GoogleGenAI } = require('@google/genai'); 
+
+// The API Ladder: Add your keys to Render Environment Variables
+const GEMINI_KEYS = [
+    process.env.GEMINI_API_KEY_1,
+    process.env.GEMINI_API_KEY_2,
+    process.env.GEMINI_API_KEY_3
+].filter(Boolean); // This removes any empty/undefined keys
+
+const GROQ_API_KEY = process.env.GROQ_API_KEY;
+
+async function generateAIResponseWithFallback(systemPrompt) {
+    // Phase 1: Try Gemini Keys in Order
+    for (let i = 0; i < GEMINI_KEYS.length; i++) {
+        try {
+            console.log(`Attempting Gemini Key ${i + 1}...`);
+            const ai = new GoogleGenAI({ apiKey: GEMINI_KEYS[i] });
+            
+            const response = await ai.models.generateContent({
+                model: 'gemini-2.5-flash', // Fast and great at JSON
+                contents: systemPrompt,
+                config: {
+                    responseMimeType: "application/json",
+                }
+            });
+            
+            return response.text; // Success! Return the data.
+        } catch (error) {
+            console.warn(`Gemini Key ${i + 1} Failed:`, error.message);
+            // If it fails (rate limit, quota), the loop automatically tries the next key
+        }
+    }
+
+    // Phase 2: The Groq Fallback
+    if (GROQ_API_KEY) {
+        try {
+            console.log("All Gemini keys exhausted. Falling back to Groq (Llama 3.3 70B)...");
+            
+            const groqResponse = await axios.post('https://api.groq.com/openai/v1/chat/completions', {
+                model: 'llama-3.3-70b-versatile',
+                messages: [
+                    { role: 'system', content: 'You are an expert ATS scanner. Always output strictly in JSON format.' },
+                    { role: 'user', content: systemPrompt }
+                ],
+                response_format: { type: "json_object" },
+                temperature: 0.2
+            }, {
+                headers: {
+                    'Authorization': `Bearer ${GROQ_API_KEY}`,
+                    'Content-Type': 'application/json'
+                }
+            });
+
+            return groqResponse.data.choices[0].message.content; // Success! Return Groq data.
+        } catch (error) {
+            console.error("Groq Fallback Failed:", error.response ? error.response.data : error.message);
+        }
+    }
+
+    // Phase 3: Total Failure
+    throw new Error("API Outage: All Gemini keys and Groq fallback failed.");
+}
+
+
+// --- FRICTIONLESS AI RESUME ANALYSIS ROUTE (WITH WATERFALL) ---
 app.post('/api/analyze', upload.single('resume'), async (req, res) => {
     try {
         const jobDescription = req.body.jobDescription;
@@ -96,29 +162,30 @@ app.post('/api/analyze', upload.single('resume'), async (req, res) => {
         const pdfData = await parser.getText();
         const resumeText = pdfData.text;
 
-      // 2. Premium Gemini AI Prompt
+        // 2. Premium AI Prompt (Strict JSON requested for Groq/Gemini compatibility)
         const prompt = `You are an expert ATS (Applicant Tracking System) and Executive Career Coach. 
         Analyze the following resume against the provided job description.
         Return ONLY a raw JSON object with exactly these 5 keys:
-        "match_score": a realistic integer between 0 and 100.
-        "missing_keywords": an array of 5 to 7 important skills/words missing.
-        "resume_critique": a short, punchy paragraph explaining why they might be rejected.
-        "rewritten_bullets": an array of 3 strings containing highly optimized, STAR-method bullet points based on their experience.
-        "cover_letter": a punchy, 150-word tailored cover letter draft for this specific job.
+        {
+          "match_score": a realistic integer between 0 and 100,
+          "missing_keywords": ["array", "of", "5", "to", "7", "important", "skills"],
+          "resume_critique": "a short, punchy paragraph explaining why they might be rejected.",
+          "rewritten_bullets": ["string 1", "string 2", "string 3 optimized STAR-method bullets"],
+          "cover_letter": "a punchy, 150-word tailored cover letter draft for this specific job."
+        }
 
         Job Description: ${jobDescription}
         
         Resume: ${resumeText}`;
 
-        const response = await ai.models.generateContent({
-            model: 'gemini-2.5-flash',
-            contents: prompt,
-            config: { responseMimeType: "application/json" }
-        });
+        // --- THE API WATERFALL ---
+        // This will try Gemini 1 -> Gemini 2 -> Gemini 3 -> Groq (Llama 3) automatically
+        const aiResponseText = await generateAIResponseWithFallback(prompt);
+        
+        // Parse the guaranteed JSON
+        const analysis = JSON.parse(aiResponseText);
 
-        const analysis = JSON.parse(response.text);
-
-        // 3. Save report (Notice we no longer require user_id)
+        // 3. Save report
         const savedReport = await sql`
             INSERT INTO reports (match_score, missing_keywords, resume_critique, is_unlocked)
             VALUES (${analysis.match_score}, ${JSON.stringify(analysis.missing_keywords)}, ${analysis.resume_critique}, FALSE)
@@ -129,7 +196,7 @@ app.post('/api/analyze', upload.single('resume'), async (req, res) => {
 
     } catch (error) {
         console.error('Analysis Error:', error);
-        res.status(500).json({ error: 'AI Analysis failed. Please try again.' });
+        res.status(500).json({ error: 'System overloaded with requests. Please try again in 15 seconds.' });
     }
 });
 
