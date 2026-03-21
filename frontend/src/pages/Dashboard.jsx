@@ -38,6 +38,28 @@ export default function Dashboard() {
 
   const navigate = useNavigate();
 
+
+const [isSharedToWall, setIsSharedToWall] = useState(false);
+
+  const handleShareToWall = async () => {
+    if (!reportId) return;
+    
+    try {
+      const response = await fetch(`https://pandalime-backend.onrender.com/api/reports/${reportId}/make-public`, {
+        method: 'POST',
+      });
+      
+      const data = await response.json();
+      if (data.success) {
+        setIsSharedToWall(true);
+      }
+    } catch (error) {
+      console.error("Failed to share to wall:", error);
+    }
+  };
+
+
+
   // Cycles the text during the scanning animation
   useEffect(() => {
     if (loading && !result) {
@@ -331,6 +353,30 @@ console.log("======================");
                         {result.match_score > 75 ? "Looking good! But you can still optimize for a perfect match." : "Warning: Your resume is highly likely to be automatically rejected by the ATS."}
                     </p>
                  </div>
+
+                 {/* --- MEME WALL SHARE BUTTON --- */}
+<div className="mt-6 flex justify-center">
+  <button
+    onClick={handleShareToWall}
+    disabled={isSharedToWall}
+    className={`px-6 py-3 rounded-full font-bold text-sm transition-all duration-300 shadow-sm flex items-center gap-2 ${
+      isSharedToWall 
+        ? 'bg-gray-100 text-gray-500 cursor-not-allowed border border-gray-200'
+        : 'bg-indigo-50 text-indigo-600 hover:bg-indigo-100 hover:shadow-md border border-indigo-200'
+    }`}
+  >
+    {isSharedToWall ? (
+      <>
+        <svg className="w-5 h-5 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7"></path></svg>
+        Added to the Roast Wall!
+      </>
+    ) : (
+      <>
+        🔥 Add my score to the Anonymous Roast Wall
+      </>
+    )}
+  </button>
+</div>
 
                  <div className={`p-8 md:p-12 ${!isUnlocked ? 'blur-md select-none opacity-40 pointer-events-none' : ''} transition-all duration-700`}>
                     

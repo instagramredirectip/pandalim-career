@@ -6,6 +6,7 @@ import PrivacyPolicy from './pages/PrivacyPolicy';
 import Terms from './pages/Terms';
 import Contact from './pages/Contact';
 import Sitemap from './pages/Sitemap';
+import RoastWall from './pages/RoastWall';
 
 function App() {
   return (
@@ -15,11 +16,13 @@ function App() {
         <Route path="/" element={<Home />} />
         <Route path="/dashboard" element={<Dashboard />} /> 
         <Route path="/login" element={<Login />} />
+        <Route path="/wall" element={<RoastWall />} />
         
         <Route path="/privacy" element={<PrivacyPolicy />} />
         <Route path="/terms" element={<Terms />} />
         <Route path="/contact" element={<Contact />} />
         <Route path="/sitemap" element={<Sitemap />} />
+
       </Routes>
     </BrowserRouter>
   );
