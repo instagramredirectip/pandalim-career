@@ -76,44 +76,50 @@ export default function Home() {
         `}
       </style>
 
-      {/* --- HERO SECTION --- */}
+   {/* --- HERO SECTION --- */}
       <header className="relative overflow-hidden bg-white pt-24 pb-32 border-b border-gray-200">
         <div className="absolute inset-0 bg-[radial-gradient(#e5e7eb_1px,transparent_1px)] [background-size:16px_16px] opacity-30"></div>
         <div className="max-w-6xl mx-auto px-4 relative z-10 text-center">
+          
           <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-lime-100 text-lime-800 font-semibold text-sm mb-6 animate-bounce">
             <Sparkles className="w-4 h-4" />
             <span>AI-Powered Resume Optimization</span>
           </div>
+          
           <h1 className="text-5xl md:text-7xl font-extrabold tracking-tight text-gray-900 mb-6 leading-tight">
             Beat the ATS. <br className="hidden md:block" />
             <span className="text-transparent bg-clip-text bg-gradient-to-r from-lime-500 to-green-600">Land Your Dream Job.</span>
           </h1>
+          
           <p className="text-lg md:text-xl text-gray-600 max-w-2xl mx-auto mb-10 leading-relaxed">
             Stop getting rejected by robots. PandaLime uses advanced AI to scan your resume, uncover missing keywords, and give you the exact steps to land interviews at top companies.
           </p>
-          <div className="flex flex-col sm:flex-row justify-center items-center gap-4">
-            <Link 
-              to="/dashboard" 
-              className="w-full sm:w-auto px-8 py-4 bg-lime-500 hover:bg-lime-600 text-white rounded-xl font-bold text-lg shadow-lg shadow-lime-500/30 transition-all hover:-translate-y-1 flex items-center justify-center gap-2"
-            >
-              Scan Resume for Free <ArrowRight className="w-5 h-5" />
-            </Link>
-            <p className="text-sm text-gray-500 font-medium sm:ml-4">No login required for basic scan!</p>
+
+          {/* --- FIX: Buttons Grouped Together --- */}
+          <div className="flex flex-col items-center gap-4">
+            <div className="flex flex-col sm:flex-row justify-center items-center gap-4 w-full sm:w-auto">
+              
+              <Link 
+                to="/dashboard" 
+                className="w-full sm:w-auto px-8 py-4 bg-lime-500 hover:bg-lime-600 text-white rounded-xl font-bold text-lg shadow-lg shadow-lime-500/30 transition-all hover:-translate-y-1 flex items-center justify-center gap-2"
+              >
+                Scan Resume for Free <ArrowRight className="w-5 h-5" />
+              </Link>
+
+              <Link
+                to="/wall" 
+                className="w-full sm:w-auto px-8 py-4 bg-white hover:bg-gray-50 text-gray-700 border border-gray-300 rounded-xl font-bold text-lg shadow-sm transition-all hover:-translate-y-1 flex items-center justify-center gap-2"
+              >
+                📊 View Community Scores
+              </Link>
+
+            </div>
+            
+            {/* Moved below the buttons for cleaner alignment */}
+            <p className="text-sm text-gray-500 font-medium mt-2">No login required for basic scan!</p>
           </div>
 
-        
         </div>
-
-    <div className="max-w-6xl mx-auto px-4 relative z-10 text-center">
-    <Link
-  to="/wall" 
-  className="inline-flex justify-center items-center px-6 py-3 border border-gray-300 shadow-sm text-base font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-emerald-500 ml-4 transition-all"
->
-  🔥 View the Roast Wall
-</Link>
-
-    </div>
-
       </header>
 
       {/* --- MARQUEE / SOCIAL PROOF --- */}
