@@ -101,15 +101,19 @@ export default function Home() {
             <p className="text-sm text-gray-500 font-medium sm:ml-4">No login required for basic scan!</p>
           </div>
 
-            <Link
+        
+        </div>
+
+    <div className="max-w-6xl mx-auto px-4 relative z-10 text-center">
+    <Link
   to="/wall" 
   className="inline-flex justify-center items-center px-6 py-3 border border-gray-300 shadow-sm text-base font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-emerald-500 ml-4 transition-all"
 >
   🔥 View the Roast Wall
 </Link>
-        </div>
 
-    
+    </div>
+
       </header>
 
       {/* --- MARQUEE / SOCIAL PROOF --- */}
