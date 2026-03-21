@@ -6,10 +6,11 @@ import { Resend } from 'resend';
 import jwt from 'jsonwebtoken';
 import multer from 'multer';
 import { GoogleGenAI } from '@google/genai';
-import { CanvasFactory } from 'pdf-parse/worker';
+import { CanvasFactory } from 'pdf-parse/worker.js';
 import { PDFParse } from 'pdf-parse';
 import Razorpay from 'razorpay';
 import crypto from 'crypto';
+import axios from 'axios';
 
 dotenv.config();
 
@@ -19,9 +20,9 @@ const PORT = process.env.PORT || 5000;
 app.use(cors());
 app.use(express.json());
 
+// --- INITIALIZATIONS ---
 const sql = neon(process.env.DATABASE_URL);
 const resend = new Resend(process.env.RESEND_API_KEY);
-const ai = new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY });
 const JWT_SECRET = process.env.JWT_SECRET;
 
 const razorpay = new Razorpay({
@@ -31,98 +32,36 @@ const razorpay = new Razorpay({
 
 const upload = multer({ storage: multer.memoryStorage(), limits: { fileSize: 5 * 1024 * 1024 } });
 
-app.get('/api/health', async (req, res) => {
-    res.status(200).json({ status: 'success', message: 'Backend is running!' });
-});
-
-// --- AUTHENTICATION ROUTES ---
-app.post('/api/auth/send-otp', async (req, res) => {
-    const { email } = req.body;
-    if (!email) return res.status(400).json({ error: 'Email is required' });
-
-    const otpCode = Math.floor(100000 + Math.random() * 900000).toString();
-    const expiresAt = new Date(Date.now() + 10 * 60 * 1000); 
-
-    try {
-        await sql`INSERT INTO otps (email, otp_code, expires_at) VALUES (${email}, ${otpCode}, ${expiresAt})`;
-        await resend.emails.send({
-            from: 'PandaLime <onboarding@resend.dev>',
-            to: email,
-            subject: 'Your PandaLime Login Code',
-            html: `<div style="font-family: sans-serif; text-align: center; padding: 20px;">
-                    <h2>Welcome to PandaLime Career!</h2>
-                    <p>Your secure login code is:</p>
-                    <h1 style="color: #10B981; font-size: 40px; letter-spacing: 5px;">${otpCode}</h1>
-                   </div>`
-        });
-        res.json({ success: true, message: 'OTP sent successfully!' });
-    } catch (error) {
-        res.status(500).json({ error: 'Failed to send OTP' });
-    }
-});
-
-app.post('/api/auth/verify-otp', async (req, res) => {
-    const { email, otp } = req.body;
-    try {
-        const [validOtp] = await sql`SELECT * FROM otps WHERE email = ${email} AND otp_code = ${otp} AND expires_at > NOW() ORDER BY id DESC LIMIT 1`;
-        if (!validOtp) return res.status(400).json({ error: 'Invalid or expired OTP' });
-
-        await sql`DELETE FROM otps WHERE email = ${email}`;
-
-        let [user] = await sql`SELECT * FROM users WHERE email = ${email}`;
-        
-        if (!user) {
-            const [newUser] = await sql`INSERT INTO users (email, credits) VALUES (${email}, 1) RETURNING *`;
-            user = newUser; 
-        }
-
-        const token = jwt.sign({ userId: user.id, email: user.email }, JWT_SECRET, { expiresIn: '7d' });
-        res.json({ success: true, token, user });
-    } catch (error) {
-        res.status(500).json({ error: 'Verification failed' });
-    }
-});
-
-
-const axios = require('axios');
-const { GoogleGenAI } = require('@google/genai'); 
-
-// The API Ladder: Add your keys to Render Environment Variables
+// --- THE API WATERFALL (Load Balancer) ---
 const GEMINI_KEYS = [
     process.env.GEMINI_API_KEY_1,
     process.env.GEMINI_API_KEY_2,
     process.env.GEMINI_API_KEY_3
-].filter(Boolean); // This removes any empty/undefined keys
+].filter(Boolean); 
 
 const GROQ_API_KEY = process.env.GROQ_API_KEY;
 
 async function generateAIResponseWithFallback(systemPrompt) {
-    // Phase 1: Try Gemini Keys in Order
     for (let i = 0; i < GEMINI_KEYS.length; i++) {
         try {
             console.log(`Attempting Gemini Key ${i + 1}...`);
-            const ai = new GoogleGenAI({ apiKey: GEMINI_KEYS[i] });
+            const ai = new GoogleGenAI({ apiKey: GEMINI_KEYS[i] }); 
             
             const response = await ai.models.generateContent({
-                model: 'gemini-2.5-flash', // Fast and great at JSON
+                model: 'gemini-2.5-flash',
                 contents: systemPrompt,
-                config: {
-                    responseMimeType: "application/json",
-                }
+                config: { responseMimeType: "application/json" }
             });
             
-            return response.text; // Success! Return the data.
+            return response.text; 
         } catch (error) {
             console.warn(`Gemini Key ${i + 1} Failed:`, error.message);
-            // If it fails (rate limit, quota), the loop automatically tries the next key
         }
     }
 
-    // Phase 2: The Groq Fallback
     if (GROQ_API_KEY) {
         try {
-            console.log("All Gemini keys exhausted. Falling back to Groq (Llama 3.3 70B)...");
-            
+            console.log("All Gemini keys exhausted. Falling back to Groq (Llama 3.3)...");
             const groqResponse = await axios.post('https://api.groq.com/openai/v1/chat/completions', {
                 model: 'llama-3.3-70b-versatile',
                 messages: [
@@ -137,19 +76,32 @@ async function generateAIResponseWithFallback(systemPrompt) {
                     'Content-Type': 'application/json'
                 }
             });
-
-            return groqResponse.data.choices[0].message.content; // Success! Return Groq data.
+            return groqResponse.data.choices[0].message.content; 
         } catch (error) {
-            console.error("Groq Fallback Failed:", error.response ? error.response.data : error.message);
+            console.error("Groq Failed:", error.response ? error.response.data : error.message);
         }
     }
 
-    // Phase 3: Total Failure
     throw new Error("API Outage: All Gemini keys and Groq fallback failed.");
 }
 
+// --- HEALTH CHECK ---
+app.get('/api/health', async (req, res) => {
+    res.status(200).json({ status: 'success', message: 'Backend is running!' });
+});
 
-// --- FRICTIONLESS AI RESUME ANALYSIS ROUTE (WITH WATERFALL) ---
+
+// =========================================================================
+// ⚠️ PASTE YOUR EXISTING AUTHENTICATION ROUTES HERE ⚠️
+// (Paste your app.post('/api/auth/send-otp') and verify-otp logic below)
+// =========================================================================
+
+// PASTE HERE...
+
+// =========================================================================
+
+
+// --- RESUME ANALYSIS ROUTE ---
 app.post('/api/analyze', upload.single('resume'), async (req, res) => {
     try {
         const jobDescription = req.body.jobDescription;
@@ -178,14 +130,11 @@ app.post('/api/analyze', upload.single('resume'), async (req, res) => {
         
         Resume: ${resumeText}`;
 
-        // --- THE API WATERFALL ---
-        // This will try Gemini 1 -> Gemini 2 -> Gemini 3 -> Groq (Llama 3) automatically
+        // 3. The API Waterfall
         const aiResponseText = await generateAIResponseWithFallback(prompt);
-        
-        // Parse the guaranteed JSON
         const analysis = JSON.parse(aiResponseText);
 
-        // 3. Save report
+        // 4. Save report
         const savedReport = await sql`
             INSERT INTO reports (match_score, missing_keywords, resume_critique, is_unlocked)
             VALUES (${analysis.match_score}, ${JSON.stringify(analysis.missing_keywords)}, ${analysis.resume_critique}, FALSE)
@@ -206,7 +155,7 @@ app.post('/api/payment/create-order', async (req, res) => {
         const { reportId, isDiscounted } = req.body;
         
         // If they shared on WhatsApp, charge ₹49. Otherwise, charge ₹99.
-        const amountToCharge = isDiscounted? 4900 : 9900; 
+        const amountToCharge = isDiscounted ? 4900 : 9900; 
 
         const options = {
             amount: amountToCharge, 
@@ -220,6 +169,7 @@ app.post('/api/payment/create-order', async (req, res) => {
         res.status(500).json({ error: 'Failed to create payment order' });
     }
 });
+
 app.post('/api/payment/verify', async (req, res) => {
     const { razorpay_order_id, razorpay_payment_id, razorpay_signature, reportId } = req.body;
 
@@ -237,10 +187,12 @@ app.post('/api/payment/verify', async (req, res) => {
             res.status(400).json({ error: 'Invalid signature' });
         }
     } catch (error) {
+        console.error('Verify Error:', error);
         res.status(500).json({ error: 'Verification failed' });
     }
 });
 
+// --- START SERVER ---
 app.listen(PORT, () => {
-    console.log(`Server is running on http://localhost:${PORT}`);
+    console.log(`Server running on port ${PORT}`);
 });
