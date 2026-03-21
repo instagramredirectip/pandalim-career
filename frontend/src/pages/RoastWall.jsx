@@ -50,7 +50,7 @@ const CommentSection = ({ reportId }) => {
       {isOpen && (
         <div className="mt-4 space-y-3 bg-gray-50 p-4 rounded-lg border border-gray-100 shadow-inner">
           {comments.length === 0 ? (
-            <p className="text-xs text-gray-400 italic">No comments yet. Be the first to roast...</p>
+            <p className="text-xs text-gray-400 italic">No comments yet. Be the first to comment...</p>
           ) : (
             <ul className="space-y-3 max-h-48 overflow-y-auto pr-2">
               {comments.map((c) => (
@@ -98,7 +98,7 @@ export default function RoastWall() {
   }, []);
 
   const shareOnTwitter = (score, jobTitle) => {
-    const text = `PandaLime's AI just roasted a resume with a ${score}% for a ${jobTitle} role 😭💀. Scan yours before you apply: https://pandalime.com/wall`;
+    const text = `PandaLime's AI just reviewed a resume with a ${score}% for a ${jobTitle} role 💥. Scan yours before you apply: https://pandalime.com/wall`;
     window.open(`https://twitter.com/intent/tweet?text=${encodeURIComponent(text)}`, '_blank');
   };
 
@@ -107,15 +107,15 @@ export default function RoastWall() {
       <div className="max-w-3xl mx-auto">
         <div className="text-center mb-12">
           <h1 className="text-4xl font-extrabold text-gray-900 tracking-tight">
-            The <span className="text-emerald-500">Roast</span> Wall 🔥
+            The <span className="text-emerald-500">Community</span> Wall
           </h1>
           <p className="mt-4 text-lg text-gray-500">
-            Anonymous, brutal AI feedback from recent resume scans. Don't let this be you.
+            Anonymous, AI feedback from recent resume scans. Learn from others mistakes.
           </p>
         </div>
 
         {loading ? (
-          <div className="text-center text-gray-500">Loading roasts...</div>
+          <div className="text-center text-gray-500">Loading Community...</div>
         ) : (
           <div className="space-y-6">
             {roasts.map((roast) => (
