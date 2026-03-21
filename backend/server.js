@@ -6,7 +6,7 @@ import { Resend } from 'resend';
 import jwt from 'jsonwebtoken';
 import multer from 'multer';
 import { GoogleGenAI } from '@google/genai';
-import { CanvasFactory } from 'pdf-parse/worker.js';
+import { CanvasFactory } from 'pdf-parse/worker';
 import { PDFParse } from 'pdf-parse';
 import Razorpay from 'razorpay';
 import crypto from 'crypto';
