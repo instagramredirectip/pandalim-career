@@ -159,16 +159,17 @@ app.post('/api/analyze', upload.single('resume'), async (req, res) => {
         const pdfData = await parser.getText();
         const resumeText = pdfData.text;
 
-        // 2. Premium AI Prompt (Strict JSON requested for Groq/Gemini compatibility)
+      // 2. Premium AI Prompt
         const prompt = `You are an expert ATS (Applicant Tracking System) and Executive Career Coach. 
         Analyze the following resume against the provided job description.
-        Return ONLY a raw JSON object with exactly these 5 keys:
+        Return ONLY a raw JSON object with exactly these 6 keys:
         {
           "match_score": a realistic integer between 0 and 100,
           "missing_keywords": ["array", "of", "5", "to", "7", "important", "skills"],
-          "resume_critique": "a short, punchy paragraph explaining why they might be rejected.",
+          "resume_critique": "a short, brutally honest, punchy paragraph explaining why they might be rejected.",
           "rewritten_bullets": ["string 1", "string 2", "string 3 optimized STAR-method bullets"],
-          "cover_letter": "a punchy, 150-word tailored cover letter draft for this specific job."
+          "cover_letter": "a punchy, 150-word tailored cover letter draft for this specific job.",
+          "job_title": "A short 2-5 word title of the job description provided."
         }
 
         Job Description: ${jobDescription}
@@ -182,10 +183,10 @@ app.post('/api/analyze', upload.single('resume'), async (req, res) => {
         // Parse the guaranteed JSON
         const analysis = JSON.parse(aiResponseText);
 
-        // 3. Save report
+       // 3. Save report (Now includes job_title and is_public)
         const savedReport = await sql`
-            INSERT INTO reports (match_score, missing_keywords, resume_critique, is_unlocked)
-            VALUES (${analysis.match_score}, ${JSON.stringify(analysis.missing_keywords)}, ${analysis.resume_critique}, FALSE)
+            INSERT INTO reports (match_score, missing_keywords, resume_critique, is_unlocked, job_title, is_public)
+            VALUES (${analysis.match_score}, ${JSON.stringify(analysis.missing_keywords)}, ${analysis.resume_critique}, FALSE, ${analysis.job_title}, FALSE)
             RETURNING id
         `;
 
@@ -196,6 +197,41 @@ app.post('/api/analyze', upload.single('resume'), async (req, res) => {
         res.status(500).json({ error: 'System overloaded with requests. Please try again in 15 seconds.' });
     }
 });
+
+
+// --- COMMUNITY ROAST WALL ROUTES ---
+
+// Fetch the top 50 public roasts
+app.get('/api/roasts', async (req, res) => {
+    try {
+        const roasts = await sql`
+            SELECT id, match_score, resume_critique, job_title 
+            FROM reports 
+            WHERE is_public = TRUE 
+            ORDER BY id DESC 
+            LIMIT 50
+        `;
+        res.json({ success: true, roasts });
+    } catch (error) {
+        console.error('Fetch Roasts Error:', error);
+        res.status(500).json({ error: 'Failed to fetch roasts' });
+    }
+});
+
+// Toggle a specific report to become public
+app.post('/api/reports/:id/make-public', async (req, res) => {
+    try {
+        const { id } = req.params;
+        await sql`UPDATE reports SET is_public = TRUE WHERE id = ${id}`;
+        res.json({ success: true, message: 'Roast is now public!' });
+    } catch (error) {
+        console.error('Make Public Error:', error);
+        res.status(500).json({ error: 'Failed to make public' });
+    }
+});
+
+
+
 
 // --- RAZORPAY PAYMENT ROUTES ---
 app.post('/api/payment/create-order', async (req, res) => {
