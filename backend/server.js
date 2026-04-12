@@ -28,6 +28,13 @@ const PORT = process.env.PORT || 5000;
 app.use(cors());
 app.use(express.json());
 
+
+app.use((req, res, next) => {
+    res.setHeader('Referrer-Policy', 'strict-origin-when-cross-origin');
+    next();
+});
+
+
 // --- INITIALIZE SERVICES EARLY ---
 const sql = neon(process.env.DATABASE_URL);
 const resend = new Resend(process.env.RESEND_API_KEY);
@@ -364,11 +371,12 @@ app.get('/scanner/:slug', async (req, res) => {
       html = html.replace(/<title>.*<\/title>/, `<title>${page.title} - PandaLime</title>`);
       html = html.replace(/<meta name="description" content=".*">/, `<meta name="description" content="${page.description}">`);
   
-      const hiddenText = `<div style="display:none;" id="seo-content">
-          <h1>${page.title}</h1>
-          <p>${page.description}</p>
-          <p>Optimize your resume to bypass automated screening.</p>
-      </div>`;
+   const hiddenText = `<div style="display:none;" id="seo-content">
+    <h1>${page.title}</h1>
+    <h2>Optimize your resume for ${slug.replace(/-/g, ' ')} roles</h2>
+    <p>${page.description}</p>
+    <p>Beat the ATS algorithms and land your dream job.</p>
+</div>`;
       
       html = html.replace('<body>', `<body>${hiddenText}`);
   
