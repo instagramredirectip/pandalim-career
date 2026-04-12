@@ -10,124 +10,25 @@ import { CanvasFactory } from 'pdf-parse/worker';
 import { PDFParse } from 'pdf-parse';
 import Razorpay from 'razorpay';
 import crypto from 'crypto';
-import axios from 'axios'; // <-- Moved axios here properly!
+import axios from 'axios'; 
+import fs from 'fs';
+import path from 'path';
+import { fileURLToPath } from 'url';
 
 dotenv.config();
+
+// --- CRITICAL FIX: ES Module __dirname shim ---
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 const app = express();
 const PORT = process.env.PORT || 5000;
 
-
-
-
-app.get('/sitemap.xml', async (req, res) => {
-  try {
-    // 1. Fetch all your pSEO slugs from Neon
-    const pseoPages = await neon`SELECT slug FROM pseo_pages`;
-    
-    const baseUrl = 'https://pandalime.com';
-    
-    // 2. Start building the XML string
-    let xml = `<?xml version="1.0" encoding="UTF-8"?>\n`;
-    xml += `<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n`;
-
-    // 3. Manually add your static frontend routes
-    const staticRoutes = [
-      '/', 
-      '/login', 
-      '/dashboard', 
-      '/roast-wall', 
-      '/contact', 
-      '/terms', 
-      '/privacy-policy'
-    ];
-
-    staticRoutes.forEach(route => {
-      xml += `  <url>\n`;
-      xml += `    <loc>${baseUrl}${route}</loc>\n`;
-      xml += `    <changefreq>weekly</changefreq>\n`;
-      xml += `    <priority>${route === '/' ? '1.0' : '0.8'}</priority>\n`;
-      xml += `  </url>\n`;
-    });
-
-    // 4. Dynamically inject all 500+ database routes
-    pseoPages.forEach(page => {
-      xml += `  <url>\n`;
-      xml += `    <loc>${baseUrl}/scanner/${page.slug}</loc>\n`;
-      xml += `    <changefreq>monthly</changefreq>\n`;
-      xml += `    <priority>0.6</priority>\n`; // Slightly lower priority for bulk pages
-      xml += `  </url>\n`;
-    });
-
-    xml += `</urlset>`;
-
-    // 5. Tell the browser/crawler this is an XML file, not HTML
-    res.header('Content-Type', 'application/xml');
-    res.send(xml);
-    
-  } catch (error) {
-    console.error("Sitemap Generation Error:", error);
-    res.status(500).end();
-  }
-});
-
-
-import fs from 'fs';
-import path from 'path';
-
-// Simple in-memory cache to protect Render and Neon
-const seoCache = new Map();
-
-app.get('/scanner/:slug', async (req, res) => {
-  const { slug } = req.params;
-  
-  // 1. Check Cache First (Responds in 1ms)
-  if (seoCache.has(slug)) {
-      return res.send(seoCache.get(slug));
-  }
-
-  try {
-    const seoData = await neon`SELECT * FROM pseo_pages WHERE slug = ${slug}`;
-    const page = seoData[0] || { 
-        title: "Free AI ATS Resume Scanner", 
-        description: "Beat the ATS algorithms and land your dream job." 
-    };
-
-    const indexPath = path.resolve(__dirname, '../frontend/dist/index.html');
-    let html = fs.readFileSync(indexPath, 'utf8');
-
-    html = html.replace(/<title>.*<\/title>/, `<title>${page.title} - PandaLime</title>`);
-    html = html.replace(/<meta name="description" content=".*">/, `<meta name="description" content="${page.description}">`);
-
-    const hiddenText = `<div style="display:none;" id="seo-content">
-        <h1>${page.title}</h1>
-        <p>${page.description}</p>
-        <p>Optimize your resume to bypass automated screening.</p>
-    </div>`;
-    
-    html = html.replace('<body>', `<body>${hiddenText}`);
-
-    // 2. Save to Cache before sending
-    seoCache.set(slug, html);
-
-    res.send(html);
-  } catch (error) {
-    console.error("pSEO Error:", error);
-    res.sendFile(path.resolve(__dirname, '../frontend/dist/index.html'));
-  }
-});
-
-
-
-
-
-
-
-
-
+// --- MIDDLEWARE ---
 app.use(cors());
 app.use(express.json());
 
+// --- INITIALIZE SERVICES EARLY ---
 const sql = neon(process.env.DATABASE_URL);
 const resend = new Resend(process.env.RESEND_API_KEY);
 const JWT_SECRET = process.env.JWT_SECRET;
@@ -139,6 +40,9 @@ const razorpay = new Razorpay({
 
 const upload = multer({ storage: multer.memoryStorage(), limits: { fileSize: 5 * 1024 * 1024 } });
 
+// =======================================================================
+// 1. STANDARD API ROUTES
+// =======================================================================
 app.get('/api/health', async (req, res) => {
     res.status(200).json({ status: 'success', message: 'Backend is running!' });
 });
@@ -192,38 +96,34 @@ app.post('/api/auth/verify-otp', async (req, res) => {
 });
 
 // --- THE API WATERFALL ---
-// The API Ladder: Add your keys to Render Environment Variables
 const GEMINI_KEYS = [
     process.env.GEMINI_API_KEY_1,
     process.env.GEMINI_API_KEY_2,
     process.env.GEMINI_API_KEY_3
-].filter(Boolean); // This removes any empty/undefined keys
+].filter(Boolean); 
 
 const GROQ_API_KEY = process.env.GROQ_API_KEY;
 
 async function generateAIResponseWithFallback(systemPrompt) {
-    // Phase 1: Try Gemini Keys in Order
     for (let i = 0; i < GEMINI_KEYS.length; i++) {
         try {
             console.log(`Attempting Gemini Key ${i + 1}...`);
             const aiInstance = new GoogleGenAI({ apiKey: GEMINI_KEYS[i] });
             
             const response = await aiInstance.models.generateContent({
-                model: 'gemini-2.5-flash', // Fast and great at JSON
+                model: 'gemini-2.5-flash', 
                 contents: systemPrompt,
                 config: {
                     responseMimeType: "application/json",
                 }
             });
             
-            return response.text; // Success! Return the data.
+            return response.text; 
         } catch (error) {
             console.warn(`Gemini Key ${i + 1} Failed:`, error.message);
-            // If it fails (rate limit, quota), the loop automatically tries the next key
         }
     }
 
-    // Phase 2: The Groq Fallback
     if (GROQ_API_KEY) {
         try {
             console.log("All Gemini keys exhausted. Falling back to Groq (Llama 3.3 70B)...");
@@ -243,18 +143,16 @@ async function generateAIResponseWithFallback(systemPrompt) {
                 }
             });
 
-            return groqResponse.data.choices[0].message.content; // Success! Return Groq data.
+            return groqResponse.data.choices[0].message.content; 
         } catch (error) {
             console.error("Groq Fallback Failed:", error.response ? error.response.data : error.message);
         }
     }
 
-    // Phase 3: Total Failure
     throw new Error("API Outage: All Gemini keys and Groq fallback failed.");
 }
 
-
-// --- FRICTIONLESS AI RESUME ANALYSIS ROUTE (WITH WATERFALL) ---
+// --- FRICTIONLESS AI RESUME ANALYSIS ROUTE ---
 app.post('/api/analyze', upload.single('resume'), async (req, res) => {
     try {
         const jobDescription = req.body.jobDescription;
@@ -262,12 +160,10 @@ app.post('/api/analyze', upload.single('resume'), async (req, res) => {
             return res.status(400).json({ error: 'Missing resume PDF or job description' });
         }
 
-        // 1. Parse PDF
         const parser = new PDFParse({ data: req.file.buffer, CanvasFactory });
         const pdfData = await parser.getText();
         const resumeText = pdfData.text;
 
-      // 2. Premium AI Prompt
         const prompt = `You are an expert ATS (Applicant Tracking System) and Executive Career Coach. 
         Analyze the following resume against the provided job description.
         Return ONLY a raw JSON object with exactly these 6 keys:
@@ -284,14 +180,9 @@ app.post('/api/analyze', upload.single('resume'), async (req, res) => {
         
         Resume: ${resumeText}`;
 
-        // --- THE API WATERFALL ---
-        // This will try Gemini 1 -> Gemini 2 -> Gemini 3 -> Groq (Llama 3) automatically
         const aiResponseText = await generateAIResponseWithFallback(prompt);
-        
-        // Parse the guaranteed JSON
         const analysis = JSON.parse(aiResponseText);
 
-       // 3. Save report (Now includes job_title and is_public)
         const savedReport = await sql`
             INSERT INTO reports (match_score, missing_keywords, resume_critique, is_unlocked, job_title, is_public)
             VALUES (${analysis.match_score}, ${JSON.stringify(analysis.missing_keywords)}, ${analysis.resume_critique}, FALSE, ${analysis.job_title}, FALSE)
@@ -308,8 +199,6 @@ app.post('/api/analyze', upload.single('resume'), async (req, res) => {
 
 
 // --- COMMUNITY ROAST WALL ROUTES ---
-
-// Fetch the top 50 public roasts
 app.get('/api/roasts', async (req, res) => {
     try {
         const roasts = await sql`
@@ -326,7 +215,6 @@ app.get('/api/roasts', async (req, res) => {
     }
 });
 
-// Toggle a specific report to become public
 app.post('/api/reports/:id/make-public', async (req, res) => {
     try {
         const { id } = req.params;
@@ -338,8 +226,6 @@ app.post('/api/reports/:id/make-public', async (req, res) => {
     }
 });
 
-
-// Fetch comments for a specific roast
 app.get('/api/reports/:id/comments', async (req, res) => {
     try {
         const { id } = req.params;
@@ -356,7 +242,6 @@ app.get('/api/reports/:id/comments', async (req, res) => {
     }
 });
 
-// Post a new anonymous comment
 app.post('/api/reports/:id/comments', async (req, res) => {
     try {
         const { id } = req.params;
@@ -368,7 +253,7 @@ app.post('/api/reports/:id/comments', async (req, res) => {
 
         const newComment = await sql`
             INSERT INTO comments (report_id, text_content)
-            VALUES (${id}, ${text_content.substring(0, 300)}) /* Max 300 chars to prevent spam */
+            VALUES (${id}, ${text_content.substring(0, 300)})
             RETURNING id, text_content, created_at
         `;
         res.json({ success: true, comment: newComment[0] });
@@ -378,14 +263,10 @@ app.post('/api/reports/:id/comments', async (req, res) => {
     }
 });
 
-
-
 // --- RAZORPAY PAYMENT ROUTES ---
 app.post('/api/payment/create-order', async (req, res) => {
     try {
         const { reportId, isDiscounted } = req.body;
-        
-        // If they shared on WhatsApp, charge ₹49. Otherwise, charge ₹99.
         const amountToCharge = isDiscounted ? 4900 : 9900; 
 
         const options = {
@@ -422,6 +303,93 @@ app.post('/api/payment/verify', async (req, res) => {
     }
 });
 
+// =======================================================================
+// 2. DYNAMIC SITEMAP ROUTE
+// =======================================================================
+app.get('/sitemap.xml', async (req, res) => {
+    try {
+      // Changed to use the initialized `sql` instance
+      const pseoPages = await sql`SELECT slug FROM pseo_pages`;
+      const baseUrl = 'https://pandalime.com';
+      
+      let xml = `<?xml version="1.0" encoding="UTF-8"?>\n`;
+      xml += `<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n`;
+  
+      const staticRoutes = [
+        '/', '/login', '/dashboard', '/roast-wall', 
+        '/contact', '/terms', '/privacy-policy'
+      ];
+  
+      staticRoutes.forEach(route => {
+        xml += `  <url>\n    <loc>${baseUrl}${route}</loc>\n    <changefreq>weekly</changefreq>\n    <priority>${route === '/' ? '1.0' : '0.8'}</priority>\n  </url>\n`;
+      });
+  
+      pseoPages.forEach(page => {
+        xml += `  <url>\n    <loc>${baseUrl}/scanner/${page.slug}</loc>\n    <changefreq>monthly</changefreq>\n    <priority>0.6</priority>\n  </url>\n`;
+      });
+  
+      xml += `</urlset>`;
+  
+      res.header('Content-Type', 'application/xml');
+      res.send(xml);
+      
+    } catch (error) {
+      console.error("Sitemap Generation Error:", error);
+      res.status(500).send("Error generating sitemap");
+    }
+});
+
+// =======================================================================
+// 3. PROGRAMMATIC SEO INTERCEPTOR
+// =======================================================================
+const seoCache = new Map();
+
+app.get('/scanner/:slug', async (req, res) => {
+    const { slug } = req.params;
+    
+    if (seoCache.has(slug)) {
+        return res.send(seoCache.get(slug));
+    }
+  
+    try {
+      const seoData = await sql`SELECT * FROM pseo_pages WHERE slug = ${slug}`;
+      const page = seoData[0] || { 
+          title: "Free AI ATS Resume Scanner", 
+          description: "Beat the ATS algorithms and land your dream job." 
+      };
+  
+      const indexPath = path.resolve(__dirname, '../frontend/dist/index.html');
+      let html = fs.readFileSync(indexPath, 'utf8');
+  
+      html = html.replace(/<title>.*<\/title>/, `<title>${page.title} - PandaLime</title>`);
+      html = html.replace(/<meta name="description" content=".*">/, `<meta name="description" content="${page.description}">`);
+  
+      const hiddenText = `<div style="display:none;" id="seo-content">
+          <h1>${page.title}</h1>
+          <p>${page.description}</p>
+          <p>Optimize your resume to bypass automated screening.</p>
+      </div>`;
+      
+      html = html.replace('<body>', `<body>${hiddenText}`);
+  
+      seoCache.set(slug, html);
+      res.send(html);
+    } catch (error) {
+      console.error("pSEO Error:", error);
+      res.sendFile(path.resolve(__dirname, '../frontend/dist/index.html'));
+    }
+});
+
+// =======================================================================
+// 4. REACT FRONTEND SERVING & CATCH-ALL (MUST BE ABSOLUTE LAST)
+// =======================================================================
+app.use(express.static(path.join(__dirname, '../frontend/dist')));
+
+app.get('*', (req, res) => {
+    res.sendFile(path.join(__dirname, '../frontend/dist/index.html'));
+});
+
+// --- START SERVER ---
 app.listen(PORT, () => {
     console.log(`Server is running on http://localhost:${PORT}`);
 });
