@@ -230,7 +230,7 @@ export default function Home() {
 
 
 
-// Add this near the bottom of your Home.jsx return statement
+
 <div className="max-w-6xl mx-auto px-4 py-12 border-t border-gray-100">
   <h3 className="text-xl font-bold text-gray-800 mb-6 text-center">
     Trending ATS Keyword Scanners
