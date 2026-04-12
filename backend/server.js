@@ -20,6 +20,58 @@ const PORT = process.env.PORT || 5000;
 
 
 
+app.get('/sitemap.xml', async (req, res) => {
+  try {
+    // 1. Fetch all your pSEO slugs from Neon
+    const pseoPages = await neon`SELECT slug FROM pseo_pages`;
+    
+    const baseUrl = 'https://pandalime.com';
+    
+    // 2. Start building the XML string
+    let xml = `<?xml version="1.0" encoding="UTF-8"?>\n`;
+    xml += `<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n`;
+
+    // 3. Manually add your static frontend routes
+    const staticRoutes = [
+      '/', 
+      '/login', 
+      '/dashboard', 
+      '/roast-wall', 
+      '/contact', 
+      '/terms', 
+      '/privacy-policy'
+    ];
+
+    staticRoutes.forEach(route => {
+      xml += `  <url>\n`;
+      xml += `    <loc>${baseUrl}${route}</loc>\n`;
+      xml += `    <changefreq>weekly</changefreq>\n`;
+      xml += `    <priority>${route === '/' ? '1.0' : '0.8'}</priority>\n`;
+      xml += `  </url>\n`;
+    });
+
+    // 4. Dynamically inject all 500+ database routes
+    pseoPages.forEach(page => {
+      xml += `  <url>\n`;
+      xml += `    <loc>${baseUrl}/scanner/${page.slug}</loc>\n`;
+      xml += `    <changefreq>monthly</changefreq>\n`;
+      xml += `    <priority>0.6</priority>\n`; // Slightly lower priority for bulk pages
+      xml += `  </url>\n`;
+    });
+
+    xml += `</urlset>`;
+
+    // 5. Tell the browser/crawler this is an XML file, not HTML
+    res.header('Content-Type', 'application/xml');
+    res.send(xml);
+    
+  } catch (error) {
+    console.error("Sitemap Generation Error:", error);
+    res.status(500).end();
+  }
+});
+
+
 import fs from 'fs';
 import path from 'path';
 
