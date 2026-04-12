@@ -19,45 +19,44 @@ const PORT = process.env.PORT || 5000;
 
 
 
+
 import fs from 'fs';
 import path from 'path';
 
-// pSEO Route Interceptor
+// Simple in-memory cache to protect Render and Neon
+const seoCache = new Map();
+
 app.get('/scanner/:slug', async (req, res) => {
   const { slug } = req.params;
   
+  // 1. Check Cache First (Responds in 1ms)
+  if (seoCache.has(slug)) {
+      return res.send(seoCache.get(slug));
+  }
+
   try {
-    // 1. Fetch dynamic SEO data from Neon DB
-    // Example slug: "software-engineer", "data-scientist"
     const seoData = await neon`SELECT * FROM pseo_pages WHERE slug = ${slug}`;
     const page = seoData[0] || { 
         title: "Free AI ATS Resume Scanner", 
         description: "Beat the ATS algorithms and land your dream job." 
     };
 
-    // 2. Read your compiled Vite index.html
     const indexPath = path.resolve(__dirname, '../frontend/dist/index.html');
     let html = fs.readFileSync(indexPath, 'utf8');
 
-    // 3. Inject the Meta Tags (Google sees this instantly)
-    html = html.replace(
-      /<title>.*<\/title>/, 
-      `<title>${page.title} - PandaLime</title>`
-    );
-    html = html.replace(
-      /<meta name="description" content=".*">/, 
-      `<meta name="description" content="${page.description}">`
-    );
+    html = html.replace(/<title>.*<\/title>/, `<title>${page.title} - PandaLime</title>`);
+    html = html.replace(/<meta name="description" content=".*">/, `<meta name="description" content="${page.description}">`);
 
-    // 4. The Sneaky Part: Inject raw text into the body for the crawler
-    // Humans won't see this once React hydrates, but Google reads it instantly.
     const hiddenText = `<div style="display:none;" id="seo-content">
         <h1>${page.title}</h1>
         <p>${page.description}</p>
-        <p>Optimize your resume specifically for ${slug.replace('-', ' ')} roles.</p>
+        <p>Optimize your resume to bypass automated screening.</p>
     </div>`;
     
     html = html.replace('<body>', `<body>${hiddenText}`);
+
+    // 2. Save to Cache before sending
+    seoCache.set(slug, html);
 
     res.send(html);
   } catch (error) {
@@ -65,11 +64,6 @@ app.get('/scanner/:slug', async (req, res) => {
     res.sendFile(path.resolve(__dirname, '../frontend/dist/index.html'));
   }
 });
-
-
-
-
-
 
 
 
