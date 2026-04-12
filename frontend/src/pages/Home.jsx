@@ -107,7 +107,7 @@ export default function Home() {
               </Link>
 
               <Link
-                to="/wall" 
+                to="/roast-wall" 
                 className="w-full sm:w-auto px-8 py-4 bg-white hover:bg-gray-50 text-gray-700 border border-gray-300 rounded-xl font-bold text-lg shadow-sm transition-all hover:-translate-y-1 flex items-center justify-center gap-2"
               >
                 📊 View Community Scores
@@ -290,7 +290,7 @@ export default function Home() {
           <div>
             <h4 className="text-white font-bold mb-4 uppercase tracking-wider text-sm">Legal & Policies</h4>
             <ul className="space-y-3">
-              <li><Link to="/privacy" className="hover:text-lime-400 transition-colors flex items-center gap-2"><ShieldCheck className="w-4 h-4"/> Privacy Policy</Link></li>
+              <li><Link to="/privacy-policy" className="hover:text-lime-400 transition-colors flex items-center gap-2"><ShieldCheck className="w-4 h-4"/> Privacy Policy</Link></li>
               <li><Link to="/terms" className="hover:text-lime-400 transition-colors flex items-center gap-2"><FileText className="w-4 h-4"/> Terms & Conditions</Link></li>
               <li><Link to="/contact" className="hover:text-lime-400 transition-colors flex items-center gap-2"><Mail className="w-4 h-4"/> Contact Us</Link></li>
             </ul>

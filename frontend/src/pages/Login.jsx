@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 import { Mail, ArrowRight, CheckCircle, Loader2 } from 'lucide-react';
 
 export default function Login() {
@@ -63,7 +63,12 @@ export default function Login() {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-50 px-4">
+    <div className="min-h-screen flex flex-col items-center justify-center bg-gray-50 px-4">
+      <div className="absolute top-4 left-4">
+        <Link to="/" className="text-gray-600 hover:text-lime-600 font-medium text-sm transition-colors flex items-center gap-2">
+          ← Back to Home
+        </Link>
+      </div>
       <div className="max-w-md w-full bg-white rounded-2xl shadow-sm border border-gray-100 p-8">
         <div className="text-center mb-8">
           <div className="w-12 h-12 bg-lime-100 text-lime-600 rounded-xl flex items-center justify-center mx-auto mb-4">

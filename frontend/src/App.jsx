@@ -17,10 +17,10 @@ function App() {
         <Route path="/" element={<Home />} />
         <Route path="/dashboard" element={<Dashboard />} /> 
         <Route path="/login" element={<Login />} />
-        <Route path="/wall" element={<RoastWall />} />
+        <Route path="/roast-wall" element={<RoastWall />} />
         
-        {/* Legal & Info Routes */}
-        <Route path="/privacy" element={<PrivacyPolicy />} />
+        {/* Legal & Info Routes - Match backend routes exactly */}
+        <Route path="/privacy-policy" element={<PrivacyPolicy />} />
         <Route path="/terms" element={<Terms />} />
         <Route path="/contact" element={<Contact />} />
         

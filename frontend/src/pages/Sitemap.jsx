@@ -11,7 +11,7 @@ export default function Sitemap() {
     ]},
     { title: "Legal & Support", links: [
       { name: "Contact Us", path: "/contact" },
-      { name: "Privacy Policy", path: "/privacy" },
+      { name: "Privacy Policy", path: "/privacy-policy" },
       { name: "Terms & Conditions", path: "/terms" }
     ]}
   ];

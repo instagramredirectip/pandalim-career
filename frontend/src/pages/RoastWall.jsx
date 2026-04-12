@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { Link } from 'react-router-dom';
 
 // --- SUB-COMPONENT: COMMENT SECTION ---
 const CommentSection = ({ reportId }) => {
@@ -103,8 +104,24 @@ export default function RoastWall() {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50 py-12 px-4 sm:px-6 lg:px-8">
-      <div className="max-w-3xl mx-auto">
+    <div className="min-h-screen bg-gray-50">
+      {/* Navigation Header */}
+      <nav className="bg-white border-b border-gray-200">
+        <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
+          <div className="flex justify-between items-center">
+            <Link to="/" className="text-gray-600 hover:text-lime-600 font-medium text-sm transition-colors">
+              ← Back to Home
+            </Link>
+            <Link to="/dashboard" className="text-lime-600 hover:text-lime-700 font-medium text-sm transition-colors">
+              Scan Resume →
+            </Link>
+          </div>
+        </div>
+      </nav>
+
+      {/* Main Content */}
+      <div className="py-12 px-4 sm:px-6 lg:px-8">
+        <div className="max-w-3xl mx-auto">
         <div className="text-center mb-12">
           <h1 className="text-4xl font-extrabold text-gray-900 tracking-tight">
             The <span className="text-emerald-500">Community</span> Wall
@@ -160,6 +177,7 @@ export default function RoastWall() {
             )}
           </div>
         )}
+      </div>
       </div>
     </div>
   );

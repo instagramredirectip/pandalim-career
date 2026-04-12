@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 import { 
   UploadCloud, 
   FileText, 
@@ -213,6 +213,20 @@ console.log("======================");
   return (
     <div className="min-h-screen bg-gray-50/50 font-sans pb-32 print:bg-white print:pb-0">
       
+      {/* Navigation Header */}
+      <nav className="bg-white border-b border-gray-200 sticky top-0 z-40">
+        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-3">
+          <div className="flex justify-between items-center">
+            <Link to="/" className="text-gray-600 hover:text-lime-600 font-medium text-sm transition-colors">
+              ← Back to Home
+            </Link>
+            <Link to="/roast-wall" className="text-gray-600 hover:text-lime-600 font-medium text-sm transition-colors">
+              View Community →
+            </Link>
+          </div>
+        </div>
+      </nav>
+
       {/* Required Inline Styles for the Scanner Animation */}
       <style>
         {`
