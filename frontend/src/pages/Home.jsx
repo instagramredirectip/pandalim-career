@@ -227,6 +227,41 @@ export default function Home() {
         </div>
       </section>
 
+
+
+
+// Add this near the bottom of your Home.jsx return statement
+<div className="max-w-6xl mx-auto px-4 py-12 border-t border-gray-100">
+  <h3 className="text-xl font-bold text-gray-800 mb-6 text-center">
+    Trending ATS Keyword Scanners
+  </h3>
+  <div className="flex flex-wrap justify-center gap-3">
+    {/* Hardcode your top 15-20 most valuable/highest-paying niches here */}
+    {[
+      "Software Engineer at Google", "Data Scientist at Amazon", 
+      "React Developer at TCS", "Product Manager at Microsoft",
+      "Python Developer at Infosys", "Cloud Architect at Wipro",
+      "Full Stack Developer at Netflix", "AI Engineer at Meta"
+    ].map((niche) => {
+      // Convert "Software Engineer at Google" to "software-engineer-at-google"
+      const slug = niche.toLowerCase().replace(/ /g, '-');
+      return (
+        <a 
+          key={slug} 
+          href={`/scanner/${slug}`} 
+          className="px-4 py-2 bg-gray-50 hover:bg-green-50 hover:text-green-600 text-gray-600 text-sm rounded-full transition-colors border border-gray-200"
+        >
+          {niche}
+        </a>
+      );
+    })}
+  </div>
+</div>
+
+
+
+
+
       {/* --- FOOTER & SEO LINKS --- */}
       <footer className="bg-gray-900 text-gray-300 py-16 border-t border-gray-800">
         <div className="max-w-6xl mx-auto px-4 grid grid-cols-1 md:grid-cols-4 gap-12">
