@@ -7,6 +7,7 @@ import Terms from './pages/Terms';
 import Contact from './pages/Contact';
 import Sitemap from './pages/Sitemap';
 import RoastWall from './pages/RoastWall';
+import ScannerLanding from './pages/ScannerLanding';
 
 function App() {
   return (
@@ -22,7 +23,7 @@ function App() {
         <Route path="/terms" element={<Terms />} />
         <Route path="/contact" element={<Contact />} />
         <Route path="/sitemap" element={<Sitemap />} />
-
+<Route path="/scanner/:slug" element={<ScannerLanding />} />
       </Routes>
     </BrowserRouter>
   );
