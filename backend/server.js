@@ -364,19 +364,27 @@ const seoCache = new Map();
 
 // Helper function to inject canonical, title, and description into HTML
 function injectMetaTags(html, canonicalUrl, title, description) {
-    // Remove existing canonical and inject new one
-    html = html.replace(/<link rel="canonical" href="[^"]*" \/>/, '');
-    html = html.replace(/<\/head>/, `    <link rel="canonical" href="${canonicalUrl}" />\n  </head>`);
+    // Escape quotes in title and description for safe insertion
+    const safeTitle = title.replace(/"/g, '&quot;');
+    const safeDescription = description.replace(/"/g, '&quot;');
     
-    // Update title
-    html = html.replace(/<title>.*<\/title>/, `<title>${title}</title>`);
+    // Update or add title
+    if (html.includes('<title>')) {
+        html = html.replace(/<title>[^<]*<\/title>/i, `<title>${safeTitle}</title>`);
+    } else {
+        html = html.replace(/<\/head>/i, `<title>${safeTitle}</title>\n  </head>`);
+    }
     
     // Update or add meta description
-    if (html.includes('<meta name="description"')) {
-        html = html.replace(/<meta name="description" content="[^"]*">/, `<meta name="description" content="${description}">`);
+    if (html.includes('name="description"')) {
+        html = html.replace(/(<meta\s+name="description"\s+content=)"[^"]*"/i, `$1"${safeDescription}"`);
     } else {
-        html = html.replace(/<meta name="viewport"/, `<meta name="description" content="${description}" />\n    <meta name="viewport"`);
+        html = html.replace(/(<meta\s+name="viewport")/i, `<meta name="description" content="${safeDescription}" />\n    $1`);
     }
+    
+    // Remove existing canonical and inject new one
+    html = html.replace(/<link\s+rel="canonical"[^>]*>/i, '');
+    html = html.replace(/<\/head>/i, `  <link rel="canonical" href="${canonicalUrl}" />\n  </head>`);
     
     return html;
 }
@@ -395,22 +403,32 @@ app.get('/scanner/:slug', async (req, res) => {
   
     try {
       const seoData = await sql`SELECT * FROM pseo_pages WHERE slug = ${slug}`;
-      const page = seoData[0] || { 
-          title: "Free AI ATS Resume Scanner", 
-          description: "Beat the ATS algorithms and land your dream job." 
-      };
+      let page = seoData[0];
+      
+      // If no data in DB, generate unique SEO content based on slug
+      if (!page) {
+        const formattedTitle = slug
+          .split('-')
+          .map(word => word.charAt(0).toUpperCase() + word.slice(1))
+          .join(' ');
+        
+        page = {
+          title: `${formattedTitle} - Resume ATS Optimization`,
+          description: `Optimize your resume for ${formattedTitle} positions. Get AI-powered feedback to beat ATS algorithms and land interviews.`
+        };
+      }
   
       const indexPath = path.resolve(__dirname, '../frontend/dist/index.html');
       let html = fs.readFileSync(indexPath, 'utf8');
   
-      const pageTitle = `${page.title} - PandaLime`;
+      const pageTitle = `${page.title} | PandaLime Career Scanner`;
       html = injectMetaTags(html, canonicalUrl, pageTitle, page.description);
   
       const hiddenText = `<div style="display:none;" id="seo-content">
     <h1>${page.title}</h1>
     <h2>Optimize your resume for ${slug.replace(/-/g, ' ')} roles</h2>
     <p>${page.description}</p>
-    <p>Beat the ATS algorithms and land your dream job.</p>
+    <p>Beat the ATS algorithms and land interviews at top companies.</p>
 </div>`;
       
       html = html.replace('<body>', `<body>${hiddenText}`);
@@ -424,19 +442,27 @@ app.get('/scanner/:slug', async (req, res) => {
 });
 
 // =======================================================================
-// 4. REACT FRONTEND SERVING & CATCH-ALL ROUTES (MUST BE ABSOLUTE LAST)
+// 4. ROUTES FOR STATIC PAGES WITH UNIQUE META TAGS
 // =======================================================================
-// Serve static files
-app.use(express.static(path.join(__dirname, '../frontend/dist')));
 
-// Handle root and main page routes with proper canonical
+// Home page
+app.get('/', (req, res) => {
+    const protocol = req.protocol;
+    const host = req.get('host');
+    const canonicalUrl = `${protocol}://${host}/`;
+    const indexPath = path.join(__dirname, '../frontend/dist/index.html');
+    let html = fs.readFileSync(indexPath, 'utf8');
+    html = injectMetaTags(html, canonicalUrl, 'Scan Resume for Free | PandaLime Career Scanner', 'Beat the ATS algorithms with our free AI-powered resume scanner. Get personalized feedback on your resume.');
+    res.send(html);
+});
+
 app.get('/dashboard', (req, res) => {
     const protocol = req.protocol;
     const host = req.get('host');
     const canonicalUrl = `${protocol}://${host}/dashboard`;
     const indexPath = path.join(__dirname, '../frontend/dist/index.html');
     let html = fs.readFileSync(indexPath, 'utf8');
-    html = injectMetaTags(html, canonicalUrl, 'Dashboard | PandaLime Career Scanner', 'Your analyzed resume reports and career insights');
+    html = injectMetaTags(html, canonicalUrl, 'Resume Scanner Dashboard | PandaLime Career', 'View your analyzed resume reports, match scores, and AI-powered career insights');
     res.send(html);
 });
 
@@ -446,7 +472,7 @@ app.get('/roast-wall', (req, res) => {
     const canonicalUrl = `${protocol}://${host}/roast-wall`;
     const indexPath = path.join(__dirname, '../frontend/dist/index.html');
     let html = fs.readFileSync(indexPath, 'utf8');
-    html = injectMetaTags(html, canonicalUrl, 'Roast Wall | PandaLime Career Scanner', 'Community resume reviews and career advice');
+    html = injectMetaTags(html, canonicalUrl, 'Community Resume Roast Wall | PandaLime', 'See real resume reviews and career feedback from our community. Learn from others mistakes');
     res.send(html);
 });
 
@@ -456,7 +482,7 @@ app.get('/contact', (req, res) => {
     const canonicalUrl = `${protocol}://${host}/contact`;
     const indexPath = path.join(__dirname, '../frontend/dist/index.html');
     let html = fs.readFileSync(indexPath, 'utf8');
-    html = injectMetaTags(html, canonicalUrl, 'Contact Us | PandaLime Career Scanner', 'Get in touch with our team');
+    html = injectMetaTags(html, canonicalUrl, 'Contact PandaLime | Get In Touch', 'Have questions about our AI resume scanner? Contact our support team');
     res.send(html);
 });
 
@@ -466,7 +492,7 @@ app.get('/terms', (req, res) => {
     const canonicalUrl = `${protocol}://${host}/terms`;
     const indexPath = path.join(__dirname, '../frontend/dist/index.html');
     let html = fs.readFileSync(indexPath, 'utf8');
-    html = injectMetaTags(html, canonicalUrl, 'Terms of Service | PandaLime Career Scanner', 'Terms of service and legal information');
+    html = injectMetaTags(html, canonicalUrl, 'Terms of Service | PandaLime Career Scanner', 'Read our terms and conditions for using PandaLime resume analysis platform');
     res.send(html);
 });
 
@@ -476,11 +502,24 @@ app.get('/privacy-policy', (req, res) => {
     const canonicalUrl = `${protocol}://${host}/privacy-policy`;
     const indexPath = path.join(__dirname, '../frontend/dist/index.html');
     let html = fs.readFileSync(indexPath, 'utf8');
-    html = injectMetaTags(html, canonicalUrl, 'Privacy Policy | PandaLime Career Scanner', 'Our privacy policy and data protection practices');
+    html = injectMetaTags(html, canonicalUrl, 'Privacy Policy | PandaLime', 'Learn how we protect your data and privacy when you use PandaLime');
     res.send(html);
 });
 
-// Catch-all for SPA routing (MUST BE ABSOLUTE LAST)
+app.get('/login', (req, res) => {
+    const protocol = req.protocol;
+    const host = req.get('host');
+    const canonicalUrl = `${protocol}://${host}/login`;
+    const indexPath = path.join(__dirname, '../frontend/dist/index.html');
+    let html = fs.readFileSync(indexPath, 'utf8');
+    html = injectMetaTags(html, canonicalUrl, 'Sign In | PandaLime Career Scanner', 'Log in to access your resume analysis dashboard');
+    res.send(html);
+});
+
+// === STATIC FILE SERVING ===
+app.use(express.static(path.join(__dirname, '../frontend/dist')));
+
+// === CATCH-ALL FOR SPA ROUTING (MUST BE ABSOLUTE LAST) ===
 app.get('*', (req, res) => {
     const protocol = req.protocol;
     const host = req.get('host');
