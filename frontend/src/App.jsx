@@ -13,17 +13,22 @@ function App() {
   return (
     <BrowserRouter>
       <Routes>
-        {/* Make sure Dashboard is just a normal route like Home! */}
+        {/* Core App Routes */}
         <Route path="/" element={<Home />} />
         <Route path="/dashboard" element={<Dashboard />} /> 
         <Route path="/login" element={<Login />} />
         <Route path="/wall" element={<RoastWall />} />
         
+        {/* Legal & Info Routes */}
         <Route path="/privacy" element={<PrivacyPolicy />} />
         <Route path="/terms" element={<Terms />} />
         <Route path="/contact" element={<Contact />} />
+        
+        {/* Visual HTML Sitemap for Humans */}
         <Route path="/sitemap" element={<Sitemap />} />
-<Route path="/scanner/:slug" element={<ScannerLanding />} />
+
+        {/* Dynamic Programmatic SEO Route */}
+        <Route path="/scanner/:slug" element={<ScannerLanding />} />
       </Routes>
     </BrowserRouter>
   );
