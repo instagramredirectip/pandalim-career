@@ -112,7 +112,7 @@ const [isSharedToWall, setIsSharedToWall] = useState(false);
       if (data.success) {
         setResult(data.analysis);
         setReportId(data.reportId); 
-        setIsUnlocked(false); 
+        setIsUnlocked(data.isUnlocked !== false);
         setIsDiscounted(false);
       } else {
         alert(data.error || "Analysis failed.");

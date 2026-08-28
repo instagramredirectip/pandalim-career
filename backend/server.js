@@ -23,6 +23,7 @@ const __dirname = path.dirname(__filename);
 
 const app = express();
 const PORT = process.env.PORT || 5000;
+const PAYWALL_ENABLED = process.env.ENABLE_PAYWALL === 'true';
 
 // --- MIDDLEWARE ---
 app.use(cors());
@@ -203,11 +204,11 @@ app.post('/api/analyze', upload.single('resume'), async (req, res) => {
 
         const savedReport = await sql`
             INSERT INTO reports (match_score, missing_keywords, resume_critique, is_unlocked, job_title, is_public)
-            VALUES (${analysis.match_score}, ${JSON.stringify(analysis.missing_keywords)}, ${analysis.resume_critique}, FALSE, ${analysis.job_title}, FALSE)
+            VALUES (${analysis.match_score}, ${JSON.stringify(analysis.missing_keywords)}, ${analysis.resume_critique}, ${!PAYWALL_ENABLED}, ${analysis.job_title}, FALSE)
             RETURNING id
         `;
 
-        res.json({ success: true, reportId: savedReport[0].id, analysis });
+        res.json({ success: true, reportId: savedReport[0].id, analysis, isUnlocked: !PAYWALL_ENABLED });
 
     } catch (error) {
         console.error('Analysis Error:', error);
