@@ -110,7 +110,7 @@ export default function Home() {
                 to="/roast-wall" 
                 className="w-full sm:w-auto px-8 py-4 bg-white hover:bg-gray-50 text-gray-700 border border-gray-300 rounded-xl font-bold text-lg shadow-sm transition-all hover:-translate-y-1 flex items-center justify-center gap-2"
               >
-                📊 View Community Scores
+            View Community
               </Link>
 
             </div>
