@@ -10,6 +10,10 @@ import Sitemap from './pages/Sitemap';
 import RoastWall from './pages/RoastWall';
 import ScannerLanding from './pages/ScannerLanding';
 import RegionalHome from './pages/RegionalHome';
+import ToolsHub from './pages/ToolsHub';
+import JobKeywordExtractor from './pages/JobKeywordExtractor';
+import StarBulletGenerator from './pages/StarBulletGenerator';
+import AtsActionVerbs from './pages/AtsActionVerbs';
 
 function App() {
   return (
@@ -22,6 +26,12 @@ function App() {
           <Route path="/login" element={<Login />} />
           <Route path="/roast-wall" element={<RoastWall />} />
           
+          {/* Free ATS & Career Tools Suite */}
+          <Route path="/tools" element={<ToolsHub />} />
+          <Route path="/tools/job-description-keyword-extractor" element={<JobKeywordExtractor />} />
+          <Route path="/tools/star-bullet-generator" element={<StarBulletGenerator />} />
+          <Route path="/tools/ats-action-verbs" element={<AtsActionVerbs />} />
+
           {/* Indian Language Regional Routes */}
           <Route path="/hi" element={<RegionalHome />} />
           <Route path="/ta" element={<RegionalHome />} />

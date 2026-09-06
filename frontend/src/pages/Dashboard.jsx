@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { useNavigate, Link } from 'react-router-dom';
+import { useNavigate, useLocation, Link } from 'react-router-dom';
 import { 
   UploadCloud, 
   FileText, 
@@ -33,11 +33,24 @@ export default function Dashboard() {
   const [isUnlocked, setIsUnlocked] = useState(false);
   const [loading, setLoading] = useState(false);
   const [isDiscounted, setIsDiscounted] = useState(false);
+  const [prefilledFromTools, setPrefilledFromTools] = useState(false);
   
   // NEW: State for the dynamic scanning text
   const [scanText, setScanText] = useState('Initializing AI...');
 
   const navigate = useNavigate();
+  const location = useLocation();
+
+  useEffect(() => {
+    const passedJd = location.state?.jobDescription || sessionStorage.getItem('prefill_job_description');
+    if (passedJd && !jobDescription) {
+      setJobDescription(passedJd);
+      setPrefilledFromTools(true);
+      try {
+        sessionStorage.removeItem('prefill_job_description');
+      } catch (e) {}
+    }
+  }, [location.state]);
 
 
 const [isSharedToWall, setIsSharedToWall] = useState(false);
@@ -304,6 +317,12 @@ console.log("======================");
             </div>
 
             <div className="bg-white rounded-3xl shadow-xl shadow-gray-200/50 border border-gray-100 p-6 md:p-10">
+              {prefilledFromTools && (
+                <div className="mb-6 p-4 bg-lime-50 border border-lime-300 rounded-2xl flex items-center gap-3 text-xs text-lime-900 font-bold animate-in fade-in">
+                  <CheckCircle className="w-4 h-4 text-lime-600 shrink-0" />
+                  <span>Target Job Description loaded from Keyword Extractor! Upload your resume PDF below to run the ATS scan.</span>
+                </div>
+              )}
               <form onSubmit={handleScan} className="space-y-8">
                 <div>
                   <label className="flex items-center gap-2 text-sm font-bold text-gray-900 mb-3">

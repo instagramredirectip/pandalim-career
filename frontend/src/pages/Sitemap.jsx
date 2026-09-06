@@ -12,6 +12,13 @@ export default function Sitemap() {
     { name: "Login / Account", path: "/login" }
   ];
 
+  const freeTools = [
+    { name: "Free Career Tools Suite Hub", path: "/tools", desc: "Central directory of all free career utilities & generators" },
+    { name: "Job Description Keyword Extractor", path: "/tools/job-description-keyword-extractor", desc: "Extract technical skills, tools & soft skills from any JD" },
+    { name: "AI STAR Method Resume Bullet Generator", path: "/tools/star-bullet-generator", desc: "Craft Google X-Y-Z formula bullet points with metrics" },
+    { name: "250+ ATS Action Verbs Directory", path: "/tools/ats-action-verbs", desc: "Recruiter-approved power verbs categorized by skill" }
+  ];
+
   const legalPages = [
     { name: "Contact Support", path: "/contact" },
     { name: "Privacy Policy", path: "/privacy-policy" },
@@ -67,7 +74,7 @@ export default function Sitemap() {
           <div className="grid md:grid-cols-2 gap-8 mb-12">
             <div className="bg-gray-50 p-6 rounded-2xl border border-gray-200">
               <h2 className="text-lg font-bold text-gray-900 mb-4 flex items-center gap-2">
-                <Sparkles className="w-5 h-5 text-lime-600" /> Core Pages & Tools
+                <Sparkles className="w-5 h-5 text-lime-600" /> Core Pages & App
               </h2>
               <ul className="space-y-3">
                 {mainPages.map((link, j) => (
@@ -98,7 +105,34 @@ export default function Sitemap() {
             </div>
           </div>
 
-          {/* Section 2: Regional Indian Language Portals */}
+          {/* Section 2: Free AI Career Tools Suite */}
+          <div className="mb-12">
+            <div className="flex items-center justify-between mb-6">
+              <h2 className="text-2xl font-bold text-gray-900 flex items-center gap-2">
+                <Sparkles className="w-6 h-6 text-lime-600" /> Free AI Career Tools Suite (100% Free Utilities)
+              </h2>
+              <Link to="/tools" className="text-xs sm:text-sm font-bold text-lime-600 hover:underline">
+                View Tools Hub →
+              </Link>
+            </div>
+            <div className="grid sm:grid-cols-2 gap-4">
+              {freeTools.map((tool, idx) => (
+                <Link
+                  key={idx}
+                  to={tool.path}
+                  className="p-5 bg-lime-50/50 hover:bg-lime-50 rounded-2xl border border-lime-200 hover:border-lime-400 transition-all block group shadow-sm"
+                >
+                  <p className="font-bold text-gray-900 text-sm group-hover:text-lime-700 flex items-center justify-between">
+                    <span>{tool.name}</span>
+                    <ArrowRight className="w-4 h-4 text-lime-500 group-hover:translate-x-1 transition-transform" />
+                  </p>
+                  <p className="text-xs text-gray-600 mt-1">{tool.desc}</p>
+                </Link>
+              ))}
+            </div>
+          </div>
+
+          {/* Section 3: Regional Indian Language Portals */}
           <div className="mb-12">
             <h2 className="text-2xl font-bold text-gray-900 mb-6 flex items-center gap-2">
               <Globe className="w-6 h-6 text-lime-600" /> Regional Indian Language Portals (क्षेत्रीय भाषा पोर्टल)

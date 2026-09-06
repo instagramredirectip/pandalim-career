@@ -99,7 +99,10 @@ export default function RegionalHome() {
           </Link>
           <div className="flex items-center gap-2 sm:gap-3 shrink-0">
             <LanguageSelector variant="nav" />
-            <Link to="/roast-wall" className="text-sm font-semibold text-gray-600 hover:text-lime-600 transition-colors hidden sm:block">
+            <Link to="/tools" className="text-sm font-semibold text-gray-600 hover:text-lime-600 transition-colors hidden sm:block">
+              Free Tools
+            </Link>
+            <Link to="/roast-wall" className="text-sm font-semibold text-gray-600 hover:text-lime-600 transition-colors hidden md:block">
               {t.viewCommunity}
             </Link>
             <Link 
@@ -380,8 +383,9 @@ export default function RegionalHome() {
           </div>
 
           <div>
-            <h4 className="text-white font-bold mb-4 uppercase tracking-wider text-sm">Languages & Directory</h4>
-            <ul className="space-y-2.5 text-xs text-gray-400">
+            <h4 className="text-white font-bold mb-4 uppercase tracking-wider text-sm">Languages & Tools</h4>
+            <ul className="space-y-2 text-xs text-gray-400">
+              <li><Link to="/tools" className="text-lime-400 font-bold hover:underline">Free Career Tools Suite</Link></li>
               <li><Link to="/" className="hover:text-white">English (Global & India)</Link></li>
               <li><Link to="/hi" className="hover:text-white">हिन्दी (Hindi)</Link></li>
               <li><Link to="/ta" className="hover:text-white">தமிழ் (Tamil)</Link></li>
@@ -389,7 +393,7 @@ export default function RegionalHome() {
               <li><Link to="/kn" className="hover:text-white">ಕನ್ನಡ (Kannada)</Link></li>
               <li><Link to="/mr" className="hover:text-white">मराठी (Marathi)</Link></li>
               <li><Link to="/bn" className="hover:text-white">বাংলা (Bengali)</Link></li>
-              <li><Link to="/sitemap" className="hover:text-white font-bold text-lime-400">Full Directory (All 100+ Scanners)</Link></li>
+              <li><Link to="/sitemap" className="hover:text-white font-bold text-lime-400">Full Directory (All Scanners)</Link></li>
             </ul>
           </div>
           

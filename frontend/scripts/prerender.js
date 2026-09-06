@@ -281,6 +281,13 @@ const sitemapHtml = generatePageHtml({
         <li><a href="/privacy-policy">Privacy Policy</a></li>
         <li><a href="/terms">Terms & Conditions</a></li>
       </ul>
+      <h2>Free AI Career Tools Suite</h2>
+      <ul>
+        <li><a href="/tools">Free Career Tools Suite Hub</a></li>
+        <li><a href="/tools/job-description-keyword-extractor">Job Description Keyword Extractor</a></li>
+        <li><a href="/tools/star-bullet-generator">AI STAR Method Resume Bullet Generator</a></li>
+        <li><a href="/tools/ats-action-verbs">250+ ATS Resume Action Verbs Directory</a></li>
+      </ul>
       <h2>Regional Indian Language Portals</h2>
       <ul>
         ${regionalLangs.map(l => `<li><a href="${l.path}">${l.name} (${l.nativeName}) - AI Resume Scanner</a></li>`).join('')}
@@ -303,6 +310,275 @@ const sitemapHtml = generatePageHtml({
 writeStaticFile('/sitemap', sitemapHtml);
 addSitemapUrl('/sitemap', '0.7', 'weekly');
 console.log('✓ Pre-rendered: /sitemap');
+
+// --- FREE CAREER TOOLS SUITE PRE-RENDERING ---
+
+// 4a. Tools Hub
+const toolsHubHtml = generatePageHtml({
+  title: 'Free AI Resume & Career Tools Suite | Keyword Extractor, STAR Bullets & Verbs | PandaLime',
+  description: '100% Free AI career tools to beat the ATS: Instant Job Description Keyword Extractor, STAR Method Resume Bullet Generator, and 250+ Recruiter-Approved Action Verbs dictionary.',
+  canonicalPath: '/tools',
+  jsonLd: [
+    {
+      "@context": "https://schema.org",
+      "@type": "CollectionPage",
+      "name": "PandaLime Free AI Career & Resume Tools Suite",
+      "description": "Collection of 100% free resume optimization tools including keyword extractors, STAR bullet rewriters, and action verb directories.",
+      "url": `${BASE_URL}/tools`
+    },
+    {
+      "@context": "https://schema.org",
+      "@type": "SoftwareApplication",
+      "name": "PandaLime Career Tools Suite",
+      "operatingSystem": "All Web Browsers",
+      "applicationCategory": "BusinessApplication",
+      "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
+      "description": "100% Free AI career tools to beat applicant tracking systems (ATS)."
+    },
+    {
+      "@context": "https://schema.org",
+      "@type": "FAQPage",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "Are PandaLime Career Tools really free?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Yes! All utilities in our Career Tools Suite (Keyword Extractor, STAR Bullet Generator, and 250+ Action Verbs Directory) are 100% free with no registration or credit card required."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "How do these tools help beat applicant tracking systems (ATS)?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Our keyword extractor finds exact hard skills and acronyms required by the recruiter. The STAR bullet generator structures your experience into high-converting quantified metrics, and the action verbs directory replaces weak phrasing."
+          }
+        }
+      ]
+    }
+  ],
+  bodyContent: `
+    <main style="max-width:1100px;margin:0 auto;padding:40px 20px;font-family:sans-serif;">
+      <h1>Free AI Resume & Career Tools Suite</h1>
+      <p>100% free utilities to help job seekers extract ATS keywords, generate high-impact STAR resume bullets, and find power action verbs.</p>
+      <h2>Featured Career Tools</h2>
+      <ul>
+        <li>
+          <a href="/tools/job-description-keyword-extractor"><strong>Job Description Keyword Extractor</strong></a>
+          <p>Extract hard skills, tech stacks, frameworks, and qualifications from any job listing with 0 latency.</p>
+        </li>
+        <li>
+          <a href="/tools/star-bullet-generator"><strong>AI STAR Method Resume Bullet Generator</strong></a>
+          <p>Generate quantified Google X-Y-Z formula bullet points with measurable impact and action verbs.</p>
+        </li>
+        <li>
+          <a href="/tools/ats-action-verbs"><strong>250+ ATS Resume Action Verbs Directory</strong></a>
+          <p>Search recruiter-approved power verbs with copyable bullet point examples categorized by skill area.</p>
+        </li>
+        <li>
+          <a href="/dashboard"><strong>Free Full AI Resume Scanner</strong></a>
+          <p>Upload your PDF resume against any job description for deep ATS match scoring, section reviews, and missing keyword reports.</p>
+        </li>
+      </ul>
+    </main>
+  `
+});
+writeStaticFile('/tools', toolsHubHtml);
+addSitemapUrl('/tools', '0.9', 'weekly');
+console.log('✓ Pre-rendered: /tools');
+
+// 4b. Job Description Keyword Extractor
+const keywordExtractorHtml = generatePageHtml({
+  title: 'Free Job Description Keyword Extractor & ATS Skill Parser | PandaLime',
+  description: 'Instantly extract technical skills, tools, frameworks, certifications, and soft skills from any job description. Optimize your resume for ATS screening in seconds.',
+  canonicalPath: '/tools/job-description-keyword-extractor',
+  jsonLd: [
+    {
+      "@context": "https://schema.org",
+      "@type": "SoftwareApplication",
+      "name": "Job Description Keyword Extractor",
+      "operatingSystem": "All Web Browsers",
+      "applicationCategory": "BusinessApplication",
+      "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
+      "description": "Extract hard skills, frameworks, cloud platforms, and soft skills from any job description."
+    },
+    {
+      "@context": "https://schema.org",
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        { "@type": "ListItem", "position": 1, "name": "Home", "item": `${BASE_URL}/` },
+        { "@type": "ListItem", "position": 2, "name": "Tools", "item": `${BASE_URL}/tools` },
+        { "@type": "ListItem", "position": 3, "name": "JD Keyword Extractor", "item": `${BASE_URL}/tools/job-description-keyword-extractor` }
+      ]
+    },
+    {
+      "@context": "https://schema.org",
+      "@type": "FAQPage",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "Why is keyword matching critical for ATS resumes?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Applicant Tracking Systems score resumes based on semantic and keyword overlap with the job description. Missing key technical terms like React, AWS, Kubernetes, or Agile can cause automatic rejection before a human recruiter sees your resume."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Is my pasted job description stored or shared?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "No. The keyword extraction runs entirely client-side inside your web browser using regex pattern matching. None of your data is stored or logged."
+          }
+        }
+      ]
+    }
+  ],
+  bodyContent: `
+    <main style="max-width:1000px;margin:0 auto;padding:40px 20px;font-family:sans-serif;">
+      <nav aria-label="breadcrumb"><a href="/">Home</a> &gt; <a href="/tools">Tools</a> &gt; <span>JD Keyword Extractor</span></nav>
+      <h1>Free Job Description Keyword Extractor & ATS Skill Parser</h1>
+      <p>Extract technical languages, frameworks, cloud DevOps tools, databases, AI libraries, and soft skills from any job listing instantly.</p>
+      <h2>How to Extract ATS Keywords from Job Postings</h2>
+      <ol>
+        <li>Copy and paste the full job description text into the extractor.</li>
+        <li>Review categorized hard skills, technical frameworks, certifications, and methodologies.</li>
+        <li>Copy missing keywords directly or transfer them with 1-click to the <a href="/dashboard">PandaLime Free Resume Scanner</a>.</li>
+      </ol>
+    </main>
+  `
+});
+writeStaticFile('/tools/job-description-keyword-extractor', keywordExtractorHtml);
+addSitemapUrl('/tools/job-description-keyword-extractor', '0.9', 'weekly');
+console.log('✓ Pre-rendered: /tools/job-description-keyword-extractor');
+
+// 4c. STAR Bullet Generator
+const starBulletHtml = generatePageHtml({
+  title: 'AI STAR Method Resume Bullet Generator (Google X-Y-Z Formula) | PandaLime',
+  description: 'Generate high-impact, quantified resume bullet points using Google\'s X-Y-Z formula and the STAR method. Transform weak tasks into recruiter-ready achievements.',
+  canonicalPath: '/tools/star-bullet-generator',
+  jsonLd: [
+    {
+      "@context": "https://schema.org",
+      "@type": "SoftwareApplication",
+      "name": "AI STAR Method Resume Bullet Generator",
+      "operatingSystem": "All Web Browsers",
+      "applicationCategory": "BusinessApplication",
+      "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
+      "description": "Generate quantified accomplishment bullets using Google's X-Y-Z formula and the STAR framework."
+    },
+    {
+      "@context": "https://schema.org",
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        { "@type": "ListItem", "position": 1, "name": "Home", "item": `${BASE_URL}/` },
+        { "@type": "ListItem", "position": 2, "name": "Tools", "item": `${BASE_URL}/tools` },
+        { "@type": "ListItem", "position": 3, "name": "STAR Bullet Generator", "item": `${BASE_URL}/tools/star-bullet-generator` }
+      ]
+    },
+    {
+      "@context": "https://schema.org",
+      "@type": "FAQPage",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "What is Google's X-Y-Z resume bullet formula?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Google's recommended resume formula is: 'Accomplished [X] as measured by [Y], by doing [Z]'. It forces candidates to state their quantified impact and specific technical methods instead of passive job duties."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "What is the STAR method for resumes?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "STAR stands for Situation, Task, Action, and Result. It provides a structured framework for storytelling in resumes and behavioral interviews by proving tangible outcomes."
+          }
+        }
+      ]
+    }
+  ],
+  bodyContent: `
+    <main style="max-width:1000px;margin:0 auto;padding:40px 20px;font-family:sans-serif;">
+      <nav aria-label="breadcrumb"><a href="/">Home</a> &gt; <a href="/tools">Tools</a> &gt; <span>STAR Bullet Generator</span></nav>
+      <h1>AI STAR Method Resume Bullet Generator</h1>
+      <p>Transform passive job responsibilities into powerful, metric-driven resume bullets using Google's X-Y-Z formula: Accomplished [X] measured by [Y] by doing [Z].</p>
+      <h2>Why Quantified Bullets Get 3x More Interviews</h2>
+      <p>Recruiters spend an average of 6 to 7 seconds scanning each resume. Bullets with clear metrics (e.g., "Reduced latency by 42%", "Increased revenue by $1.2M") instantly prove business value and rank higher in ATS scoring algorithms.</p>
+    </main>
+  `
+});
+writeStaticFile('/tools/star-bullet-generator', starBulletHtml);
+addSitemapUrl('/tools/star-bullet-generator', '0.9', 'weekly');
+console.log('✓ Pre-rendered: /tools/star-bullet-generator');
+
+// 4d. ATS Action Verbs Directory
+const actionVerbsHtml = generatePageHtml({
+  title: '250+ Powerful ATS Resume Action Verbs (Categorized + Examples) | PandaLime',
+  description: 'Comprehensive directory of 250+ recruiter-approved action verbs for your resume. Search by category: Leadership, Technical, Optimization, and Problem Solving.',
+  canonicalPath: '/tools/ats-action-verbs',
+  jsonLd: [
+    {
+      "@context": "https://schema.org",
+      "@type": "SoftwareApplication",
+      "name": "250+ ATS Resume Action Verbs Dictionary",
+      "operatingSystem": "All Web Browsers",
+      "applicationCategory": "BusinessApplication",
+      "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
+      "description": "Comprehensive searchable dictionary of 250+ high-impact resume action verbs categorized by skill domain."
+    },
+    {
+      "@context": "https://schema.org",
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        { "@type": "ListItem", "position": 1, "name": "Home", "item": `${BASE_URL}/` },
+        { "@type": "ListItem", "position": 2, "name": "Tools", "item": `${BASE_URL}/tools` },
+        { "@type": "ListItem", "position": 3, "name": "ATS Action Verbs", "item": `${BASE_URL}/tools/ats-action-verbs` }
+      ]
+    },
+    {
+      "@context": "https://schema.org",
+      "@type": "FAQPage",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "Why should I avoid 'Responsible for' on my resume?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "'Responsible for' sounds passive and describes duties assigned to you rather than what you achieved. Replacing it with strong action verbs like 'Architected', 'Spearheaded', 'Optimized', or 'Automated' immediately communicates leadership and initiative."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "How many action verbs should I use per resume?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Every bullet point on your resume should begin with a unique, high-impact past-tense action verb. Avoid repeating the same verb (like 'Managed' or 'Created') more than twice across your resume."
+          }
+        }
+      ]
+    }
+  ],
+  bodyContent: `
+    <main style="max-width:1000px;margin:0 auto;padding:40px 20px;font-family:sans-serif;">
+      <nav aria-label="breadcrumb"><a href="/">Home</a> &gt; <a href="/tools">Tools</a> &gt; <span>ATS Action Verbs</span></nav>
+      <h1>250+ Recruiter-Approved ATS Resume Action Verbs</h1>
+      <p>Search 250+ power action verbs with real-world bullet point examples across Leadership, Technical Architecture, System Optimization, Research, and Communication.</p>
+      <h2>Top Categories of Resume Action Verbs</h2>
+      <ul>
+        <li><strong>Leadership & Strategy:</strong> Spearheaded, Orchestrated, Mobilized, Championed</li>
+        <li><strong>Technical & Development:</strong> Architected, Engineered, Refactored, Deployed</li>
+        <li><strong>Optimization & Efficiency:</strong> Streamlined, Accelerated, Automated, Minimized</li>
+        <li><strong>Problem Solving & Analysis:</strong> Diagnosed, Resolved, Uncovered, Audited</li>
+      </ul>
+    </main>
+  `
+});
+writeStaticFile('/tools/ats-action-verbs', actionVerbsHtml);
+addSitemapUrl('/tools/ats-action-verbs', '0.9', 'weekly');
+console.log('✓ Pre-rendered: /tools/ats-action-verbs');
 
 // 5. Contact
 const contactHtml = generatePageHtml({

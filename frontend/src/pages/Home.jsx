@@ -20,7 +20,8 @@ import {
   BarChart3,
   Layers,
   Search,
-  Building2
+  Building2,
+  TrendingUp
 } from 'lucide-react';
 import SEOHead from '../components/SEOHead';
 import LanguageSelector from '../components/LanguageSelector';
@@ -191,11 +192,11 @@ export default function Home() {
           </Link>
           <div className="flex items-center gap-2 sm:gap-3 shrink-0">
             <LanguageSelector variant="nav" />
-            <Link to="/roast-wall" className="text-sm font-semibold text-gray-600 hover:text-lime-600 transition-colors hidden sm:block">
-              Community Wall
+            <Link to="/tools" className="text-sm font-semibold text-gray-600 hover:text-lime-600 transition-colors hidden sm:block">
+              Free Tools
             </Link>
-            <Link to="/sitemap" className="text-sm font-semibold text-gray-600 hover:text-lime-600 transition-colors hidden md:block">
-              Directory
+            <Link to="/roast-wall" className="text-sm font-semibold text-gray-600 hover:text-lime-600 transition-colors hidden md:block">
+              Community Wall
             </Link>
             <Link 
               to="/dashboard" 
@@ -321,6 +322,109 @@ export default function Home() {
                 <p className="text-sm text-gray-600 leading-relaxed">{pillar.desc}</p>
               </div>
             ))}
+          </div>
+        </div>
+      </section>
+
+      {/* --- FREE CAREER TOOLS SHOWCASE --- */}
+      <section className="py-20 bg-gradient-to-b from-gray-50 to-white border-b border-gray-200">
+        <div className="max-w-6xl mx-auto px-4">
+          <div className="text-center mb-16">
+            <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-lime-100 text-lime-800 text-xs font-bold uppercase tracking-wider mb-4">
+              <Sparkles className="w-3.5 h-3.5" /> 100% Free AI Career Utilities
+            </div>
+            <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
+              Supercharge Your Resume Before You Apply
+            </h2>
+            <p className="text-gray-600 max-w-2xl mx-auto text-base sm:text-lg">
+              No signup required. Use our dedicated NLP keyword extractor, STAR bullet rewriter, and power action verbs dictionary to optimize every application.
+            </p>
+          </div>
+
+          <div className="grid md:grid-cols-3 gap-8">
+            {/* Tool 1 */}
+            <div className="bg-white rounded-3xl p-8 border border-gray-200 hover:border-lime-400 hover:shadow-xl transition-all duration-300 flex flex-col justify-between group">
+              <div>
+                <div className="w-14 h-14 bg-lime-50 rounded-2xl flex items-center justify-center text-lime-600 mb-6 group-hover:scale-110 transition-transform">
+                  <Search className="w-7 h-7" />
+                </div>
+                <div className="flex items-center gap-2 mb-2">
+                  <span className="text-xs font-bold uppercase tracking-wider text-lime-700 bg-lime-100 px-2.5 py-0.5 rounded-full">NLP Parser</span>
+                  <span className="text-xs font-semibold text-gray-400">Instant</span>
+                </div>
+                <h3 className="text-xl font-bold text-gray-900 mb-3 group-hover:text-lime-600 transition-colors">
+                  Job Description Keyword Extractor
+                </h3>
+                <p className="text-gray-600 text-sm leading-relaxed mb-6">
+                  Paste any job listing to extract hard skills, tech stacks, cloud tools, frameworks, and credentials with 0 latency. 1-click transfer to your resume scan.
+                </p>
+              </div>
+              <Link 
+                to="/tools/job-description-keyword-extractor" 
+                className="inline-flex items-center justify-center gap-2 w-full py-3 bg-gray-50 group-hover:bg-lime-500 text-gray-900 group-hover:text-white rounded-xl font-bold text-sm transition-all shadow-sm"
+              >
+                Extract Keywords Free <ArrowRight className="w-4 h-4" />
+              </Link>
+            </div>
+
+            {/* Tool 2 */}
+            <div className="bg-white rounded-3xl p-8 border border-gray-200 hover:border-lime-400 hover:shadow-xl transition-all duration-300 flex flex-col justify-between group">
+              <div>
+                <div className="w-14 h-14 bg-lime-50 rounded-2xl flex items-center justify-center text-lime-600 mb-6 group-hover:scale-110 transition-transform">
+                  <Cpu className="w-7 h-7" />
+                </div>
+                <div className="flex items-center gap-2 mb-2">
+                  <span className="text-xs font-bold uppercase tracking-wider text-lime-700 bg-lime-100 px-2.5 py-0.5 rounded-full">Google X-Y-Z</span>
+                  <span className="text-xs font-semibold text-gray-400">AI Powered</span>
+                </div>
+                <h3 className="text-xl font-bold text-gray-900 mb-3 group-hover:text-lime-600 transition-colors">
+                  AI STAR Method Bullet Generator
+                </h3>
+                <p className="text-gray-600 text-sm leading-relaxed mb-6">
+                  Turn weak responsibilities into quantified accomplishments using Google's formula: "Accomplished [X] measured by [Y], by doing [Z]".
+                </p>
+              </div>
+              <Link 
+                to="/tools/star-bullet-generator" 
+                className="inline-flex items-center justify-center gap-2 w-full py-3 bg-gray-50 group-hover:bg-lime-500 text-gray-900 group-hover:text-white rounded-xl font-bold text-sm transition-all shadow-sm"
+              >
+                Generate STAR Bullets <ArrowRight className="w-4 h-4" />
+              </Link>
+            </div>
+
+            {/* Tool 3 */}
+            <div className="bg-white rounded-3xl p-8 border border-gray-200 hover:border-lime-400 hover:shadow-xl transition-all duration-300 flex flex-col justify-between group">
+              <div>
+                <div className="w-14 h-14 bg-lime-50 rounded-2xl flex items-center justify-center text-lime-600 mb-6 group-hover:scale-110 transition-transform">
+                  <FileText className="w-7 h-7" />
+                </div>
+                <div className="flex items-center gap-2 mb-2">
+                  <span className="text-xs font-bold uppercase tracking-wider text-lime-700 bg-lime-100 px-2.5 py-0.5 rounded-full">250+ Verbs</span>
+                  <span className="text-xs font-semibold text-gray-400">Recruiter Approved</span>
+                </div>
+                <h3 className="text-xl font-bold text-gray-900 mb-3 group-hover:text-lime-600 transition-colors">
+                  250+ ATS Action Verbs Directory
+                </h3>
+                <p className="text-gray-600 text-sm leading-relaxed mb-6">
+                  Replace cliché phrases like "worked on" with high-impact power verbs across Leadership, Technical Architecture, Optimization, and Problem Solving.
+                </p>
+              </div>
+              <Link 
+                to="/tools/ats-action-verbs" 
+                className="inline-flex items-center justify-center gap-2 w-full py-3 bg-gray-50 group-hover:bg-lime-500 text-gray-900 group-hover:text-white rounded-xl font-bold text-sm transition-all shadow-sm"
+              >
+                Explore Action Verbs <ArrowRight className="w-4 h-4" />
+              </Link>
+            </div>
+          </div>
+
+          <div className="mt-12 text-center">
+            <Link 
+              to="/tools" 
+              className="inline-flex items-center gap-2 text-lime-600 font-bold hover:text-lime-700 hover:underline text-base"
+            >
+              Browse Full Free Career Tools Directory Hub <ArrowRight className="w-4 h-4" />
+            </Link>
           </div>
         </div>
       </section>
@@ -630,10 +734,14 @@ export default function Home() {
 
           {/* Navigation */}
           <div>
-            <h4 className="text-white font-bold mb-4 uppercase tracking-wider text-sm">Directory & App</h4>
-            <ul className="space-y-3 text-sm">
+            <h4 className="text-white font-bold mb-4 uppercase tracking-wider text-sm">Directory & Tools</h4>
+            <ul className="space-y-2.5 text-sm">
               <li><Link to="/" className="hover:text-lime-400 transition-colors flex items-center gap-2"><Map className="w-4 h-4"/> Home</Link></li>
               <li><Link to="/dashboard" className="hover:text-lime-400 transition-colors flex items-center gap-2"><ScanLine className="w-4 h-4"/> Free Resume Scanner</Link></li>
+              <li><Link to="/tools" className="hover:text-lime-400 font-semibold text-lime-400 transition-colors flex items-center gap-2"><Sparkles className="w-4 h-4"/> Free Career Tools Suite</Link></li>
+              <li><Link to="/tools/job-description-keyword-extractor" className="hover:text-lime-400 transition-colors text-xs text-gray-400 pl-6">• JD Keyword Extractor</Link></li>
+              <li><Link to="/tools/star-bullet-generator" className="hover:text-lime-400 transition-colors text-xs text-gray-400 pl-6">• STAR Bullet Generator</Link></li>
+              <li><Link to="/tools/ats-action-verbs" className="hover:text-lime-400 transition-colors text-xs text-gray-400 pl-6">• 250+ ATS Action Verbs</Link></li>
               <li><Link to="/roast-wall" className="hover:text-lime-400 transition-colors flex items-center gap-2"><Sparkles className="w-4 h-4"/> Community Roast Wall</Link></li>
               <li><Link to="/sitemap" className="hover:text-lime-400 transition-colors flex items-center gap-2"><Map className="w-4 h-4"/> Full Sitemap Directory</Link></li>
             </ul>

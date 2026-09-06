@@ -217,6 +217,41 @@ app.post('/api/analyze', upload.single('resume'), async (req, res) => {
     }
 });
 
+// --- FREE AI TOOLS ROUTES ---
+app.post('/api/tools/generate-star-bullets', async (req, res) => {
+    try {
+        const { role, task, tools, metric } = req.body;
+        if (!task) {
+            return res.status(400).json({ error: 'Task description is required' });
+        }
+
+        const prompt = `You are an executive resume writer and ATS algorithm optimization expert.
+Transform this candidate's raw job duty into 3 high-impact, quantified STAR-method resume bullet points following Google's X-Y-Z formula ("Accomplished [X] as measured by [Y], by doing [Z]").
+
+Candidate Information:
+- Target Role: ${role || 'Software Engineer'}
+- Raw Task/Duty: ${task}
+- Tech Stack / Tools: ${tools || 'Relevant industry tools'}
+- Metric / Outcome: ${metric || 'Quantified business and performance metrics'}
+
+Return ONLY a raw JSON object with this exact structure:
+{
+  "bullets": [
+    "String 1: Strong action verb + technical context + quantified metric",
+    "String 2: Alternative action verb + architecture/workflow + quantified metric",
+    "String 3: High-impact leadership/optimization angle + quantified metric"
+  ]
+}`;
+
+        const aiResponseText = await generateAIResponseWithFallback(prompt);
+        const parsed = JSON.parse(aiResponseText);
+        res.json({ success: true, bullets: parsed.bullets || [] });
+    } catch (error) {
+        console.error('STAR Bullets Generation Error:', error);
+        res.status(500).json({ error: 'Failed to generate AI bullets' });
+    }
+});
+
 // --- COMMUNITY ROAST WALL ROUTES ---
 app.get('/api/roasts', async (req, res) => {
     try {
