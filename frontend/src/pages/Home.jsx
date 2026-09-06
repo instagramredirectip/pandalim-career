@@ -156,7 +156,7 @@ export default function Home() {
   ];
 
   return (
-    <div className="min-h-screen bg-gray-50 font-sans text-gray-900">
+    <div className="min-h-screen bg-gray-50 font-sans text-gray-900 w-full max-w-full overflow-x-hidden">
       <SEOHead 
         title="Free AI Resume Scanner & ATS Resume Checker | PandaLime"
         description="Scan your resume for free with PandaLime AI. Beat corporate ATS screening algorithms (Workday, Taleo, Greenhouse), find missing keywords, and get recruiter-ready bullet rewrites."

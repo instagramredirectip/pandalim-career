@@ -504,7 +504,7 @@ export default function PortfolioBuilder() {
   const selectedAccent = ACCENT_COLORS.find(c => c.id === portfolioData.accentColor) || ACCENT_COLORS[0];
 
   return (
-    <div className="min-h-screen bg-gray-950 text-gray-100 flex flex-col font-sans">
+    <div className="min-h-screen bg-gray-950 text-gray-100 flex flex-col font-sans w-full max-w-full overflow-x-hidden">
       <SEOHead 
         title="AI Developer & Cyber Portfolio Builder | Free Hosted Portfolio Page | PandaLime"
         description="Build and host your modern developer or cybersecurity portfolio website on pandalime.com/p/:username. Features Hacker Terminal, Minimalist, AI Matrix, and Executive themes with instant prompt presets."

@@ -61,7 +61,7 @@ export default function RegionalHome() {
   ];
 
   return (
-    <div className="min-h-screen bg-gray-50 font-sans text-gray-900">
+    <div className="min-h-screen bg-gray-50 font-sans text-gray-900 w-full max-w-full overflow-x-hidden">
       <SEOHead 
         title={t.seoTitle}
         description={t.seoDesc}
