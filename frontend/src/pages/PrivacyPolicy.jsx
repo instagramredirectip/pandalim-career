@@ -50,8 +50,13 @@ export default function PrivacyPolicy() {
             </section>
 
             <section>
-              <h2 className="text-xl font-bold text-gray-900 mb-3">4. Data Retention & Deletion</h2>
-              <p>You can request the deletion of your account and all associated resume reports at any time by contacting our support team at <a href="mailto:microapkdeveolper@gmail.com" className="text-lime-600 font-medium hover:underline">microapkdeveolper@gmail.com</a>.</p>
+              <h2 className="text-xl font-bold text-gray-900 mb-3">4. Cookies & Local Storage</h2>
+              <p>We use local storage and essential cookies to store your active session, portfolio drafts, and theme preferences. We also use analytics cookies (with Google Consent Mode v2 support) to evaluate application performance and improve our AI parser. You can accept or limit cookies to essential-only at any time via the on-site cookie banner.</p>
+            </section>
+
+            <section>
+              <h2 className="text-xl font-bold text-gray-900 mb-3">5. Data Retention & Deletion</h2>
+              <p>You can request the deletion of your account, published portfolios, and all associated resume reports at any time by contacting our support team at <a href="mailto:microapkdeveolper@gmail.com" className="text-lime-600 font-medium hover:underline">microapkdeveolper@gmail.com</a>.</p>
             </section>
           </div>
         </div>

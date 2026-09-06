@@ -16,6 +16,7 @@ import StarBulletGenerator from './pages/StarBulletGenerator';
 import AtsActionVerbs from './pages/AtsActionVerbs';
 import PortfolioBuilder from './pages/PortfolioBuilder';
 import PortfolioView from './pages/PortfolioView';
+import CookieConsent from './components/CookieConsent';
 
 function App() {
   return (
@@ -59,6 +60,9 @@ function App() {
           {/* Dynamic Programmatic SEO Route */}
           <Route path="/scanner/:slug" element={<ScannerLanding />} />
         </Routes>
+        
+        {/* Global Non-Intrusive GDPR/DPDP Cookie Consent Banner */}
+        <CookieConsent />
       </BrowserRouter>
     </HelmetProvider>
   );
