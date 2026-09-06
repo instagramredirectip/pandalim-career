@@ -93,3 +93,4 @@ export default function LanguageSelector({ variant = 'nav' }) {
     </div>
   );
 }
+
