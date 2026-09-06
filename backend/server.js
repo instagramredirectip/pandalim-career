@@ -255,6 +255,13 @@ Return ONLY a raw JSON object with this exact structure:
 // --- PORTFOLIO STORAGE & BACKEND ROUTES ---
 const memoryPortfolios = new Map();
 
+const RESERVED_SLUGS = new Set([
+    'admin', 'api', 'app', 'dashboard', 'login', 'signup', 'register',
+    'roast-wall', 'scanner', 'tools', 'portfolio-builder', 'p', 'portfolio',
+    'sitemap', 'contact', 'terms', 'privacy-policy', 'hi', 'ta', 'te', 'kn', 'mr', 'bn',
+    'alex-secops', 'priya-sharma', 'rohan-ai', 'arjun-sre', 'kavya-fresher', 'sam-design'
+]);
+
 async function initPortfoliosTable() {
     try {
         await sql`
@@ -277,10 +284,13 @@ async function initPortfoliosTable() {
                 projects JSONB DEFAULT '[]',
                 experience JSONB DEFAULT '[]',
                 certifications JSONB DEFAULT '[]',
+                edit_key VARCHAR(255),
                 created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
                 updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
             );
         `;
+        // Ensure edit_key column exists if table was created previously
+        await sql`ALTER TABLE portfolios ADD COLUMN IF NOT EXISTS edit_key VARCHAR(255);`;
         console.log('✓ Portfolios table initialized in database');
     } catch (e) {
         console.warn('Portfolios DB table initialization skipped (using memory/cache mode):', e.message);
@@ -288,6 +298,63 @@ async function initPortfoliosTable() {
 }
 initPortfoliosTable();
 
+// 1. Real-time Vanity URL Availability & Ownership Check
+app.get('/api/portfolios/check-availability/:slug', async (req, res) => {
+    try {
+        const { slug } = req.params;
+        const editKey = req.query.editKey || '';
+        const cleanSlug = (slug || '').toLowerCase().trim().replace(/[^a-z0-9_-]/g, '-');
+
+        if (!cleanSlug || cleanSlug.length < 2) {
+            return res.json({ available: false, message: 'Vanity URL must be at least 2 characters long.' });
+        }
+
+        if (RESERVED_SLUGS.has(cleanSlug)) {
+            return res.json({ 
+                available: false, 
+                isReserved: true, 
+                message: `The name "${cleanSlug}" is reserved. Please pick a custom username.` 
+            });
+        }
+
+        // Check in database
+        try {
+            const [existing] = await sql`SELECT slug, edit_key FROM portfolios WHERE slug = ${cleanSlug} LIMIT 1`;
+            if (existing) {
+                if (editKey && existing.edit_key && editKey === existing.edit_key) {
+                    return res.json({ available: true, isOwner: true, message: 'You own this vanity URL.' });
+                }
+                return res.json({ 
+                    available: false, 
+                    isOwner: false, 
+                    message: `The vanity URL @${cleanSlug} is already taken. Please choose another username.` 
+                });
+            }
+        } catch (dbErr) {
+            console.warn('DB check error, checking memory:', dbErr.message);
+        }
+
+        // Check memory cache
+        if (memoryPortfolios.has(cleanSlug)) {
+            const memItem = memoryPortfolios.get(cleanSlug);
+            if (editKey && memItem.editKey && editKey === memItem.editKey) {
+                return res.json({ available: true, isOwner: true, message: 'You own this vanity URL.' });
+            }
+            return res.json({ 
+                available: false, 
+                isOwner: false, 
+                message: `The vanity URL @${cleanSlug} is already taken. Please choose another username.` 
+            });
+        }
+
+        return res.json({ available: true, isOwner: true, message: 'Vanity URL is available!' });
+    } catch (error) {
+        console.error('Check Availability Error:', error);
+        res.status(500).json({ error: 'Failed to check availability' });
+    }
+});
+
+// 2. Publish / Save Portfolio (with Conflict and Ownership Protection)
 app.post('/api/portfolios', async (req, res) => {
     try {
         const data = req.body;
@@ -295,15 +362,49 @@ app.post('/api/portfolios', async (req, res) => {
             return res.status(400).json({ error: 'Missing portfolio data or slug' });
         }
 
-        const cleanSlug = data.slug.toLowerCase().replace(/[^a-z0-9_-]/g, '-');
-        memoryPortfolios.set(cleanSlug, { ...data, slug: cleanSlug });
+        const cleanSlug = data.slug.toLowerCase().trim().replace(/[^a-z0-9_-]/g, '-');
+        if (cleanSlug.length < 2) {
+            return res.status(400).json({ error: 'Vanity URL slug must be at least 2 characters.' });
+        }
+
+        if (RESERVED_SLUGS.has(cleanSlug)) {
+            return res.status(409).json({ 
+                error: `The vanity URL "${cleanSlug}" is reserved. Please choose a custom username.` 
+            });
+        }
+
+        // Check existing record for conflict / ownership
+        let existingEditKey = null;
+        try {
+            const [row] = await sql`SELECT edit_key FROM portfolios WHERE slug = ${cleanSlug} LIMIT 1`;
+            if (row) {
+                existingEditKey = row.edit_key;
+            }
+        } catch (dbErr) {
+            console.warn('DB check on publish fallback to memory:', dbErr.message);
+        }
+
+        if (!existingEditKey && memoryPortfolios.has(cleanSlug)) {
+            existingEditKey = memoryPortfolios.get(cleanSlug).editKey;
+        }
+
+        // If record exists and client does NOT provide the matching editKey -> REJECT
+        if (existingEditKey && (!data.editKey || data.editKey !== existingEditKey)) {
+            return res.status(409).json({ 
+                error: `The vanity URL "@${cleanSlug}" is already taken by another user. Please choose a different username (e.g. ${cleanSlug}-dev).` 
+            });
+        }
+
+        const finalEditKey = data.editKey || existingEditKey || crypto.randomUUID();
+
+        memoryPortfolios.set(cleanSlug, { ...data, slug: cleanSlug, editKey: finalEditKey });
 
         try {
             await sql`
                 INSERT INTO portfolios (
                     slug, full_name, title, tagline, bio, avatar_url, location, 
                     availability_status, theme, accent_color, contact_email, 
-                    social_links, metrics, skills, projects, experience, certifications, updated_at
+                    social_links, metrics, skills, projects, experience, certifications, edit_key, updated_at
                 ) VALUES (
                     ${cleanSlug}, 
                     ${data.fullName || 'Tech Professional'}, 
@@ -322,6 +423,7 @@ app.post('/api/portfolios', async (req, res) => {
                     ${JSON.stringify(data.projects || [])}, 
                     ${JSON.stringify(data.experience || [])}, 
                     ${JSON.stringify(data.certifications || [])}, 
+                    ${finalEditKey},
                     NOW()
                 )
                 ON CONFLICT (slug) DO UPDATE SET
@@ -341,13 +443,19 @@ app.post('/api/portfolios', async (req, res) => {
                     projects = EXCLUDED.projects,
                     experience = EXCLUDED.experience,
                     certifications = EXCLUDED.certifications,
+                    edit_key = EXCLUDED.edit_key,
                     updated_at = NOW();
             `;
         } catch (dbErr) {
             console.warn('DB Save fallback, saved in memory cache:', dbErr.message);
         }
 
-        res.json({ success: true, slug: cleanSlug, url: `https://www.pandalime.com/p/${cleanSlug}` });
+        res.json({ 
+            success: true, 
+            slug: cleanSlug, 
+            editKey: finalEditKey, 
+            url: `https://www.pandalime.com/p/${cleanSlug}` 
+        });
     } catch (error) {
         console.error('Save Portfolio Error:', error);
         res.status(500).json({ error: 'Failed to save portfolio' });

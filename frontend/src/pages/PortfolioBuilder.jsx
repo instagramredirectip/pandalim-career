@@ -66,6 +66,8 @@ export default function PortfolioBuilder() {
   const [isPublishing, setIsPublishing] = useState(false);
   const [copiedLink, setCopiedLink] = useState(false);
   const [statusMessage, setStatusMessage] = useState('');
+  const [slugStatus, setSlugStatus] = useState({ state: 'idle', message: '', isOwner: false });
+  const [slugErrorAlert, setSlugErrorAlert] = useState('');
 
   // Auto-save draft to localStorage
   useEffect(() => {
@@ -75,6 +77,58 @@ export default function PortfolioBuilder() {
       // ignore
     }
   }, [portfolioData]);
+
+  // Real-time Vanity URL Availability & Conflict Check
+  useEffect(() => {
+    const rawSlug = (portfolioData.slug || '').toLowerCase().trim().replace(/[^a-z0-9_-]/g, '-');
+    if (!rawSlug || rawSlug.length < 2) {
+      setSlugStatus({ state: 'short', message: 'Must be at least 2 characters', isOwner: false });
+      return;
+    }
+
+    const isPreset = ROLE_PRESETS.some(p => p.slug === rawSlug || p.id === rawSlug);
+    if (isPreset) {
+      setSlugStatus({ 
+        state: 'reserved', 
+        message: `"${rawSlug}" is a reserved showcase name. Pick your own unique vanity URL to publish.`, 
+        isOwner: false 
+      });
+      return;
+    }
+
+    const editKey = localStorage.getItem(`pandalime_portfolio_key_${rawSlug}`) || '';
+
+    setSlugStatus({ state: 'checking', message: 'Checking availability...', isOwner: false });
+
+    const timeoutId = setTimeout(async () => {
+      try {
+        const res = await apiRequest(`/api/portfolios/check-availability/${rawSlug}?editKey=${encodeURIComponent(editKey)}`);
+        if (res && res.ok) {
+          const data = await res.json();
+          if (data.available) {
+            setSlugStatus({
+              state: 'available',
+              message: data.isOwner ? '✓ You own this vanity URL (updates allowed)' : '✓ Available! Ready to claim',
+              isOwner: !!data.isOwner
+            });
+            setSlugErrorAlert('');
+          } else {
+            setSlugStatus({
+              state: data.isReserved ? 'reserved' : 'taken',
+              message: data.message || `⚠️ The name "${rawSlug}" is already taken by another user. Please choose another username.`,
+              isOwner: false
+            });
+          }
+        } else {
+          setSlugStatus({ state: 'available', message: '✓ Available', isOwner: true });
+        }
+      } catch {
+        setSlugStatus({ state: 'available', message: '✓ Available', isOwner: true });
+      }
+    }, 350);
+
+    return () => clearTimeout(timeoutId);
+  }, [portfolioData.slug]);
 
   // Load a role preset
   const loadPreset = (presetId) => {
@@ -337,36 +391,73 @@ export default function PortfolioBuilder() {
 
   // Publish / Save Portfolio
   const handlePublish = async () => {
-    const slug = (portfolioData.slug || 'my-portfolio').toLowerCase().replace(/[^a-z0-9_-]/g, '-');
+    const slug = (portfolioData.slug || 'my-portfolio').toLowerCase().trim().replace(/[^a-z0-9_-]/g, '-');
+    
+    if (!slug || slug.length < 2) {
+      setSlugErrorAlert('Please enter a valid vanity URL slug (at least 2 characters).');
+      setActiveTab('theme');
+      return;
+    }
+
+    const isPreset = ROLE_PRESETS.some(p => p.slug === slug || p.id === slug);
+    if (isPreset) {
+      setSlugErrorAlert(`The URL prefix "${slug}" is a reserved showcase template. Please enter your own unique username or vanity slug.`);
+      setActiveTab('theme');
+      return;
+    }
+
     setIsPublishing(true);
+    setSlugErrorAlert('');
+    setStatusMessage('Verifying URL and publishing portfolio...');
 
     try {
+      const storedKey = localStorage.getItem(`pandalime_portfolio_key_${slug}`) || '';
       const payload = {
         ...portfolioData,
-        slug
+        slug,
+        editKey: storedKey
       };
+
+      const res = await apiRequest('/api/portfolios', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload)
+      });
+
+      if (res && res.status === 409) {
+        const errData = await res.json();
+        const msg = errData.error || `⚠️ The vanity URL "${slug}" is already taken by another user. Please choose a different name.`;
+        setSlugErrorAlert(msg);
+        setSlugStatus({
+          state: 'taken',
+          message: msg,
+          isOwner: false
+        });
+        setActiveTab('theme');
+        setIsPublishing(false);
+        return;
+      }
+
+      if (res && res.ok) {
+        const resData = await res.json();
+        if (resData.editKey) {
+          localStorage.setItem(`pandalime_portfolio_key_${slug}`, resData.editKey);
+        }
+      }
 
       // Save locally first so instant preview always works
       localStorage.setItem(`pandalime_portfolio_${slug}`, JSON.stringify(payload));
       localStorage.setItem('pandalime_portfolio_draft', JSON.stringify(payload));
 
-      // Save to backend API
-      try {
-        await apiRequest('/api/portfolios', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify(payload)
-        });
-      } catch (netErr) {
-        console.warn('Backend publish notice:', netErr);
-      }
-
       setPublishModalOpen(true);
     } catch (error) {
-      console.warn('Publish fallback:', error);
+      console.warn('Publish fallback notice:', error);
+      // Even if network has issues, the client storage is ready!
+      localStorage.setItem(`pandalime_portfolio_${slug}`, JSON.stringify({ ...portfolioData, slug }));
       setPublishModalOpen(true);
     } finally {
       setIsPublishing(false);
+      setStatusMessage('');
     }
   };
 
@@ -665,19 +756,84 @@ export default function PortfolioBuilder() {
                   </div>
                 </div>
 
-                <div className="pt-4 border-t border-gray-800">
-                  <label className="text-sm font-bold text-gray-200 block mb-1">Your Vanity URL Slug</label>
-                  <p className="text-xs text-gray-400 mb-2">This is the link you will share with employers and recruiters.</p>
-                  <div className="flex items-center bg-gray-950 border border-gray-700 focus-within:border-lime-400 rounded-xl px-3 py-2">
+                <div className="pt-4 border-t border-gray-800 space-y-2">
+                  <div className="flex items-center justify-between">
+                    <label className="text-sm font-bold text-gray-200 block">Your Vanity URL Slug</label>
+                    {slugStatus.state === 'available' && (
+                      <span className="text-[11px] font-bold text-emerald-400 bg-emerald-950/60 border border-emerald-500/30 px-2 py-0.5 rounded-full flex items-center gap-1">
+                        <CheckCircle2 className="w-3 h-3" /> Available
+                      </span>
+                    )}
+                    {slugStatus.state === 'taken' && (
+                      <span className="text-[11px] font-bold text-red-400 bg-red-950/60 border border-red-500/30 px-2 py-0.5 rounded-full flex items-center gap-1">
+                        <AlertCircle className="w-3 h-3" /> Already Taken
+                      </span>
+                    )}
+                    {slugStatus.state === 'reserved' && (
+                      <span className="text-[11px] font-bold text-amber-400 bg-amber-950/60 border border-amber-500/30 px-2 py-0.5 rounded-full flex items-center gap-1">
+                        <AlertCircle className="w-3 h-3" /> Reserved
+                      </span>
+                    )}
+                    {slugStatus.state === 'checking' && (
+                      <span className="text-[11px] text-gray-400 flex items-center gap-1">
+                        <RefreshCw className="w-3 h-3 animate-spin text-lime-400" /> Checking...
+                      </span>
+                    )}
+                  </div>
+                  <p className="text-xs text-gray-400">Unique public link hosted on PandaLime to share on LinkedIn, GitHub, and resumes.</p>
+                  
+                  <div className={`flex items-center bg-gray-950 border rounded-xl px-3 py-2 transition-colors ${slugStatus.state === 'taken' ? 'border-red-500/80 ring-1 ring-red-500/30' : slugStatus.state === 'available' ? 'border-emerald-500/60' : 'border-gray-700 focus-within:border-lime-400'}`}>
                     <span className="text-xs text-gray-500 font-mono">pandalime.com/p/</span>
                     <input
                       type="text"
                       value={portfolioData.slug || ''}
-                      onChange={(e) => handleInputChange('slug', e.target.value.toLowerCase().replace(/[^a-z0-9_-]/g, '-'))}
-                      placeholder="alex-vance"
+                      onChange={(e) => {
+                        setSlugErrorAlert('');
+                        handleInputChange('slug', e.target.value.toLowerCase().replace(/[^a-z0-9_-]/g, '-'));
+                      }}
+                      placeholder="your-name"
                       className="bg-transparent border-none text-lime-400 font-bold text-xs sm:text-sm focus:outline-none flex-1 font-mono"
                     />
                   </div>
+
+                  {slugErrorAlert && (
+                    <div className="p-3 bg-red-950/80 border border-red-500/50 rounded-xl flex items-start gap-2 text-red-200 text-xs">
+                      <AlertCircle className="w-4 h-4 text-red-400 shrink-0 mt-0.5" />
+                      <div>
+                        <p className="font-bold">Name Already Used</p>
+                        <p className="text-[11px] text-red-300 mt-0.5">{slugErrorAlert}</p>
+                      </div>
+                    </div>
+                  )}
+
+                  {slugStatus.state === 'taken' && (
+                    <div className="p-2.5 bg-gray-950/80 border border-red-500/30 rounded-xl space-y-1.5">
+                      <p className="text-[11px] text-red-300 font-medium">
+                        ⚠️ <strong>@{portfolioData.slug}</strong> is already owned by another developer. Try one of these available handles:
+                      </p>
+                      <div className="flex flex-wrap items-center gap-1.5 pt-0.5">
+                        {[`${portfolioData.slug}-dev`, `${portfolioData.slug}-${new Date().getFullYear()}`, `${portfolioData.slug}-tech`].map(sug => (
+                          <button
+                            key={sug}
+                            type="button"
+                            onClick={() => {
+                              setSlugErrorAlert('');
+                              handleInputChange('slug', sug);
+                            }}
+                            className="px-2.5 py-1 bg-gray-800 hover:bg-lime-500 hover:text-gray-950 text-lime-400 rounded-lg text-[11px] font-mono font-bold transition-all flex items-center gap-1"
+                          >
+                            <span>+{sug}</span>
+                          </button>
+                        ))}
+                      </div>
+                    </div>
+                  )}
+
+                  {slugStatus.state === 'reserved' && (
+                    <p className="text-[11px] text-amber-400 bg-amber-950/40 p-2 rounded-lg border border-amber-500/30">
+                      ℹ️ <strong>"{portfolioData.slug}"</strong> is a built-in showcase template name. Type your personal name (e.g. <code>{(portfolioData.fullName || 'john-doe').toLowerCase().replace(/[^a-z0-9]+/g, '-')}</code>) to publish your own portfolio.
+                    </p>
+                  )}
                 </div>
               </div>
             )}
