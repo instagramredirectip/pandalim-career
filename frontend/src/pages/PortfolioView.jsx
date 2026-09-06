@@ -29,9 +29,11 @@ import {
 } from 'lucide-react';
 import SEOHead from '../components/SEOHead';
 import { THEMES, ACCENT_COLORS, ROLE_PRESETS } from '../data/portfolioTemplates';
+import { apiRequest } from '../config/api';
 
 export default function PortfolioView() {
   const { slug } = useParams();
+  const cleanSlug = (slug || '').toLowerCase().trim().replace(/[^a-z0-9_-]/g, '-');
   const [portfolio, setPortfolio] = useState(null);
   const [loading, setLoading] = useState(true);
   const [copiedEmail, setCopiedEmail] = useState(false);
@@ -41,51 +43,93 @@ export default function PortfolioView() {
     let isMounted = true;
     const loadPortfolio = async () => {
       setLoading(true);
+      let foundData = null;
 
-      // 1. Check local storage cache
+      // 1. Check local storage cache first for instant rendering
       try {
-        const localData = localStorage.getItem(`pandalime_portfolio_${slug}`);
+        const localKey = `pandalime_portfolio_${cleanSlug}`;
+        const localData = localStorage.getItem(localKey);
         if (localData) {
           const parsed = JSON.parse(localData);
-          if (isMounted) {
-            setPortfolio(parsed);
-            setLoading(false);
+          if (parsed && (parsed.fullName || parsed.title)) {
+            foundData = parsed;
+            if (isMounted) {
+              setPortfolio(parsed);
+              setLoading(false);
+            }
           }
         }
       } catch {
         // ignore localStorage error
       }
 
-      // 2. Fetch from backend API
+      // 2. Fetch from backend API (database / cloud cache)
       try {
-        const res = await fetch(`/api/portfolios/${slug}`);
-        if (res.ok) {
+        const res = await apiRequest(`/api/portfolios/${cleanSlug}`);
+        if (res && res.ok) {
           const remoteData = await res.json();
-          if (remoteData.portfolio && isMounted) {
-            setPortfolio(remoteData.portfolio);
-            setLoading(false);
+          if (remoteData && remoteData.portfolio && (remoteData.portfolio.fullName || remoteData.portfolio.title)) {
+            foundData = remoteData.portfolio;
+            if (isMounted) {
+              setPortfolio(remoteData.portfolio);
+              setLoading(false);
+            }
+            // Update local storage cache
+            try {
+              localStorage.setItem(`pandalime_portfolio_${cleanSlug}`, JSON.stringify(remoteData.portfolio));
+            } catch {
+              // ignore
+            }
             return;
           }
         }
       } catch (e) {
-        console.warn('Backend fetch fallback');
+        console.warn('Backend fetch note:', e);
       }
 
-      // 3. Preset fallback if matched by slug
-      const matchedPreset = ROLE_PRESETS.find(p => p.slug === slug || p.id === slug);
-      if (matchedPreset && isMounted) {
-        setPortfolio(matchedPreset);
-      } else if (!portfolio && isMounted) {
-        // Fallback default
+      // 3. If valid data was found locally, keep it and do NOT overwrite with default template!
+      if (foundData) {
+        if (isMounted) setLoading(false);
+        return;
+      }
+
+      // 4. Check if matched against built-in role showcase presets (e.g. alex-secops, priya-sharma, rohan-ai)
+      const matchedPreset = ROLE_PRESETS.find(p => p.slug === cleanSlug || p.id === cleanSlug);
+      if (matchedPreset) {
+        if (isMounted) {
+          setPortfolio(matchedPreset);
+          setLoading(false);
+        }
+        return;
+      }
+
+      // 5. Check if user has an active draft in local storage
+      try {
+        const draft = localStorage.getItem('pandalime_portfolio_draft');
+        if (draft) {
+          const parsedDraft = JSON.parse(draft);
+          if (parsedDraft && (parsedDraft.slug === cleanSlug || !cleanSlug)) {
+            if (isMounted) {
+              setPortfolio(parsedDraft);
+              setLoading(false);
+            }
+            return;
+          }
+        }
+      } catch {
+        // ignore
+      }
+
+      // 6. Fallback default if nothing matched
+      if (isMounted) {
         setPortfolio(ROLE_PRESETS[0]);
+        setLoading(false);
       }
-
-      if (isMounted) setLoading(false);
     };
 
     loadPortfolio();
     return () => { isMounted = false; };
-  }, [slug]);
+  }, [cleanSlug]);
 
   if (loading) {
     return (

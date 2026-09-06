@@ -360,6 +360,16 @@ app.get('/api/portfolios/:slug', async (req, res) => {
         const cleanSlug = slug.toLowerCase();
 
         try {
+            const safeParse = (val, fallback) => {
+                if (!val) return fallback;
+                if (typeof val === 'object') return val;
+                try {
+                    return JSON.parse(val);
+                } catch {
+                    return fallback;
+                }
+            };
+
             const [row] = await sql`SELECT * FROM portfolios WHERE slug = ${cleanSlug} LIMIT 1`;
             if (row) {
                 return res.json({
@@ -368,20 +378,20 @@ app.get('/api/portfolios/:slug', async (req, res) => {
                         slug: row.slug,
                         fullName: row.full_name,
                         title: row.title,
-                        tagline: row.tagline,
-                        bio: row.bio,
-                        avatarUrl: row.avatar_url,
-                        location: row.location,
-                        availabilityStatus: row.availability_status,
-                        theme: row.theme,
-                        accentColor: row.accent_color,
-                        contactEmail: row.contact_email,
-                        socialLinks: typeof row.social_links === 'string' ? JSON.parse(row.social_links) : row.social_links,
-                        metrics: typeof row.metrics === 'string' ? JSON.parse(row.metrics) : row.metrics,
-                        skills: typeof row.skills === 'string' ? JSON.parse(row.skills) : row.skills,
-                        projects: typeof row.projects === 'string' ? JSON.parse(row.projects) : row.projects,
-                        experience: typeof row.experience === 'string' ? JSON.parse(row.experience) : row.experience,
-                        certifications: typeof row.certifications === 'string' ? JSON.parse(row.certifications) : row.certifications
+                        tagline: row.tagline || '',
+                        bio: row.bio || '',
+                        avatarUrl: row.avatar_url || '',
+                        location: row.location || '',
+                        availabilityStatus: row.availability_status || '',
+                        theme: row.theme || 'cyber',
+                        accentColor: row.accent_color || 'lime',
+                        contactEmail: row.contact_email || '',
+                        socialLinks: safeParse(row.social_links, {}),
+                        metrics: safeParse(row.metrics, []),
+                        skills: safeParse(row.skills, {}),
+                        projects: safeParse(row.projects, []),
+                        experience: safeParse(row.experience, []),
+                        certifications: safeParse(row.certifications, [])
                     }
                 });
             }

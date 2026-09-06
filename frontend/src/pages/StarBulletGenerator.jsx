@@ -19,6 +19,7 @@ import {
 } from 'lucide-react';
 import SEOHead from '../components/SEOHead';
 import LanguageSelector from '../components/LanguageSelector';
+import { apiRequest } from '../config/api';
 
 export default function StarBulletGenerator() {
   const [role, setRole] = useState('Software Engineer');
@@ -84,12 +85,12 @@ export default function StarBulletGenerator() {
     if (!task.trim()) return;
     setLoading(true);
     try {
-      const res = await fetch('/api/tools/generate-star-bullets', {
+      const res = await apiRequest('/api/tools/generate-star-bullets', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ role, task, tools, metric })
       });
-      if (res.ok) {
+      if (res && res.ok) {
         const data = await res.json();
         if (data.bullets && Array.isArray(data.bullets)) {
           setAiGeneratedBullets(data.bullets);

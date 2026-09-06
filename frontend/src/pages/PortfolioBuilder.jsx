@@ -38,6 +38,7 @@ import {
 } from 'lucide-react';
 import SEOHead from '../components/SEOHead';
 import { THEMES, ACCENT_COLORS, PRESET_AVATARS, ROLE_PRESETS } from '../data/portfolioTemplates';
+import { apiRequest } from '../config/api';
 
 export default function PortfolioBuilder() {
   // Active Preset as base
@@ -87,10 +88,23 @@ export default function PortfolioBuilder() {
 
   // Handle simple text fields
   const handleInputChange = (field, value) => {
-    setPortfolioData(prev => ({
-      ...prev,
-      [field]: value
-    }));
+    setPortfolioData(prev => {
+      const updated = {
+        ...prev,
+        [field]: value
+      };
+      // Auto-update vanity slug if user is customizing fullName and currently on default preset slug
+      if (field === 'fullName' && value.trim()) {
+        const isPresetSlug = !prev.slug || ROLE_PRESETS.some(p => p.slug === prev.slug || p.id === prev.slug);
+        if (isPresetSlug) {
+          const generatedSlug = value.toLowerCase().trim().replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '');
+          if (generatedSlug) {
+            updated.slug = generatedSlug;
+          }
+        }
+      }
+      return updated;
+    });
   };
 
   // Handle nested social links
@@ -229,7 +243,7 @@ export default function PortfolioBuilder() {
     setStatusMessage('Crafting customized portfolio with AI...');
 
     try {
-      const response = await fetch('/api/tools/portfolio-ai-assist', {
+      const response = await apiRequest('/api/tools/portfolio-ai-assist', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
@@ -239,7 +253,7 @@ export default function PortfolioBuilder() {
         })
       });
 
-      if (response.ok) {
+      if (response && response.ok) {
         const result = await response.json();
         if (result.portfolio) {
           setPortfolioData(prev => ({
@@ -296,7 +310,7 @@ export default function PortfolioBuilder() {
     setStatusMessage('Polishing bio with executive AI phrasing...');
 
     try {
-      const response = await fetch('/api/tools/portfolio-ai-assist', {
+      const response = await apiRequest('/api/tools/portfolio-ai-assist', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
@@ -306,7 +320,7 @@ export default function PortfolioBuilder() {
         })
       });
 
-      if (response.ok) {
+      if (response && response.ok) {
         const result = await response.json();
         if (result.polishedBio) {
           handleInputChange('bio', result.polishedBio);
@@ -332,25 +346,24 @@ export default function PortfolioBuilder() {
         slug
       };
 
-      // Save locally first
+      // Save locally first so instant preview always works
       localStorage.setItem(`pandalime_portfolio_${slug}`, JSON.stringify(payload));
       localStorage.setItem('pandalime_portfolio_draft', JSON.stringify(payload));
 
       // Save to backend API
-      const res = await fetch('/api/portfolios', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(payload)
-      });
-
-      if (res.ok) {
-        setPublishModalOpen(true);
-      } else {
-        // Even if network has issues, the client storage is ready!
-        setPublishModalOpen(true);
+      try {
+        await apiRequest('/api/portfolios', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(payload)
+        });
+      } catch (netErr) {
+        console.warn('Backend publish notice:', netErr);
       }
+
+      setPublishModalOpen(true);
     } catch (error) {
-      console.warn('Backend publish fallback:', error);
+      console.warn('Publish fallback:', error);
       setPublishModalOpen(true);
     } finally {
       setIsPublishing(false);
