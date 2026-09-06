@@ -21,7 +21,8 @@ import {
   Layers,
   Search,
   Building2,
-  TrendingUp
+  TrendingUp,
+  Zap
 } from 'lucide-react';
 import SEOHead from '../components/SEOHead';
 import LanguageSelector from '../components/LanguageSelector';

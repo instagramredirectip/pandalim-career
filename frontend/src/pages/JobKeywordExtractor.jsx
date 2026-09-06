@@ -29,7 +29,6 @@ import { SKILL_CATEGORIES, SAMPLE_JOB_DESCRIPTIONS } from '../data/toolsData';
 export default function JobKeywordExtractor() {
   const [jobText, setJobText] = useState('');
   const [copied, setCopied] = useState(false);
-  const [openFaq, setOpenFaq] = useState(null);
   const navigate = useNavigate();
 
   // Instant client-side NLP extraction matching against comprehensive technical skill dictionary

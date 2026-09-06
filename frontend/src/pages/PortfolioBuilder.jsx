@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { 
   Sparkles, 
   Eye, 
@@ -40,8 +40,6 @@ import SEOHead from '../components/SEOHead';
 import { THEMES, ACCENT_COLORS, PRESET_AVATARS, ROLE_PRESETS } from '../data/portfolioTemplates';
 
 export default function PortfolioBuilder() {
-  const navigate = useNavigate();
-
   // Active Preset as base
   const defaultPreset = ROLE_PRESETS[0];
 
@@ -50,7 +48,9 @@ export default function PortfolioBuilder() {
     try {
       const saved = localStorage.getItem('pandalime_portfolio_draft');
       if (saved) return JSON.parse(saved);
-    } catch (e) {}
+    } catch {
+      // ignore
+    }
     return defaultPreset;
   });
 
@@ -70,7 +70,9 @@ export default function PortfolioBuilder() {
   useEffect(() => {
     try {
       localStorage.setItem('pandalime_portfolio_draft', JSON.stringify(portfolioData));
-    } catch (e) {}
+    } catch {
+      // ignore
+    }
   }, [portfolioData]);
 
   // Load a role preset
@@ -1360,3 +1362,4 @@ export default function PortfolioBuilder() {
     </div>
   );
 }
+

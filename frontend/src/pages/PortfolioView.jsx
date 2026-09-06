@@ -36,7 +36,6 @@ export default function PortfolioView() {
   const [loading, setLoading] = useState(true);
   const [copiedEmail, setCopiedEmail] = useState(false);
   const [copiedLink, setCopiedLink] = useState(false);
-  const [activeFilter, setActiveFilter] = useState('all');
 
   useEffect(() => {
     let isMounted = true;
@@ -53,7 +52,9 @@ export default function PortfolioView() {
             setLoading(false);
           }
         }
-      } catch (e) {}
+      } catch {
+        // ignore localStorage error
+      }
 
       // 2. Fetch from backend API
       try {
@@ -545,3 +546,4 @@ export default function PortfolioView() {
     </div>
   );
 }
+

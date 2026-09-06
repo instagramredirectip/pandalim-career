@@ -46,10 +46,6 @@ export default function AtsActionVerbs() {
     }).filter(Boolean);
   }, [selectedCategory, searchQuery]);
 
-  const totalVisibleVerbs = useMemo(() => {
-    return filteredCategories.reduce((sum, cat) => sum + cat.verbs.length, 0);
-  }, [filteredCategories]);
-
   const handleCopyExample = (example, verbName) => {
     navigator.clipboard.writeText(example);
     setCopiedVerb(verbName);
