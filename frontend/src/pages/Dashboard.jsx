@@ -220,14 +220,20 @@ console.log("======================");
       />
       
       {/* Navigation Header */}
-      <nav className="bg-white border-b border-gray-200 sticky top-0 z-40">
-        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-3">
-          <div className="flex justify-between items-center">
-            <Link to="/" className="text-gray-600 hover:text-lime-600 font-medium text-sm transition-colors">
-              ← Back to Home
+      <nav className="print:hidden bg-white/95 backdrop-blur-md border-b border-gray-200 sticky top-0 z-40">
+        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-3 sm:py-3.5 flex justify-between items-center gap-2">
+          <Link to="/" className="flex items-center gap-2 text-gray-900 font-black text-xl sm:text-2xl tracking-tight shrink-0">
+            <div className="w-8 h-8 sm:w-9 sm:h-9 bg-lime-500 rounded-xl flex items-center justify-center text-white shadow-md shadow-lime-500/20 shrink-0">
+              <Sparkles className="w-4 h-4 sm:w-5 sm:h-5" />
+            </div>
+            <span>PandaLime</span>
+          </Link>
+          <div className="flex items-center gap-3 text-xs sm:text-sm font-semibold shrink-0">
+            <Link to="/" className="text-gray-600 hover:text-lime-600 transition-colors hidden sm:block">
+              ← Home
             </Link>
-            <Link to="/roast-wall" className="text-gray-600 hover:text-lime-600 font-medium text-sm transition-colors">
-              View Community →
+            <Link to="/roast-wall" className="text-gray-600 hover:text-lime-600 transition-colors">
+              Community Wall →
             </Link>
           </div>
         </div>
@@ -251,15 +257,6 @@ console.log("======================");
           }
         `}
       </style>
-
-      <nav className="print:hidden bg-white/80 backdrop-blur-md border-b border-gray-100 px-6 py-4 flex justify-between items-center sticky top-0 z-10">
-        <div className="flex items-center gap-2">
-          <div className="w-8 h-8 bg-gray-900 text-lime-400 rounded-lg flex items-center justify-center font-bold shadow-sm">
-            <Zap size={18} />
-          </div>
-          <span className="text-xl font-bold tracking-tight text-gray-900">PandaLime</span>
-        </div>
-      </nav>
 
       <main className="max-w-4xl mx-auto px-4 py-12 print:py-4">
         

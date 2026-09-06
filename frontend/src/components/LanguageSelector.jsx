@@ -35,11 +35,11 @@ export default function LanguageSelector({ variant = 'nav' }) {
   const isFooter = variant === 'footer';
 
   return (
-    <div className="relative inline-block text-left" ref={dropdownRef}>
+    <div className="relative inline-block text-left shrink-0" ref={dropdownRef}>
       <button
         type="button"
         onClick={() => setIsOpen(!isOpen)}
-        className={`inline-flex items-center gap-2 px-3 py-1.5 rounded-xl text-xs font-bold transition-all border ${
+        className={`inline-flex items-center gap-1.5 px-2.5 py-1.5 sm:px-3 sm:py-1.5 rounded-xl text-xs font-bold transition-all border shrink-0 ${
           isFooter
             ? 'bg-gray-800 text-gray-200 border-gray-700 hover:bg-gray-700 hover:text-white'
             : 'bg-gray-50 text-gray-700 border-gray-200 hover:bg-lime-50 hover:text-lime-800 hover:border-lime-300 shadow-sm'
@@ -47,9 +47,9 @@ export default function LanguageSelector({ variant = 'nav' }) {
         aria-expanded={isOpen}
         aria-label="Select language"
       >
-        <Globe className="w-3.5 h-3.5 text-lime-500" />
-        <span>{currentLang.nativeName}</span>
-        <ChevronDown className={`w-3.5 h-3.5 transition-transform duration-200 ${isOpen ? 'rotate-180' : ''}`} />
+        <Globe className="w-3.5 h-3.5 text-lime-500 shrink-0" />
+        <span className="max-w-[75px] sm:max-w-none truncate">{currentLang.nativeName}</span>
+        <ChevronDown className={`w-3.5 h-3.5 transition-transform duration-200 shrink-0 ${isOpen ? 'rotate-180' : ''}`} />
       </button>
 
       {isOpen && (
