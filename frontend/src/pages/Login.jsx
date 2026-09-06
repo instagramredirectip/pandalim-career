@@ -64,7 +64,7 @@ export default function Login() {
   };
 
   return (
-    <div className="min-h-screen flex flex-col items-center justify-center bg-gray-50 px-4">
+    <div className="min-h-screen flex flex-col items-center justify-center bg-gray-50 text-gray-900 px-4 font-sans">
       <SEOHead 
         title="Sign In & Account Login | PandaLime Career"
         description="Log in to PandaLime Career to access your ATS resume analysis reports, saved job scans, and career insights."

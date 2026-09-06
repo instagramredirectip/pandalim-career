@@ -5,7 +5,7 @@ import SEOHead from '../components/SEOHead';
 
 export default function Terms() {
   return (
-    <div className="min-h-screen bg-gray-50 py-12 px-4 sm:px-6 lg:px-8 font-sans">
+    <div className="min-h-screen bg-gray-50 text-gray-900 py-12 px-4 sm:px-6 lg:px-8 font-sans">
       <SEOHead 
         title="Terms & Conditions | PandaLime Career"
         description="Review the Terms of Service and usage conditions for PandaLime AI resume scanning and optimization services."

@@ -105,7 +105,7 @@ export default function RoastWall() {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-gray-50 text-gray-900 font-sans">
       <SEOHead 
         title="Community Resume Roast Wall & AI ATS Critiques | PandaLime"
         description="Explore real, anonymous AI resume critiques, ATS match scores, and recruiter feedback. Learn from common resume mistakes to improve your application."
