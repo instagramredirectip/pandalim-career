@@ -14,8 +14,8 @@ export default function SEOHead({
   lang = 'en',
   jsonLd = null
 }) {
-  const cleanPath = canonical.startsWith('/') ? canonical : `/${canonical}`;
-  const fullCanonicalUrl = `${BASE_URL}${cleanPath === '/' ? '' : cleanPath}`;
+  const cleanPath = canonical ? (canonical.startsWith('/') ? canonical : `/${canonical}`) : '/';
+  const fullCanonicalUrl = cleanPath === '/' ? `${BASE_URL}/` : `${BASE_URL}${cleanPath}`;
 
   // Normalize JSON-LD schemas
   const schemas = jsonLd
@@ -45,6 +45,7 @@ export default function SEOHead({
       <title>{title}</title>
       <meta name="title" content={title} />
       <meta name="description" content={description} />
+      <meta name="referrer" content="strict-origin-when-cross-origin" />
       <link rel="canonical" href={fullCanonicalUrl} />
 
       {/* International SEO: Hreflang Tags */}

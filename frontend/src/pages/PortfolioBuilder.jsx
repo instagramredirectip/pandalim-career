@@ -507,8 +507,8 @@ export default function PortfolioBuilder() {
     <div className="min-h-screen bg-gray-950 text-gray-100 flex flex-col font-sans w-full max-w-full overflow-x-hidden">
       <SEOHead 
         title="AI Developer & Cyber Portfolio Builder | Free Hosted Portfolio Page | PandaLime"
-        description="Build and host your modern developer or cybersecurity portfolio website on pandalime.com/p/:username. Features Hacker Terminal, Minimalist, AI Matrix, and Executive themes with instant prompt presets."
-        canonical="/tools/portfolio-builder"
+        description="Build and host your developer or cyber portfolio on pandalime.com/p/:username. Choose from 5 modern themes with instant AI prompts and QR code sharing."
+        canonical="/portfolio-builder"
       />
 
       {/* --- TOP APP HEADER --- */}

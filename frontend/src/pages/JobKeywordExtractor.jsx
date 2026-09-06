@@ -146,7 +146,7 @@ export default function JobKeywordExtractor() {
     <div className="min-h-screen bg-gray-50 font-sans text-gray-900">
       <SEOHead 
         title="Free Job Description Keyword Extractor & ATS Skill Finder | PandaLime"
-        description="Extract required technical skills, programming languages, cloud tools, and soft skills from any job description. Optimize your resume keywords to beat Workday, Taleo, and Greenhouse filters."
+        description="Extract required technical skills, cloud tools, and keywords from any job description. Optimize your resume to pass Workday, Taleo, and Greenhouse ATS."
         canonical="/tools/job-description-keyword-extractor"
         jsonLd={jsonLd}
       />

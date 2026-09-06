@@ -29,7 +29,7 @@ function escapeHtml(str) {
 
 function generatePageHtml({ title, description, canonicalPath, lang = 'en', jsonLd, bodyContent }) {
   let html = templateHtml;
-  const canonicalUrl = `${BASE_URL}${canonicalPath === '/' ? '' : canonicalPath}`;
+  const canonicalUrl = canonicalPath === '/' ? `${BASE_URL}/` : `${BASE_URL}${canonicalPath.startsWith('/') ? canonicalPath : `/${canonicalPath}`}`;
   const safeTitle = escapeHtml(title);
   const safeDescription = escapeHtml(description);
 
@@ -111,12 +111,11 @@ function writeStaticFile(routePath, htmlContent) {
 console.log('--- Starting Static Pre-Rendering (SSG) for PandaLime ---');
 
 const sitemapUrls = [];
-const today = new Date().toISOString().split('T')[0];
-
-function addSitemapUrl(loc, priority = '0.8', changefreq = 'weekly') {
+function addSitemapUrl(routePath, priority = '0.8', changefreq = 'weekly') {
+  const cleanRoute = routePath === '/' ? '' : routePath.startsWith('/') ? routePath : `/${routePath}`;
   sitemapUrls.push({
-    loc: `${BASE_URL}${loc === '/' ? '' : loc}`,
-    lastmod: today,
+    loc: cleanRoute === '' ? `${BASE_URL}/` : `${BASE_URL}${cleanRoute}`,
+    lastmod: new Date().toISOString().split('T')[0],
     changefreq,
     priority
   });
@@ -199,6 +198,7 @@ regionalLangs.forEach(langObj => {
       {
         "@context": "https://schema.org",
         "@type": "FAQPage",
+        "inLanguage": langObj.code,
         "mainEntity": t.faqs.map(faq => ({
           "@type": "Question",
           "name": faq.q,
@@ -208,36 +208,18 @@ regionalLangs.forEach(langObj => {
     ],
     bodyContent: `
       <main style="max-width:1200px;margin:0 auto;padding:40px 20px;font-family:sans-serif;">
-        <header>
-          <span>${escapeHtml(t.badge)}</span>
-          <h1>${escapeHtml(t.h1Main)} ${escapeHtml(t.h1Highlight)}</h1>
-          <p>${escapeHtml(t.heroSubtitle)}</p>
-          <p><a href="/dashboard">${escapeHtml(t.scanButton)}</a></p>
-        </header>
-        <section>
-          <h2>${escapeHtml(t.howItWorksTitle)}</h2>
-          <p>${escapeHtml(t.howItWorksSubtitle)}</p>
-          <ol>
-            ${t.steps.map(s => `<li><strong>${escapeHtml(s.title)}:</strong> ${escapeHtml(s.desc)}</li>`).join('')}
-          </ol>
-        </section>
-        <section>
-          <h2>${escapeHtml(t.pillarsTitle)}</h2>
-          <p>${escapeHtml(t.pillarsSubtitle)}</p>
-          <ul>
-            ${t.pillars.map(p => `<li><strong>${escapeHtml(p.title)}:</strong> ${escapeHtml(p.desc)}</li>`).join('')}
-          </ul>
-        </section>
-        <section>
-          <h2>${escapeHtml(t.featuresTitle)}</h2>
-          <ul>
-            ${t.features.map(f => `<li><strong>${escapeHtml(f.title)}:</strong> ${escapeHtml(f.desc)}</li>`).join('')}
-          </ul>
-        </section>
-        <section>
-          <h2>${escapeHtml(t.faqsTitle)}</h2>
-          ${t.faqs.map(f => `<div><h3>${escapeHtml(f.q)}</h3><p>${escapeHtml(f.a)}</p></div>`).join('')}
-        </section>
+        <h1>${escapeHtml(t.h1Main)} ${escapeHtml(t.h1Highlight)}</h1>
+        <p>${escapeHtml(t.heroSubtitle)}</p>
+        <h2>${escapeHtml(t.howItWorksTitle)}</h2>
+        <ol>
+          ${t.steps.map(s => `<li><strong>${escapeHtml(s.title)}:</strong> ${escapeHtml(s.desc)}</li>`).join('')}
+        </ol>
+        <h2>${escapeHtml(t.pillarsTitle)}</h2>
+        <ul>
+          ${t.pillars.map(p => `<li><strong>${escapeHtml(p.title)}:</strong> ${escapeHtml(p.desc)}</li>`).join('')}
+        </ul>
+        <h2>${escapeHtml(t.faqsTitle)}</h2>
+        ${t.faqs.map(f => `<div><h3>${escapeHtml(f.q)}</h3><p>${escapeHtml(f.a)}</p></div>`).join('')}
       </main>
     `
   });
@@ -288,6 +270,7 @@ const sitemapHtml = generatePageHtml({
         <li><a href="/tools/job-description-keyword-extractor">Job Description Keyword Extractor</a></li>
         <li><a href="/tools/star-bullet-generator">AI STAR Method Resume Bullet Generator</a></li>
         <li><a href="/tools/ats-action-verbs">250+ ATS Resume Action Verbs Directory</a></li>
+        <li><a href="/portfolio-builder">AI Portfolio Studio</a></li>
       </ul>
       <h2>Regional Indian Language Portals</h2>
       <ul>
@@ -317,7 +300,7 @@ console.log('✓ Pre-rendered: /sitemap');
 // 4a. Tools Hub
 const toolsHubHtml = generatePageHtml({
   title: 'Free AI Resume & Career Tools Suite | Keyword Extractor, STAR Bullets & Verbs | PandaLime',
-  description: '100% Free AI career tools to beat the ATS: Instant Job Description Keyword Extractor, STAR Method Resume Bullet Generator, and 250+ Recruiter-Approved Action Verbs dictionary.',
+  description: 'Free AI career tools: Job Description Keyword Extractor, STAR Bullet Generator, and 250+ ATS Power Action Verbs. 100% free with instant access.',
   canonicalPath: '/tools',
   jsonLd: [
     {
@@ -378,6 +361,10 @@ const toolsHubHtml = generatePageHtml({
           <p>Search recruiter-approved power verbs with copyable bullet point examples categorized by skill area.</p>
         </li>
         <li>
+          <a href="/portfolio-builder"><strong>AI Portfolio Studio</strong></a>
+          <p>Build and host a modern developer or cybersecurity portfolio website on pandalime.com/p/:username.</p>
+        </li>
+        <li>
           <a href="/dashboard"><strong>Free Full AI Resume Scanner</strong></a>
           <p>Upload your PDF resume against any job description for deep ATS match scoring, section reviews, and missing keyword reports.</p>
         </li>
@@ -392,7 +379,7 @@ console.log('✓ Pre-rendered: /tools');
 // 4b. Job Description Keyword Extractor
 const keywordExtractorHtml = generatePageHtml({
   title: 'Free Job Description Keyword Extractor & ATS Skill Parser | PandaLime',
-  description: 'Instantly extract technical skills, tools, frameworks, certifications, and soft skills from any job description. Optimize your resume for ATS screening in seconds.',
+  description: 'Extract required technical skills, cloud tools, and keywords from any job description. Optimize your resume to pass Workday, Taleo, and Greenhouse ATS.',
   canonicalPath: '/tools/job-description-keyword-extractor',
   jsonLd: [
     {
@@ -457,7 +444,7 @@ console.log('✓ Pre-rendered: /tools/job-description-keyword-extractor');
 // 4c. STAR Bullet Generator
 const starBulletHtml = generatePageHtml({
   title: 'AI STAR Method Resume Bullet Generator (Google X-Y-Z Formula) | PandaLime',
-  description: 'Generate high-impact, quantified resume bullet points using Google\'s X-Y-Z formula and the STAR method. Transform weak tasks into recruiter-ready achievements.',
+  description: 'Transform passive job duties into recruiter-ready, quantified STAR bullet points using Google\'s X-Y-Z formula. 100% free AI resume rewriter.',
   canonicalPath: '/tools/star-bullet-generator',
   jsonLd: [
     {
@@ -518,7 +505,7 @@ console.log('✓ Pre-rendered: /tools/star-bullet-generator');
 // 4d. ATS Action Verbs Directory
 const actionVerbsHtml = generatePageHtml({
   title: '250+ Powerful ATS Resume Action Verbs (Categorized + Examples) | PandaLime',
-  description: 'Comprehensive directory of 250+ recruiter-approved action verbs for your resume. Search by category: Leadership, Technical, Optimization, and Problem Solving.',
+  description: 'Search 250+ powerful resume action verbs for Engineering, Leadership, and Scale. Includes real-world STAR bullet point examples to beat ATS filters.',
   canonicalPath: '/tools/ats-action-verbs',
   jsonLd: [
     {
@@ -584,8 +571,8 @@ console.log('✓ Pre-rendered: /tools/ats-action-verbs');
 // 4e. AI Portfolio Builder Studio
 const portfolioBuilderHtml = generatePageHtml({
   title: 'AI Developer & Cyber Portfolio Builder | Free Hosted Portfolio Page | PandaLime',
-  description: 'Build and host your modern developer or cybersecurity portfolio website on pandalime.com/p/:username. Features Hacker Terminal, Minimalist, AI Matrix, and Executive themes with instant prompt presets.',
-  canonicalPath: '/tools/portfolio-builder',
+  description: 'Build and host your developer or cyber portfolio on pandalime.com/p/:username. Choose from 5 modern themes with instant AI prompts and QR code sharing.',
+  canonicalPath: '/portfolio-builder',
   jsonLd: [
     {
       "@context": "https://schema.org",
@@ -602,7 +589,7 @@ const portfolioBuilderHtml = generatePageHtml({
       "itemListElement": [
         { "@type": "ListItem", "position": 1, "name": "Home", "item": `${BASE_URL}/` },
         { "@type": "ListItem", "position": 2, "name": "Tools", "item": `${BASE_URL}/tools` },
-        { "@type": "ListItem", "position": 3, "name": "Portfolio Studio", "item": `${BASE_URL}/tools/portfolio-builder` }
+        { "@type": "ListItem", "position": 3, "name": "Portfolio Studio", "item": `${BASE_URL}/portfolio-builder` }
       ]
     },
     {
@@ -646,8 +633,8 @@ const portfolioBuilderHtml = generatePageHtml({
 });
 writeStaticFile('/tools/portfolio-builder', portfolioBuilderHtml);
 writeStaticFile('/portfolio-builder', portfolioBuilderHtml);
-addSitemapUrl('/tools/portfolio-builder', '0.9', 'weekly');
 addSitemapUrl('/portfolio-builder', '0.9', 'weekly');
+console.log('✓ Pre-rendered: /portfolio-builder (canonical: /portfolio-builder)');
 console.log('✓ Pre-rendered: /tools/portfolio-builder & /portfolio-builder');
 
 // 4f. Pre-render Showcase Hosted Portfolios

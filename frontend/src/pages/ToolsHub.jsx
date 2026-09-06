@@ -81,7 +81,7 @@ export default function ToolsHub() {
         "Instant creative prompts & 1-click role presets",
         "Free hosting at pandalime.com/p/:username with Person SEO Schema"
       ],
-      path: "/tools/portfolio-builder",
+      path: "/portfolio-builder",
       cta: "Build Your Portfolio Free"
     }
   ];
@@ -136,7 +136,7 @@ export default function ToolsHub() {
     <div className="min-h-screen bg-gray-50 font-sans text-gray-900">
       <SEOHead 
         title="Free AI ATS & Career Tools Suite | PandaLime"
-        description="Free AI career tools to optimize your job application: Job Description Keyword Extractor, STAR Method Bullet Generator, and 250+ ATS Power Action Verbs."
+        description="Free AI career tools: Job Description Keyword Extractor, STAR Bullet Generator, and 250+ ATS Power Action Verbs. 100% free with instant access."
         canonical="/tools"
         jsonLd={jsonLd}
       />

@@ -103,7 +103,7 @@ export default function AtsActionVerbs() {
     <div className="min-h-screen bg-gray-50 font-sans text-gray-900">
       <SEOHead 
         title="250+ High-Impact ATS Resume Action Verbs & Power Words | PandaLime"
-        description="Search 250+ powerful resume action verbs categorized by Engineering, Leadership, Scale, and Optimization. Includes real-world STAR bullet point examples."
+        description="Search 250+ powerful resume action verbs for Engineering, Leadership, and Scale. Includes real-world STAR bullet point examples to beat ATS filters."
         canonical="/tools/ats-action-verbs"
         jsonLd={jsonLd}
       />

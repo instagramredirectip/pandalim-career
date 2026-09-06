@@ -14,7 +14,7 @@ export const SUPPORTED_LANGUAGES = [
 export const TRANSLATIONS = {
   en: {
     seoTitle: 'Free AI Resume Scanner & ATS Resume Checker | PandaLime',
-    seoDesc: 'Scan your resume for free with PandaLime AI. Beat corporate ATS screening algorithms (Workday, Taleo, Greenhouse, TCS iON), find missing keywords, and get recruiter-ready bullet rewrites.',
+    seoDesc: 'Scan your resume for free with PandaLime AI. Beat ATS algorithms (Workday, Taleo, TCS iON), find missing keywords, and get recruiter-ready bullet rewrites.',
     badge: 'Free AI-Powered ATS Resume Scanner & Checker',
     h1Main: 'Free AI Resume Scanner &',
     h1Highlight: 'ATS Keyword Checker',
