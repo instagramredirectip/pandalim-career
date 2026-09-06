@@ -61,10 +61,14 @@ const razorpay = new Razorpay({
 const upload = multer({ storage: multer.memoryStorage(), limits: { fileSize: 5 * 1024 * 1024 } });
 
 // =======================================================================
-// 1. STANDARD API ROUTES
+// 1. STANDARD API & HEALTH CHECK ROUTES (For UptimeRobot / Ping Keep-Alive)
 // =======================================================================
-app.get('/api/health', async (req, res) => {
-    res.status(200).json({ status: 'success', message: 'Backend is running!' });
+app.get(['/api/health', '/health', '/ping'], (req, res) => {
+    res.status(200).json({ 
+        status: 'success', 
+        message: 'PandaLime backend is active!', 
+        timestamp: new Date().toISOString() 
+    });
 });
 
 // --- AUTHENTICATION ROUTES ---
