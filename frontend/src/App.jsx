@@ -14,6 +14,8 @@ import ToolsHub from './pages/ToolsHub';
 import JobKeywordExtractor from './pages/JobKeywordExtractor';
 import StarBulletGenerator from './pages/StarBulletGenerator';
 import AtsActionVerbs from './pages/AtsActionVerbs';
+import PortfolioBuilder from './pages/PortfolioBuilder';
+import PortfolioView from './pages/PortfolioView';
 
 function App() {
   return (
@@ -31,6 +33,12 @@ function App() {
           <Route path="/tools/job-description-keyword-extractor" element={<JobKeywordExtractor />} />
           <Route path="/tools/star-bullet-generator" element={<StarBulletGenerator />} />
           <Route path="/tools/ats-action-verbs" element={<AtsActionVerbs />} />
+          <Route path="/tools/portfolio-builder" element={<PortfolioBuilder />} />
+          <Route path="/portfolio-builder" element={<PortfolioBuilder />} />
+
+          {/* Hosted Public Portfolio Pages */}
+          <Route path="/p/:slug" element={<PortfolioView />} />
+          <Route path="/portfolio/:slug" element={<PortfolioView />} />
 
           {/* Indian Language Regional Routes */}
           <Route path="/hi" element={<RegionalHome />} />

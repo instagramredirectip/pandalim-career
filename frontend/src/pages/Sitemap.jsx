@@ -14,6 +14,7 @@ export default function Sitemap() {
 
   const freeTools = [
     { name: "Free Career Tools Suite Hub", path: "/tools", desc: "Central directory of all free career utilities & generators" },
+    { name: "AI Developer & Cyber Portfolio Studio", path: "/tools/portfolio-builder", desc: "Build & host your portfolio website at pandalime.com/p/:username with 5 themes" },
     { name: "Job Description Keyword Extractor", path: "/tools/job-description-keyword-extractor", desc: "Extract technical skills, tools & soft skills from any JD" },
     { name: "AI STAR Method Resume Bullet Generator", path: "/tools/star-bullet-generator", desc: "Craft Google X-Y-Z formula bullet points with metrics" },
     { name: "250+ ATS Action Verbs Directory", path: "/tools/ats-action-verbs", desc: "Recruiter-approved power verbs categorized by skill" }

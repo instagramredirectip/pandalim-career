@@ -64,6 +64,21 @@ export default function ToolsHub() {
       ],
       path: "/tools/ats-action-verbs",
       cta: "Explore Action Verbs"
+    },
+    {
+      id: "portfolio-builder",
+      title: "AI Developer & Cyber Portfolio Studio",
+      badge: "Free Hosted Portfolio",
+      badgeColor: "bg-emerald-100 text-emerald-800",
+      icon: <Cpu className="w-6 h-6 text-emerald-600" />,
+      description: "Build, customize, and host your own modern portfolio on pandalime.com/p/:username. Featuring Hacker Terminal, Minimalist, AI Matrix, and Executive themes with QR Code & Resume links.",
+      features: [
+        "5 Industry Themes (Cyber Hacker, Minimal, AI Matrix, Executive)",
+        "Instant creative prompts & 1-click role presets",
+        "Free hosting at pandalime.com/p/:username with Person SEO Schema"
+      ],
+      path: "/tools/portfolio-builder",
+      cta: "Build Your Portfolio Free"
     }
   ];
 
@@ -180,7 +195,7 @@ export default function ToolsHub() {
 
       {/* --- TOOLS GRID --- */}
       <section className="max-w-6xl mx-auto px-4 py-16">
-        <div className="grid md:grid-cols-3 gap-8">
+        <div className="grid sm:grid-cols-2 gap-8">
           {tools.map((tool) => (
             <div 
               key={tool.id} 
@@ -284,6 +299,7 @@ export default function ToolsHub() {
           <div className="flex flex-wrap justify-center gap-6 text-sm text-gray-300">
             <Link to="/" className="hover:text-white transition-colors">Home</Link>
             <Link to="/tools" className="hover:text-white transition-colors text-lime-400 font-bold">Free Tools</Link>
+            <Link to="/tools/portfolio-builder" className="hover:text-white transition-colors text-emerald-400 font-bold">Portfolio Studio</Link>
             <Link to="/tools/job-description-keyword-extractor" className="hover:text-white transition-colors">JD Keyword Extractor</Link>
             <Link to="/tools/star-bullet-generator" className="hover:text-white transition-colors">STAR Bullet Generator</Link>
             <Link to="/tools/ats-action-verbs" className="hover:text-white transition-colors">250+ Action Verbs</Link>
@@ -297,3 +313,4 @@ export default function ToolsHub() {
     </div>
   );
 }
+

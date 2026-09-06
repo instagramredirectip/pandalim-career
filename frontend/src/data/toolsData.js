@@ -280,3 +280,4 @@ export const STAR_FORMULA_TEMPLATES = {
     }
   ]
 };
+

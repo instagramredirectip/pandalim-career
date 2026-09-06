@@ -341,79 +341,104 @@ export default function Home() {
             </p>
           </div>
 
-          <div className="grid md:grid-cols-3 gap-8">
+          <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
             {/* Tool 1 */}
-            <div className="bg-white rounded-3xl p-8 border border-gray-200 hover:border-lime-400 hover:shadow-xl transition-all duration-300 flex flex-col justify-between group">
+            <div className="bg-white rounded-3xl p-6 border border-gray-200 hover:border-lime-400 hover:shadow-xl transition-all duration-300 flex flex-col justify-between group">
               <div>
-                <div className="w-14 h-14 bg-lime-50 rounded-2xl flex items-center justify-center text-lime-600 mb-6 group-hover:scale-110 transition-transform">
-                  <Search className="w-7 h-7" />
+                <div className="w-12 h-12 bg-lime-50 rounded-2xl flex items-center justify-center text-lime-600 mb-5 group-hover:scale-110 transition-transform">
+                  <Search className="w-6 h-6" />
                 </div>
-                <div className="flex items-center gap-2 mb-2">
-                  <span className="text-xs font-bold uppercase tracking-wider text-lime-700 bg-lime-100 px-2.5 py-0.5 rounded-full">NLP Parser</span>
-                  <span className="text-xs font-semibold text-gray-400">Instant</span>
+                <div className="flex items-center gap-1.5 mb-2">
+                  <span className="text-[10px] font-bold uppercase tracking-wider text-lime-700 bg-lime-100 px-2 py-0.5 rounded-full">NLP Parser</span>
+                  <span className="text-[10px] font-semibold text-gray-400">Instant</span>
                 </div>
-                <h3 className="text-xl font-bold text-gray-900 mb-3 group-hover:text-lime-600 transition-colors">
-                  Job Description Keyword Extractor
+                <h3 className="text-lg font-bold text-gray-900 mb-2 group-hover:text-lime-600 transition-colors">
+                  Job Keyword Extractor
                 </h3>
-                <p className="text-gray-600 text-sm leading-relaxed mb-6">
-                  Paste any job listing to extract hard skills, tech stacks, cloud tools, frameworks, and credentials with 0 latency. 1-click transfer to your resume scan.
+                <p className="text-gray-600 text-xs leading-relaxed mb-6">
+                  Extract hard skills, tech stacks, cloud tools, frameworks, and credentials from any JD with 0 latency.
                 </p>
               </div>
               <Link 
                 to="/tools/job-description-keyword-extractor" 
-                className="inline-flex items-center justify-center gap-2 w-full py-3 bg-gray-50 group-hover:bg-lime-500 text-gray-900 group-hover:text-white rounded-xl font-bold text-sm transition-all shadow-sm"
+                className="inline-flex items-center justify-center gap-1.5 w-full py-2.5 bg-gray-50 group-hover:bg-lime-500 text-gray-900 group-hover:text-white rounded-xl font-bold text-xs transition-all shadow-sm"
               >
-                Extract Keywords Free <ArrowRight className="w-4 h-4" />
+                Extract Keywords <ArrowRight className="w-3.5 h-3.5" />
               </Link>
             </div>
 
             {/* Tool 2 */}
-            <div className="bg-white rounded-3xl p-8 border border-gray-200 hover:border-lime-400 hover:shadow-xl transition-all duration-300 flex flex-col justify-between group">
+            <div className="bg-white rounded-3xl p-6 border border-gray-200 hover:border-lime-400 hover:shadow-xl transition-all duration-300 flex flex-col justify-between group">
               <div>
-                <div className="w-14 h-14 bg-lime-50 rounded-2xl flex items-center justify-center text-lime-600 mb-6 group-hover:scale-110 transition-transform">
-                  <Cpu className="w-7 h-7" />
+                <div className="w-12 h-12 bg-lime-50 rounded-2xl flex items-center justify-center text-lime-600 mb-5 group-hover:scale-110 transition-transform">
+                  <Cpu className="w-6 h-6" />
                 </div>
-                <div className="flex items-center gap-2 mb-2">
-                  <span className="text-xs font-bold uppercase tracking-wider text-lime-700 bg-lime-100 px-2.5 py-0.5 rounded-full">Google X-Y-Z</span>
-                  <span className="text-xs font-semibold text-gray-400">AI Powered</span>
+                <div className="flex items-center gap-1.5 mb-2">
+                  <span className="text-[10px] font-bold uppercase tracking-wider text-lime-700 bg-lime-100 px-2 py-0.5 rounded-full">Google X-Y-Z</span>
+                  <span className="text-[10px] font-semibold text-gray-400">AI Powered</span>
                 </div>
-                <h3 className="text-xl font-bold text-gray-900 mb-3 group-hover:text-lime-600 transition-colors">
-                  AI STAR Method Bullet Generator
+                <h3 className="text-lg font-bold text-gray-900 mb-2 group-hover:text-lime-600 transition-colors">
+                  STAR Bullet Generator
                 </h3>
-                <p className="text-gray-600 text-sm leading-relaxed mb-6">
-                  Turn weak responsibilities into quantified accomplishments using Google's formula: "Accomplished [X] measured by [Y], by doing [Z]".
+                <p className="text-gray-600 text-xs leading-relaxed mb-6">
+                  Turn weak responsibilities into quantified accomplishments using Google's formula: "Accomplished [X] measured by [Y]".
                 </p>
               </div>
               <Link 
                 to="/tools/star-bullet-generator" 
-                className="inline-flex items-center justify-center gap-2 w-full py-3 bg-gray-50 group-hover:bg-lime-500 text-gray-900 group-hover:text-white rounded-xl font-bold text-sm transition-all shadow-sm"
+                className="inline-flex items-center justify-center gap-1.5 w-full py-2.5 bg-gray-50 group-hover:bg-lime-500 text-gray-900 group-hover:text-white rounded-xl font-bold text-xs transition-all shadow-sm"
               >
-                Generate STAR Bullets <ArrowRight className="w-4 h-4" />
+                Generate Bullets <ArrowRight className="w-3.5 h-3.5" />
               </Link>
             </div>
 
             {/* Tool 3 */}
-            <div className="bg-white rounded-3xl p-8 border border-gray-200 hover:border-lime-400 hover:shadow-xl transition-all duration-300 flex flex-col justify-between group">
+            <div className="bg-white rounded-3xl p-6 border border-gray-200 hover:border-lime-400 hover:shadow-xl transition-all duration-300 flex flex-col justify-between group">
               <div>
-                <div className="w-14 h-14 bg-lime-50 rounded-2xl flex items-center justify-center text-lime-600 mb-6 group-hover:scale-110 transition-transform">
-                  <FileText className="w-7 h-7" />
+                <div className="w-12 h-12 bg-lime-50 rounded-2xl flex items-center justify-center text-lime-600 mb-5 group-hover:scale-110 transition-transform">
+                  <FileText className="w-6 h-6" />
                 </div>
-                <div className="flex items-center gap-2 mb-2">
-                  <span className="text-xs font-bold uppercase tracking-wider text-lime-700 bg-lime-100 px-2.5 py-0.5 rounded-full">250+ Verbs</span>
-                  <span className="text-xs font-semibold text-gray-400">Recruiter Approved</span>
+                <div className="flex items-center gap-1.5 mb-2">
+                  <span className="text-[10px] font-bold uppercase tracking-wider text-lime-700 bg-lime-100 px-2 py-0.5 rounded-full">250+ Verbs</span>
+                  <span className="text-[10px] font-semibold text-gray-400">Recruiter Approved</span>
                 </div>
-                <h3 className="text-xl font-bold text-gray-900 mb-3 group-hover:text-lime-600 transition-colors">
-                  250+ ATS Action Verbs Directory
+                <h3 className="text-lg font-bold text-gray-900 mb-2 group-hover:text-lime-600 transition-colors">
+                  250+ ATS Action Verbs
                 </h3>
-                <p className="text-gray-600 text-sm leading-relaxed mb-6">
-                  Replace cliché phrases like "worked on" with high-impact power verbs across Leadership, Technical Architecture, Optimization, and Problem Solving.
+                <p className="text-gray-600 text-xs leading-relaxed mb-6">
+                  Replace cliché phrases like "worked on" with high-impact power verbs across Leadership, Optimization, and SecOps.
                 </p>
               </div>
               <Link 
                 to="/tools/ats-action-verbs" 
-                className="inline-flex items-center justify-center gap-2 w-full py-3 bg-gray-50 group-hover:bg-lime-500 text-gray-900 group-hover:text-white rounded-xl font-bold text-sm transition-all shadow-sm"
+                className="inline-flex items-center justify-center gap-1.5 w-full py-2.5 bg-gray-50 group-hover:bg-lime-500 text-gray-900 group-hover:text-white rounded-xl font-bold text-xs transition-all shadow-sm"
               >
-                Explore Action Verbs <ArrowRight className="w-4 h-4" />
+                Explore Verbs <ArrowRight className="w-3.5 h-3.5" />
+              </Link>
+            </div>
+
+            {/* Tool 4: Portfolio Builder */}
+            <div className="bg-white rounded-3xl p-6 border border-gray-200 hover:border-lime-400 hover:shadow-xl transition-all duration-300 flex flex-col justify-between group">
+              <div>
+                <div className="w-12 h-12 bg-emerald-50 rounded-2xl flex items-center justify-center text-emerald-600 mb-5 group-hover:scale-110 transition-transform">
+                  <Zap className="w-6 h-6" />
+                </div>
+                <div className="flex items-center gap-1.5 mb-2">
+                  <span className="text-[10px] font-bold uppercase tracking-wider text-emerald-700 bg-emerald-100 px-2 py-0.5 rounded-full">Hosted URL</span>
+                  <span className="text-[10px] font-semibold text-gray-400">Free</span>
+                </div>
+                <h3 className="text-lg font-bold text-gray-900 mb-2 group-hover:text-lime-600 transition-colors">
+                  AI Portfolio Studio
+                </h3>
+                <p className="text-gray-600 text-xs leading-relaxed mb-6">
+                  Build and host your modern developer or cyber portfolio on pandalime.com/p/:username with 5 themes.
+                </p>
+              </div>
+              <Link 
+                to="/portfolio-builder" 
+                className="inline-flex items-center justify-center gap-1.5 w-full py-2.5 bg-gray-50 group-hover:bg-lime-500 text-gray-900 group-hover:text-white rounded-xl font-bold text-xs transition-all shadow-sm"
+              >
+                Build Portfolio <ArrowRight className="w-3.5 h-3.5" />
               </Link>
             </div>
           </div>
@@ -739,6 +764,7 @@ export default function Home() {
               <li><Link to="/" className="hover:text-lime-400 transition-colors flex items-center gap-2"><Map className="w-4 h-4"/> Home</Link></li>
               <li><Link to="/dashboard" className="hover:text-lime-400 transition-colors flex items-center gap-2"><ScanLine className="w-4 h-4"/> Free Resume Scanner</Link></li>
               <li><Link to="/tools" className="hover:text-lime-400 font-semibold text-lime-400 transition-colors flex items-center gap-2"><Sparkles className="w-4 h-4"/> Free Career Tools Suite</Link></li>
+              <li><Link to="/portfolio-builder" className="hover:text-lime-400 transition-colors text-xs text-emerald-400 pl-6">• AI Portfolio Studio</Link></li>
               <li><Link to="/tools/job-description-keyword-extractor" className="hover:text-lime-400 transition-colors text-xs text-gray-400 pl-6">• JD Keyword Extractor</Link></li>
               <li><Link to="/tools/star-bullet-generator" className="hover:text-lime-400 transition-colors text-xs text-gray-400 pl-6">• STAR Bullet Generator</Link></li>
               <li><Link to="/tools/ats-action-verbs" className="hover:text-lime-400 transition-colors text-xs text-gray-400 pl-6">• 250+ ATS Action Verbs</Link></li>

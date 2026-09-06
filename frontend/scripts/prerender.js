@@ -3,6 +3,7 @@ import path from 'path';
 import { fileURLToPath } from 'url';
 import { ROLES, COMPANIES, SPECIAL_NICHES, getAllPseoSlugs, getPseoData } from '../src/data/pseoData.js';
 import { SUPPORTED_LANGUAGES, TRANSLATIONS } from '../src/data/translations.js';
+import { ROLE_PRESETS } from '../src/data/portfolioTemplates.js';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -579,6 +580,121 @@ const actionVerbsHtml = generatePageHtml({
 writeStaticFile('/tools/ats-action-verbs', actionVerbsHtml);
 addSitemapUrl('/tools/ats-action-verbs', '0.9', 'weekly');
 console.log('✓ Pre-rendered: /tools/ats-action-verbs');
+
+// 4e. AI Portfolio Builder Studio
+const portfolioBuilderHtml = generatePageHtml({
+  title: 'AI Developer & Cyber Portfolio Builder | Free Hosted Portfolio Page | PandaLime',
+  description: 'Build and host your modern developer or cybersecurity portfolio website on pandalime.com/p/:username. Features Hacker Terminal, Minimalist, AI Matrix, and Executive themes with instant prompt presets.',
+  canonicalPath: '/tools/portfolio-builder',
+  jsonLd: [
+    {
+      "@context": "https://schema.org",
+      "@type": "SoftwareApplication",
+      "name": "PandaLime AI Portfolio Studio",
+      "operatingSystem": "All Web Browsers",
+      "applicationCategory": "BusinessApplication",
+      "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
+      "description": "Build, customize, and host developer, cybersecurity, and tech portfolio pages."
+    },
+    {
+      "@context": "https://schema.org",
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        { "@type": "ListItem", "position": 1, "name": "Home", "item": `${BASE_URL}/` },
+        { "@type": "ListItem", "position": 2, "name": "Tools", "item": `${BASE_URL}/tools` },
+        { "@type": "ListItem", "position": 3, "name": "Portfolio Studio", "item": `${BASE_URL}/tools/portfolio-builder` }
+      ]
+    },
+    {
+      "@context": "https://schema.org",
+      "@type": "FAQPage",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "How is my portfolio hosted?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Your portfolio is instantly hosted for free at pandalime.com/p/:username. You can share your custom link on LinkedIn, your resume, or generate a QR code for print resumes."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "What themes are available for developers and cybersecurity professionals?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "PandaLime provides 5 high-converting themes: Cyber Defense & Terminal Hacker (featuring green/cyan neon accents, CVE highlights, and monospace code aesthetic), Silicon Valley Minimalist, Deep AI & Neural Matrix, Executive Enterprise Leader, and Aurora Creative Glass."
+          }
+        }
+      ]
+    }
+  ],
+  bodyContent: `
+    <main style="max-width:1000px;margin:0 auto;padding:40px 20px;font-family:sans-serif;">
+      <nav aria-label="breadcrumb"><a href="/">Home</a> &gt; <a href="/tools">Tools</a> &gt; <span>Portfolio Studio</span></nav>
+      <h1>AI Developer & Cybersecurity Portfolio Builder</h1>
+      <p>Create and host a professional, mobile-friendly portfolio website at pandalime.com/p/:username in under 60 seconds.</p>
+      <h2>Top Themes Available</h2>
+      <ul>
+        <li><strong>Cyber Defense & Terminal Hacker:</strong> Tailored for penetration testers, security analysts, and tech enthusiasts.</li>
+        <li><strong>Silicon Valley Minimalist:</strong> Clean, high-contrast Apple/Stripe-inspired aesthetic for full-stack developers.</li>
+        <li><strong>Deep AI & Neural Matrix:</strong> Futuristic deep space violet-indigo gradient for AI/ML and data science engineers.</li>
+        <li><strong>Executive Enterprise Leader:</strong> Midnight navy and gold highlights for engineering managers and tech leads.</li>
+      </ul>
+      <p><a href="/portfolio-builder">Launch Portfolio Studio</a></p>
+    </main>
+  `
+});
+writeStaticFile('/tools/portfolio-builder', portfolioBuilderHtml);
+writeStaticFile('/portfolio-builder', portfolioBuilderHtml);
+addSitemapUrl('/tools/portfolio-builder', '0.9', 'weekly');
+addSitemapUrl('/portfolio-builder', '0.9', 'weekly');
+console.log('✓ Pre-rendered: /tools/portfolio-builder & /portfolio-builder');
+
+// 4f. Pre-render Showcase Hosted Portfolios
+ROLE_PRESETS.forEach(preset => {
+  const sameAsList = Object.values(preset.socialLinks || {}).filter(url => url && url.startsWith('http'));
+  const personJsonLd = {
+    "@context": "https://schema.org",
+    "@type": "ProfilePage",
+    "mainEntity": {
+      "@type": "Person",
+      "name": preset.fullName,
+      "jobTitle": preset.title,
+      "description": preset.bio,
+      "url": `${BASE_URL}/p/${preset.slug}`,
+      "sameAs": sameAsList
+    }
+  };
+
+  const samplePortfolioHtml = generatePageHtml({
+    title: `${preset.fullName} — ${preset.title} | PandaLime Portfolio`,
+    description: preset.bio,
+    canonicalPath: `/p/${preset.slug}`,
+    jsonLd: [personJsonLd],
+    bodyContent: `
+      <main style="max-width:900px;margin:0 auto;padding:40px 20px;font-family:sans-serif;">
+        <h1>${escapeHtml(preset.fullName)}</h1>
+        <p><strong>${escapeHtml(preset.title)}</strong></p>
+        <p>${escapeHtml(preset.tagline)}</p>
+        <p>${escapeHtml(preset.bio)}</p>
+        <h2>Key Metrics</h2>
+        <ul>
+          ${(preset.metrics || []).map(m => `<li><strong>${escapeHtml(m.label)}:</strong> ${escapeHtml(m.value)}</li>`).join('')}
+        </ul>
+        <h2>Featured Projects</h2>
+        <ul>
+          ${(preset.projects || []).map(p => `<li><strong>${escapeHtml(p.title)}:</strong> ${escapeHtml(p.description)} (${escapeHtml(p.metric || '')})</li>`).join('')}
+        </ul>
+        <p><a href="/portfolio-builder">Create your own free portfolio like this on PandaLime</a></p>
+      </main>
+    `
+  });
+
+  writeStaticFile(`/p/${preset.slug}`, samplePortfolioHtml);
+  writeStaticFile(`/portfolio/${preset.slug}`, samplePortfolioHtml);
+  addSitemapUrl(`/p/${preset.slug}`, '0.8', 'weekly');
+  console.log(`✓ Pre-rendered Showcase Portfolio: /p/${preset.slug} (${preset.fullName})`);
+});
 
 // 5. Contact
 const contactHtml = generatePageHtml({

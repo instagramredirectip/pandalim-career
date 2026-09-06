@@ -252,6 +252,237 @@ Return ONLY a raw JSON object with this exact structure:
     }
 });
 
+// --- PORTFOLIO STORAGE & BACKEND ROUTES ---
+const memoryPortfolios = new Map();
+
+async function initPortfoliosTable() {
+    try {
+        await sql`
+            CREATE TABLE IF NOT EXISTS portfolios (
+                id SERIAL PRIMARY KEY,
+                slug VARCHAR(100) UNIQUE NOT NULL,
+                full_name VARCHAR(255) NOT NULL,
+                title VARCHAR(255) NOT NULL,
+                tagline VARCHAR(255),
+                bio TEXT,
+                avatar_url TEXT,
+                location VARCHAR(255),
+                availability_status VARCHAR(255),
+                theme VARCHAR(50) DEFAULT 'cyber',
+                accent_color VARCHAR(50) DEFAULT 'lime',
+                contact_email VARCHAR(255),
+                social_links JSONB DEFAULT '{}',
+                metrics JSONB DEFAULT '[]',
+                skills JSONB DEFAULT '{}',
+                projects JSONB DEFAULT '[]',
+                experience JSONB DEFAULT '[]',
+                certifications JSONB DEFAULT '[]',
+                created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+                updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+            );
+        `;
+        console.log('✓ Portfolios table initialized in database');
+    } catch (e) {
+        console.warn('Portfolios DB table initialization skipped (using memory/cache mode):', e.message);
+    }
+}
+initPortfoliosTable();
+
+app.post('/api/portfolios', async (req, res) => {
+    try {
+        const data = req.body;
+        if (!data || !data.slug) {
+            return res.status(400).json({ error: 'Missing portfolio data or slug' });
+        }
+
+        const cleanSlug = data.slug.toLowerCase().replace(/[^a-z0-9_-]/g, '-');
+        memoryPortfolios.set(cleanSlug, { ...data, slug: cleanSlug });
+
+        try {
+            await sql`
+                INSERT INTO portfolios (
+                    slug, full_name, title, tagline, bio, avatar_url, location, 
+                    availability_status, theme, accent_color, contact_email, 
+                    social_links, metrics, skills, projects, experience, certifications, updated_at
+                ) VALUES (
+                    ${cleanSlug}, 
+                    ${data.fullName || 'Tech Professional'}, 
+                    ${data.title || 'Software Engineer'}, 
+                    ${data.tagline || ''}, 
+                    ${data.bio || ''}, 
+                    ${data.avatarUrl || ''}, 
+                    ${data.location || ''}, 
+                    ${data.availabilityStatus || ''}, 
+                    ${data.theme || 'cyber'}, 
+                    ${data.accentColor || 'lime'}, 
+                    ${data.contactEmail || ''}, 
+                    ${JSON.stringify(data.socialLinks || {})}, 
+                    ${JSON.stringify(data.metrics || [])}, 
+                    ${JSON.stringify(data.skills || {})}, 
+                    ${JSON.stringify(data.projects || [])}, 
+                    ${JSON.stringify(data.experience || [])}, 
+                    ${JSON.stringify(data.certifications || [])}, 
+                    NOW()
+                )
+                ON CONFLICT (slug) DO UPDATE SET
+                    full_name = EXCLUDED.full_name,
+                    title = EXCLUDED.title,
+                    tagline = EXCLUDED.tagline,
+                    bio = EXCLUDED.bio,
+                    avatar_url = EXCLUDED.avatar_url,
+                    location = EXCLUDED.location,
+                    availability_status = EXCLUDED.availability_status,
+                    theme = EXCLUDED.theme,
+                    accent_color = EXCLUDED.accent_color,
+                    contact_email = EXCLUDED.contact_email,
+                    social_links = EXCLUDED.social_links,
+                    metrics = EXCLUDED.metrics,
+                    skills = EXCLUDED.skills,
+                    projects = EXCLUDED.projects,
+                    experience = EXCLUDED.experience,
+                    certifications = EXCLUDED.certifications,
+                    updated_at = NOW();
+            `;
+        } catch (dbErr) {
+            console.warn('DB Save fallback, saved in memory cache:', dbErr.message);
+        }
+
+        res.json({ success: true, slug: cleanSlug, url: `https://www.pandalime.com/p/${cleanSlug}` });
+    } catch (error) {
+        console.error('Save Portfolio Error:', error);
+        res.status(500).json({ error: 'Failed to save portfolio' });
+    }
+});
+
+app.get('/api/portfolios/:slug', async (req, res) => {
+    try {
+        const { slug } = req.params;
+        const cleanSlug = slug.toLowerCase();
+
+        try {
+            const [row] = await sql`SELECT * FROM portfolios WHERE slug = ${cleanSlug} LIMIT 1`;
+            if (row) {
+                return res.json({
+                    success: true,
+                    portfolio: {
+                        slug: row.slug,
+                        fullName: row.full_name,
+                        title: row.title,
+                        tagline: row.tagline,
+                        bio: row.bio,
+                        avatarUrl: row.avatar_url,
+                        location: row.location,
+                        availabilityStatus: row.availability_status,
+                        theme: row.theme,
+                        accentColor: row.accent_color,
+                        contactEmail: row.contact_email,
+                        socialLinks: typeof row.social_links === 'string' ? JSON.parse(row.social_links) : row.social_links,
+                        metrics: typeof row.metrics === 'string' ? JSON.parse(row.metrics) : row.metrics,
+                        skills: typeof row.skills === 'string' ? JSON.parse(row.skills) : row.skills,
+                        projects: typeof row.projects === 'string' ? JSON.parse(row.projects) : row.projects,
+                        experience: typeof row.experience === 'string' ? JSON.parse(row.experience) : row.experience,
+                        certifications: typeof row.certifications === 'string' ? JSON.parse(row.certifications) : row.certifications
+                    }
+                });
+            }
+        } catch (dbErr) {
+            console.warn('DB Get error, checking memory:', dbErr.message);
+        }
+
+        if (memoryPortfolios.has(cleanSlug)) {
+            return res.json({ success: true, portfolio: memoryPortfolios.get(cleanSlug) });
+        }
+
+        res.status(404).json({ error: 'Portfolio not found' });
+    } catch (error) {
+        console.error('Get Portfolio Error:', error);
+        res.status(500).json({ error: 'Failed to fetch portfolio' });
+    }
+});
+
+// AI Assistant for Portfolio Studio
+app.post('/api/tools/portfolio-ai-assist', async (req, res) => {
+    try {
+        const { action, prompt, bio, title } = req.body;
+
+        if (action === 'polish_bio') {
+            const systemPrompt = `You are an elite executive career and portfolio copywriter.
+Polish the following candidate bio for their personal website portfolio into a punchy, high-converting, professional paragraph (80-120 words).
+Candidate Title: ${title || 'Software Professional'}
+Current Bio: ${bio}
+
+Return strictly a raw JSON object:
+{
+  "polishedBio": "The polished bio text here..."
+}`;
+            const aiResp = await generateAIResponseWithFallback(systemPrompt);
+            const parsed = JSON.parse(aiResp);
+            return res.json({ success: true, polishedBio: parsed.polishedBio });
+        }
+
+        if (action === 'generate_from_prompt') {
+            const systemPrompt = `You are an expert developer portfolio creator.
+Based on the following natural language user description, generate a complete structured developer portfolio profile.
+User Description: "${prompt}"
+
+Return ONLY a raw JSON object with this exact schema:
+{
+  "fullName": "Professional Name",
+  "title": "Specific Job Title",
+  "tagline": "Punchy subtitle with 3 key pillars",
+  "bio": "Detailed 80-word executive summary",
+  "theme": "cyber",
+  "accentColor": "lime",
+  "location": "City, Country / Remote",
+  "availabilityStatus": "🟢 Available for Hire",
+  "metrics": [
+    { "label": "Years Experience", "value": "4+" },
+    { "label": "Projects Completed", "value": "15+" },
+    { "label": "Key Metric", "value": "99.9%" },
+    { "label": "Highlight", "value": "Top 1%" }
+  ],
+  "skills": {
+    "Core Technologies": ["Skill A", "Skill B", "Skill C"],
+    "Tools & Platforms": ["Skill D", "Skill E"]
+  },
+  "projects": [
+    {
+      "title": "Project Name",
+      "description": "Technical problem solved and architecture.",
+      "metric": "Key quantified accomplishment",
+      "tags": ["Tag1", "Tag2", "Tag3"],
+      "demoUrl": "https://demo.dev",
+      "githubUrl": "https://github.com/demo"
+    }
+  ],
+  "experience": [
+    {
+      "role": "Role Title",
+      "company": "Company Name",
+      "period": "2023 - Present",
+      "location": "Location",
+      "bullets": [
+        "Quantified STAR achievement bullet point 1",
+        "Quantified STAR achievement bullet point 2"
+      ]
+    }
+  ],
+  "certifications": [
+    { "name": "Certification Name", "issuer": "Issuer", "year": "2024" }
+  ]
+}`;
+            const aiResp = await generateAIResponseWithFallback(systemPrompt);
+            const parsed = JSON.parse(aiResp);
+            return res.json({ success: true, portfolio: parsed });
+        }
+
+        res.status(400).json({ error: 'Invalid action specified' });
+    } catch (error) {
+        console.error('Portfolio AI Assist Error:', error);
+        res.status(500).json({ error: 'Failed to process AI assist' });
+    }
+});
+
 // --- COMMUNITY ROAST WALL ROUTES ---
 app.get('/api/roasts', async (req, res) => {
     try {
