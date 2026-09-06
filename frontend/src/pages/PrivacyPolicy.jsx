@@ -1,10 +1,17 @@
 import React from 'react';
 import { ShieldCheck, ArrowLeft } from 'lucide-react';
 import { Link } from 'react-router-dom';
+import SEOHead from '../components/SEOHead';
 
 export default function PrivacyPolicy() {
   return (
     <div className="min-h-screen bg-gray-50 py-12 px-4 sm:px-6 lg:px-8 font-sans">
+      <SEOHead 
+        title="Privacy Policy | PandaLime Career"
+        description="Learn how PandaLime protects your personal data, resume documents, and privacy during AI resume scans and career optimization."
+        canonical="/privacy-policy"
+      />
+
       <div className="max-w-4xl mx-auto">
         <Link to="/" className="inline-flex items-center gap-2 text-gray-500 hover:text-lime-600 transition-colors mb-8 font-medium">
           <ArrowLeft className="w-4 h-4" /> Back to Home

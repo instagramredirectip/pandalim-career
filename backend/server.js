@@ -24,6 +24,7 @@ const __dirname = path.dirname(__filename);
 const app = express();
 const PORT = process.env.PORT || 5000;
 const PAYWALL_ENABLED = process.env.ENABLE_PAYWALL === 'true';
+const BASE_CANONICAL_DOMAIN = 'https://www.pandalime.com';
 
 // --- MIDDLEWARE ---
 app.use(cors());
@@ -38,14 +39,14 @@ app.use((req, res, next) => {
     res.setHeader('Strict-Transport-Security', 'max-age=31536000; includeSubDomains; preload');
     
     // Content-Security-Policy: Prevents XSS and data injection attacks
-    res.setHeader('Content-Security-Policy', "default-src 'self'; script-src 'self' 'unsafe-inline' https://www.googletagmanager.com https://www.google-analytics.com; style-src 'self' 'unsafe-inline'; img-src 'self' data: https:; font-src 'self' data:; connect-src 'self' https://api.groq.com https://*.google.com https://www.google-analytics.com; frame-ancestors 'none'");
+    res.setHeader('Content-Security-Policy', "default-src 'self'; script-src 'self' 'unsafe-inline' https://www.googletagmanager.com https://www.google-analytics.com https://checkout.razorpay.com; style-src 'self' 'unsafe-inline' https:; img-src 'self' data: https:; font-src 'self' data: https:; connect-src 'self' https://api.groq.com https://*.google.com https://www.google-analytics.com https://api.razorpay.com https://pandalime-backend.onrender.com; frame-src https://api.razorpay.com; frame-ancestors 'none'");
     
-    // X-Frame-Options: Prevents clickjacking by denying framing in iframes
-    res.setHeader('X-Frame-Options', 'DENY');
+    // X-Frame-Options: Prevents clickjacking
+    res.setHeader('X-Frame-Options', 'SAMEORIGIN');
+    res.setHeader('X-Content-Type-Options', 'nosniff');
     
     next();
 });
-
 
 // --- INITIALIZE SERVICES EARLY ---
 const sql = neon(process.env.DATABASE_URL);
@@ -216,7 +217,6 @@ app.post('/api/analyze', upload.single('resume'), async (req, res) => {
     }
 });
 
-
 // --- COMMUNITY ROAST WALL ROUTES ---
 app.get('/api/roasts', async (req, res) => {
     try {
@@ -323,198 +323,78 @@ app.post('/api/payment/verify', async (req, res) => {
 });
 
 // =======================================================================
-// 2. DYNAMIC SITEMAP ROUTE
+// 2. DYNAMIC SITEMAP & ROBOTS ROUTE
 // =======================================================================
+app.get('/robots.txt', (req, res) => {
+    const robotsPath = path.resolve(__dirname, '../frontend/dist/robots.txt');
+    const publicRobotsPath = path.resolve(__dirname, '../frontend/public/robots.txt');
+    if (fs.existsSync(robotsPath)) {
+        res.type('text/plain');
+        return res.sendFile(robotsPath);
+    } else if (fs.existsSync(publicRobotsPath)) {
+        res.type('text/plain');
+        return res.sendFile(publicRobotsPath);
+    }
+    res.type('text/plain').send(`User-agent: *\nAllow: /\nDisallow: /api/\nSitemap: ${BASE_CANONICAL_DOMAIN}/sitemap.xml`);
+});
+
 app.get('/sitemap.xml', async (req, res) => {
     try {
-      // Changed to use the initialized `sql` instance
-      const pseoPages = await sql`SELECT slug FROM pseo_pages`;
-      const baseUrl = 'https://pandalime.com';
-      
-      let xml = `<?xml version="1.0" encoding="UTF-8"?>\n`;
-      xml += `<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n`;
-  
-      const staticRoutes = [
-        '/', '/login', '/dashboard', '/roast-wall', 
-        '/contact', '/terms', '/privacy-policy'
-      ];
-  
-      staticRoutes.forEach(route => {
-        xml += `  <url>\n    <loc>${baseUrl}${route}</loc>\n    <changefreq>weekly</changefreq>\n    <priority>${route === '/' ? '1.0' : '0.8'}</priority>\n  </url>\n`;
-      });
-  
-      pseoPages.forEach(page => {
-        xml += `  <url>\n    <loc>${baseUrl}/scanner/${page.slug}</loc>\n    <changefreq>monthly</changefreq>\n    <priority>0.6</priority>\n  </url>\n`;
-      });
-  
-      xml += `</urlset>`;
-  
-      res.header('Content-Type', 'application/xml');
-      res.send(xml);
-      
+        const sitemapPath = path.resolve(__dirname, '../frontend/dist/sitemap.xml');
+        const publicSitemapPath = path.resolve(__dirname, '../frontend/public/sitemap.xml');
+        if (fs.existsSync(sitemapPath)) {
+            res.header('Content-Type', 'application/xml');
+            return res.sendFile(sitemapPath);
+        } else if (fs.existsSync(publicSitemapPath)) {
+            res.header('Content-Type', 'application/xml');
+            return res.sendFile(publicSitemapPath);
+        }
+
+        const staticRoutes = [
+            { path: '/', priority: '1.0', changefreq: 'daily' },
+            { path: '/roast-wall', priority: '0.8', changefreq: 'daily' },
+            { path: '/sitemap', priority: '0.7', changefreq: 'weekly' },
+            { path: '/contact', priority: '0.5', changefreq: 'monthly' },
+            { path: '/privacy-policy', priority: '0.4', changefreq: 'monthly' },
+            { path: '/terms', priority: '0.4', changefreq: 'monthly' },
+            { path: '/login', priority: '0.5', changefreq: 'monthly' },
+            { path: '/dashboard', priority: '0.6', changefreq: 'weekly' }
+        ];
+
+        let xml = `<?xml version="1.0" encoding="UTF-8"?>\n`;
+        xml += `<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n`;
+
+        staticRoutes.forEach(r => {
+            xml += `  <url>\n    <loc>${BASE_CANONICAL_DOMAIN}${r.path}</loc>\n    <lastmod>2026-09-06</lastmod>\n    <changefreq>${r.changefreq}</changefreq>\n    <priority>${r.priority}</priority>\n  </url>\n`;
+        });
+
+        xml += `</urlset>`;
+
+        res.header('Content-Type', 'application/xml');
+        res.send(xml);
     } catch (error) {
-      console.error("Sitemap Generation Error:", error);
-      res.status(500).send("Error generating sitemap");
+        console.error("Sitemap Generation Error:", error);
+        res.status(500).send("Error generating sitemap");
     }
 });
 
 // =======================================================================
 // 3. PROGRAMMATIC SEO INTERCEPTOR
 // =======================================================================
-const seoCache = new Map();
-
-// Helper function to inject canonical, title, and description into HTML
-function injectMetaTags(html, canonicalUrl, title, description) {
-    // Escape quotes in title and description for safe insertion
-    const safeTitle = title.replace(/"/g, '&quot;');
-    const safeDescription = description.replace(/"/g, '&quot;');
-    
-    // Update or add title
-    if (html.includes('<title>')) {
-        html = html.replace(/<title>[^<]*<\/title>/i, `<title>${safeTitle}</title>`);
-    } else {
-        html = html.replace(/<\/head>/i, `<title>${safeTitle}</title>\n  </head>`);
-    }
-    
-    // Update or add meta description
-    if (html.includes('name="description"')) {
-        html = html.replace(/(<meta\s+name="description"\s+content=)"[^"]*"/i, `$1"${safeDescription}"`);
-    } else {
-        html = html.replace(/(<meta\s+name="viewport")/i, `<meta name="description" content="${safeDescription}" />\n    $1`);
-    }
-    
-    // Remove existing canonical and inject new one
-    html = html.replace(/<link\s+rel="canonical"[^>]*>/i, '');
-    html = html.replace(/<\/head>/i, `  <link rel="canonical" href="${canonicalUrl}" />\n  </head>`);
-    
-    return html;
-}
-
-app.get('/scanner/:slug', async (req, res) => {
+app.get('/scanner/:slug', (req, res) => {
     const { slug } = req.params;
-    const protocol = req.protocol;
-    const host = req.get('host');
-    const canonicalUrl = `${protocol}://${host}/scanner/${slug}`;
+    const prerenderedPath = path.resolve(__dirname, `../frontend/dist/scanner/${slug}/index.html`);
     
-    const cacheKey = `${slug}::${canonicalUrl}`;
-    
-    if (seoCache.has(cacheKey)) {
-        return res.send(seoCache.get(cacheKey));
+    if (fs.existsSync(prerenderedPath)) {
+        return res.sendFile(prerenderedPath);
     }
-  
-    try {
-      const seoData = await sql`SELECT * FROM pseo_pages WHERE slug = ${slug}`;
-      let page = seoData[0];
-      
-      // If no data in DB, generate unique SEO content based on slug
-      if (!page) {
-        const formattedTitle = slug
-          .split('-')
-          .map(word => word.charAt(0).toUpperCase() + word.slice(1))
-          .join(' ');
-        
-        page = {
-          title: `${formattedTitle} - Resume ATS Optimization`,
-          description: `Optimize your resume for ${formattedTitle} positions. Get AI-powered feedback to beat ATS algorithms and land interviews.`
-        };
-      }
-  
-      const indexPath = path.resolve(__dirname, '../frontend/dist/index.html');
-      let html = fs.readFileSync(indexPath, 'utf8');
-  
-      const pageTitle = `${page.title} | PandaLime Career Scanner`;
-      html = injectMetaTags(html, canonicalUrl, pageTitle, page.description);
-  
-      const hiddenText = `<div style="display:none;" id="seo-content">
-    <h1>${page.title}</h1>
-    <h2>Optimize your resume for ${slug.replace(/-/g, ' ')} roles</h2>
-    <p>${page.description}</p>
-    <p>Beat the ATS algorithms and land interviews at top companies.</p>
-</div>`;
-      
-      html = html.replace('<body>', `<body>${hiddenText}`);
-  
-      seoCache.set(cacheKey, html);
-      res.send(html);
-    } catch (error) {
-      console.error("pSEO Error:", error);
-      res.sendFile(path.resolve(__dirname, '../frontend/dist/index.html'));
+
+    const defaultIndexPath = path.resolve(__dirname, '../frontend/dist/index.html');
+    if (fs.existsSync(defaultIndexPath)) {
+        return res.sendFile(defaultIndexPath);
     }
-});
 
-// =======================================================================
-// 4. ROUTES FOR STATIC PAGES WITH UNIQUE META TAGS
-// =======================================================================
-
-// Home page
-app.get('/', (req, res) => {
-    const protocol = req.protocol;
-    const host = req.get('host');
-    const canonicalUrl = `${protocol}://${host}/`;
-    const indexPath = path.join(__dirname, '../frontend/dist/index.html');
-    let html = fs.readFileSync(indexPath, 'utf8');
-    html = injectMetaTags(html, canonicalUrl, 'Scan Resume for Free | PandaLime Career Scanner', 'Beat the ATS algorithms with our free AI-powered resume scanner. Get personalized feedback on your resume.');
-    res.send(html);
-});
-
-app.get('/dashboard', (req, res) => {
-    const protocol = req.protocol;
-    const host = req.get('host');
-    const canonicalUrl = `${protocol}://${host}/dashboard`;
-    const indexPath = path.join(__dirname, '../frontend/dist/index.html');
-    let html = fs.readFileSync(indexPath, 'utf8');
-    html = injectMetaTags(html, canonicalUrl, 'Resume Scanner Dashboard | PandaLime Career', 'View your analyzed resume reports, match scores, and AI-powered career insights');
-    res.send(html);
-});
-
-app.get('/roast-wall', (req, res) => {
-    const protocol = req.protocol;
-    const host = req.get('host');
-    const canonicalUrl = `${protocol}://${host}/roast-wall`;
-    const indexPath = path.join(__dirname, '../frontend/dist/index.html');
-    let html = fs.readFileSync(indexPath, 'utf8');
-    html = injectMetaTags(html, canonicalUrl, 'Community Resume Roast Wall | PandaLime', 'See real resume reviews and career feedback from our community. Learn from others mistakes');
-    res.send(html);
-});
-
-app.get('/contact', (req, res) => {
-    const protocol = req.protocol;
-    const host = req.get('host');
-    const canonicalUrl = `${protocol}://${host}/contact`;
-    const indexPath = path.join(__dirname, '../frontend/dist/index.html');
-    let html = fs.readFileSync(indexPath, 'utf8');
-    html = injectMetaTags(html, canonicalUrl, 'Contact PandaLime | Get In Touch', 'Have questions about our AI resume scanner? Contact our support team');
-    res.send(html);
-});
-
-app.get('/terms', (req, res) => {
-    const protocol = req.protocol;
-    const host = req.get('host');
-    const canonicalUrl = `${protocol}://${host}/terms`;
-    const indexPath = path.join(__dirname, '../frontend/dist/index.html');
-    let html = fs.readFileSync(indexPath, 'utf8');
-    html = injectMetaTags(html, canonicalUrl, 'Terms of Service | PandaLime Career Scanner', 'Read our terms and conditions for using PandaLime resume analysis platform');
-    res.send(html);
-});
-
-app.get('/privacy-policy', (req, res) => {
-    const protocol = req.protocol;
-    const host = req.get('host');
-    const canonicalUrl = `${protocol}://${host}/privacy-policy`;
-    const indexPath = path.join(__dirname, '../frontend/dist/index.html');
-    let html = fs.readFileSync(indexPath, 'utf8');
-    html = injectMetaTags(html, canonicalUrl, 'Privacy Policy | PandaLime', 'Learn how we protect your data and privacy when you use PandaLime');
-    res.send(html);
-});
-
-app.get('/login', (req, res) => {
-    const protocol = req.protocol;
-    const host = req.get('host');
-    const canonicalUrl = `${protocol}://${host}/login`;
-    const indexPath = path.join(__dirname, '../frontend/dist/index.html');
-    let html = fs.readFileSync(indexPath, 'utf8');
-    html = injectMetaTags(html, canonicalUrl, 'Sign In | PandaLime Career Scanner', 'Log in to access your resume analysis dashboard');
-    res.send(html);
+    res.status(404).send('Not Found');
 });
 
 // === STATIC FILE SERVING ===
@@ -522,13 +402,19 @@ app.use(express.static(path.join(__dirname, '../frontend/dist')));
 
 // === CATCH-ALL FOR SPA ROUTING (MUST BE ABSOLUTE LAST) ===
 app.get('*', (req, res) => {
-    const protocol = req.protocol;
-    const host = req.get('host');
-    const canonicalUrl = `${protocol}://${host}/`;
-    const indexPath = path.join(__dirname, '../frontend/dist/index.html');
-    let html = fs.readFileSync(indexPath, 'utf8');
-    html = injectMetaTags(html, canonicalUrl, 'Scan Resume for Free | PandaLime Career Scanner', 'Beat the ATS algorithms with our free AI-powered resume scanner');
-    res.send(html);
+    const cleanPath = req.path.replace(/^\/+/, '').replace(/\/+$/, '');
+    const prerenderedPath = path.resolve(__dirname, `../frontend/dist/${cleanPath}/index.html`);
+
+    if (cleanPath && fs.existsSync(prerenderedPath)) {
+        return res.sendFile(prerenderedPath);
+    }
+
+    const defaultIndexPath = path.resolve(__dirname, '../frontend/dist/index.html');
+    if (fs.existsSync(defaultIndexPath)) {
+        return res.sendFile(defaultIndexPath);
+    }
+
+    res.status(404).send('Page Not Found');
 });
 
 // --- START SERVER ---

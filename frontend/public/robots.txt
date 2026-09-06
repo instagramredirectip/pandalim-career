@@ -1,0 +1,18 @@
+# Robots.txt for PandaLime Career
+# https://www.pandalime.com
+
+User-agent: *
+Allow: /
+Allow: /scanner/
+Allow: /roast-wall
+Allow: /sitemap
+Allow: /contact
+Allow: /privacy-policy
+Allow: /terms
+
+# Disallow internal API endpoints & user dashboards without static content
+Disallow: /api/
+
+# XML Sitemap Location
+Sitemap: https://www.pandalime.com/sitemap.xml
+

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { 
   UploadCloud, 
@@ -11,54 +11,157 @@ import {
   Mail, 
   Map, 
   Sparkles,
-  Award
+  Award,
+  ChevronDown,
+  Check,
+  X,
+  Cpu,
+  Target,
+  BarChart3,
+  Layers,
+  Search,
+  Building2
 } from 'lucide-react';
+import SEOHead from '../components/SEOHead';
+import { ROLES, COMPANIES, SPECIAL_NICHES } from '../data/pseoData';
 
 export default function Home() {
+  const [openFaq, setOpenFaq] = useState(null);
+
+  const toggleFaq = (index) => {
+    setOpenFaq(openFaq === index ? null : index);
+  };
+
   const steps = [
     {
       icon: <UploadCloud className="w-8 h-8 text-lime-600" />,
-      title: "1. Upload Resume",
-      description: "Simply upload your current resume in PDF format. No account required to get your basic ATS score."
+      title: "1. Upload Your Resume (PDF)",
+      description: "Upload your current resume in standard PDF format. No login or credit card required to get your instant baseline ATS match score."
     },
     {
       icon: <ScanLine className="w-8 h-8 text-lime-600" />,
-      title: "2. AI ATS Scan",
-      description: "Our advanced AI analyzes your resume against the job description, finding exactly what you are missing."
+      title: "2. Paste Job Description & AI Scan",
+      description: "Our neural parser compares your resume against the target job posting, identifying critical missing skills, hard keywords, and formatting blockers."
     },
     {
       icon: <Briefcase className="w-8 h-8 text-lime-600" />,
-      title: "3. Land Interviews",
-      description: "Follow our AI critique to optimize your keywords, beat the resume robots, and get hired at top tier companies."
+      title: "3. Optimize & Land Interviews",
+      description: "Follow the AI critique to inject missing keywords, optimize bullet points with the STAR method, and bypass corporate recruiter screening filters."
+    }
+  ];
+
+  const atsPillars = [
+    {
+      icon: <Target className="w-6 h-6 text-lime-600" />,
+      title: "Semantic Keyword Match",
+      desc: "ATS software calculates semantic relevance between job requirements and your resume. We highlight exact technical tools, soft skills, and certifications you are missing."
+    },
+    {
+      icon: <Layers className="w-6 h-6 text-lime-600" />,
+      title: "Format & Parser Compliance",
+      desc: "Tables, two-column layouts, and unsupported text boxes cause parsing failures. PandaLime checks that your document structure extracts cleanly into standard ATS fields."
+    },
+    {
+      icon: <BarChart3 className="w-6 h-6 text-lime-600" />,
+      title: "STAR Impact Scoring",
+      desc: "Recruiters and AI models prioritize quantified results. We evaluate your bullet points for action verbs, measurable metrics, and demonstrated business outcomes."
+    },
+    {
+      icon: <Cpu className="w-6 h-6 text-lime-600" />,
+      title: "Recruiter Filter Simulation",
+      desc: "Simulate how enterprise applicant systems like Workday, Taleo, Greenhouse, and Lever rank candidate pools before human recruiters ever open a file."
     }
   ];
 
   const features = [
     {
-      title: "Deep ATS Keyword Matching",
-      description: "Discover the exact skills and keywords you are missing that the Applicant Tracking System is looking for.",
+      title: "Deep ATS Keyword Gap Analysis",
+      description: "Discover the exact hard skills, technologies, and industry terms the Applicant Tracking System is searching for in your application.",
       premium: false
     },
     {
-      title: "Actionable AI Critique",
-      description: "Get a punchy, straightforward paragraph explaining exactly why a recruiter might reject you and how to fix it.",
+      title: "Actionable AI Resume Critique",
+      description: "Get a punchy, candid paragraph explaining exactly why a corporate recruiter or filter algorithm would reject your resume and how to fix it.",
       premium: false
     },
     {
-      title: "Premium Formatting & PDF Gen",
-      description: "Unlock our premium tier to let AI automatically rewrite your bullet points and generate an ATS-friendly PDF.",
+      title: "AI-Rewritten STAR Bullet Points",
+      description: "Let our advanced AI rewrite your weak experience bullets into high-impact, keyword-rich statements following Google's X-Y-Z formula.",
       premium: true
     },
     {
-      title: "Cover Letter Generation",
-      description: "Instantly generate a highly-targeted cover letter matched perfectly to the job description and your experience.",
+      title: "Tailored AI Cover Letter",
+      description: "Instantly generate a tailored 150-word cover letter specifically matched to the job description and your unique achievements.",
       premium: true
+    }
+  ];
+
+  const faqs = [
+    {
+      question: "What is an ATS (Applicant Tracking System) resume scanner?",
+      answer: "An ATS resume scanner is software that parses, indexes, and scores resumes against job descriptions before a human recruiter reads them. Over 98% of Fortune 500 companies use ATS tools like Workday, Taleo, Greenhouse, and Lever to filter out unqualified applicants based on keyword match percentage and document format."
+    },
+    {
+      question: "How do I scan my resume for free on PandaLime?",
+      answer: "Simply navigate to the PandaLime scanner, upload your resume in PDF format, paste the target job description, and click 'Scan My Resume Now'. The AI will calculate your ATS match score, identify missing keywords, and provide an actionable critique in seconds without requiring an account."
+    },
+    {
+      question: "What is considered a good ATS match score?",
+      answer: "An ATS match score of 75% or higher is generally considered competitive and likely to pass corporate automated screening thresholds. Scores below 60% are typically filtered out before human review due to insufficient keyword density or poor role alignment."
+    },
+    {
+      question: "Which Applicant Tracking Systems does PandaLime support?",
+      answer: "PandaLime is calibrated against all major enterprise ATS platforms including Workday, Taleo (Oracle), Greenhouse, Lever, iCIMS, SAP SuccessFactors, BambooHR, and Ashby."
+    },
+    {
+      question: "How does PandaLime detect missing keywords?",
+      answer: "PandaLime uses natural language processing (NLP) and large language models to perform bidirectional semantic matching. It extracts core competencies, tools, programming languages, and industry frameworks from the job description and highlights exactly which keywords are absent or weak in your resume."
+    },
+    {
+      question: "Is my resume data kept private and secure?",
+      answer: "Yes. Your resume data is processed strictly in memory to generate your analysis. We never sell, share, or monetize your resume text or personal information with third-party recruiters, advertisers, or data brokers."
+    }
+  ];
+
+  // Schema: SoftwareApplication + WebSite + FAQPage
+  const jsonLd = [
+    {
+      "@context": "https://schema.org",
+      "@type": "SoftwareApplication",
+      "name": "PandaLime AI Resume Scanner",
+      "operatingSystem": "All Web Browsers",
+      "applicationCategory": "BusinessApplication",
+      "offers": {
+        "@type": "Offer",
+        "price": "0",
+        "priceCurrency": "USD"
+      },
+      "description": "Free AI-powered ATS resume scanner and checker. Scan resumes against job descriptions, uncover missing keywords, and optimize for Workday, Taleo, Greenhouse, and Lever."
+    },
+    {
+      "@context": "https://schema.org",
+      "@type": "FAQPage",
+      "mainEntity": faqs.map(faq => ({
+        "@type": "Question",
+        "name": faq.question,
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": faq.answer
+        }
+      }))
     }
   ];
 
   return (
     <div className="min-h-screen bg-gray-50 font-sans text-gray-900">
-      {/* Inline styles for custom marquee animation without needing tailwind.config edits */}
+      <SEOHead 
+        title="Free AI Resume Scanner & ATS Resume Checker | PandaLime"
+        description="Scan your resume for free with PandaLime AI. Beat corporate ATS screening algorithms (Workday, Taleo, Greenhouse), find missing keywords, and get recruiter-ready bullet rewrites."
+        canonical="/"
+        jsonLd={jsonLd}
+      />
+
+      {/* Inline styles for custom marquee animation */}
       <style>
         {`
           @keyframes marquee {
@@ -68,7 +171,7 @@ export default function Home() {
           .animate-marquee {
             display: flex;
             width: 200%;
-            animation: marquee 20s linear infinite;
+            animation: marquee 25s linear infinite;
           }
           .animate-marquee:hover {
             animation-play-state: paused;
@@ -76,82 +179,112 @@ export default function Home() {
         `}
       </style>
 
-   {/* --- HERO SECTION --- */}
-      <header className="relative overflow-hidden bg-white pt-24 pb-32 border-b border-gray-200">
+      {/* --- TOP NAVBAR --- */}
+      <nav className="bg-white/95 backdrop-blur-md border-b border-gray-200 sticky top-0 z-50">
+        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-4 flex justify-between items-center">
+          <Link to="/" className="flex items-center gap-2 text-gray-900 font-black text-2xl tracking-tight">
+            <div className="w-9 h-9 bg-lime-500 rounded-xl flex items-center justify-center text-white shadow-md shadow-lime-500/20">
+              <Sparkles className="w-5 h-5" />
+            </div>
+            <span>PandaLime</span>
+          </Link>
+          <div className="flex items-center gap-4">
+            <Link to="/roast-wall" className="text-sm font-semibold text-gray-600 hover:text-lime-600 transition-colors hidden sm:block">
+              Community Wall
+            </Link>
+            <Link to="/sitemap" className="text-sm font-semibold text-gray-600 hover:text-lime-600 transition-colors hidden md:block">
+              Directory
+            </Link>
+            <Link 
+              to="/dashboard" 
+              className="px-5 py-2.5 bg-lime-500 hover:bg-lime-600 text-white rounded-xl font-bold text-sm shadow-md shadow-lime-500/20 transition-all hover:-translate-y-0.5"
+            >
+              Scan Resume Free
+            </Link>
+          </div>
+        </div>
+      </nav>
+
+      {/* --- HERO SECTION --- */}
+      <header className="relative overflow-hidden bg-white pt-20 pb-28 border-b border-gray-200">
         <div className="absolute inset-0 bg-[radial-gradient(#e5e7eb_1px,transparent_1px)] [background-size:16px_16px] opacity-30"></div>
         <div className="max-w-6xl mx-auto px-4 relative z-10 text-center">
           
           <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-lime-100 text-lime-800 font-semibold text-sm mb-6 animate-bounce">
             <Sparkles className="w-4 h-4" />
-            <span>AI-Powered Resume Optimization</span>
+            <span>Free AI-Powered ATS Resume Scanner & Checker</span>
           </div>
           
-          <h1 className="text-5xl md:text-7xl font-extrabold tracking-tight text-gray-900 mb-6 leading-tight">
-            Beat the ATS. <br className="hidden md:block" />
-            <span className="text-transparent bg-clip-text bg-gradient-to-r from-lime-500 to-green-600">Land Your Dream Job.</span>
+          <h1 className="text-4xl sm:text-6xl md:text-7xl font-extrabold tracking-tight text-gray-900 mb-6 leading-tight max-w-5xl mx-auto">
+            Free AI Resume Scanner & <br className="hidden md:block" />
+            <span className="text-transparent bg-clip-text bg-gradient-to-r from-lime-500 to-green-600">ATS Keyword Checker</span>
           </h1>
           
-          <p className="text-lg md:text-xl text-gray-600 max-w-2xl mx-auto mb-10 leading-relaxed">
-            Stop getting rejected by robots. PandaLime uses advanced AI to scan your resume, uncover missing keywords, and give you the exact steps to land interviews at top companies.
+          <p className="text-lg md:text-xl text-gray-600 max-w-3xl mx-auto mb-10 leading-relaxed">
+            Over 98% of Fortune 500 companies use Applicant Tracking Systems (ATS) to filter resumes. PandaLime scans your resume against any job description, uncovers missing keywords, and helps you beat the bots to land interviews.
           </p>
 
-          {/* --- FIX: Buttons Grouped Together --- */}
           <div className="flex flex-col items-center gap-4">
             <div className="flex flex-col sm:flex-row justify-center items-center gap-4 w-full sm:w-auto">
-              
               <Link 
                 to="/dashboard" 
-                className="w-full sm:w-auto px-8 py-4 bg-lime-500 hover:bg-lime-600 text-white rounded-xl font-bold text-lg shadow-lg shadow-lime-500/30 transition-all hover:-translate-y-1 flex items-center justify-center gap-2"
+                className="w-full sm:w-auto px-8 py-4 bg-lime-500 hover:bg-lime-600 text-white rounded-xl font-bold text-lg shadow-lg shadow-lime-500/30 transition-all hover:-translate-y-1 flex items-center justify-center gap-2 cursor-pointer"
               >
                 Scan Resume for Free <ArrowRight className="w-5 h-5" />
               </Link>
 
               <Link
                 to="/roast-wall" 
-                className="w-full sm:w-auto px-8 py-4 bg-white hover:bg-gray-50 text-gray-700 border border-gray-300 rounded-xl font-bold text-lg shadow-sm transition-all hover:-translate-y-1 flex items-center justify-center gap-2"
+                className="w-full sm:w-auto px-8 py-4 bg-white hover:bg-gray-50 text-gray-700 border border-gray-300 rounded-xl font-bold text-lg shadow-sm transition-all hover:-translate-y-1 flex items-center justify-center gap-2 cursor-pointer"
               >
-            View Community
+                View Community Wall
               </Link>
-
             </div>
             
-            {/* Moved below the buttons for cleaner alignment */}
-            <p className="text-sm text-gray-500 font-medium mt-2">No login required for basic scan!</p>
+            <p className="text-sm text-gray-500 font-medium mt-2 flex items-center gap-2">
+              <CheckCircle2 className="w-4 h-4 text-lime-500" /> Free instant scan • No credit card required • PDF supported
+            </p>
           </div>
 
         </div>
       </header>
 
-      {/* --- MARQUEE / SOCIAL PROOF --- */}
-      <section className="py-10 bg-gray-900 text-white overflow-hidden flex flex-col items-center">
-        <p className="text-sm font-semibold text-gray-400 uppercase tracking-widest mb-6 text-center">
-          Helping candidates get hired at industry giants
+      {/* --- SUPPORTED ATS PLATFORMS / MARQUEE --- */}
+      <section className="py-8 bg-gray-900 text-white overflow-hidden flex flex-col items-center border-b border-gray-800">
+        <p className="text-xs font-bold text-gray-400 uppercase tracking-widest mb-4 text-center">
+          Compatible with all major enterprise applicant tracking systems
         </p>
         <div className="w-full overflow-hidden relative">
           <div className="absolute inset-y-0 left-0 w-24 bg-gradient-to-r from-gray-900 to-transparent z-10"></div>
           <div className="absolute inset-y-0 right-0 w-24 bg-gradient-to-l from-gray-900 to-transparent z-10"></div>
           
-          <div className="animate-marquee flex items-center gap-16 md:gap-32 px-8">
-            {/* Repeated logos to create infinite scroll effect */}
-            {['Google', 'Microsoft', 'Amazon', 'Meta', 'Netflix', 'Apple', 'Spotify', 'Google', 'Microsoft', 'Amazon', 'Meta', 'Netflix', 'Apple', 'Spotify'].map((company, i) => (
-              <span key={i} className="text-2xl md:text-4xl font-black text-gray-600 tracking-tighter hover:text-white transition-colors cursor-default">
-                {company}
+          <div className="animate-marquee flex items-center gap-12 md:gap-24 px-8">
+            {['Workday', 'Taleo (Oracle)', 'Greenhouse', 'Lever', 'iCIMS', 'SAP SuccessFactors', 'BambooHR', 'Ashby', 'SmartRecruiters', 'Workday', 'Taleo (Oracle)', 'Greenhouse', 'Lever', 'iCIMS', 'SAP SuccessFactors', 'BambooHR', 'Ashby'].map((ats, i) => (
+              <span key={i} className="text-lg md:text-xl font-bold text-gray-400 tracking-tight hover:text-white transition-colors cursor-default whitespace-nowrap">
+                {ats}
               </span>
             ))}
           </div>
         </div>
       </section>
 
-      {/* --- HOW IT WORKS (INFOGRAPHIC) --- */}
-      <section className="max-w-6xl mx-auto px-4 py-24">
+      {/* --- HOW IT WORKS --- */}
+      <section className="max-w-6xl mx-auto px-4 py-20">
         <div className="text-center mb-16">
-          <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">How PandaLime Works</h2>
-          <p className="text-gray-600 max-w-2xl mx-auto text-lg">Three simple steps to bypass the resume screening algorithms and get your application in front of real humans.</p>
+          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-lime-100 text-lime-800 font-bold text-xs uppercase tracking-wider mb-3">
+            Simple 3-Step Process
+          </div>
+          <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
+            How PandaLime Scans & Optimizes Your Resume
+          </h2>
+          <p className="text-gray-600 max-w-2xl mx-auto text-lg">
+            Three straightforward steps to bypass automated resume filters and get your profile seen by hiring managers.
+          </p>
         </div>
         
         <div className="grid md:grid-cols-3 gap-8">
           {steps.map((step, i) => (
-            <div key={i} className="bg-white p-8 rounded-3xl shadow-sm border border-gray-100 hover:shadow-xl transition-all hover:-translate-y-2 relative group">
+            <div key={i} className="bg-white p-8 rounded-3xl shadow-sm border border-gray-200 hover:shadow-xl transition-all hover:-translate-y-2 relative group">
               <div className="w-16 h-16 bg-lime-50 rounded-2xl flex items-center justify-center mb-6 group-hover:bg-lime-100 transition-colors">
                 {step.icon}
               </div>
@@ -162,21 +295,47 @@ export default function Home() {
         </div>
       </section>
 
-      {/* --- FEATURES & PREMIUM SHOWCASE --- */}
-      <section className="bg-white py-24 border-t border-gray-200">
+      {/* --- DEEP ATS ANALYSIS PILLARS --- */}
+      <section className="bg-white py-20 border-y border-gray-200">
+        <div className="max-w-6xl mx-auto px-4">
+          <div className="text-center mb-16">
+            <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
+              What Does an ATS Resume Checker Actually Test?
+            </h2>
+            <p className="text-gray-600 max-w-2xl mx-auto text-lg">
+              Enterprise recruiting software uses 4 critical evaluation metrics to rank candidates.
+            </p>
+          </div>
+
+          <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-8">
+            {atsPillars.map((pillar, idx) => (
+              <div key={idx} className="bg-gray-50 rounded-2xl p-6 border border-gray-200 hover:border-lime-400 transition-colors">
+                <div className="w-12 h-12 bg-white rounded-xl shadow-sm border border-gray-100 flex items-center justify-center mb-4">
+                  {pillar.icon}
+                </div>
+                <h3 className="text-lg font-bold text-gray-900 mb-2">{pillar.title}</h3>
+                <p className="text-sm text-gray-600 leading-relaxed">{pillar.desc}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* --- FEATURES & DASHBOARD SHOWCASE --- */}
+      <section className="py-20">
         <div className="max-w-6xl mx-auto px-4">
           <div className="flex flex-col md:flex-row items-center gap-16">
             <div className="flex-1 space-y-8">
-              <h2 className="text-3xl md:text-4xl font-bold text-gray-900">
-                Everything you need to build a winning application.
-              </h2>
-              <p className="text-lg text-gray-600">
-                Start with our free deep-dive ATS scan, then unlock premium features to let our AI do the heavy lifting for you.
-              </p>
+              <div>
+                <span className="text-lime-600 font-bold text-sm uppercase tracking-wider">Complete Career Toolkit</span>
+                <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mt-2">
+                  Everything You Need to Beat the Resume Screening Bots
+                </h2>
+              </div>
               
               <div className="space-y-6">
                 {features.map((feature, i) => (
-                  <div key={i} className="flex gap-4">
+                  <div key={i} className="flex gap-4 bg-white p-5 rounded-2xl border border-gray-200 shadow-sm">
                     <div className="flex-shrink-0 mt-1">
                       {feature.premium ? (
                         <Award className="w-6 h-6 text-amber-500" />
@@ -185,41 +344,56 @@ export default function Home() {
                       )}
                     </div>
                     <div>
-                      <h4 className="text-lg font-bold text-gray-900 flex items-center gap-2">
+                      <h3 className="text-lg font-bold text-gray-900 flex items-center gap-2">
                         {feature.title} 
                         {feature.premium && <span className="text-xs bg-amber-100 text-amber-800 px-2 py-0.5 rounded-full font-bold">Premium</span>}
-                      </h4>
-                      <p className="text-gray-600 mt-1">{feature.description}</p>
+                      </h3>
+                      <p className="text-gray-600 mt-1 text-sm">{feature.description}</p>
                     </div>
                   </div>
                 ))}
               </div>
+
+              <div>
+                <Link 
+                  to="/dashboard"
+                  className="inline-flex items-center gap-2 px-8 py-4 bg-gray-900 hover:bg-black text-white rounded-xl font-bold text-base shadow-lg transition-all"
+                >
+                  Start Your Free Resume Scan <ArrowRight className="w-5 h-5" />
+                </Link>
+              </div>
             </div>
             
-            <div className="flex-1 w-full bg-gray-50 rounded-3xl p-8 border border-gray-200 shadow-inner relative overflow-hidden">
-              <div className="absolute top-0 right-0 bg-lime-500 text-white font-bold text-xs px-4 py-1 rounded-bl-xl shadow-md">
-                Dashboard Preview
+            <div className="flex-1 w-full bg-gray-900 rounded-3xl p-8 border border-gray-800 shadow-2xl relative overflow-hidden text-white">
+              <div className="absolute top-0 right-0 bg-lime-500 text-gray-900 font-bold text-xs px-4 py-1.5 rounded-bl-xl shadow-md">
+                Live Scanner Output
               </div>
-              <div className="space-y-4">
-                <div className="h-4 bg-gray-200 rounded w-1/3 mb-8"></div>
-                <div className="bg-white p-6 rounded-2xl shadow-sm border border-gray-100">
-                  <div className="flex justify-between items-center mb-4">
-                    <div className="h-5 bg-gray-200 rounded w-1/4"></div>
-                    <div className="h-8 w-16 bg-lime-100 text-lime-600 font-bold flex items-center justify-center rounded-lg">88%</div>
+              
+              <div className="space-y-6 mt-4">
+                <div className="flex justify-between items-center pb-4 border-b border-gray-800">
+                  <div>
+                    <p className="text-xs text-gray-400 uppercase tracking-wider font-semibold">Target Match Score</p>
+                    <div className="text-5xl font-black text-lime-400 mt-1">88%</div>
                   </div>
-                  <div className="space-y-2">
-                    <div className="h-3 bg-gray-100 rounded w-full"></div>
-                    <div className="h-3 bg-gray-100 rounded w-5/6"></div>
-                    <div className="h-3 bg-gray-100 rounded w-4/6"></div>
+                  <span className="px-3 py-1 bg-lime-500/20 text-lime-400 rounded-full text-xs font-bold border border-lime-500/30">
+                    High ATS Pass Rate
+                  </span>
+                </div>
+
+                <div>
+                  <p className="text-xs text-gray-400 uppercase tracking-wider font-semibold mb-3">Detected Missing Keywords</p>
+                  <div className="flex flex-wrap gap-2">
+                    {['Distributed Systems', 'Redis Caching', 'Kubernetes', 'CI/CD Pipelines', 'GraphQL'].map((kw, idx) => (
+                      <span key={idx} className="px-3 py-1 bg-red-500/10 text-red-400 border border-red-500/20 rounded-lg text-xs font-medium">
+                        + {kw}
+                      </span>
+                    ))}
                   </div>
                 </div>
-                <div className="bg-white p-6 rounded-2xl shadow-sm border border-gray-100 opacity-70">
-                   <div className="h-5 bg-gray-200 rounded w-1/3 mb-4"></div>
-                   <div className="flex gap-2 flex-wrap">
-                      <div className="h-6 w-20 bg-gray-100 rounded-full"></div>
-                      <div className="h-6 w-24 bg-gray-100 rounded-full"></div>
-                      <div className="h-6 w-16 bg-gray-100 rounded-full"></div>
-                   </div>
+
+                <div className="bg-gray-800/60 p-4 rounded-xl border border-gray-700 text-xs text-gray-300">
+                  <p className="font-bold text-lime-400 mb-1">AI Recruiter Critique:</p>
+                  <p className="italic">"Your bullet points show strong leadership, but you lack specific cloud deployment keywords and measurable scale numbers in your primary experience section."</p>
                 </div>
               </div>
             </div>
@@ -227,40 +401,174 @@ export default function Home() {
         </div>
       </section>
 
+      {/* --- COMPARISON TABLE --- */}
+      <section className="bg-white py-20 border-t border-gray-200">
+        <div className="max-w-5xl mx-auto px-4">
+          <div className="text-center mb-14">
+            <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-3">
+              Why PandaLime Outperforms Traditional Resume Checkers
+            </h2>
+            <p className="text-gray-600 text-lg">
+              Compare AI-powered contextual scanning against generic keyword counters.
+            </p>
+          </div>
 
+          <div className="overflow-x-auto">
+            <table className="w-full text-left border-collapse">
+              <thead>
+                <tr className="border-b-2 border-gray-200">
+                  <th className="py-4 px-6 text-sm font-bold text-gray-500 uppercase tracking-wider">Features</th>
+                  <th className="py-4 px-6 text-sm font-extrabold text-lime-600 uppercase tracking-wider bg-lime-50/50 rounded-t-xl">PandaLime AI Scanner</th>
+                  <th className="py-4 px-6 text-sm font-bold text-gray-500 uppercase tracking-wider">Traditional Checkers</th>
+                  <th className="py-4 px-6 text-sm font-bold text-gray-500 uppercase tracking-wider">Manual Review</th>
+                </tr>
+              </thead>
+              <tbody className="divide-y divide-gray-200 text-sm">
+                <tr>
+                  <td className="py-4 px-6 font-semibold text-gray-900">Instant ATS Match Score (%)</td>
+                  <td className="py-4 px-6 bg-lime-50/50 text-lime-700 font-bold flex items-center gap-2"><Check className="w-5 h-5 text-lime-600" /> Yes (Instant)</td>
+                  <td className="py-4 px-6 text-gray-600">Basic Word Count</td>
+                  <td className="py-4 px-6 text-gray-600">Subjective</td>
+                </tr>
+                <tr>
+                  <td className="py-4 px-6 font-semibold text-gray-900">Semantic Missing Keywords</td>
+                  <td className="py-4 px-6 bg-lime-50/50 text-lime-700 font-bold flex items-center gap-2"><Check className="w-5 h-5 text-lime-600" /> Contextual AI</td>
+                  <td className="py-4 px-6 text-gray-400 flex items-center gap-2"><X className="w-5 h-5 text-red-400" /> Exact match only</td>
+                  <td className="py-4 px-6 text-gray-600">Partial</td>
+                </tr>
+                <tr>
+                  <td className="py-4 px-6 font-semibold text-gray-900">AI-Rewritten STAR Bullets</td>
+                  <td className="py-4 px-6 bg-lime-50/50 text-lime-700 font-bold flex items-center gap-2"><Check className="w-5 h-5 text-lime-600" /> Included</td>
+                  <td className="py-4 px-6 text-gray-400 flex items-center gap-2"><X className="w-5 h-5 text-red-400" /> None</td>
+                  <td className="py-4 px-6 text-gray-600">Slow / Expensive</td>
+                </tr>
+                <tr>
+                  <td className="py-4 px-6 font-semibold text-gray-900">Tailored Cover Letter Generator</td>
+                  <td className="py-4 px-6 bg-lime-50/50 text-lime-700 font-bold flex items-center gap-2"><Check className="w-5 h-5 text-lime-600" /> 1-Click Draft</td>
+                  <td className="py-4 px-6 text-gray-400 flex items-center gap-2"><X className="w-5 h-5 text-red-400" /> None</td>
+                  <td className="py-4 px-6 text-gray-600">$100+ per draft</td>
+                </tr>
+                <tr>
+                  <td className="py-4 px-6 font-semibold text-gray-900">Turnaround Speed</td>
+                  <td className="py-4 px-6 bg-lime-50/50 text-lime-700 font-bold">15 Seconds</td>
+                  <td className="py-4 px-6 text-gray-600">1 - 2 Minutes</td>
+                  <td className="py-4 px-6 text-gray-600">3 - 7 Days</td>
+                </tr>
+                <tr>
+                  <td className="py-4 px-6 font-semibold text-gray-900">Free Baseline Scan</td>
+                  <td className="py-4 px-6 bg-lime-50/50 text-lime-700 font-bold flex items-center gap-2"><Check className="w-5 h-5 text-lime-600" /> 100% Free</td>
+                  <td className="py-4 px-6 text-gray-600">Credit card paywall</td>
+                  <td className="py-4 px-6 text-gray-400 flex items-center gap-2"><X className="w-5 h-5 text-red-400" /> Expensive</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </section>
 
+      {/* --- FAQ ACCORDION SECTION WITH JSON-LD SCHEMA --- */}
+      <section className="py-20 bg-gray-50 border-t border-gray-200">
+        <div className="max-w-4xl mx-auto px-4">
+          <div className="text-center mb-14">
+            <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-3">
+              Frequently Asked Questions About ATS Resume Scanning
+            </h2>
+            <p className="text-gray-600 text-lg">
+              Everything you need to know about Applicant Tracking Systems, keyword scoring, and recruiter screening.
+            </p>
+          </div>
 
+          <div className="space-y-4">
+            {faqs.map((faq, index) => (
+              <div 
+                key={index} 
+                className="bg-white rounded-2xl border border-gray-200 overflow-hidden shadow-sm transition-all"
+              >
+                <button
+                  onClick={() => toggleFaq(index)}
+                  className="w-full p-6 text-left font-bold text-lg text-gray-900 flex justify-between items-center gap-4 hover:text-lime-600 transition-colors"
+                >
+                  <span>{faq.question}</span>
+                  <ChevronDown className={`w-5 h-5 text-gray-400 transition-transform duration-300 shrink-0 ${openFaq === index ? 'rotate-180 text-lime-600' : ''}`} />
+                </button>
+                {openFaq === index && (
+                  <div className="px-6 pb-6 text-gray-600 leading-relaxed border-t border-gray-100 pt-4 text-base">
+                    {faq.answer}
+                  </div>
+                )}
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
 
-<div className="max-w-6xl mx-auto px-4 py-12 border-t border-gray-100">
-  <h3 className="text-xl font-bold text-gray-800 mb-6 text-center">
-    Trending ATS Keyword Scanners
-  </h3>
-  <div className="flex flex-wrap justify-center gap-3">
-    {/* Hardcode your top 15-20 most valuable/highest-paying niches here */}
-    {[
-      "Software Engineer at Google", "Data Scientist at Amazon", 
-      "React Developer at TCS", "Product Manager at Microsoft",
-      "Python Developer at Infosys", "Cloud Architect at Wipro",
-      "Full Stack Developer at Netflix", "AI Engineer at Meta"
-    ].map((niche) => {
-      // Convert "Software Engineer at Google" to "software-engineer-at-google"
-      const slug = niche.toLowerCase().replace(/ /g, '-');
-      return (
-        <a 
-          key={slug} 
-          href={`/scanner/${slug}`} 
-          className="px-4 py-2 bg-gray-50 hover:bg-green-50 hover:text-green-600 text-gray-600 text-sm rounded-full transition-colors border border-gray-200"
-        >
-          {niche}
-        </a>
-      );
-    })}
-  </div>
-</div>
+      {/* --- INTERNAL LINK DIRECTORY (TOP ROLES & COMPANIES) --- */}
+      <section className="bg-white py-16 border-t border-gray-200">
+        <div className="max-w-6xl mx-auto px-4 space-y-12">
+          
+          {/* Roles Grid */}
+          <div>
+            <div className="flex items-center gap-3 mb-6">
+              <Briefcase className="w-6 h-6 text-lime-600" />
+              <h3 className="text-2xl font-bold text-gray-900">
+                Explore ATS Keyword Scanners by Career Role
+              </h3>
+            </div>
+            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-3">
+              {ROLES.map((role) => (
+                <Link
+                  key={role.id}
+                  to={`/scanner/${role.id}`}
+                  className="p-3 bg-gray-50 hover:bg-lime-50 hover:border-lime-300 text-gray-700 hover:text-lime-800 text-sm font-medium rounded-xl border border-gray-200 transition-all text-center block"
+                >
+                  {role.title} ATS Scan
+                </Link>
+              ))}
+            </div>
+          </div>
 
+          {/* Companies Grid */}
+          <div>
+            <div className="flex items-center gap-3 mb-6">
+              <Building2 className="w-6 h-6 text-lime-600" />
+              <h3 className="text-2xl font-bold text-gray-900">
+                Targeted Resume Scanners for Top Tech Employers
+              </h3>
+            </div>
+            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-3">
+              {COMPANIES.map((company) => (
+                <Link
+                  key={company.id}
+                  to={`/scanner/software-engineer-at-${company.id}`}
+                  className="p-3 bg-gray-50 hover:bg-lime-50 hover:border-lime-300 text-gray-700 hover:text-lime-800 text-sm font-medium rounded-xl border border-gray-200 transition-all text-center block"
+                >
+                  {company.name} Resume Scan
+                </Link>
+              ))}
+            </div>
+          </div>
 
+          {/* Special Niches */}
+          <div>
+            <div className="flex items-center gap-3 mb-4">
+              <Search className="w-5 h-5 text-lime-600" />
+              <h4 className="text-lg font-bold text-gray-900">Popular Special Hiring Tracks</h4>
+            </div>
+            <div className="flex flex-wrap gap-3">
+              {SPECIAL_NICHES.map((niche) => (
+                <Link
+                  key={niche.slug}
+                  to={`/scanner/${niche.slug}`}
+                  className="px-4 py-2 bg-gray-50 hover:bg-lime-50 hover:border-lime-300 text-gray-700 hover:text-lime-800 text-xs font-semibold rounded-full border border-gray-200 transition-all"
+                >
+                  {niche.title}
+                </Link>
+              ))}
+            </div>
+          </div>
 
-
+        </div>
+      </section>
 
       {/* --- FOOTER & SEO LINKS --- */}
       <footer className="bg-gray-900 text-gray-300 py-16 border-t border-gray-800">
@@ -269,47 +577,47 @@ export default function Home() {
           {/* Brand */}
           <div className="md:col-span-2">
             <Link to="/" className="flex items-center gap-2 text-white text-2xl font-black tracking-tight mb-4">
-              <div className="w-8 h-8 bg-lime-400 rounded-lg flex items-center justify-center">
-                 <Sparkles className="text-gray-900 w-5 h-5" />
+              <div className="w-8 h-8 bg-lime-400 rounded-lg flex items-center justify-center text-gray-900">
+                <Sparkles className="w-5 h-5" />
               </div>
-              PandaLime
+              PandaLime Career
             </Link>
-            <p className="text-gray-400 mb-6 max-w-sm">
-              Helping job seekers worldwide beat the Applicant Tracking Systems and land their dream careers through the power of AI.
+            <p className="text-gray-400 mb-6 max-w-sm text-sm leading-relaxed">
+              Helping job seekers worldwide scan resumes for free, uncover critical ATS keyword gaps, and land high-paying careers through artificial intelligence.
             </p>
-            <div className="flex items-center gap-2 text-lime-400">
-              <Mail className="w-5 h-5" />
+            <div className="flex items-center gap-2 text-lime-400 text-sm">
+              <Mail className="w-4 h-4" />
               <a href="mailto:microapkdeveolper@gmail.com" className="hover:text-white transition-colors">
                 microapkdeveolper@gmail.com
               </a>
             </div>
           </div>
 
-        
-{/* Legal & SEO */}
+          {/* Legal & Policies */}
           <div>
             <h4 className="text-white font-bold mb-4 uppercase tracking-wider text-sm">Legal & Policies</h4>
-            <ul className="space-y-3">
+            <ul className="space-y-3 text-sm">
               <li><Link to="/privacy-policy" className="hover:text-lime-400 transition-colors flex items-center gap-2"><ShieldCheck className="w-4 h-4"/> Privacy Policy</Link></li>
               <li><Link to="/terms" className="hover:text-lime-400 transition-colors flex items-center gap-2"><FileText className="w-4 h-4"/> Terms & Conditions</Link></li>
-              <li><Link to="/contact" className="hover:text-lime-400 transition-colors flex items-center gap-2"><Mail className="w-4 h-4"/> Contact Us</Link></li>
+              <li><Link to="/contact" className="hover:text-lime-400 transition-colors flex items-center gap-2"><Mail className="w-4 h-4"/> Contact Support</Link></li>
             </ul>
           </div>
 
           {/* Navigation */}
           <div>
-            <h4 className="text-white font-bold mb-4 uppercase tracking-wider text-sm">Navigation</h4>
-            <ul className="space-y-3">
+            <h4 className="text-white font-bold mb-4 uppercase tracking-wider text-sm">Directory & App</h4>
+            <ul className="space-y-3 text-sm">
               <li><Link to="/" className="hover:text-lime-400 transition-colors flex items-center gap-2"><Map className="w-4 h-4"/> Home</Link></li>
-              <li><Link to="/dashboard" className="hover:text-lime-400 transition-colors flex items-center gap-2"><ScanLine className="w-4 h-4"/> Scan Resume</Link></li>
-              <li><Link to="/sitemap" className="hover:text-lime-400 transition-colors flex items-center gap-2"><Map className="w-4 h-4"/> Sitemap</Link></li>
+              <li><Link to="/dashboard" className="hover:text-lime-400 transition-colors flex items-center gap-2"><ScanLine className="w-4 h-4"/> Free Resume Scanner</Link></li>
+              <li><Link to="/roast-wall" className="hover:text-lime-400 transition-colors flex items-center gap-2"><Sparkles className="w-4 h-4"/> Community Roast Wall</Link></li>
+              <li><Link to="/sitemap" className="hover:text-lime-400 transition-colors flex items-center gap-2"><Map className="w-4 h-4"/> Full Sitemap Directory</Link></li>
             </ul>
           </div>
           
         </div>
         
-        <div className="max-w-6xl mx-auto px-4 mt-16 pt-8 border-t border-gray-800 text-center text-sm text-gray-500">
-          <p>&copy; {new Date().getFullYear()} PandaLime Career. All rights reserved.</p>
+        <div className="max-w-6xl mx-auto px-4 mt-16 pt-8 border-t border-gray-800 text-center text-xs text-gray-500">
+          <p>&copy; {new Date().getFullYear()} PandaLime Career (www.pandalime.com). All rights reserved.</p>
         </div>
       </footer>
 

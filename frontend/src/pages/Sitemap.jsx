@@ -1,56 +1,168 @@
 import React from 'react';
-import { Map, ArrowRight, ArrowLeft } from 'lucide-react';
+import { Map, ArrowRight, ArrowLeft, Briefcase, Building2, ShieldCheck, Sparkles } from 'lucide-react';
 import { Link } from 'react-router-dom';
+import SEOHead from '../components/SEOHead';
+import { ROLES, COMPANIES, SPECIAL_NICHES } from '../data/pseoData';
 
 export default function Sitemap() {
-  const routes = [
-    { title: "Main Pages", links: [
-      { name: "Home", path: "/" },
-      { name: "Resume Dashboard (App)", path: "/dashboard" },
-      { name: "Login / Sign Up", path: "/login" }
-    ]},
-    { title: "Legal & Support", links: [
-      { name: "Contact Us", path: "/contact" },
-      { name: "Privacy Policy", path: "/privacy-policy" },
-      { name: "Terms & Conditions", path: "/terms" }
-    ]}
+  const mainPages = [
+    { name: "Home - Free AI Resume Scanner", path: "/" },
+    { name: "Resume Scanner Tool (App)", path: "/dashboard" },
+    { name: "Community Resume Roast Wall", path: "/roast-wall" },
+    { name: "Login / Account", path: "/login" }
   ];
 
+  const legalPages = [
+    { name: "Contact Support", path: "/contact" },
+    { name: "Privacy Policy", path: "/privacy-policy" },
+    { name: "Terms & Conditions", path: "/terms" }
+  ];
+
+  const jsonLd = {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    "itemListElement": [
+      {
+        "@type": "ListItem",
+        "position": 1,
+        "name": "Home",
+        "item": "https://www.pandalime.com/"
+      },
+      {
+        "@type": "ListItem",
+        "position": 2,
+        "name": "Sitemap Directory",
+        "item": "https://www.pandalime.com/sitemap"
+      }
+    ]
+  };
+
   return (
-    <div className="min-h-screen bg-gray-50 py-12 px-4 sm:px-6 lg:px-8 font-sans">
-      <div className="max-w-4xl mx-auto">
-        <Link to="/" className="inline-flex items-center gap-2 text-gray-500 hover:text-lime-600 transition-colors mb-8 font-medium">
+    <div className="min-h-screen bg-gray-50 py-12 px-4 sm:px-6 lg:px-8 font-sans text-gray-900">
+      <SEOHead 
+        title="HTML Sitemap & ATS Resume Scanners Directory | PandaLime"
+        description="Comprehensive directory of all free AI ATS resume scanners, employer keyword guides, and career optimization tools on PandaLime."
+        canonical="/sitemap"
+        jsonLd={jsonLd}
+      />
+
+      <div className="max-w-6xl mx-auto">
+        <Link to="/" className="inline-flex items-center gap-2 text-gray-500 hover:text-lime-600 transition-colors mb-8 font-medium text-sm">
           <ArrowLeft className="w-4 h-4" /> Back to Home
         </Link>
         
-        <div className="bg-white rounded-3xl shadow-sm border border-gray-200 p-8 md:p-12">
+        <div className="bg-white rounded-3xl shadow-sm border border-gray-200 p-8 md:p-12 mb-12">
+          
           <div className="flex items-center gap-4 mb-10 pb-8 border-b border-gray-100">
             <div className="w-12 h-12 bg-lime-100 text-lime-600 rounded-xl flex items-center justify-center">
               <Map className="w-6 h-6" />
             </div>
             <div>
-              <h1 className="text-3xl font-extrabold text-gray-900">Sitemap</h1>
-              <p className="text-gray-500 mt-1">Directory of all public pages on PandaLime Career.</p>
+              <h1 className="text-3xl sm:text-4xl font-extrabold text-gray-900">PandaLime Directory & Sitemap</h1>
+              <p className="text-gray-500 mt-1 text-sm sm:text-base">Comprehensive index of all public pages, tools, and targeted ATS resume scanners.</p>
             </div>
           </div>
 
-          <div className="grid md:grid-cols-2 gap-10">
-            {routes.map((category, i) => (
-              <div key={i} className="bg-gray-50 p-6 rounded-2xl border border-gray-100">
-                <h2 className="text-lg font-bold text-gray-900 mb-4">{category.title}</h2>
-                <ul className="space-y-3">
-                  {category.links.map((link, j) => (
-                    <li key={j}>
-                      <Link to={link.path} className="flex items-center gap-2 text-gray-600 hover:text-lime-600 font-medium transition-colors group">
-                        <ArrowRight className="w-4 h-4 text-gray-300 group-hover:text-lime-500 transition-colors" />
-                        {link.name}
-                      </Link>
-                    </li>
-                  ))}
-                </ul>
-              </div>
-            ))}
+          {/* Section 1: Core Pages & Legal */}
+          <div className="grid md:grid-cols-2 gap-8 mb-12">
+            <div className="bg-gray-50 p-6 rounded-2xl border border-gray-200">
+              <h2 className="text-lg font-bold text-gray-900 mb-4 flex items-center gap-2">
+                <Sparkles className="w-5 h-5 text-lime-600" /> Core Pages & Tools
+              </h2>
+              <ul className="space-y-3">
+                {mainPages.map((link, j) => (
+                  <li key={j}>
+                    <Link to={link.path} className="flex items-center gap-2 text-gray-700 hover:text-lime-600 font-medium transition-colors group text-sm">
+                      <ArrowRight className="w-4 h-4 text-gray-400 group-hover:text-lime-500 transition-colors" />
+                      {link.name}
+                    </Link>
+                  </li>
+                ))}
+              </ul>
+            </div>
+
+            <div className="bg-gray-50 p-6 rounded-2xl border border-gray-200">
+              <h2 className="text-lg font-bold text-gray-900 mb-4 flex items-center gap-2">
+                <ShieldCheck className="w-5 h-5 text-lime-600" /> Legal, Policy & Support
+              </h2>
+              <ul className="space-y-3">
+                {legalPages.map((link, j) => (
+                  <li key={j}>
+                    <Link to={link.path} className="flex items-center gap-2 text-gray-700 hover:text-lime-600 font-medium transition-colors group text-sm">
+                      <ArrowRight className="w-4 h-4 text-gray-400 group-hover:text-lime-500 transition-colors" />
+                      {link.name}
+                    </Link>
+                  </li>
+                ))}
+              </ul>
+            </div>
           </div>
+
+          {/* Section 2: Scanners by Career Role */}
+          <div className="mb-12">
+            <h2 className="text-2xl font-bold text-gray-900 mb-6 flex items-center gap-2">
+              <Briefcase className="w-6 h-6 text-lime-600" /> ATS Scanners by Job Category
+            </h2>
+            <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
+              {ROLES.map(role => (
+                <Link
+                  key={role.id}
+                  to={`/scanner/${role.id}`}
+                  className="p-4 bg-gray-50 hover:bg-lime-50 rounded-xl border border-gray-200 hover:border-lime-300 transition-all block group"
+                >
+                  <p className="font-bold text-gray-900 text-sm group-hover:text-lime-700">{role.title} ATS Scanner</p>
+                  <p className="text-xs text-gray-500 mt-1">{role.category} • Top Keywords & ATS Review</p>
+                </Link>
+              ))}
+            </div>
+          </div>
+
+          {/* Section 3: Specialized Hiring & Freshers Tracks */}
+          <div className="mb-12">
+            <h2 className="text-2xl font-bold text-gray-900 mb-6 flex items-center gap-2">
+              <Building2 className="w-6 h-6 text-lime-600" /> Specialized Hiring Tracks & Graduate Portals
+            </h2>
+            <div className="grid sm:grid-cols-2 gap-4">
+              {SPECIAL_NICHES.map(niche => (
+                <Link
+                  key={niche.slug}
+                  to={`/scanner/${niche.slug}`}
+                  className="p-4 bg-gray-50 hover:bg-lime-50 rounded-xl border border-gray-200 hover:border-lime-300 transition-all block group"
+                >
+                  <p className="font-bold text-gray-900 text-sm group-hover:text-lime-700">{niche.title}</p>
+                  <p className="text-xs text-gray-500 mt-1">{niche.description}</p>
+                </Link>
+              ))}
+            </div>
+          </div>
+
+          {/* Section 4: Full Matrix of Role & Company Scanners */}
+          <div>
+            <h2 className="text-2xl font-bold text-gray-900 mb-6">
+              All 49+ Company-Specific ATS Resume Scanners
+            </h2>
+            <div className="space-y-8">
+              {COMPANIES.map(company => (
+                <div key={company.id} className="bg-gray-50 p-6 rounded-2xl border border-gray-200">
+                  <h3 className="font-bold text-gray-900 text-base mb-3 flex items-center gap-2">
+                    <Building2 className="w-4 h-4 text-lime-600" /> {company.name} ATS Resume Scanners
+                  </h3>
+                  <div className="grid sm:grid-cols-2 md:grid-cols-3 gap-2.5">
+                    {ROLES.map(role => (
+                      <Link
+                        key={`${role.id}-${company.id}`}
+                        to={`/scanner/${role.id}-at-${company.id}`}
+                        className="text-xs text-gray-600 hover:text-lime-700 hover:underline p-1.5 rounded"
+                      >
+                        • {role.title} at {company.name}
+                      </Link>
+                    ))}
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+
         </div>
       </div>
     </div>

@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { Mail, ArrowRight, CheckCircle, Loader2 } from 'lucide-react';
+import SEOHead from '../components/SEOHead';
 
 export default function Login() {
   const [email, setEmail] = useState('');
@@ -64,6 +65,12 @@ export default function Login() {
 
   return (
     <div className="min-h-screen flex flex-col items-center justify-center bg-gray-50 px-4">
+      <SEOHead 
+        title="Sign In & Account Login | PandaLime Career"
+        description="Log in to PandaLime Career to access your ATS resume analysis reports, saved job scans, and career insights."
+        canonical="/login"
+      />
+
       <div className="absolute top-4 left-4">
         <Link to="/" className="text-gray-600 hover:text-lime-600 font-medium text-sm transition-colors flex items-center gap-2">
           ← Back to Home

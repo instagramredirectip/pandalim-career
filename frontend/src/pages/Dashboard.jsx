@@ -13,6 +13,7 @@ import {
   ScanSearch,
   Sparkles
 } from 'lucide-react';
+import SEOHead from '../components/SEOHead';
 
 const loadRazorpayScript = () => {
     return new Promise((resolve) => {
@@ -212,6 +213,11 @@ console.log("======================");
 
   return (
     <div className="min-h-screen bg-gray-50/50 font-sans pb-32 print:bg-white print:pb-0">
+      <SEOHead 
+        title="Free AI Resume Scanner & Score Dashboard | PandaLime"
+        description="Upload your resume PDF and target job description to get an instant ATS match score, critical missing keywords, and actionable AI feedback."
+        canonical="/dashboard"
+      />
       
       {/* Navigation Header */}
       <nav className="bg-white border-b border-gray-200 sticky top-0 z-40">

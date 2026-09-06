@@ -1,10 +1,32 @@
 import React from 'react';
 import { Mail, MessageSquare, Clock, ArrowLeft } from 'lucide-react';
 import { Link } from 'react-router-dom';
+import SEOHead from '../components/SEOHead';
 
 export default function Contact() {
+  const jsonLd = {
+    "@context": "https://schema.org",
+    "@type": "ContactPage",
+    "name": "Contact PandaLime Career Support",
+    "description": "Have questions about your ATS resume report, payments, or need support? Contact PandaLime Career.",
+    "url": "https://www.pandalime.com/contact",
+    "mainEntity": {
+      "@type": "Organization",
+      "name": "PandaLime Career",
+      "email": "microapkdeveolper@gmail.com",
+      "url": "https://www.pandalime.com"
+    }
+  };
+
   return (
     <div className="min-h-screen bg-gray-50 py-12 px-4 sm:px-6 lg:px-8 font-sans">
+      <SEOHead 
+        title="Contact PandaLime Support & Career Services | PandaLime"
+        description="Have questions about your ATS resume report, payment receipts, or feedback? Get in touch with PandaLime support team."
+        canonical="/contact"
+        jsonLd={jsonLd}
+      />
+
       <div className="max-w-4xl mx-auto">
         <Link to="/" className="inline-flex items-center gap-2 text-gray-500 hover:text-lime-600 transition-colors mb-8 font-medium">
           <ArrowLeft className="w-4 h-4" /> Back to Home

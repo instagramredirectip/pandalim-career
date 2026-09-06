@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
+import SEOHead from '../components/SEOHead';
 
 // --- SUB-COMPONENT: COMMENT SECTION ---
 const CommentSection = ({ reportId }) => {
@@ -105,6 +106,12 @@ export default function RoastWall() {
 
   return (
     <div className="min-h-screen bg-gray-50">
+      <SEOHead 
+        title="Community Resume Roast Wall & AI ATS Critiques | PandaLime"
+        description="Explore real, anonymous AI resume critiques, ATS match scores, and recruiter feedback. Learn from common resume mistakes to improve your application."
+        canonical="/roast-wall"
+      />
+
       {/* Navigation Header */}
       <nav className="bg-white border-b border-gray-200">
         <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
