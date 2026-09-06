@@ -2,10 +2,12 @@ import fs from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
 import { ROLES, COMPANIES, SPECIAL_NICHES, getAllPseoSlugs, getPseoData } from '../src/data/pseoData.js';
+import { SUPPORTED_LANGUAGES, TRANSLATIONS } from '../src/data/translations.js';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 const distDir = path.resolve(__dirname, '../dist');
+const publicDir = path.resolve(__dirname, '../public');
 const BASE_URL = 'https://www.pandalime.com';
 
 if (!fs.existsSync(distDir)) {
@@ -24,11 +26,14 @@ function escapeHtml(str) {
     .replace(/"/g, '&quot;');
 }
 
-function generatePageHtml({ title, description, canonicalPath, jsonLd, bodyContent }) {
+function generatePageHtml({ title, description, canonicalPath, lang = 'en', jsonLd, bodyContent }) {
   let html = templateHtml;
   const canonicalUrl = `${BASE_URL}${canonicalPath === '/' ? '' : canonicalPath}`;
   const safeTitle = escapeHtml(title);
   const safeDescription = escapeHtml(description);
+
+  // Set html lang attribute
+  html = html.replace(/<html[^>]*>/i, `<html lang="${lang}">`);
 
   // Replace Title
   html = html.replace(/<title>[^<]*<\/title>/i, `<title>${safeTitle}</title>`);
@@ -46,6 +51,20 @@ function generatePageHtml({ title, description, canonicalPath, jsonLd, bodyConte
   } else {
     html = html.replace(/<\/head>/i, `  <link rel="canonical" href="${canonicalUrl}" />\n</head>`);
   }
+
+  // Inject hreflang alternate links
+  const hreflangTags = `
+  <link rel="alternate" href="${BASE_URL}/" hreflang="x-default" />
+  <link rel="alternate" href="${BASE_URL}/" hreflang="en" />
+  <link rel="alternate" href="${BASE_URL}/" hreflang="en-IN" />
+  <link rel="alternate" href="${BASE_URL}/hi" hreflang="hi" />
+  <link rel="alternate" href="${BASE_URL}/ta" hreflang="ta" />
+  <link rel="alternate" href="${BASE_URL}/te" hreflang="te" />
+  <link rel="alternate" href="${BASE_URL}/kn" hreflang="kn" />
+  <link rel="alternate" href="${BASE_URL}/mr" hreflang="mr" />
+  <link rel="alternate" href="${BASE_URL}/bn" hreflang="bn" />`;
+
+  html = html.replace(/<\/head>/i, `${hreflangTags}\n</head>`);
 
   // Replace OpenGraph & Twitter
   html = html.replace(/(<meta\s+property="og:title"\s+content=")[^"]*(")/i, `$1${safeTitle}$2`);
@@ -90,11 +109,24 @@ function writeStaticFile(routePath, htmlContent) {
 
 console.log('--- Starting Static Pre-Rendering (SSG) for PandaLime ---');
 
-// 1. Home Page
+const sitemapUrls = [];
+const today = new Date().toISOString().split('T')[0];
+
+function addSitemapUrl(loc, priority = '0.8', changefreq = 'weekly') {
+  sitemapUrls.push({
+    loc: `${BASE_URL}${loc === '/' ? '' : loc}`,
+    lastmod: today,
+    changefreq,
+    priority
+  });
+}
+
+// 1. Home Page (English Default)
 const homeHtml = generatePageHtml({
-  title: 'Free AI Resume Scanner & ATS Resume Checker | PandaLime',
-  description: 'Scan your resume for free with PandaLime AI. Beat corporate ATS screening algorithms (Workday, Taleo, Greenhouse), find missing keywords, and get recruiter-ready bullet rewrites.',
+  title: TRANSLATIONS.en.seoTitle,
+  description: TRANSLATIONS.en.seoDesc,
   canonicalPath: '/',
+  lang: 'en',
   jsonLd: [
     {
       "@context": "https://schema.org",
@@ -103,32 +135,118 @@ const homeHtml = generatePageHtml({
       "operatingSystem": "All Web Browsers",
       "applicationCategory": "BusinessApplication",
       "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
-      "description": "Free AI-powered ATS resume scanner and checker. Scan resumes against job descriptions, uncover missing keywords, and optimize for Workday, Taleo, Greenhouse, and Lever."
+      "description": TRANSLATIONS.en.seoDesc
+    },
+    {
+      "@context": "https://schema.org",
+      "@type": "FAQPage",
+      "mainEntity": TRANSLATIONS.en.faqs.map(faq => ({
+        "@type": "Question",
+        "name": faq.q,
+        "acceptedAnswer": { "@type": "Answer", "text": faq.a }
+      }))
     }
   ],
   bodyContent: `
     <main style="max-width:1200px;margin:0 auto;padding:40px 20px;font-family:sans-serif;">
-      <h1>Free AI Resume Scanner & ATS Resume Checker</h1>
-      <p>Over 98% of Fortune 500 companies use Applicant Tracking Systems (ATS) to filter resumes. PandaLime scans your resume against any job description, uncovers missing keywords, and helps you beat the bots to land interviews.</p>
-      <h2>How PandaLime Works</h2>
+      <h1>${escapeHtml(TRANSLATIONS.en.h1Main)} ${escapeHtml(TRANSLATIONS.en.h1Highlight)}</h1>
+      <p>${escapeHtml(TRANSLATIONS.en.heroSubtitle)}</p>
+      <h2>${escapeHtml(TRANSLATIONS.en.howItWorksTitle)}</h2>
       <ol>
-        <li><strong>Upload Your Resume (PDF):</strong> Upload your resume to calculate your baseline ATS match score.</li>
-        <li><strong>Paste Target Job Description:</strong> Our AI extracts required technical skills and hard keywords.</li>
-        <li><strong>Optimize & Land Interviews:</strong> Get STAR-method rewritten bullets and missing keyword suggestions.</li>
+        ${TRANSLATIONS.en.steps.map(s => `<li><strong>${escapeHtml(s.title)}:</strong> ${escapeHtml(s.desc)}</li>`).join('')}
       </ol>
-      <h2>Supported ATS Platforms</h2>
-      <p>Workday, Taleo (Oracle), Greenhouse, Lever, iCIMS, SAP SuccessFactors, BambooHR, and Ashby.</p>
+      <h2>${escapeHtml(TRANSLATIONS.en.pillarsTitle)}</h2>
+      <ul>
+        ${TRANSLATIONS.en.pillars.map(p => `<li><strong>${escapeHtml(p.title)}:</strong> ${escapeHtml(p.desc)}</li>`).join('')}
+      </ul>
+      <h2>${escapeHtml(TRANSLATIONS.en.faqsTitle)}</h2>
+      ${TRANSLATIONS.en.faqs.map(f => `<div><h3>${escapeHtml(f.q)}</h3><p>${escapeHtml(f.a)}</p></div>`).join('')}
       <h2>Explore Career ATS Scanners</h2>
       <ul>
-        ${ROLES.map(r => `<li><a href="/scanner/${r.id}">${r.title} ATS Resume Scanner</a></li>`).join('')}
+        ${ROLES.map(r => `<li><a href="/scanner/${r.id}">${escapeHtml(r.title)} ATS Resume Scanner</a></li>`).join('')}
       </ul>
     </main>
   `
 });
 writeStaticFile('/', homeHtml);
-console.log('✓ Pre-rendered: /');
+addSitemapUrl('/', '1.0', 'daily');
+console.log('✓ Pre-rendered: / (en)');
 
-// 2. Roast Wall
+// 2. Regional Indian Language Landing Pages
+const regionalLangs = SUPPORTED_LANGUAGES.filter(l => !l.isDefault);
+
+regionalLangs.forEach(langObj => {
+  const t = TRANSLATIONS[langObj.code];
+  if (!t) return;
+
+  const regHtml = generatePageHtml({
+    title: t.seoTitle,
+    description: t.seoDesc,
+    canonicalPath: langObj.path,
+    lang: langObj.code,
+    jsonLd: [
+      {
+        "@context": "https://schema.org",
+        "@type": "SoftwareApplication",
+        "name": `PandaLime AI Resume Scanner (${langObj.name} - ${langObj.nativeName})`,
+        "operatingSystem": "All Web Browsers",
+        "applicationCategory": "BusinessApplication",
+        "inLanguage": langObj.code,
+        "offers": { "@type": "Offer", "price": "0", "priceCurrency": "INR" },
+        "description": t.seoDesc
+      },
+      {
+        "@context": "https://schema.org",
+        "@type": "FAQPage",
+        "mainEntity": t.faqs.map(faq => ({
+          "@type": "Question",
+          "name": faq.q,
+          "acceptedAnswer": { "@type": "Answer", "text": faq.a }
+        }))
+      }
+    ],
+    bodyContent: `
+      <main style="max-width:1200px;margin:0 auto;padding:40px 20px;font-family:sans-serif;">
+        <header>
+          <span>${escapeHtml(t.badge)}</span>
+          <h1>${escapeHtml(t.h1Main)} ${escapeHtml(t.h1Highlight)}</h1>
+          <p>${escapeHtml(t.heroSubtitle)}</p>
+          <p><a href="/dashboard">${escapeHtml(t.scanButton)}</a></p>
+        </header>
+        <section>
+          <h2>${escapeHtml(t.howItWorksTitle)}</h2>
+          <p>${escapeHtml(t.howItWorksSubtitle)}</p>
+          <ol>
+            ${t.steps.map(s => `<li><strong>${escapeHtml(s.title)}:</strong> ${escapeHtml(s.desc)}</li>`).join('')}
+          </ol>
+        </section>
+        <section>
+          <h2>${escapeHtml(t.pillarsTitle)}</h2>
+          <p>${escapeHtml(t.pillarsSubtitle)}</p>
+          <ul>
+            ${t.pillars.map(p => `<li><strong>${escapeHtml(p.title)}:</strong> ${escapeHtml(p.desc)}</li>`).join('')}
+          </ul>
+        </section>
+        <section>
+          <h2>${escapeHtml(t.featuresTitle)}</h2>
+          <ul>
+            ${t.features.map(f => `<li><strong>${escapeHtml(f.title)}:</strong> ${escapeHtml(f.desc)}</li>`).join('')}
+          </ul>
+        </section>
+        <section>
+          <h2>${escapeHtml(t.faqsTitle)}</h2>
+          ${t.faqs.map(f => `<div><h3>${escapeHtml(f.q)}</h3><p>${escapeHtml(f.a)}</p></div>`).join('')}
+        </section>
+      </main>
+    `
+  });
+
+  writeStaticFile(langObj.path, regHtml);
+  addSitemapUrl(langObj.path, '0.9', 'daily');
+  console.log(`✓ Pre-rendered: ${langObj.path} (${langObj.name} - ${langObj.nativeName})`);
+});
+
+// 3. Roast Wall
 const roastHtml = generatePageHtml({
   title: 'Community Resume Roast Wall & AI ATS Critiques | PandaLime',
   description: 'Explore real, anonymous AI resume critiques, ATS match scores, and recruiter feedback. Learn from common resume mistakes to improve your application.',
@@ -142,12 +260,13 @@ const roastHtml = generatePageHtml({
   `
 });
 writeStaticFile('/roast-wall', roastHtml);
+addSitemapUrl('/roast-wall', '0.8', 'daily');
 console.log('✓ Pre-rendered: /roast-wall');
 
-// 3. Sitemap Directory
+// 4. Sitemap Directory
 const sitemapHtml = generatePageHtml({
   title: 'HTML Sitemap & ATS Resume Scanners Directory | PandaLime',
-  description: 'Comprehensive directory of all free AI ATS resume scanners, employer keyword guides, and career optimization tools on PandaLime.',
+  description: 'Comprehensive directory of all free AI ATS resume scanners, regional language portals, and career optimization tools on PandaLime.',
   canonicalPath: '/sitemap',
   bodyContent: `
     <main style="max-width:1000px;margin:0 auto;padding:40px 20px;font-family:sans-serif;">
@@ -162,11 +281,15 @@ const sitemapHtml = generatePageHtml({
         <li><a href="/privacy-policy">Privacy Policy</a></li>
         <li><a href="/terms">Terms & Conditions</a></li>
       </ul>
+      <h2>Regional Indian Language Portals</h2>
+      <ul>
+        ${regionalLangs.map(l => `<li><a href="${l.path}">${l.name} (${l.nativeName}) - AI Resume Scanner</a></li>`).join('')}
+      </ul>
       <h2>ATS Scanners by Role</h2>
       <ul>
         ${ROLES.map(r => `<li><a href="/scanner/${r.id}">${r.title} ATS Scanner</a></li>`).join('')}
       </ul>
-      <h2>Specialized Portals</h2>
+      <h2>Specialized Portals & Freshers Tracks</h2>
       <ul>
         ${SPECIAL_NICHES.map(n => `<li><a href="/scanner/${n.slug}">${n.title}</a></li>`).join('')}
       </ul>
@@ -178,9 +301,10 @@ const sitemapHtml = generatePageHtml({
   `
 });
 writeStaticFile('/sitemap', sitemapHtml);
+addSitemapUrl('/sitemap', '0.7', 'weekly');
 console.log('✓ Pre-rendered: /sitemap');
 
-// 4. Contact
+// 5. Contact
 const contactHtml = generatePageHtml({
   title: 'Contact PandaLime Support & Career Services | PandaLime',
   description: 'Have questions about your ATS resume report, payment receipts, or feedback? Get in touch with PandaLime support team.',
@@ -193,9 +317,10 @@ const contactHtml = generatePageHtml({
   `
 });
 writeStaticFile('/contact', contactHtml);
+addSitemapUrl('/contact', '0.5', 'monthly');
 console.log('✓ Pre-rendered: /contact');
 
-// 5. Privacy Policy
+// 6. Privacy Policy
 const privacyHtml = generatePageHtml({
   title: 'Privacy Policy | PandaLime Career',
   description: 'Learn how PandaLime protects your personal data, resume documents, and privacy during AI resume scans and career optimization.',
@@ -208,9 +333,10 @@ const privacyHtml = generatePageHtml({
   `
 });
 writeStaticFile('/privacy-policy', privacyHtml);
+addSitemapUrl('/privacy-policy', '0.4', 'monthly');
 console.log('✓ Pre-rendered: /privacy-policy');
 
-// 6. Terms
+// 7. Terms
 const termsHtml = generatePageHtml({
   title: 'Terms & Conditions | PandaLime Career',
   description: 'Review the Terms of Service and usage conditions for PandaLime AI resume scanning and optimization services.',
@@ -223,15 +349,17 @@ const termsHtml = generatePageHtml({
   `
 });
 writeStaticFile('/terms', termsHtml);
+addSitemapUrl('/terms', '0.4', 'monthly');
 console.log('✓ Pre-rendered: /terms');
 
-// 7. Login & Dashboard
+// 8. Login & Dashboard
 const loginHtml = generatePageHtml({
   title: 'Sign In & Account Login | PandaLime Career',
   description: 'Log in to PandaLime Career to access your ATS resume analysis reports, saved job scans, and career insights.',
   canonicalPath: '/login'
 });
 writeStaticFile('/login', loginHtml);
+addSitemapUrl('/login', '0.5', 'monthly');
 console.log('✓ Pre-rendered: /login');
 
 const dashboardHtml = generatePageHtml({
@@ -240,9 +368,10 @@ const dashboardHtml = generatePageHtml({
   canonicalPath: '/dashboard'
 });
 writeStaticFile('/dashboard', dashboardHtml);
+addSitemapUrl('/dashboard', '0.6', 'weekly');
 console.log('✓ Pre-rendered: /dashboard');
 
-// 8. Pre-render ALL Programmatic SEO Pages
+// 9. Pre-render ALL Programmatic SEO Pages
 const allSlugs = getAllPseoSlugs();
 let pseoCount = 0;
 
@@ -311,9 +440,29 @@ allSlugs.forEach(slug => {
   });
 
   writeStaticFile(`/scanner/${slug}`, pageHtml);
+  addSitemapUrl(`/scanner/${slug}`, '0.85', 'weekly');
   pseoCount++;
 });
 
 console.log(`✓ Successfully pre-rendered ${pseoCount} programmatic SEO landing pages into /dist/scanner/!`);
-console.log('--- Static Pre-Rendering Completed Successfully! ---');
 
+// 10. Generate sitemap.xml
+const sitemapXml = `<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.sitemaps.org/schemas/sitemap/0.9
+        http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd">
+${sitemapUrls.map(u => `  <url>
+    <loc>${u.loc}</loc>
+    <lastmod>${u.lastmod}</lastmod>
+    <changefreq>${u.changefreq}</changefreq>
+    <priority>${u.priority}</priority>
+  </url>`).join('\n')}
+</urlset>
+`;
+
+fs.writeFileSync(path.join(publicDir, 'sitemap.xml'), sitemapXml, 'utf8');
+fs.writeFileSync(path.join(distDir, 'sitemap.xml'), sitemapXml, 'utf8');
+console.log(`✓ Generated sitemap.xml with ${sitemapUrls.length} URLs (written to /public & /dist)`);
+
+console.log('--- Static Pre-Rendering Completed Successfully! ---');

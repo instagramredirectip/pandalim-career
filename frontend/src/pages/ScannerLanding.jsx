@@ -206,7 +206,9 @@ export default function ScannerLanding() {
               <div className="flex items-center gap-2 text-gray-500 text-xs font-semibold mb-1">
                 <DollarSign className="w-4 h-4 text-lime-600" /> Compensation
               </div>
-              <p className="text-base font-bold text-gray-900 truncate">{pageData.avgSalary || 'Competitive'}</p>
+              <p className="text-base font-bold text-gray-900 truncate" title={pageData.salaryIndia ? `${pageData.salaryIndia} (India) / ${pageData.avgSalary} (Global)` : pageData.avgSalary}>
+                {pageData.salaryIndia ? `${pageData.salaryIndia} | ${pageData.avgSalary}` : (pageData.avgSalary || 'Competitive')}
+              </p>
             </div>
           </div>
 

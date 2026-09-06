@@ -1,5 +1,5 @@
 import React from 'react';
-import { Map, ArrowRight, ArrowLeft, Briefcase, Building2, ShieldCheck, Sparkles } from 'lucide-react';
+import { Map, ArrowRight, ArrowLeft, Briefcase, Building2, ShieldCheck, Sparkles, Globe } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import SEOHead from '../components/SEOHead';
 import { ROLES, COMPANIES, SPECIAL_NICHES } from '../data/pseoData';
@@ -98,7 +98,40 @@ export default function Sitemap() {
             </div>
           </div>
 
-          {/* Section 2: Scanners by Career Role */}
+          {/* Section 2: Regional Indian Language Portals */}
+          <div className="mb-12">
+            <h2 className="text-2xl font-bold text-gray-900 mb-6 flex items-center gap-2">
+              <Globe className="w-6 h-6 text-lime-600" /> Regional Indian Language Portals (क्षेत्रीय भाषा पोर्टल)
+            </h2>
+            <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
+              <Link to="/hi" className="p-4 bg-gray-50 hover:bg-lime-50 rounded-xl border border-gray-200 hover:border-lime-300 transition-all block group">
+                <p className="font-bold text-gray-900 text-sm group-hover:text-lime-700">हिन्दी (Hindi) - AI रेज़्युमे स्कैनर</p>
+                <p className="text-xs text-gray-500 mt-1">TCS, Infosys, Wipro और भारतीय टेक जॉब्स के लिए</p>
+              </Link>
+              <Link to="/ta" className="p-4 bg-gray-50 hover:bg-lime-50 rounded-xl border border-gray-200 hover:border-lime-300 transition-all block group">
+                <p className="font-bold text-gray-900 text-sm group-hover:text-lime-700">தமிழ் (Tamil) - ரெஸ்யூம் ஸ்கேனர்</p>
+                <p className="text-xs text-gray-500 mt-1">சென்னை மற்றும் பெங்களூரு ஐடி வேலைகளுக்கு</p>
+              </Link>
+              <Link to="/te" className="p-4 bg-gray-50 hover:bg-lime-50 rounded-xl border border-gray-200 hover:border-lime-300 transition-all block group">
+                <p className="font-bold text-gray-900 text-sm group-hover:text-lime-700">తెలుగు (Telugu) - రెజ్యూమ్ స్కానర్</p>
+                <p className="text-xs text-gray-500 mt-1">హైదరాబాద్ మరియు బెంగళూరు టెక్ ఉద్యోగాల కోసం</p>
+              </Link>
+              <Link to="/kn" className="p-4 bg-gray-50 hover:bg-lime-50 rounded-xl border border-gray-200 hover:border-lime-300 transition-all block group">
+                <p className="font-bold text-gray-900 text-sm group-hover:text-lime-700">ಕನ್ನಡ (Kannada) - ರೆಸ್ಯೂಮ್ ಸ್ಕ್ಯಾನರ್</p>
+                <p className="text-xs text-gray-500 mt-1">ಬೆಂಗಳೂರು ಸಿಲಿಕಾನ್ ವ್ಯಾಲಿ ಮತ್ತು ಐಟಿ ಉದ್ಯೋಗಗಳು</p>
+              </Link>
+              <Link to="/mr" className="p-4 bg-gray-50 hover:bg-lime-50 rounded-xl border border-gray-200 hover:border-lime-300 transition-all block group">
+                <p className="font-bold text-gray-900 text-sm group-hover:text-lime-700">मराठी (Marathi) - रेझ्युमे स्कॅनर</p>
+                <p className="text-xs text-gray-500 mt-1">पुणे आणि मुंबई टेक हब नोकऱ्यांसाठी</p>
+              </Link>
+              <Link to="/bn" className="p-4 bg-gray-50 hover:bg-lime-50 rounded-xl border border-gray-200 hover:border-lime-300 transition-all block group">
+                <p className="font-bold text-gray-900 text-sm group-hover:text-lime-700">বাংলা (Bengali) - রেজুমে স্ক্যানার</p>
+                <p className="text-xs text-gray-500 mt-1">কলকাতা এবং ভারত জুড়ে প্রযুক্তি চাকরির জন্য</p>
+              </Link>
+            </div>
+          </div>
+
+          {/* Section 3: Scanners by Career Role */}
           <div className="mb-12">
             <h2 className="text-2xl font-bold text-gray-900 mb-6 flex items-center gap-2">
               <Briefcase className="w-6 h-6 text-lime-600" /> ATS Scanners by Job Category

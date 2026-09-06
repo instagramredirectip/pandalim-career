@@ -9,6 +9,7 @@ import Contact from './pages/Contact';
 import Sitemap from './pages/Sitemap';
 import RoastWall from './pages/RoastWall';
 import ScannerLanding from './pages/ScannerLanding';
+import RegionalHome from './pages/RegionalHome';
 
 function App() {
   return (
@@ -20,6 +21,14 @@ function App() {
           <Route path="/dashboard" element={<Dashboard />} /> 
           <Route path="/login" element={<Login />} />
           <Route path="/roast-wall" element={<RoastWall />} />
+          
+          {/* Indian Language Regional Routes */}
+          <Route path="/hi" element={<RegionalHome />} />
+          <Route path="/ta" element={<RegionalHome />} />
+          <Route path="/te" element={<RegionalHome />} />
+          <Route path="/kn" element={<RegionalHome />} />
+          <Route path="/mr" element={<RegionalHome />} />
+          <Route path="/bn" element={<RegionalHome />} />
           
           {/* Legal & Info Routes - Match backend routes exactly */}
           <Route path="/privacy-policy" element={<PrivacyPolicy />} />

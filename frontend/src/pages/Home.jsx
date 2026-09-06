@@ -23,6 +23,7 @@ import {
   Building2
 } from 'lucide-react';
 import SEOHead from '../components/SEOHead';
+import LanguageSelector from '../components/LanguageSelector';
 import { ROLES, COMPANIES, SPECIAL_NICHES } from '../data/pseoData';
 
 export default function Home() {
@@ -188,7 +189,8 @@ export default function Home() {
             </div>
             <span>PandaLime</span>
           </Link>
-          <div className="flex items-center gap-4">
+          <div className="flex items-center gap-3">
+            <LanguageSelector variant="nav" />
             <Link to="/roast-wall" className="text-sm font-semibold text-gray-600 hover:text-lime-600 transition-colors hidden sm:block">
               Community Wall
             </Link>
@@ -221,7 +223,7 @@ export default function Home() {
           </h1>
           
           <p className="text-lg md:text-xl text-gray-600 max-w-3xl mx-auto mb-10 leading-relaxed">
-            Over 98% of Fortune 500 companies use Applicant Tracking Systems (ATS) to filter resumes. PandaLime scans your resume against any job description, uncovers missing keywords, and helps you beat the bots to land interviews.
+            Over 98% of Fortune 500 companies and Indian IT giants (TCS, Infosys, Wipro, Google, Amazon) use Applicant Tracking Systems (ATS) to filter resumes. PandaLime scans your resume against any job description, uncovers missing keywords, and helps you beat the bots to land interviews.
           </p>
 
           <div className="flex flex-col items-center gap-4">
@@ -249,17 +251,17 @@ export default function Home() {
         </div>
       </header>
 
-      {/* --- SUPPORTED ATS PLATFORMS / MARQUEE --- */}
+      {/* --- SUPPORTED ATS PLATFORMS & TOP EMPLOYERS MARQUEE --- */}
       <section className="py-8 bg-gray-900 text-white overflow-hidden flex flex-col items-center border-b border-gray-800">
-        <p className="text-xs font-bold text-gray-400 uppercase tracking-widest mb-4 text-center">
-          Compatible with all major enterprise applicant tracking systems
+        <p className="text-xs font-bold text-gray-400 uppercase tracking-widest mb-4 text-center px-4">
+          Trusted by candidates targeting top Indian IT leaders & global tech giants
         </p>
         <div className="w-full overflow-hidden relative">
           <div className="absolute inset-y-0 left-0 w-24 bg-gradient-to-r from-gray-900 to-transparent z-10"></div>
           <div className="absolute inset-y-0 right-0 w-24 bg-gradient-to-l from-gray-900 to-transparent z-10"></div>
           
           <div className="animate-marquee flex items-center gap-12 md:gap-24 px-8">
-            {['Workday', 'Taleo (Oracle)', 'Greenhouse', 'Lever', 'iCIMS', 'SAP SuccessFactors', 'BambooHR', 'Ashby', 'SmartRecruiters', 'Workday', 'Taleo (Oracle)', 'Greenhouse', 'Lever', 'iCIMS', 'SAP SuccessFactors', 'BambooHR', 'Ashby'].map((ats, i) => (
+            {['TCS', 'Infosys', 'Wipro', 'HCLTech', 'Cognizant', 'Accenture', 'Flipkart', 'Swiggy', 'Zomato', 'Razorpay', 'Google', 'Microsoft', 'Amazon', 'Meta', 'TCS', 'Infosys', 'Wipro', 'HCLTech', 'Cognizant'].map((ats, i) => (
               <span key={i} className="text-lg md:text-xl font-bold text-gray-400 tracking-tight hover:text-white transition-colors cursor-default whitespace-nowrap">
                 {ats}
               </span>
@@ -583,13 +585,19 @@ export default function Home() {
               PandaLime Career
             </Link>
             <p className="text-gray-400 mb-6 max-w-sm text-sm leading-relaxed">
-              Helping job seekers worldwide scan resumes for free, uncover critical ATS keyword gaps, and land high-paying careers through artificial intelligence.
+              Helping job seekers across India and worldwide scan resumes for free, uncover critical ATS keyword gaps, and land high-paying careers through artificial intelligence.
             </p>
-            <div className="flex items-center gap-2 text-lime-400 text-sm">
+            <div className="flex items-center gap-2 text-lime-400 text-sm mb-6">
               <Mail className="w-4 h-4" />
               <a href="mailto:microapkdeveolper@gmail.com" className="hover:text-white transition-colors">
                 microapkdeveolper@gmail.com
               </a>
+            </div>
+
+            {/* Language Selector in Footer */}
+            <div className="pt-4 border-t border-gray-800 max-w-sm">
+              <p className="text-xs font-semibold text-gray-400 uppercase tracking-wider mb-2">Language & Region</p>
+              <LanguageSelector variant="footer" />
             </div>
           </div>
 
@@ -601,6 +609,21 @@ export default function Home() {
               <li><Link to="/terms" className="hover:text-lime-400 transition-colors flex items-center gap-2"><FileText className="w-4 h-4"/> Terms & Conditions</Link></li>
               <li><Link to="/contact" className="hover:text-lime-400 transition-colors flex items-center gap-2"><Mail className="w-4 h-4"/> Contact Support</Link></li>
             </ul>
+
+            <h4 className="text-white font-bold mt-6 mb-3 uppercase tracking-wider text-sm">Regional Indian Portals</h4>
+            <div className="flex flex-wrap gap-2 text-xs">
+              <Link to="/hi" className="text-gray-400 hover:text-lime-400 transition-colors">हिन्दी</Link>
+              <span className="text-gray-600">•</span>
+              <Link to="/ta" className="text-gray-400 hover:text-lime-400 transition-colors">தமிழ்</Link>
+              <span className="text-gray-600">•</span>
+              <Link to="/te" className="text-gray-400 hover:text-lime-400 transition-colors">తెలుగు</Link>
+              <span className="text-gray-600">•</span>
+              <Link to="/kn" className="text-gray-400 hover:text-lime-400 transition-colors">ಕನ್ನಡ</Link>
+              <span className="text-gray-600">•</span>
+              <Link to="/mr" className="text-gray-400 hover:text-lime-400 transition-colors">मराठी</Link>
+              <span className="text-gray-600">•</span>
+              <Link to="/bn" className="text-gray-400 hover:text-lime-400 transition-colors">বাংলা</Link>
+            </div>
           </div>
 
           {/* Navigation */}

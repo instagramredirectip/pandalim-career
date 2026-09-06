@@ -11,6 +11,7 @@ export default function SEOHead({
   ogType = 'website',
   ogImage = DEFAULT_IMAGE,
   noIndex = false,
+  lang = 'en',
   jsonLd = null
 }) {
   const cleanPath = canonical.startsWith('/') ? canonical : `/${canonical}`;
@@ -23,13 +24,39 @@ export default function SEOHead({
       : [jsonLd]
     : [];
 
+  const localeMap = {
+    en: 'en_US',
+    hi: 'hi_IN',
+    ta: 'ta_IN',
+    te: 'te_IN',
+    kn: 'kn_IN',
+    mr: 'mr_IN',
+    bn: 'bn_IN'
+  };
+
+  const ogLocale = localeMap[lang] || 'en_US';
+
   return (
     <Helmet>
+      {/* HTML Lang */}
+      <html lang={lang} />
+
       {/* Primary Meta Tags */}
       <title>{title}</title>
       <meta name="title" content={title} />
       <meta name="description" content={description} />
       <link rel="canonical" href={fullCanonicalUrl} />
+
+      {/* International SEO: Hreflang Tags */}
+      <link rel="alternate" hrefLang="x-default" href={`${BASE_URL}/`} />
+      <link rel="alternate" hrefLang="en" href={`${BASE_URL}/`} />
+      <link rel="alternate" hrefLang="en-IN" href={`${BASE_URL}/`} />
+      <link rel="alternate" hrefLang="hi" href={`${BASE_URL}/hi`} />
+      <link rel="alternate" hrefLang="ta" href={`${BASE_URL}/ta`} />
+      <link rel="alternate" hrefLang="te" href={`${BASE_URL}/te`} />
+      <link rel="alternate" hrefLang="kn" href={`${BASE_URL}/kn`} />
+      <link rel="alternate" hrefLang="mr" href={`${BASE_URL}/mr`} />
+      <link rel="alternate" hrefLang="bn" href={`${BASE_URL}/bn`} />
 
       {/* Crawl Directives */}
       <meta
@@ -58,7 +85,7 @@ export default function SEOHead({
       <meta property="og:image:width" content="1200" />
       <meta property="og:image:height" content="630" />
       <meta property="og:site_name" content="PandaLime Career" />
-      <meta property="og:locale" content="en_US" />
+      <meta property="og:locale" content={ogLocale} />
 
       {/* Twitter Cards */}
       <meta name="twitter:card" content="summary_large_image" />
@@ -76,4 +103,3 @@ export default function SEOHead({
     </Helmet>
   );
 }
-

@@ -1,4 +1,5 @@
 // Programmatic SEO Matrix Data and Utilities for PandaLime Career
+// Optimized for Indian IT Job Seekers, Campus Placements, GCCs, and Global Tech
 
 export const ROLES = [
   {
@@ -7,7 +8,8 @@ export const ROLES = [
     singular: 'Software Engineer',
     plural: 'Software Engineers',
     category: 'Engineering',
-    avgSalary: '$120,000 - $185,000',
+    avgSalaryIndia: '₹8 LPA - ₹32 LPA',
+    avgSalaryGlobal: '$120,000 - $185,000',
     topKeywords: [
       'Data Structures & Algorithms',
       'System Design',
@@ -35,7 +37,8 @@ export const ROLES = [
     singular: 'Data Scientist',
     plural: 'Data Scientists',
     category: 'Data & AI',
-    avgSalary: '$125,000 - $190,000',
+    avgSalaryIndia: '₹9 LPA - ₹35 LPA',
+    avgSalaryGlobal: '$125,000 - $190,000',
     topKeywords: [
       'Machine Learning',
       'Statistical Analysis',
@@ -63,7 +66,8 @@ export const ROLES = [
     singular: 'AI Engineer',
     plural: 'AI Engineers',
     category: 'Data & AI',
-    avgSalary: '$140,000 - $210,000',
+    avgSalaryIndia: '₹12 LPA - ₹45 LPA',
+    avgSalaryGlobal: '$140,000 - $210,000',
     topKeywords: [
       'Large Language Models (LLMs)',
       'Generative AI',
@@ -91,7 +95,8 @@ export const ROLES = [
     singular: 'Full Stack Developer',
     plural: 'Full Stack Developers',
     category: 'Engineering',
-    avgSalary: '$110,000 - $175,000',
+    avgSalaryIndia: '₹7 LPA - ₹28 LPA',
+    avgSalaryGlobal: '$110,000 - $175,000',
     topKeywords: [
       'React / Next.js',
       'Node.js / Express',
@@ -119,7 +124,8 @@ export const ROLES = [
     singular: 'React Developer',
     plural: 'React Developers',
     category: 'Frontend',
-    avgSalary: '$105,000 - $165,000',
+    avgSalaryIndia: '₹6 LPA - ₹25 LPA',
+    avgSalaryGlobal: '$105,000 - $165,000',
     topKeywords: [
       'React 18 / 19',
       'TypeScript',
@@ -147,7 +153,8 @@ export const ROLES = [
     singular: 'Python Developer',
     plural: 'Python Developers',
     category: 'Engineering',
-    avgSalary: '$115,000 - $175,000',
+    avgSalaryIndia: '₹7 LPA - ₹26 LPA',
+    avgSalaryGlobal: '$115,000 - $175,000',
     topKeywords: [
       'Python 3 (Asyncio, Typing)',
       'Django & Django REST Framework',
@@ -175,7 +182,8 @@ export const ROLES = [
     singular: 'Cloud Architect',
     plural: 'Cloud Architects',
     category: 'Cloud & DevOps',
-    avgSalary: '$150,000 - $225,000',
+    avgSalaryIndia: '₹18 LPA - ₹50 LPA',
+    avgSalaryGlobal: '$150,000 - $225,000',
     topKeywords: [
       'AWS / Azure / Google Cloud Platform (GCP)',
       'Infrastructure as Code (Terraform / CloudFormation)',
@@ -203,7 +211,8 @@ export const ROLES = [
     singular: 'Product Manager',
     plural: 'Product Managers',
     category: 'Product',
-    avgSalary: '$130,000 - $195,000',
+    avgSalaryIndia: '₹14 LPA - ₹40 LPA',
+    avgSalaryGlobal: '$130,000 - $195,000',
     topKeywords: [
       'Product Strategy & Roadmapping',
       'User Research & Customer Discovery',
@@ -231,7 +240,8 @@ export const ROLES = [
     singular: 'Front End Developer',
     plural: 'Front End Developers',
     category: 'Frontend',
-    avgSalary: '$100,000 - $160,000',
+    avgSalaryIndia: '₹6 LPA - ₹24 LPA',
+    avgSalaryGlobal: '$100,000 - $160,000',
     topKeywords: [
       'HTML5, CSS3, Modern JavaScript (ES6+)',
       'React / Vue / Angular',
@@ -258,7 +268,8 @@ export const ROLES = [
     singular: 'Marketing Manager',
     plural: 'Marketing Managers',
     category: 'Marketing',
-    avgSalary: '$95,000 - $155,000',
+    avgSalaryIndia: '₹8 LPA - ₹25 LPA',
+    avgSalaryGlobal: '$95,000 - $155,000',
     topKeywords: [
       'Digital Marketing Strategy',
       'Search Engine Optimization (SEO & SEM)',
@@ -282,69 +293,11 @@ export const ROLES = [
 ];
 
 export const COMPANIES = [
-  {
-    id: 'google',
-    name: 'Google',
-    atsType: 'Google Custom Internal ATS / Taleo',
-    hiringFocus: 'Engineering excellence, algorithmic efficiency, distributed computing, and the Google "Googliness" collaborative leadership standard.',
-    keyAttributes: [
-      'Demonstrated scale (millions/billions of daily active users or petabytes of data)',
-      'Strong computer science fundamentals and algorithmic complexity understanding',
-      'Clear STAR-method quantified achievements (X-Y-Z formula: Accomplished [X] as measured by [Y], by doing [Z])',
-      'Open-source contributions and system architecture depth'
-    ]
-  },
-  {
-    id: 'amazon',
-    name: 'Amazon',
-    atsType: 'Amazon Internal ATS (iCIMS / Custom)',
-    hiringFocus: 'Amazon Leadership Principles (Customer Obsession, Ownership, Bias for Action, Deliver Results, Dive Deep, Earn Trust).',
-    keyAttributes: [
-      'Direct mapping of achievements to Amazon Leadership Principles in bullet points',
-      'End-to-end operational ownership: building, launching, and supporting in production',
-      'Deep metrics and data-driven decision making (frugality, latency reduction, revenue impact)',
-      'Experience with AWS cloud infrastructure and microservices at planetary scale'
-    ]
-  },
-  {
-    id: 'microsoft',
-    name: 'Microsoft',
-    atsType: 'Microsoft Talent Architecture / SAP SuccessFactors',
-    hiringFocus: 'Growth mindset, inclusive collaboration, cloud-first architecture on Azure, enterprise security, and AI-first engineering.',
-    keyAttributes: [
-      'Enterprise-grade code quality, security compliance, and accessibility',
-      'Cross-group collaboration and multi-team technical alignment',
-      'Experience with Azure, .NET/C#, TypeScript, or large-scale AI Copilot models',
-      'System modernization and legacy-to-cloud transformation projects'
-    ]
-  },
-  {
-    id: 'meta',
-    name: 'Meta',
-    atsType: 'Meta Internal Recruiting Engine',
-    hiringFocus: 'High velocity, building fast with impact, deep product intuition, open-source tech (React, PyTorch), and infrastructure scaling.',
-    keyAttributes: [
-      'Evidence of extreme execution speed and shipping products from 0 to 1',
-      'Deep mastery of modern web or AI open source frameworks (React, GraphQL, PyTorch, Llama)',
-      'Metrics showing dramatic user engagement or infrastructure efficiency gains',
-      'Autonomous problem solving with minimal managerial direction'
-    ]
-  },
-  {
-    id: 'netflix',
-    name: 'Netflix',
-    atsType: 'Lever / Workday ATS',
-    hiringFocus: 'Stunning colleagues, context not control, high freedom & responsibility, and mastery in distributed streaming resilience.',
-    keyAttributes: [
-      'Senior-level technical judgment and self-management without micromanagement',
-      'Chaos engineering, fault-tolerant distributed systems, and real-time streaming architectures',
-      'Track record of making high-stakes technical architectural decisions independently',
-      'Clear, candid technical communication and documentation'
-    ]
-  },
+  // --- Indian IT Giants & Service Leaders ---
   {
     id: 'tcs',
     name: 'TCS',
+    region: 'India / Global',
     atsType: 'TCS iON / Talent Acquisition System',
     hiringFocus: 'Enterprise software development, client delivery excellence, rigorous QA standards, agile delivery models, and broad technology capabilities.',
     keyAttributes: [
@@ -357,6 +310,7 @@ export const COMPANIES = [
   {
     id: 'infosys',
     name: 'Infosys',
+    region: 'India / Global',
     atsType: 'Infosys Careers Portal / Taleo / SuccessFactors',
     hiringFocus: 'Digital transformation, cloud migration, enterprise software lifecycle, and full-stack enterprise engineering.',
     keyAttributes: [
@@ -369,6 +323,7 @@ export const COMPANIES = [
   {
     id: 'wipro',
     name: 'Wipro',
+    region: 'India / Global',
     atsType: 'Wipro Candidate Gateway / iCIMS',
     hiringFocus: 'Cloud services, AI automation, cybersecurity, agile engineering, and enterprise application maintenance.',
     keyAttributes: [
@@ -379,26 +334,200 @@ export const COMPANIES = [
     ]
   },
   {
+    id: 'hcltech',
+    name: 'HCLTech',
+    region: 'India / Global',
+    atsType: 'HCL Career Portal / Taleo',
+    hiringFocus: 'Engineering and R&D services, digital enterprise solutions, hybrid cloud migrations, and cybersecurity infrastructure.',
+    keyAttributes: [
+      'Deep domain software engineering and systems programming experience',
+      'Cloud infrastructure management and automation tools',
+      'End-to-end SDLC ownership and client delivery metrics'
+    ]
+  },
+  {
+    id: 'cognizant',
+    name: 'Cognizant',
+    region: 'India / Global',
+    atsType: 'Cognizant Careers Gateway / Workday',
+    hiringFocus: 'Modern digital engineering, cloud application modernization, enterprise data architecture, and AI-driven automation.',
+    keyAttributes: [
+      'Full stack JavaScript/TypeScript, Java Spring Boot, or Python microservices',
+      'Data engineering pipelines and relational database mastery',
+      'Agile delivery methodology and client problem resolution'
+    ]
+  },
+  {
+    id: 'accenture-india',
+    name: 'Accenture India',
+    region: 'India / Global',
+    atsType: 'Accenture Talent Gateway / Workday',
+    hiringFocus: 'Enterprise cloud strategy, digital transformation, custom systems integration, and AI-enabled operations.',
+    keyAttributes: [
+      'Cross-functional problem solving and client delivery governance',
+      'Strong cloud certifications across AWS, Microsoft Azure, or GCP',
+      'Collaborative team leadership and structured software architecture'
+    ]
+  },
+  {
+    id: 'ltimindtree',
+    name: 'LTIMindtree',
+    region: 'India / Global',
+    atsType: 'LTI Mindtree Careers / SuccessFactors',
+    hiringFocus: 'Digital engineering, cloud enablement, data and insights, and enterprise consulting solutions.',
+    keyAttributes: [
+      'Modern web frameworks, microservices architecture, and cloud data lakes',
+      'Continuous integration and automated QA regression suites',
+      'High-impact client deliverables and agile sprint leadership'
+    ]
+  },
+  {
+    id: 'tech-mahindra',
+    name: 'Tech Mahindra',
+    region: 'India / Global',
+    atsType: 'Tech Mahindra Recruitment Portal',
+    hiringFocus: 'Telecommunications networks, 5G solutions, enterprise digital transformation, and cybersecurity.',
+    keyAttributes: [
+      'Network engineering, telecom software protocols, and cloud computing',
+      'Robust backend systems, Linux environments, and relational databases'
+    ]
+  },
+
+  // --- Indian Tech Unicorns & Product Leaders ---
+  {
+    id: 'flipkart',
+    name: 'Flipkart',
+    region: 'India',
+    atsType: 'Greenhouse / Custom Product ATS',
+    hiringFocus: 'Ultra-high concurrency e-commerce scale (Big Billion Days), microservices, low-latency search/recommendation engines, and warehouse tech.',
+    keyAttributes: [
+      'Experience handling high QPS distributed systems and database sharding',
+      'Deep algorithm optimization, caching layers (Redis/Aerospike), and Kafka event streams',
+      'Rapid product iteration and data-backed feature experiments'
+    ]
+  },
+  {
+    id: 'swiggy',
+    name: 'Swiggy',
+    region: 'India',
+    atsType: 'Lever / Custom Logistics ATS',
+    hiringFocus: 'Hyperlocal delivery routing algorithms, real-time demand forecasting, low-latency microservices, and mobile-first experience.',
+    keyAttributes: [
+      'Real-time geolocation systems, geospatial queries, and Kafka event streaming',
+      'Scalable Golang/Java backend services and high-throughput databases'
+    ]
+  },
+  {
+    id: 'zomato',
+    name: 'Zomato',
+    region: 'India',
+    atsType: 'Greenhouse / Lever',
+    hiringFocus: 'Consumer app speed, search & recommendation relevance, quick commerce logistics (Blinkit), and high-scale backend reliability.',
+    keyAttributes: [
+      'High-scale backend architectures and asynchronous message queues',
+      'Clean modular frontend architecture and lightning-fast user experience'
+    ]
+  },
+  {
+    id: 'razorpay',
+    name: 'Razorpay',
+    region: 'India',
+    atsType: 'Greenhouse ATS',
+    hiringFocus: 'Fintech transaction security, 99.999% payment gateway uptime, banking integrations, and API design excellence.',
+    keyAttributes: [
+      'Fintech security, idempotency, distributed transactions, and PCI-DSS compliance',
+      'Clean developer APIs, high-reliability architecture, and Go/Node.js microservices'
+    ]
+  },
+
+  // --- Global MNCs & Tech Giants ---
+  {
+    id: 'google',
+    name: 'Google',
+    region: 'Global / India (Bangalore & Hyderabad)',
+    atsType: 'Google Custom Internal ATS / Taleo',
+    hiringFocus: 'Engineering excellence, algorithmic efficiency, distributed computing, and the Google "Googliness" collaborative leadership standard.',
+    keyAttributes: [
+      'Demonstrated scale (millions/billions of daily active users or petabytes of data)',
+      'Strong computer science fundamentals and algorithmic complexity understanding',
+      'Clear STAR-method quantified achievements (X-Y-Z formula)',
+      'Open-source contributions and system architecture depth'
+    ]
+  },
+  {
+    id: 'amazon',
+    name: 'Amazon',
+    region: 'Global / India (Bangalore, Hyderabad, Chennai, Delhi)',
+    atsType: 'Amazon Internal ATS (iCIMS / Custom)',
+    hiringFocus: 'Amazon Leadership Principles (Customer Obsession, Ownership, Bias for Action, Deliver Results, Dive Deep, Earn Trust).',
+    keyAttributes: [
+      'Direct mapping of achievements to Amazon Leadership Principles in bullet points',
+      'End-to-end operational ownership: building, launching, and supporting in production',
+      'Deep metrics and data-driven decision making (frugality, latency reduction, revenue impact)',
+      'Experience with AWS cloud infrastructure and microservices at planetary scale'
+    ]
+  },
+  {
+    id: 'microsoft',
+    name: 'Microsoft',
+    region: 'Global / India (IDC Hyderabad, Bangalore, Noida)',
+    atsType: 'Microsoft Talent Architecture / SAP SuccessFactors',
+    hiringFocus: 'Growth mindset, inclusive collaboration, cloud-first architecture on Azure, enterprise security, and AI-first engineering.',
+    keyAttributes: [
+      'Enterprise-grade code quality, security compliance, and accessibility',
+      'Cross-group collaboration and multi-team technical alignment',
+      'Experience with Azure, .NET/C#, TypeScript, or large-scale AI Copilot models',
+      'System modernization and legacy-to-cloud transformation projects'
+    ]
+  },
+  {
+    id: 'meta',
+    name: 'Meta',
+    region: 'Global / India',
+    atsType: 'Meta Internal Recruiting Engine',
+    hiringFocus: 'High velocity, building fast with impact, deep product intuition, open-source tech (React, PyTorch), and infrastructure scaling.',
+    keyAttributes: [
+      'Evidence of extreme execution speed and shipping products from 0 to 1',
+      'Deep mastery of modern web or AI open source frameworks (React, GraphQL, PyTorch, Llama)',
+      'Metrics showing dramatic user engagement or infrastructure efficiency gains',
+      'Autonomous problem solving with minimal managerial direction'
+    ]
+  },
+  {
+    id: 'netflix',
+    name: 'Netflix',
+    region: 'Global',
+    atsType: 'Lever / Workday ATS',
+    hiringFocus: 'Stunning colleagues, context not control, high freedom & responsibility, and mastery in distributed streaming resilience.',
+    keyAttributes: [
+      'Senior-level technical judgment and self-management without micromanagement',
+      'Chaos engineering, fault-tolerant distributed systems, and real-time streaming architectures',
+      'Track record of making high-stakes technical architectural decisions independently'
+    ]
+  },
+  {
     id: 'top-startups',
     name: 'Top Startups',
+    region: 'Global / Indian Tech Hubs (Bangalore, Gurgaon, Pune)',
     atsType: 'Greenhouse / Lever / Ashby ATS',
     hiringFocus: 'Rapid iteration, product ownership, 0-to-1 building, versatility across the entire stack, and hunger to solve ambiguous problems.',
     keyAttributes: [
       'Demonstrated versatility across frontend, backend, databases, and DevOps',
       'High ownership mentality: shipping products quickly and iterating based on user feedback',
-      'Side projects, open source code, or entrepreneurial track record',
-      'Thriving in fast-paced, high-autonomy environments with rapid pivot cycles'
+      'Side projects, open source code, or entrepreneurial track record'
     ]
   }
 ];
 
-// Standalone Special Niches
+// Special Niches & Regional Tech Hub Portals
 export const SPECIAL_NICHES = [
   {
     slug: 'tcs-freshers',
     title: 'TCS Freshers Resume ATS Optimization',
     role: 'Fresher / Entry-Level Software Engineer',
     company: 'TCS',
+    region: 'India Campus Hiring',
+    salaryIndia: '₹3.6 LPA - ₹9 LPA (Ninja / Digital / Prime)',
     description: 'Optimize your entry-level resume for the TCS NQT and iON ATS screening. Highlight academic projects, core Java/C++/Python skills, and problem-solving certifications.',
     topKeywords: ['Core Java', 'Python Fundamentals', 'C / C++', 'Object-Oriented Programming (OOP)', 'Data Structures', 'Database Management (DBMS)', 'SQL Queries', 'Academic Projects', 'Git Basics', 'Problem Solving Aptitude', 'Communication Skills', 'SDLC'],
     overview: 'TCS hiring filters for fresh graduates rely heavily on TCS NQT scores, academic project depth, coding fundamentals, and verified technical certifications.',
@@ -413,6 +542,8 @@ export const SPECIAL_NICHES = [
     title: 'Infosys Specialist Programmer & SE Resume ATS Optimization',
     role: 'Software Engineer & Specialist Programmer',
     company: 'Infosys',
+    region: 'India Campus & Lateral Hiring',
+    salaryIndia: '₹3.6 LPA - ₹9.5 LPA (SE / DSE / SP)',
     description: 'Tailor your resume for Infosys InfyTQ, HackWithInfy, and Specialist Programmer hiring ATS filters. Maximize keyword score for high-paying enterprise engineering bands.',
     topKeywords: ['Java 8/11/17', 'Spring Boot', 'Microservices', 'RESTful APIs', 'SQL / PostgreSQL', 'Data Structures & Algorithms', 'Cloud Fundamentals (AWS/Azure)', 'Angular / React', 'CI/CD Pipelines', 'JUnit Testing', 'Agile Methodologies', 'Design Patterns'],
     overview: 'Infosys hiring tracks like Specialist Programmer (SP) and Digital Specialist Engineer (DSE) look for advanced algorithmic problem solving, modern cloud-native frameworks, and microservices architecture.',
@@ -420,6 +551,81 @@ export const SPECIAL_NICHES = [
       'Highlight experience with Spring Boot, Microservices, and REST API development.',
       'Showcase your competitive programming achievements or InfyTQ / HackWithInfy rankings.',
       'Emphasize your unit testing and database indexing skills.'
+    ]
+  },
+  {
+    slug: 'wipro-elite-nth',
+    title: 'Wipro Elite NTH & Turbo Resume ATS Optimization',
+    role: 'Project Engineer & Turbo Developer',
+    company: 'Wipro',
+    region: 'India Campus & Off-Campus',
+    salaryIndia: '₹3.5 LPA - ₹6.5 LPA',
+    description: 'Optimize your resume for Wipro Elite National Talent Hunt (NTH) and Turbo hiring filters. Score high on foundational coding and full-stack project keywords.',
+    topKeywords: ['Java / C++', 'Python Programming', 'DBMS & SQL', 'Data Structures', 'Web Development Basics', 'Cloud Fundamentals', 'Software Testing', 'Academic Capstone Project', 'Aptitude & Logical Reasoning'],
+    overview: 'Wipro Elite and Turbo hiring algorithms prioritize strong foundational computer science subjects, error-free resume layout, and practical project implementation.',
+    atsTips: [
+      'Ensure standard single-column layout without complex columns or tables.',
+      'Highlight software engineering internships and open-source contributions.'
+    ]
+  },
+  {
+    slug: 'cognizant-genc',
+    title: 'Cognizant GenC & GenC Next Resume ATS Optimization',
+    role: 'Programmer Analyst & Digital Engineer',
+    company: 'Cognizant',
+    region: 'India Campus & Off-Campus',
+    salaryIndia: '₹4 LPA - ₹6.75 LPA',
+    description: 'Tailor your resume for Cognizant GenC, GenC Elevate, and GenC Next hiring assessments. Highlight full stack development, cloud, and modern programming languages.',
+    topKeywords: ['Java / Python', 'Spring Boot / React', 'SQL Database Queries', 'Object Oriented Programming', 'Cloud Concepts (AWS/Azure)', 'Data Structures & Algorithms', 'Git Version Control', 'Agile Fundamentals'],
+    overview: 'Cognizant filters score candidates on digital readiness, full stack capability, and proven project execution.',
+    atsTips: [
+      'List hands-on project deliverables with metrics and technologies used.',
+      'Include certifications from AWS, Microsoft, or HackerRank.'
+    ]
+  },
+  {
+    slug: 'bangalore-tech-jobs',
+    title: 'Bengaluru Tech Jobs Resume ATS Optimization',
+    role: 'Tech Professional / Software Engineer',
+    company: 'Bengaluru Startups & GCCs',
+    region: 'Bengaluru (Silicon Valley of India)',
+    salaryIndia: '₹10 LPA - ₹45 LPA',
+    description: 'Optimize your resume for top tech companies and high-growth startups in Bengaluru (Bangalore). Beat ATS algorithms at Swiggy, Flipkart, CRED, Razorpay, and global GCCs.',
+    topKeywords: ['Scalable Microservices', 'Distributed Systems', 'System Design', 'Kafka Event Streaming', 'High QPS Scaling', 'Golang / Java / Python', 'React / TypeScript', 'AWS / Kubernetes', 'PostgreSQL / Redis'],
+    overview: 'Bengaluru tech recruiters and ATS filters place extreme weight on high-scale systems, rapid feature shipping, and modern cloud architectures.',
+    atsTips: [
+      'Showcase experience handling high-traffic and low-latency systems.',
+      'Quantify your impact on revenue, user growth, or infrastructure cost optimization.'
+    ]
+  },
+  {
+    slug: 'hyderabad-tech-jobs',
+    title: 'Hyderabad Tech Jobs Resume ATS Optimization',
+    role: 'Software Engineer & Cloud Specialist',
+    company: 'Hyderabad IT Hubs & MNCs',
+    region: 'Hyderabad (Cyberabad / HITEC City)',
+    salaryIndia: '₹9 LPA - ₹40 LPA',
+    description: 'Tailor your resume for Microsoft IDC, Google Hyderabad, Amazon, and enterprise GCCs in HITEC City and Gachibowli.',
+    topKeywords: ['Enterprise Java / .NET', 'Cloud Migration (Azure/AWS)', 'Distributed Architecture', 'Data Pipelines', 'Microservices', 'REST APIs', 'CI/CD Pipelines', 'SQL / NoSQL Optimization'],
+    overview: 'Hyderabad tech employers look for deep enterprise software development, cloud platform expertise, and high-quality coding standards.',
+    atsTips: [
+      'Highlight enterprise cloud development and cross-team collaboration.',
+      'Specify unit test coverage and automation frameworks.'
+    ]
+  },
+  {
+    slug: 'pune-tech-jobs',
+    title: 'Pune IT & Automotive Tech Resume ATS Optimization',
+    role: 'Software Engineer & Embedded/Full Stack Developer',
+    company: 'Pune IT Parks & GCCs',
+    region: 'Pune (Hinjawadi & Magarpatta)',
+    salaryIndia: '₹8 LPA - ₹35 LPA',
+    description: 'Optimize your resume for Hinjawadi and Magarpatta IT companies, fintech centers, and automotive software hubs in Pune.',
+    topKeywords: ['Java / Spring Boot', 'Python / Django', 'Automotive Software (AUTOSAR/C++)', 'Cloud Solutions', 'Fintech APIs', 'Microservices', 'PostgreSQL / Oracle', 'DevOps & Docker'],
+    overview: 'Pune hiring filters evaluate strong software fundamentals, BFSI/fintech domain familiarity, and cloud architecture capabilities.',
+    atsTips: [
+      'Detail your backend architecture experience and database query tuning.',
+      'Mention domain familiarity with finance, logistics, or automotive systems if applicable.'
     ]
   }
 ];
@@ -462,12 +668,15 @@ export function getPseoData(slug) {
       title: special.title,
       roleName: special.role,
       companyName: special.company,
-      category: 'Entry Level & Specialized',
+      region: special.region || 'India / Global',
+      category: 'Specialized Track & Regional Hub',
+      salaryIndia: special.salaryIndia || 'Competitive',
+      salaryGlobal: '$80,000 - $160,000',
       description: special.description,
       topKeywords: special.topKeywords,
       overview: special.overview,
       atsTips: special.atsTips,
-      atsType: 'Enterprise Screening Portal',
+      atsType: 'Enterprise Screening Portal / Campus ATS',
       hiringFocus: 'Core technical foundation, project clarity, and problem-solving agility.',
       isCombination: false
     };
@@ -487,8 +696,10 @@ export function getPseoData(slug) {
         roleId: role.id,
         companyName: company.name,
         companyId: company.id,
+        region: company.region,
         category: role.category,
-        avgSalary: role.avgSalary,
+        salaryIndia: role.avgSalaryIndia,
+        salaryGlobal: role.avgSalaryGlobal,
         description: `Beat the ${company.name} Applicant Tracking System. Free AI-powered resume scanner and keyword optimizer tailored specifically for ${role.title} applications at ${company.name}.`,
         topKeywords: role.topKeywords,
         overview: role.overview,
@@ -509,15 +720,17 @@ export function getPseoData(slug) {
       title: `Free AI ATS Resume Scanner for ${role.plural}`,
       roleName: role.title,
       roleId: role.id,
-      companyName: 'Top Companies',
+      companyName: 'Top Companies in India & Worldwide',
       companyId: null,
+      region: 'India / Global',
       category: role.category,
-      avgSalary: role.avgSalary,
+      salaryIndia: role.avgSalaryIndia,
+      salaryGlobal: role.avgSalaryGlobal,
       description: `Optimize your ${role.title} resume for modern ATS algorithms. Scan for missing critical keywords, calculate match score, and beat recruiter screening filters for free.`,
       topKeywords: role.topKeywords,
       overview: role.overview,
       atsTips: role.atsTips,
-      atsType: 'Workday, Taleo, Greenhouse, Lever, iCIMS',
+      atsType: 'Workday, Taleo, TCS iON, Greenhouse, Lever, iCIMS',
       hiringFocus: 'Demonstrated domain expertise, quantified business impact, and technical tool proficiency.',
       keyAttributes: [
         'High keyword density for target technical competencies',
@@ -539,10 +752,12 @@ export function getPseoData(slug) {
     title: `Free AI ATS Resume Scanner for ${formatted}`,
     roleName: formatted,
     roleId: slug,
-    companyName: 'Top Companies',
+    companyName: 'Top Tech Employers',
     companyId: null,
+    region: 'India / Global',
     category: 'General Careers',
-    avgSalary: 'Market Competitive',
+    salaryIndia: '₹6 LPA - ₹25 LPA',
+    salaryGlobal: '$80,000 - $150,000',
     description: `Optimize your resume for ${formatted} positions with our free AI ATS scanner. Discover missing keywords, boost your score, and land interviews.`,
     topKeywords: [
       'Domain Specific Keywords',
@@ -555,7 +770,7 @@ export function getPseoData(slug) {
     overview: `Applicant Tracking Systems screen thousands of resumes for ${formatted} roles before any human recruiter reads them. Our AI checks your resume for high-impact keywords and formatting compatibility.`,
     atsTips: [
       'Tailor your bullet points directly to the target job description requirements.',
-      'Quantify your results with percentages, dollar amounts, and scale metrics.',
+      'Quantify your results with percentages, scale metrics, and business outcomes.',
       'Use standard headings like Experience, Skills, Education, and Certifications.'
     ],
     atsType: 'Enterprise ATS Filters',
@@ -568,4 +783,3 @@ export function getPseoData(slug) {
     isCombination: false
   };
 }
-
