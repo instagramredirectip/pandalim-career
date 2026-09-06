@@ -22,14 +22,21 @@ import {
   Search,
   Building2,
   TrendingUp,
-  Zap
+  Zap,
+  Globe,
+  Menu,
+  Terminal,
+  ExternalLink,
+  Eye
 } from 'lucide-react';
 import SEOHead from '../components/SEOHead';
 import LanguageSelector from '../components/LanguageSelector';
+import MobileDrawer from '../components/MobileDrawer';
 import { ROLES, COMPANIES, SPECIAL_NICHES } from '../data/pseoData';
 
 export default function Home() {
   const [openFaq, setOpenFaq] = useState(null);
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   const toggleFaq = (index) => {
     setOpenFaq(openFaq === index ? null : index);
@@ -131,7 +138,7 @@ export default function Home() {
     {
       "@context": "https://schema.org",
       "@type": "SoftwareApplication",
-      "name": "PandaLime AI Resume Scanner",
+      "name": "PandaLime AI Resume Scanner & Portfolio Studio",
       "operatingSystem": "All Web Browsers",
       "applicationCategory": "BusinessApplication",
       "offers": {
@@ -139,7 +146,7 @@ export default function Home() {
         "price": "0",
         "priceCurrency": "USD"
       },
-      "description": "Free AI-powered ATS resume scanner and checker. Scan resumes against job descriptions, uncover missing keywords, and optimize for Workday, Taleo, Greenhouse, and Lever."
+      "description": "Free AI-powered ATS resume scanner and portfolio website builder. Scan resumes against job descriptions, uncover missing keywords, and launch recruiter-ready developer portfolios."
     },
     {
       "@context": "https://schema.org",
@@ -158,8 +165,8 @@ export default function Home() {
   return (
     <div className="min-h-screen bg-gray-50 font-sans text-gray-900 w-full max-w-full overflow-x-hidden">
       <SEOHead 
-        title="Free AI Resume Scanner & ATS Resume Checker | PandaLime"
-        description="Scan your resume for free with PandaLime AI. Beat corporate ATS screening algorithms (Workday, Taleo, Greenhouse), find missing keywords, and get recruiter-ready bullet rewrites."
+        title="Free AI Resume Scanner & AI Portfolio Studio | PandaLime"
+        description="Scan your resume for free with PandaLime AI. Beat corporate ATS screening algorithms (Workday, Taleo, Greenhouse), find missing keywords, and launch recruiter-ready portfolios."
         canonical="/"
         jsonLd={jsonLd}
       />
@@ -193,10 +200,18 @@ export default function Home() {
           </Link>
           <div className="flex items-center gap-2 sm:gap-3 shrink-0">
             <LanguageSelector variant="nav" />
+            <Link 
+              to="/portfolio-builder" 
+              className="text-xs sm:text-sm font-bold text-emerald-700 hover:text-emerald-800 bg-emerald-50 hover:bg-emerald-100 border border-emerald-200 px-3 py-1.5 rounded-xl transition-all hidden md:flex items-center gap-1.5"
+            >
+              <Globe className="w-3.5 h-3.5 text-emerald-600" />
+              <span>AI Portfolio</span>
+              <span className="text-[9px] bg-emerald-600 text-white font-extrabold px-1.5 py-0.2 rounded-full uppercase">New</span>
+            </Link>
             <Link to="/tools" className="text-sm font-semibold text-gray-600 hover:text-lime-600 transition-colors hidden sm:block">
               Free Tools
             </Link>
-            <Link to="/roast-wall" className="text-sm font-semibold text-gray-600 hover:text-lime-600 transition-colors hidden md:block">
+            <Link to="/roast-wall" className="text-sm font-semibold text-gray-600 hover:text-lime-600 transition-colors hidden lg:block">
               Community Wall
             </Link>
             <Link 
@@ -207,49 +222,142 @@ export default function Home() {
               <span className="hidden sm:inline">Scan Resume Free</span>
               <span className="sm:hidden">Scan Free</span>
             </Link>
+
+            {/* Mobile Hamburger Menu Trigger */}
+            <button
+              onClick={() => setMobileMenuOpen(true)}
+              className="p-2 text-gray-700 hover:text-gray-900 rounded-xl hover:bg-gray-100 transition-colors md:hidden flex items-center justify-center shrink-0 border border-gray-200"
+              aria-label="Open navigation menu"
+            >
+              <Menu className="w-5 h-5 text-gray-800" />
+            </button>
           </div>
         </div>
       </nav>
 
+      {/* Slide-out Mobile Sidebar Drawer */}
+      <MobileDrawer isOpen={mobileMenuOpen} onClose={() => setMobileMenuOpen(false)} />
+
       {/* --- HERO SECTION --- */}
-      <header className="relative overflow-hidden bg-white pt-20 pb-28 border-b border-gray-200">
+      <header className="relative overflow-hidden bg-white pt-16 sm:pt-20 pb-20 sm:pb-28 border-b border-gray-200">
         <div className="absolute inset-0 bg-[radial-gradient(#e5e7eb_1px,transparent_1px)] [background-size:16px_16px] opacity-30"></div>
         <div className="max-w-6xl mx-auto px-4 relative z-10 text-center">
           
-          <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-lime-100 text-lime-800 font-semibold text-sm mb-6 animate-bounce">
-            <Sparkles className="w-4 h-4" />
-            <span>Free AI-Powered ATS Resume Scanner & Checker</span>
+          <div className="inline-flex items-center gap-2 px-3.5 py-1.5 sm:px-4 sm:py-2 rounded-full bg-gradient-to-r from-lime-100 via-emerald-100 to-teal-100 text-gray-900 font-bold text-xs sm:text-sm mb-6 border border-emerald-200/60 shadow-sm">
+            <Sparkles className="w-4 h-4 text-emerald-600 shrink-0" />
+            <span>AI Career Suite • ATS Resume Scanner & Portfolio Website Builder</span>
           </div>
           
-          <h1 className="text-4xl sm:text-6xl md:text-7xl font-extrabold tracking-tight text-gray-900 mb-6 leading-tight max-w-5xl mx-auto">
-            Free AI Resume Scanner & <br className="hidden md:block" />
-            <span className="text-transparent bg-clip-text bg-gradient-to-r from-lime-500 to-green-600">ATS Keyword Checker</span>
+          <h1 className="text-3xl sm:text-5xl md:text-6xl lg:text-7xl font-extrabold tracking-tight text-gray-900 mb-6 leading-tight max-w-5xl mx-auto">
+            Beat the ATS Bots. <br className="hidden sm:block" />
+            <span className="text-transparent bg-clip-text bg-gradient-to-r from-lime-500 via-emerald-500 to-teal-600">
+              Launch Your AI Portfolio.
+            </span>
           </h1>
           
-          <p className="text-lg md:text-xl text-gray-600 max-w-3xl mx-auto mb-10 leading-relaxed">
-            Over 98% of Fortune 500 companies and Indian IT giants (TCS, Infosys, Wipro, Google, Amazon) use Applicant Tracking Systems (ATS) to filter resumes. PandaLime scans your resume against any job description, uncovers missing keywords, and helps you beat the bots to land interviews.
+          <p className="text-base sm:text-lg md:text-xl text-gray-600 max-w-3xl mx-auto mb-8 sm:mb-10 leading-relaxed px-2">
+            Over 98% of Fortune 500 companies & Indian IT leaders (TCS, Infosys, Wipro, Google) filter resumes using ATS software. PandaLime uncovers missing keywords to get your resume past the filters, and gives you a hosted personal developer or cybersecurity portfolio website to impress hiring managers.
           </p>
 
           <div className="flex flex-col items-center gap-4">
-            <div className="flex flex-col sm:flex-row justify-center items-center gap-4 w-full sm:w-auto">
+            <div className="flex flex-col sm:flex-row justify-center items-center gap-3.5 w-full sm:w-auto px-2">
               <Link 
                 to="/dashboard" 
-                className="w-full sm:w-auto px-8 py-4 bg-lime-500 hover:bg-lime-600 text-white rounded-xl font-bold text-lg shadow-lg shadow-lime-500/30 transition-all hover:-translate-y-1 flex items-center justify-center gap-2 cursor-pointer"
+                className="w-full sm:w-auto px-7 py-4 bg-lime-500 hover:bg-lime-600 text-white rounded-2xl font-black text-base sm:text-lg shadow-xl shadow-lime-500/25 transition-all hover:-translate-y-0.5 flex items-center justify-center gap-2 cursor-pointer"
               >
-                Scan Resume for Free <ArrowRight className="w-5 h-5" />
+                <ScanLine className="w-5 h-5" />
+                <span>Scan Resume for Free</span>
+                <ArrowRight className="w-5 h-5" />
               </Link>
 
               <Link
-                to="/roast-wall" 
-                className="w-full sm:w-auto px-8 py-4 bg-white hover:bg-gray-50 text-gray-700 border border-gray-300 rounded-xl font-bold text-lg shadow-sm transition-all hover:-translate-y-1 flex items-center justify-center gap-2 cursor-pointer"
+                to="/portfolio-builder" 
+                className="w-full sm:w-auto px-7 py-4 bg-gray-900 hover:bg-black text-white rounded-2xl font-black text-base sm:text-lg shadow-xl shadow-gray-900/20 transition-all hover:-translate-y-0.5 flex items-center justify-center gap-2 border border-gray-800 cursor-pointer group"
               >
-                View Community Wall
+                <Globe className="w-5 h-5 text-emerald-400 group-hover:scale-110 transition-transform" />
+                <span>Build AI Portfolio</span>
+                <span className="text-[10px] bg-emerald-500 text-gray-950 px-2 py-0.5 rounded-md font-extrabold uppercase ml-1">Free</span>
               </Link>
             </div>
             
-            <p className="text-sm text-gray-500 font-medium mt-2 flex items-center gap-2">
-              <CheckCircle2 className="w-4 h-4 text-lime-500" /> Free instant scan • No credit card required • PDF supported
-            </p>
+            <div className="flex flex-wrap items-center justify-center gap-x-4 gap-y-2 text-xs sm:text-sm text-gray-500 font-medium mt-3 px-4 text-center">
+              <span className="flex items-center gap-1.5"><CheckCircle2 className="w-4 h-4 text-lime-500" /> Free instant ATS scan</span>
+              <span className="hidden sm:inline text-gray-300">•</span>
+              <span className="flex items-center gap-1.5"><CheckCircle2 className="w-4 h-4 text-emerald-500" /> Hosted at pandalime.com/p/:slug</span>
+              <span className="hidden sm:inline text-gray-300">•</span>
+              <span className="flex items-center gap-1.5"><CheckCircle2 className="w-4 h-4 text-lime-500" /> 5 Cyber & Dev themes</span>
+            </div>
+          </div>
+
+          {/* Dual Core Pillar Spotlight Cards */}
+          <div className="grid sm:grid-cols-2 gap-4 sm:gap-6 mt-12 sm:mt-16 text-left max-w-4xl mx-auto px-2">
+            {/* Pillar 1: Resume Scanner */}
+            <div className="bg-gradient-to-br from-lime-500/10 via-white to-lime-500/5 rounded-3xl p-6 sm:p-7 border border-lime-200/80 shadow-sm hover:shadow-md transition-all flex flex-col justify-between">
+              <div>
+                <div className="flex items-center justify-between mb-4">
+                  <div className="w-12 h-12 rounded-2xl bg-lime-500 text-white flex items-center justify-center shadow-md shadow-lime-500/20">
+                    <ScanLine className="w-6 h-6" />
+                  </div>
+                  <span className="text-xs font-black uppercase tracking-wider text-lime-800 bg-lime-100 px-3 py-1 rounded-full">
+                    Step 1: Beat ATS
+                  </span>
+                </div>
+                <h3 className="text-xl font-extrabold text-gray-900 mb-2">
+                  AI ATS Resume Scanner & Optimizer
+                </h3>
+                <p className="text-xs sm:text-sm text-gray-600 leading-relaxed mb-4">
+                  Scan against Workday, Greenhouse & Taleo algorithms. Uncover exact missing keywords, density gaps, and get AI-rewritten Google STAR bullet points.
+                </p>
+                <div className="flex flex-wrap gap-1.5 mb-6">
+                  {['Missing Keywords', 'STAR Bullets', 'Match Score %', 'Cover Letter AI'].map((tag, idx) => (
+                    <span key={idx} className="text-[11px] font-semibold text-lime-800 bg-lime-100/80 px-2.5 py-1 rounded-lg">
+                      {tag}
+                    </span>
+                  ))}
+                </div>
+              </div>
+              <Link
+                to="/dashboard"
+                className="inline-flex items-center justify-between w-full p-3.5 bg-lime-500 hover:bg-lime-600 text-white rounded-xl font-bold text-xs sm:text-sm transition-colors shadow-md shadow-lime-500/20"
+              >
+                <span>Launch Resume Scanner</span>
+                <ArrowRight className="w-4 h-4" />
+              </Link>
+            </div>
+
+            {/* Pillar 2: Portfolio Studio */}
+            <div className="bg-gradient-to-br from-gray-900 via-gray-950 to-gray-900 text-white rounded-3xl p-6 sm:p-7 border border-gray-800 shadow-xl flex flex-col justify-between">
+              <div>
+                <div className="flex items-center justify-between mb-4">
+                  <div className="w-12 h-12 rounded-2xl bg-emerald-500 text-gray-950 flex items-center justify-center shadow-md shadow-emerald-500/20">
+                    <Globe className="w-6 h-6" />
+                  </div>
+                  <span className="text-xs font-black uppercase tracking-wider text-emerald-400 bg-emerald-950/80 border border-emerald-500/30 px-3 py-1 rounded-full">
+                    Step 2: Impress Recruiters
+                  </span>
+                </div>
+                <h3 className="text-xl font-extrabold text-white mb-2">
+                  AI Portfolio Studio & Hosted Website
+                </h3>
+                <p className="text-xs sm:text-sm text-gray-300 leading-relaxed mb-4">
+                  Create your personal developer or cybersecurity portfolio in seconds. Pick from 5 themes with live projects, skill bars, and instant QR code sharing.
+                </p>
+                <div className="flex flex-wrap gap-1.5 mb-6">
+                  {['Free URL at /p/:slug', 'Cyber & Tokyo Themes', 'SEO Structured Data', 'QR Code Share'].map((tag, idx) => (
+                    <span key={idx} className="text-[11px] font-semibold text-emerald-300 bg-emerald-950/60 border border-emerald-500/20 px-2.5 py-1 rounded-lg">
+                      {tag}
+                    </span>
+                  ))}
+                </div>
+              </div>
+              <Link
+                to="/portfolio-builder"
+                className="inline-flex items-center justify-between w-full p-3.5 bg-emerald-500 hover:bg-emerald-400 text-gray-950 rounded-xl font-black text-xs sm:text-sm transition-colors shadow-lg shadow-emerald-500/20"
+              >
+                <span>Build & Host Portfolio</span>
+                <ArrowRight className="w-4 h-4" />
+              </Link>
+            </div>
           </div>
 
         </div>
@@ -452,6 +560,135 @@ export default function Home() {
               Browse Full Free Career Tools Directory Hub <ArrowRight className="w-4 h-4" />
             </Link>
           </div>
+        </div>
+      </section>
+
+      {/* --- PORTFOLIO STUDIO SPOTLIGHT SHOWCASE --- */}
+      <section className="py-20 bg-gray-950 text-white relative overflow-hidden border-b border-gray-800">
+        <div className="absolute inset-0 bg-[radial-gradient(#10b981_1px,transparent_1px)] [background-size:24px_24px] opacity-10"></div>
+        <div className="max-w-6xl mx-auto px-4 relative z-10">
+          
+          <div className="text-center mb-14">
+            <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 text-xs font-bold uppercase tracking-wider mb-4">
+              <Zap className="w-3.5 h-3.5" /> Instant Personal Website Builder
+            </div>
+            <h2 className="text-3xl sm:text-4xl md:text-5xl font-black tracking-tight text-white mb-4">
+              Your Recruiter-Ready AI Portfolio <br />
+              <span className="text-transparent bg-clip-text bg-gradient-to-r from-emerald-400 via-teal-300 to-lime-400">
+                Hosted Free at pandalime.com/p/:yourname
+              </span>
+            </h2>
+            <p className="text-gray-400 max-w-2xl mx-auto text-base sm:text-lg leading-relaxed">
+              Don't just attach a PDF. Give recruiters and engineering managers an interactive live website with your skills matrix, GitHub repositories, certifications, and 1-click QR code.
+            </p>
+          </div>
+
+          {/* 3 Value Pillars */}
+          <div className="grid md:grid-cols-3 gap-6 mb-12">
+            <div className="bg-gray-900/90 rounded-2xl p-6 border border-gray-800 hover:border-emerald-500/40 transition-all">
+              <div className="w-12 h-12 bg-emerald-500/10 rounded-xl flex items-center justify-center text-emerald-400 mb-4 border border-emerald-500/20">
+                <Terminal className="w-6 h-6" />
+              </div>
+              <h3 className="text-lg font-bold text-white mb-2">5 Developer & Cyber Themes</h3>
+              <p className="text-sm text-gray-400 leading-relaxed">
+                Choose from Tokyo Cyber Neon, Hacker Terminal CLI, Minimalist Clean, Modern Slate, or Obsidian Gold. Engineered for tech enthusiasts.
+              </p>
+            </div>
+
+            <div className="bg-gray-900/90 rounded-2xl p-6 border border-gray-800 hover:border-emerald-500/40 transition-all">
+              <div className="w-12 h-12 bg-teal-500/10 rounded-xl flex items-center justify-center text-teal-400 mb-4 border border-teal-500/20">
+                <Globe className="w-6 h-6" />
+              </div>
+              <h3 className="text-lg font-bold text-white mb-2">Instant Public URL & QR Code</h3>
+              <p className="text-sm text-gray-400 leading-relaxed">
+                Claim your custom link (e.g. <code className="text-emerald-400 bg-gray-950 px-1.5 py-0.5 rounded text-xs">/p/alex-dev</code>). Share with 1 click on LinkedIn or print the instant QR code on your resume.
+              </p>
+            </div>
+
+            <div className="bg-gray-900/90 rounded-2xl p-6 border border-gray-800 hover:border-emerald-500/40 transition-all">
+              <div className="w-12 h-12 bg-lime-500/10 rounded-xl flex items-center justify-center text-lime-400 mb-4 border border-lime-500/20">
+                <ShieldCheck className="w-6 h-6" />
+              </div>
+              <h3 className="text-lg font-bold text-white mb-2">SEO & Recruiter Optimized</h3>
+              <p className="text-sm text-gray-400 leading-relaxed">
+                Pre-rendered HTML, structured Person Schema JSON-LD, and high Lighthouse speed scores ensure Google and recruiters rank your profile at the top.
+              </p>
+            </div>
+          </div>
+
+          {/* Interactive Live Theme Showcase Card */}
+          <div className="bg-gray-900 rounded-3xl p-6 sm:p-10 border border-gray-800 shadow-2xl relative overflow-hidden">
+            <div className="flex flex-col lg:flex-row items-center justify-between gap-8">
+              <div className="flex-1 space-y-4 text-left">
+                <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-emerald-950 text-emerald-400 text-xs font-bold border border-emerald-500/30">
+                  <Eye className="w-3.5 h-3.5" /> Live Interactive Preview
+                </div>
+                <h3 className="text-2xl sm:text-3xl font-extrabold text-white">
+                  Designed for Indian Developers & Global Tech Nomads
+                </h3>
+                <p className="text-sm sm:text-base text-gray-400 leading-relaxed">
+                  Whether you are a Fresher from Bangalore applying to TCS or a Senior DevOps Engineer targeting remote US roles, our AI Portfolio Studio crafts high-converting copy and projects in seconds.
+                </p>
+                <div className="pt-2 flex flex-wrap gap-3">
+                  <Link
+                    to="/portfolio-builder"
+                    className="px-6 py-3.5 bg-emerald-500 hover:bg-emerald-400 text-gray-950 rounded-xl font-black text-sm flex items-center gap-2 shadow-lg shadow-emerald-500/20 transition-all"
+                  >
+                    <Globe className="w-4 h-4" />
+                    <span>Create Your Portfolio Free</span>
+                    <ArrowRight className="w-4 h-4" />
+                  </Link>
+                  <Link
+                    to="/p/sample-developer"
+                    className="px-5 py-3.5 bg-gray-800 hover:bg-gray-700 text-gray-200 rounded-xl font-bold text-sm flex items-center gap-2 transition-all border border-gray-700"
+                  >
+                    <span>View Live Sample</span>
+                    <ExternalLink className="w-4 h-4 text-gray-400" />
+                  </Link>
+                </div>
+              </div>
+
+              {/* Visual Card Mockup */}
+              <div className="w-full lg:w-96 bg-gray-950 rounded-2xl p-5 border border-gray-800 shadow-xl space-y-4">
+                <div className="flex items-center justify-between border-b border-gray-800 pb-3">
+                  <div className="flex items-center gap-2">
+                    <div className="w-3 h-3 rounded-full bg-red-500/80"></div>
+                    <div className="w-3 h-3 rounded-full bg-yellow-500/80"></div>
+                    <div className="w-3 h-3 rounded-full bg-green-500/80"></div>
+                  </div>
+                  <span className="text-[11px] font-mono text-emerald-400 bg-emerald-950/60 px-2 py-0.5 rounded border border-emerald-500/30">
+                    pandalime.com/p/rahul-cloud
+                  </span>
+                </div>
+                <div className="space-y-3">
+                  <div className="flex items-center gap-3">
+                    <div className="w-12 h-12 rounded-full bg-gradient-to-tr from-emerald-500 to-lime-400 flex items-center justify-center font-black text-gray-950 text-lg shadow-md">
+                      RC
+                    </div>
+                    <div>
+                      <h4 className="text-white font-bold text-sm">Rahul Cloud</h4>
+                      <p className="text-emerald-400 text-xs font-mono">DevOps & Cloud Architect</p>
+                    </div>
+                  </div>
+                  <p className="text-xs text-gray-400 line-clamp-2">
+                    "Specializing in Kubernetes, AWS multi-region infrastructure, and zero-downtime CI/CD deployment pipelines."
+                  </p>
+                  <div className="flex flex-wrap gap-1.5 pt-1">
+                    {['Kubernetes', 'Terraform', 'AWS', 'Docker', 'Go'].map((skill, i) => (
+                      <span key={i} className="text-[10px] bg-gray-900 text-gray-300 px-2 py-0.5 rounded border border-gray-800 font-mono">
+                        {skill}
+                      </span>
+                    ))}
+                  </div>
+                  <div className="pt-2 border-t border-gray-900 flex justify-between items-center text-[11px] text-gray-500 font-mono">
+                    <span>⚡ 5 Projects Featured</span>
+                    <span className="text-emerald-400 font-bold">✓ Active Status</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
         </div>
       </section>
 

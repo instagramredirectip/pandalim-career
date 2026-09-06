@@ -12,16 +12,20 @@ import {
   Sparkles,
   ChevronDown,
   Building2,
-  Search
+  Search,
+  Globe,
+  Menu
 } from 'lucide-react';
 import SEOHead from '../components/SEOHead';
 import LanguageSelector from '../components/LanguageSelector';
+import MobileDrawer from '../components/MobileDrawer';
 import { TRANSLATIONS, SUPPORTED_LANGUAGES } from '../data/translations';
 import { ROLES, COMPANIES, SPECIAL_NICHES } from '../data/pseoData';
 
 export default function RegionalHome() {
   const { lang = 'hi' } = useParams();
   const [openFaq, setOpenFaq] = useState(null);
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   const t = TRANSLATIONS[lang] || TRANSLATIONS['hi'];
   const langConfig = SUPPORTED_LANGUAGES.find(l => l.code === lang) || SUPPORTED_LANGUAGES[1];
@@ -99,6 +103,13 @@ export default function RegionalHome() {
           </Link>
           <div className="flex items-center gap-2 sm:gap-3 shrink-0">
             <LanguageSelector variant="nav" />
+            <Link 
+              to="/portfolio-builder" 
+              className="text-xs sm:text-sm font-bold text-emerald-700 hover:text-emerald-800 bg-emerald-50 hover:bg-emerald-100 border border-emerald-200 px-3 py-1.5 rounded-xl transition-all hidden md:flex items-center gap-1.5"
+            >
+              <Globe className="w-3.5 h-3.5 text-emerald-600" />
+              <span>AI Portfolio</span>
+            </Link>
             <Link to="/tools" className="text-sm font-semibold text-gray-600 hover:text-lime-600 transition-colors hidden sm:block">
               Free Tools
             </Link>
@@ -113,9 +124,21 @@ export default function RegionalHome() {
               <span className="hidden sm:inline">{t.scanButton}</span>
               <span className="sm:hidden">{t.scanButtonShort || t.scanButton}</span>
             </Link>
+
+            {/* Mobile Hamburger Menu Trigger */}
+            <button
+              onClick={() => setMobileMenuOpen(true)}
+              className="p-2 text-gray-700 hover:text-gray-900 rounded-xl hover:bg-gray-100 transition-colors md:hidden flex items-center justify-center shrink-0 border border-gray-200"
+              aria-label="Open navigation menu"
+            >
+              <Menu className="w-5 h-5 text-gray-800" />
+            </button>
           </div>
         </div>
       </nav>
+
+      {/* Slide-out Mobile Sidebar Drawer */}
+      <MobileDrawer isOpen={mobileMenuOpen} onClose={() => setMobileMenuOpen(false)} />
 
       {/* --- HERO SECTION --- */}
       <header className="relative overflow-hidden bg-white pt-20 pb-28 border-b border-gray-200">
