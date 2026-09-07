@@ -17,6 +17,7 @@ import AtsActionVerbs from './pages/AtsActionVerbs';
 import PortfolioBuilder from './pages/PortfolioBuilder';
 import PortfolioView from './pages/PortfolioView';
 import CookieConsent from './components/CookieConsent';
+import TrustpilotWidget from './components/TrustpilotWidget';
 
 function App() {
   return (
@@ -63,6 +64,9 @@ function App() {
         
         {/* Global Non-Intrusive GDPR/DPDP Cookie Consent Banner */}
         <CookieConsent />
+
+        {/* Global Smart Trustpilot Review Widget */}
+        <TrustpilotWidget />
       </BrowserRouter>
     </HelmetProvider>
   );

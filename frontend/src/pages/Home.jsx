@@ -956,12 +956,24 @@ export default function Home() {
             <p className="text-gray-400 mb-6 max-w-sm text-sm leading-relaxed">
               Helping job seekers across India and worldwide scan resumes for free, uncover critical ATS keyword gaps, and land high-paying careers through artificial intelligence.
             </p>
-            <div className="flex items-center gap-2 text-lime-400 text-sm mb-6">
+            <div className="flex items-center gap-2 text-lime-400 text-sm mb-4">
               <Mail className="w-4 h-4" />
               <a href="mailto:microapkdeveolper@gmail.com" className="hover:text-white transition-colors">
                 microapkdeveolper@gmail.com
               </a>
             </div>
+
+            <a 
+              href="https://www.trustpilot.com/review/pandalime.com" 
+              target="_blank" 
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-2 px-3 py-1.5 rounded-xl bg-gray-800/80 border border-gray-700/80 hover:border-[#00b67a]/50 text-xs text-gray-300 hover:text-white transition-all mb-6 group"
+            >
+              <span className="text-[#00b67a] font-bold">★ Trustpilot</span>
+              <span className="text-gray-500">|</span>
+              <span>Rate us on Trustpilot</span>
+              <span className="text-[#00b67a] group-hover:translate-x-0.5 transition-transform">→</span>
+            </a>
 
             {/* Language Selector in Footer */}
             <div className="pt-4 border-t border-gray-800 max-w-sm">
