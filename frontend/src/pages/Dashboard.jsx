@@ -11,9 +11,11 @@ import {
   Download, 
   MessageCircle,
   ScanSearch,
-  Sparkles
+  Sparkles,
+  ShieldCheck
 } from 'lucide-react';
 import SEOHead from '../components/SEOHead';
+import SmartCaptchaModal from '../components/SmartCaptchaModal';
 
 const loadRazorpayScript = () => {
     return new Promise((resolve) => {
@@ -33,10 +35,9 @@ export default function Dashboard() {
   const [isUnlocked, setIsUnlocked] = useState(false);
   const [loading, setLoading] = useState(false);
   const [isDiscounted, setIsDiscounted] = useState(false);
+  const [isCaptchaOpen, setIsCaptchaOpen] = useState(false);
+  const [scanText, setScanText] = useState("Analyzing resume...");
   const [prefilledFromTools, setPrefilledFromTools] = useState(false);
-  
-  // NEW: State for the dynamic scanning text
-  const [scanText, setScanText] = useState('Initializing AI...');
 
   const navigate = useNavigate();
   const location = useLocation();
@@ -109,14 +110,23 @@ const [isSharedToWall, setIsSharedToWall] = useState(false);
     }
   };
 
-  const handleScan = async (e) => {
+  const handleScan = (e) => {
     e.preventDefault();
-    if (!resumeFile || !jobDescription) return alert("Please provide both documents.");
+    if (!resumeFile || !jobDescription) {
+      alert("Please upload your resume PDF and paste a job description.");
+      return;
+    }
+    // Open verification challenge
+    setIsCaptchaOpen(true);
+  };
 
+  const handleExecuteScan = async ({ captchaToken, captchaAnswer }) => {
     setLoading(true);
     const formData = new FormData();
     formData.append('resume', resumeFile);
     formData.append('jobDescription', jobDescription);
+    if (captchaToken) formData.append('captchaToken', captchaToken);
+    if (captchaAnswer) formData.append('captchaAnswer', captchaAnswer);
 
     try {
       const res = await fetch('https://pandalime-backend.onrender.com/api/analyze', {
@@ -520,6 +530,14 @@ console.log("======================");
           </div>
         )}
       </main>
+
+      {/* Proof-of-Human Security Verification Modal */}
+      <SmartCaptchaModal
+        isOpen={isCaptchaOpen}
+        onClose={() => setIsCaptchaOpen(false)}
+        onVerify={handleExecuteScan}
+        title="Verify AI Resume Scan"
+      />
     </div>
   );
 }

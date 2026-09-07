@@ -54,3 +54,4 @@ export function scheduleIdlePrefetch() {
     prefetchRoute('/portfolio-builder');
   });
 }
+

@@ -30,6 +30,7 @@ import {
 import SEOHead from '../components/SEOHead';
 import { THEMES, ACCENT_COLORS, ROLE_PRESETS } from '../data/portfolioTemplates';
 import { apiRequest } from '../config/api';
+import { sanitizeUrl } from '../utils/sanitize';
 
 export default function PortfolioView() {
   const { slug } = useParams();
@@ -241,7 +242,7 @@ export default function PortfolioView() {
             {/* Avatar */}
             <div className="relative shrink-0">
               <img
-                src={p.avatarUrl}
+                src={sanitizeUrl(p.avatarUrl) || 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=300&auto=format&fit=crop&q=80'}
                 alt={p.fullName}
                 className="w-24 h-24 sm:w-36 sm:h-36 rounded-2xl object-cover border-2 shadow-2xl"
                 style={{ borderColor: accent.hex }}
@@ -302,11 +303,11 @@ export default function PortfolioView() {
                   </button>
                 )}
 
-                {p.socialLinks?.resumeUrl && p.socialLinks.resumeUrl !== '#' && (
+                {sanitizeUrl(p.socialLinks?.resumeUrl) && (
                   <a
-                    href={p.socialLinks.resumeUrl}
+                    href={sanitizeUrl(p.socialLinks.resumeUrl)}
                     target="_blank"
-                    rel="noreferrer"
+                    rel="noopener noreferrer"
                     className="px-3.5 py-2 bg-gray-900 hover:bg-gray-800 text-gray-200 border border-gray-700 font-bold text-xs sm:text-sm rounded-xl flex items-center gap-1.5 transition-all shrink-0"
                   >
                     <Download className="w-4 h-4 text-purple-400" />
@@ -316,33 +317,33 @@ export default function PortfolioView() {
 
                 {/* Social Icon Pills */}
                 <div className="flex items-center gap-1.5">
-                  {p.socialLinks?.github && (
+                  {sanitizeUrl(p.socialLinks?.github) && (
                     <a
-                      href={p.socialLinks.github}
+                      href={sanitizeUrl(p.socialLinks.github)}
                       target="_blank"
-                      rel="noreferrer"
+                      rel="noopener noreferrer"
                       className="p-2 bg-gray-900/90 hover:bg-gray-800 text-gray-300 hover:text-white border border-gray-700 rounded-xl transition-colors"
                       title="GitHub"
                     >
                       <Github className="w-4 h-4" />
                     </a>
                   )}
-                  {p.socialLinks?.linkedin && (
+                  {sanitizeUrl(p.socialLinks?.linkedin) && (
                     <a
-                      href={p.socialLinks.linkedin}
+                      href={sanitizeUrl(p.socialLinks.linkedin)}
                       target="_blank"
-                      rel="noreferrer"
+                      rel="noopener noreferrer"
                       className="p-2 bg-gray-900/90 hover:bg-gray-800 text-gray-300 hover:text-white border border-gray-700 rounded-xl transition-colors"
                       title="LinkedIn"
                     >
                       <Linkedin className="w-4 h-4" />
                     </a>
                   )}
-                  {p.socialLinks?.twitter && (
+                  {sanitizeUrl(p.socialLinks?.twitter) && (
                     <a
-                      href={p.socialLinks.twitter}
+                      href={sanitizeUrl(p.socialLinks.twitter)}
                       target="_blank"
-                      rel="noreferrer"
+                      rel="noopener noreferrer"
                       className="p-2 bg-gray-900/90 hover:bg-gray-800 text-gray-300 hover:text-white border border-gray-700 rounded-xl transition-colors"
                       title="X / Twitter"
                     >
@@ -454,31 +455,31 @@ export default function PortfolioView() {
                     </div>
                   </div>
 
-                  {/* Links */}
-                  <div className="flex items-center gap-3 pt-2 border-t border-gray-800/60 text-xs font-bold">
-                    {proj.demoUrl && (
-                      <a
-                        href={proj.demoUrl}
-                        target="_blank"
-                        rel="noreferrer"
-                        className="text-white hover:text-lime-400 flex items-center gap-1 transition-colors"
-                      >
-                        <ExternalLink className="w-3.5 h-3.5" />
-                        <span>Live Demo</span>
-                      </a>
-                    )}
-                    {proj.githubUrl && (
-                      <a
-                        href={proj.githubUrl}
-                        target="_blank"
-                        rel="noreferrer"
-                        className="text-gray-400 hover:text-white flex items-center gap-1 transition-colors"
-                      >
-                        <Github className="w-3.5 h-3.5" />
-                        <span>Source Code</span>
-                      </a>
-                    )}
-                  </div>
+                    {/* Links */}
+                    <div className="flex items-center gap-3 pt-2 border-t border-gray-800/60 text-xs font-bold">
+                      {sanitizeUrl(proj.demoUrl) && (
+                        <a
+                          href={sanitizeUrl(proj.demoUrl)}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="text-white hover:text-lime-400 flex items-center gap-1 transition-colors"
+                        >
+                          <ExternalLink className="w-3.5 h-3.5" />
+                          <span>Live Demo</span>
+                        </a>
+                      )}
+                      {sanitizeUrl(proj.githubUrl) && (
+                        <a
+                          href={sanitizeUrl(proj.githubUrl)}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="text-gray-400 hover:text-white flex items-center gap-1 transition-colors"
+                        >
+                          <Github className="w-3.5 h-3.5" />
+                          <span>Source Code</span>
+                        </a>
+                      )}
+                    </div>
 
                 </div>
               ))}

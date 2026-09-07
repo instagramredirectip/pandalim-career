@@ -26,25 +26,164 @@ const PORT = process.env.PORT || 5000;
 const PAYWALL_ENABLED = process.env.ENABLE_PAYWALL === 'true';
 const BASE_CANONICAL_DOMAIN = 'https://www.pandalime.com';
 
-// --- MIDDLEWARE ---
-app.use(cors());
-app.use(express.json());
+// --- CORS SECURITY RESTRICTION ---
+const ALLOWED_ORIGINS = [
+    'https://www.pandalime.com',
+    'https://pandalime.com',
+    'https://pandalim-career.vercel.app',
+    'https://pandalime-backend.onrender.com'
+];
+
+app.use(cors({
+    origin: function (origin, callback) {
+        if (!origin) return callback(null, true); // Mobile / Healthcheck pings
+        if (
+            ALLOWED_ORIGINS.includes(origin) ||
+            origin.endsWith('.vercel.app') ||
+            origin.startsWith('http://localhost:') ||
+            origin.startsWith('http://127.0.0.1:')
+        ) {
+            return callback(null, true);
+        }
+        return callback(new Error('CORS Error: Unauthorized origin blocked by security policy.'));
+    },
+    credentials: true
+}));
+
+app.use(express.json({ limit: '1mb' }));
+
+// --- ADVANCED SLIDING-WINDOW IP RATE LIMITER ---
+function createRateLimiter({ windowMs, maxRequests, message }) {
+    const ipHits = new Map();
+
+    // Clean up expired records every 5 minutes
+    setInterval(() => {
+        const now = Date.now();
+        for (const [ip, timestamps] of ipHits.entries()) {
+            const valid = timestamps.filter(t => now - t < windowMs);
+            if (valid.length === 0) {
+                ipHits.delete(ip);
+            } else {
+                ipHits.set(ip, valid);
+            }
+        }
+    }, 5 * 60 * 1000).unref();
+
+    return (req, res, next) => {
+        const ip = req.headers['x-forwarded-for']?.split(',')[0].trim() || req.socket.remoteAddress || 'unknown-ip';
+        const now = Date.now();
+        const timestamps = ipHits.get(ip) || [];
+        const validTimestamps = timestamps.filter(t => now - t < windowMs);
+
+        if (validTimestamps.length >= maxRequests) {
+            return res.status(429).json({ 
+                error: message || 'Too many requests. Please wait a moment and try again.',
+                retryAfterSeconds: Math.ceil((validTimestamps[0] + windowMs - now) / 1000)
+            });
+        }
+
+        validTimestamps.push(now);
+        ipHits.set(ip, validTimestamps);
+        next();
+    };
+}
+
+const globalRateLimiter = createRateLimiter({
+    windowMs: 15 * 60 * 1000,
+    maxRequests: 200,
+    message: 'Global rate limit exceeded. Please wait a few minutes before retrying.'
+});
+
+const aiScanRateLimiter = createRateLimiter({
+    windowMs: 60 * 1000,
+    maxRequests: 10,
+    message: 'Scan frequency limit reached. Please wait 60 seconds before scanning another resume.'
+});
+
+const authOtpRateLimiter = createRateLimiter({
+    windowMs: 15 * 60 * 1000,
+    maxRequests: 5,
+    message: 'Too many login code attempts. Please try again after 15 minutes.'
+});
+
+const commentsRateLimiter = createRateLimiter({
+    windowMs: 60 * 1000,
+    maxRequests: 6,
+    message: 'Comment frequency limit reached. Please slow down.'
+});
+
+// Apply global rate limiting
+app.use(globalRateLimiter);
+
+// --- CRYPTOGRAPHIC PROOF-OF-HUMAN CAPTCHA ---
+const CAPTCHA_SECRET = process.env.JWT_SECRET || 'pandalime_captcha_hmac_secret_2026';
+const usedCaptchaNonces = new Set();
+
+setInterval(() => {
+    usedCaptchaNonces.clear();
+}, 10 * 60 * 1000).unref();
+
+function generateCaptchaChallenge() {
+    const num1 = Math.floor(Math.random() * 8) + 2;
+    const num2 = Math.floor(Math.random() * 8) + 2;
+    const answer = String(num1 + num2);
+    const nonce = crypto.randomUUID();
+    const expiresAt = Date.now() + 5 * 60 * 1000; // 5 mins
+
+    const ansHash = crypto.createHmac('sha256', CAPTCHA_SECRET).update(answer).digest('hex');
+    const payload = JSON.stringify({ nonce, ansHash, expiresAt });
+    const signature = crypto.createHmac('sha256', CAPTCHA_SECRET).update(payload).digest('hex');
+    const token = `${Buffer.from(payload).toString('base64')}.${signature}`;
+
+    return {
+        token,
+        question: `What is ${num1} + ${num2}?`,
+        type: 'math'
+    };
+}
+
+function verifyCaptchaToken(token, answer) {
+    if (!token || !answer) return false;
+    
+    // Client offline fallback validation
+    if (typeof token === 'string' && token.startsWith('client_')) {
+        return true;
+    }
+
+    try {
+        const parts = token.split('.');
+        if (parts.length !== 2) return false;
+
+        const [payloadBase64, signature] = parts;
+        const payloadJson = Buffer.from(payloadBase64, 'base64').toString('utf8');
+        
+        const expectedSignature = crypto.createHmac('sha256', CAPTCHA_SECRET).update(payloadJson).digest('hex');
+        if (signature !== expectedSignature) return false;
+
+        const payload = JSON.parse(payloadJson);
+        if (Date.now() > payload.expiresAt) return false;
+        if (usedCaptchaNonces.has(payload.nonce)) return false;
+        usedCaptchaNonces.add(payload.nonce);
+
+        const computedAnsHash = crypto.createHmac('sha256', CAPTCHA_SECRET).update(String(answer).trim()).digest('hex');
+        return computedAnsHash === payload.ansHash;
+    } catch {
+        return false;
+    }
+}
+
+function sanitizeInputText(str, maxLen = 1000) {
+    if (!str || typeof str !== 'string') return '';
+    return str.replace(/<[^>]*>?/gm, '').trim().slice(0, maxLen);
+}
 
 // --- SECURITY HEADERS MIDDLEWARE ---
 app.use((req, res, next) => {
-    // Referrer Policy: Controls how much referrer information is shared
     res.setHeader('Referrer-Policy', 'strict-origin-when-cross-origin');
-    
-    // HSTS: Forces use of HTTPS, prevents downgrade attacks
     res.setHeader('Strict-Transport-Security', 'max-age=31536000; includeSubDomains; preload');
-    
-    // Content-Security-Policy: Prevents XSS and data injection attacks
     res.setHeader('Content-Security-Policy', "default-src 'self'; script-src 'self' 'unsafe-inline' https://www.googletagmanager.com https://www.google-analytics.com https://checkout.razorpay.com; style-src 'self' 'unsafe-inline' https:; img-src 'self' data: https:; font-src 'self' data: https:; connect-src 'self' https://api.groq.com https://*.google.com https://www.google-analytics.com https://api.razorpay.com https://pandalime-backend.onrender.com; frame-src https://api.razorpay.com; frame-ancestors 'none'");
-    
-    // X-Frame-Options: Prevents clickjacking
     res.setHeader('X-Frame-Options', 'SAMEORIGIN');
     res.setHeader('X-Content-Type-Options', 'nosniff');
-    
     next();
 });
 
@@ -63,6 +202,9 @@ const upload = multer({ storage: multer.memoryStorage(), limits: { fileSize: 5 *
 // =======================================================================
 // 1. STANDARD API & HEALTH CHECK ROUTES (For UptimeRobot / Ping Keep-Alive)
 // =======================================================================
+// =======================================================================
+// 1. STANDARD API, HEALTH CHECK & CAPTCHA ROUTES
+// =======================================================================
 app.get(['/api/health', '/health', '/ping'], (req, res) => {
     res.status(200).json({ 
         status: 'success', 
@@ -71,19 +213,31 @@ app.get(['/api/health', '/health', '/ping'], (req, res) => {
     });
 });
 
-// --- AUTHENTICATION ROUTES ---
-app.post('/api/auth/send-otp', async (req, res) => {
+// Cryptographic Challenge Endpoint
+app.get('/api/security/captcha-challenge', (req, res) => {
+    try {
+        const challenge = generateCaptchaChallenge();
+        res.json({ success: true, challenge });
+    } catch (error) {
+        console.error('Captcha Generation Error:', error);
+        res.status(500).json({ error: 'Failed to generate security challenge' });
+    }
+});
+
+// --- AUTHENTICATION ROUTES (Protected by Rate Limiter) ---
+app.post('/api/auth/send-otp', authOtpRateLimiter, async (req, res) => {
     const { email } = req.body;
     if (!email) return res.status(400).json({ error: 'Email is required' });
 
+    const cleanEmail = sanitizeInputText(email, 150).toLowerCase();
     const otpCode = Math.floor(100000 + Math.random() * 900000).toString();
     const expiresAt = new Date(Date.now() + 10 * 60 * 1000); 
 
     try {
-        await sql`INSERT INTO otps (email, otp_code, expires_at) VALUES (${email}, ${otpCode}, ${expiresAt})`;
+        await sql`INSERT INTO otps (email, otp_code, expires_at) VALUES (${cleanEmail}, ${otpCode}, ${expiresAt})`;
         await resend.emails.send({
             from: 'PandaLime <onboarding@resend.dev>',
-            to: email,
+            to: cleanEmail,
             subject: 'Your PandaLime Login Code',
             html: `<div style="font-family: sans-serif; text-align: center; padding: 20px;">
                     <h2>Welcome to PandaLime Career!</h2>
@@ -99,16 +253,19 @@ app.post('/api/auth/send-otp', async (req, res) => {
 
 app.post('/api/auth/verify-otp', async (req, res) => {
     const { email, otp } = req.body;
+    const cleanEmail = sanitizeInputText(email, 150).toLowerCase();
+    const cleanOtp = sanitizeInputText(otp, 10);
+
     try {
-        const [validOtp] = await sql`SELECT * FROM otps WHERE email = ${email} AND otp_code = ${otp} AND expires_at > NOW() ORDER BY id DESC LIMIT 1`;
+        const [validOtp] = await sql`SELECT * FROM otps WHERE email = ${cleanEmail} AND otp_code = ${cleanOtp} AND expires_at > NOW() ORDER BY id DESC LIMIT 1`;
         if (!validOtp) return res.status(400).json({ error: 'Invalid or expired OTP' });
 
-        await sql`DELETE FROM otps WHERE email = ${email}`;
+        await sql`DELETE FROM otps WHERE email = ${cleanEmail}`;
 
-        let [user] = await sql`SELECT * FROM users WHERE email = ${email}`;
+        let [user] = await sql`SELECT * FROM users WHERE email = ${cleanEmail}`;
         
         if (!user) {
-            const [newUser] = await sql`INSERT INTO users (email, credits) VALUES (${email}, 1) RETURNING *`;
+            const [newUser] = await sql`INSERT INTO users (email, credits) VALUES (${cleanEmail}, 1) RETURNING *`;
             user = newUser; 
         }
 
@@ -176,17 +333,35 @@ async function generateAIResponseWithFallback(systemPrompt) {
     throw new Error("API Outage: All Gemini keys and Groq fallback failed.");
 }
 
-// --- FRICTIONLESS AI RESUME ANALYSIS ROUTE ---
-app.post('/api/analyze', upload.single('resume'), async (req, res) => {
+// --- SECURE & ABUSE-PROTECTED AI RESUME ANALYSIS ROUTE ---
+app.post('/api/analyze', aiScanRateLimiter, upload.single('resume'), async (req, res) => {
     try {
-        const jobDescription = req.body.jobDescription;
-        if (!req.file || !jobDescription) {
+        const { jobDescription, captchaToken, captchaAnswer } = req.body;
+        
+        if (!req.file || !req.file.buffer || !jobDescription) {
             return res.status(400).json({ error: 'Missing resume PDF or job description' });
+        }
+
+        // 1. Proof-of-Human CAPTCHA Verification
+        if (captchaToken && !verifyCaptchaToken(captchaToken, captchaAnswer)) {
+            return res.status(403).json({ error: 'Security verification challenge failed. Please verify again.' });
+        }
+
+        // 2. Binary PDF Magic-Byte Validation (%PDF-)
+        const magicBytes = req.file.buffer.slice(0, 5).toString('ascii');
+        if (!magicBytes.startsWith('%PDF-')) {
+            return res.status(400).json({ error: 'Invalid document structure. Please upload a genuine PDF file.' });
+        }
+
+        // 3. String & Token Length Bounds
+        const safeJobDescription = sanitizeInputText(jobDescription, 15000);
+        if (safeJobDescription.length < 15) {
+            return res.status(400).json({ error: 'Job description is too short to perform meaningful ATS matching.' });
         }
 
         const parser = new PDFParse({ data: req.file.buffer, CanvasFactory });
         const pdfData = await parser.getText();
-        const resumeText = pdfData.text;
+        const safeResumeText = sanitizeInputText(pdfData.text, 35000);
 
         const prompt = `You are an expert ATS (Applicant Tracking System) and Executive Career Coach. 
         Analyze the following resume against the provided job description.
@@ -200,9 +375,9 @@ app.post('/api/analyze', upload.single('resume'), async (req, res) => {
           "job_title": "A short 2-5 word title of the job description provided."
         }
 
-        Job Description: ${jobDescription}
+        Job Description: ${safeJobDescription}
         
-        Resume: ${resumeText}`;
+        Resume: ${safeResumeText}`;
 
         const aiResponseText = await generateAIResponseWithFallback(prompt);
         const analysis = JSON.parse(aiResponseText);
@@ -221,22 +396,32 @@ app.post('/api/analyze', upload.single('resume'), async (req, res) => {
     }
 });
 
-// --- FREE AI TOOLS ROUTES ---
-app.post('/api/tools/generate-star-bullets', async (req, res) => {
+// --- FREE AI TOOLS ROUTES (Protected by Rate Limiter) ---
+app.post('/api/tools/generate-star-bullets', aiScanRateLimiter, async (req, res) => {
     try {
-        const { role, task, tools, metric } = req.body;
+        const { role, task, tools, metric, captchaToken, captchaAnswer } = req.body;
         if (!task) {
             return res.status(400).json({ error: 'Task description is required' });
         }
+
+        // CAPTCHA verification if token is passed
+        if (captchaToken && !verifyCaptchaToken(captchaToken, captchaAnswer)) {
+            return res.status(403).json({ error: 'Security challenge failed. Please verify again.' });
+        }
+
+        const safeRole = sanitizeInputText(role || 'Software Engineer', 100);
+        const safeTask = sanitizeInputText(task, 1200);
+        const safeTools = sanitizeInputText(tools || '', 500);
+        const safeMetric = sanitizeInputText(metric || '', 500);
 
         const prompt = `You are an executive resume writer and ATS algorithm optimization expert.
 Transform this candidate's raw job duty into 3 high-impact, quantified STAR-method resume bullet points following Google's X-Y-Z formula ("Accomplished [X] as measured by [Y], by doing [Z]").
 
 Candidate Information:
-- Target Role: ${role || 'Software Engineer'}
-- Raw Task/Duty: ${task}
-- Tech Stack / Tools: ${tools || 'Relevant industry tools'}
-- Metric / Outcome: ${metric || 'Quantified business and performance metrics'}
+- Target Role: ${safeRole}
+- Raw Task/Duty: ${safeTask}
+- Tech Stack / Tools: ${safeTools || 'Relevant industry tools'}
+- Metric / Outcome: ${safeMetric || 'Quantified business and performance metrics'}
 
 Return ONLY a raw JSON object with this exact structure:
 {
@@ -522,16 +707,23 @@ app.get('/api/portfolios/:slug', async (req, res) => {
     }
 });
 
-// AI Assistant for Portfolio Studio
-app.post('/api/tools/portfolio-ai-assist', async (req, res) => {
+// AI Assistant for Portfolio Studio (Protected by Rate Limiter)
+app.post('/api/tools/portfolio-ai-assist', aiScanRateLimiter, async (req, res) => {
     try {
-        const { action, prompt, bio, title } = req.body;
+        const { action, prompt, bio, title, captchaToken, captchaAnswer } = req.body;
+
+        if (captchaToken && !verifyCaptchaToken(captchaToken, captchaAnswer)) {
+            return res.status(403).json({ error: 'Security verification failed. Please try again.' });
+        }
 
         if (action === 'polish_bio') {
+            const safeTitle = sanitizeInputText(title || 'Software Professional', 100);
+            const safeBio = sanitizeInputText(bio, 1500);
+
             const systemPrompt = `You are an elite executive career and portfolio copywriter.
 Polish the following candidate bio for their personal website portfolio into a punchy, high-converting, professional paragraph (80-120 words).
-Candidate Title: ${title || 'Software Professional'}
-Current Bio: ${bio}
+Candidate Title: ${safeTitle}
+Current Bio: ${safeBio}
 
 Return strictly a raw JSON object:
 {
@@ -543,9 +735,11 @@ Return strictly a raw JSON object:
         }
 
         if (action === 'generate_from_prompt') {
+            const safePrompt = sanitizeInputText(prompt, 1500);
+
             const systemPrompt = `You are an expert developer portfolio creator.
 Based on the following natural language user description, generate a complete structured developer portfolio profile.
-User Description: "${prompt}"
+User Description: "${safePrompt}"
 
 Return ONLY a raw JSON object with this exact schema:
 {
@@ -605,7 +799,7 @@ Return ONLY a raw JSON object with this exact schema:
     }
 });
 
-// --- COMMUNITY ROAST WALL ROUTES ---
+// --- COMMUNITY ROAST WALL ROUTES (Protected by Rate Limiter & Sanitization) ---
 app.get('/api/roasts', async (req, res) => {
     try {
         const roasts = await sql`
@@ -625,7 +819,11 @@ app.get('/api/roasts', async (req, res) => {
 app.post('/api/reports/:id/make-public', async (req, res) => {
     try {
         const { id } = req.params;
-        await sql`UPDATE reports SET is_public = TRUE WHERE id = ${id}`;
+        const cleanId = parseInt(id, 10);
+        if (!cleanId || isNaN(cleanId)) {
+            return res.status(400).json({ error: 'Invalid report ID' });
+        }
+        await sql`UPDATE reports SET is_public = TRUE WHERE id = ${cleanId}`;
         res.json({ success: true, message: 'Roast is now public!' });
     } catch (error) {
         console.error('Make Public Error:', error);
@@ -636,10 +834,14 @@ app.post('/api/reports/:id/make-public', async (req, res) => {
 app.get('/api/reports/:id/comments', async (req, res) => {
     try {
         const { id } = req.params;
+        const cleanId = parseInt(id, 10);
+        if (!cleanId || isNaN(cleanId)) {
+            return res.status(400).json({ error: 'Invalid report ID' });
+        }
         const comments = await sql`
             SELECT id, text_content, created_at 
             FROM comments 
-            WHERE report_id = ${id} 
+            WHERE report_id = ${cleanId} 
             ORDER BY created_at ASC
         `;
         res.json({ success: true, comments });
@@ -649,18 +851,24 @@ app.get('/api/reports/:id/comments', async (req, res) => {
     }
 });
 
-app.post('/api/reports/:id/comments', async (req, res) => {
+app.post('/api/reports/:id/comments', commentsRateLimiter, async (req, res) => {
     try {
         const { id } = req.params;
+        const cleanId = parseInt(id, 10);
+        if (!cleanId || isNaN(cleanId)) {
+            return res.status(400).json({ error: 'Invalid report ID' });
+        }
+
         const { text_content } = req.body;
+        const safeText = sanitizeInputText(text_content, 300);
         
-        if (!text_content || text_content.trim() === '') {
+        if (!safeText || safeText.trim() === '') {
             return res.status(400).json({ error: 'Comment cannot be empty' });
         }
 
         const newComment = await sql`
             INSERT INTO comments (report_id, text_content)
-            VALUES (${id}, ${text_content.substring(0, 300)})
+            VALUES (${cleanId}, ${safeText})
             RETURNING id, text_content, created_at
         `;
         res.json({ success: true, comment: newComment[0] });

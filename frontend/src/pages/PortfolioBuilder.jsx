@@ -39,6 +39,7 @@ import {
 import SEOHead from '../components/SEOHead';
 import { THEMES, ACCENT_COLORS, PRESET_AVATARS, ROLE_PRESETS } from '../data/portfolioTemplates';
 import { apiRequest } from '../config/api';
+import { sanitizeUrl, sanitizeText } from '../utils/sanitize';
 
 export default function PortfolioBuilder() {
   // Active Preset as base
@@ -412,8 +413,34 @@ export default function PortfolioBuilder() {
 
     try {
       const storedKey = localStorage.getItem(`pandalime_portfolio_key_${slug}`) || '';
+      
+      const sanitizedSocial = {
+        github: sanitizeUrl(portfolioData.socialLinks?.github),
+        linkedin: sanitizeUrl(portfolioData.socialLinks?.linkedin),
+        twitter: sanitizeUrl(portfolioData.socialLinks?.twitter),
+        resumeUrl: sanitizeUrl(portfolioData.socialLinks?.resumeUrl)
+      };
+
+      const sanitizedProjects = (portfolioData.projects || []).map(proj => ({
+        ...proj,
+        title: sanitizeText(proj.title, 120),
+        description: sanitizeText(proj.description, 1000),
+        metric: sanitizeText(proj.metric, 100),
+        demoUrl: sanitizeUrl(proj.demoUrl),
+        githubUrl: sanitizeUrl(proj.githubUrl)
+      }));
+
       const payload = {
         ...portfolioData,
+        fullName: sanitizeText(portfolioData.fullName, 100),
+        title: sanitizeText(portfolioData.title, 120),
+        tagline: sanitizeText(portfolioData.tagline, 200),
+        bio: sanitizeText(portfolioData.bio, 2000),
+        avatarUrl: sanitizeUrl(portfolioData.avatarUrl),
+        location: sanitizeText(portfolioData.location, 100),
+        contactEmail: sanitizeText(portfolioData.contactEmail, 150),
+        socialLinks: sanitizedSocial,
+        projects: sanitizedProjects,
         slug,
         editKey: storedKey
       };
