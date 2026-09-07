@@ -379,3 +379,4 @@ export default function BlogPost() {
     </div>
   );
 }
+

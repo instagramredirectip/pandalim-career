@@ -27,7 +27,8 @@ import {
   Menu,
   Terminal,
   ExternalLink,
-  Eye
+  Eye,
+  BookOpen
 } from 'lucide-react';
 import SEOHead from '../components/SEOHead';
 import LanguageSelector from '../components/LanguageSelector';
