@@ -148,7 +148,7 @@ export default function AtsActionVerbs() {
       {/* --- HERO HEADER --- */}
       <header className="bg-white py-14 sm:py-16 border-b border-gray-200 text-center">
         <div className="max-w-4xl mx-auto px-4">
-          <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-purple-100 text-purple-800 font-bold text-xs uppercase tracking-wider mb-5">
+          <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-md bg-purple-100 border border-purple-300 text-purple-800 font-bold text-xs uppercase tracking-wider mb-5">
             <Award className="w-3.5 h-3.5" />
             <span>Recruiter-Approved Vocabulary Guide</span>
           </div>
@@ -172,7 +172,7 @@ export default function AtsActionVerbs() {
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
               placeholder="Search verbs, meanings, or skills (e.g. 'architected', 'scaled', 'python')..."
-              className="w-full pl-12 pr-10 py-4 rounded-2xl border border-gray-200 focus:border-purple-500 focus:ring-4 focus:ring-purple-500/10 outline-none text-sm text-gray-800 shadow-sm"
+              className="w-full pl-12 pr-10 py-3.5 rounded-xl border border-gray-200 focus:border-purple-500 focus:ring-4 focus:ring-purple-500/10 outline-none text-sm text-gray-800 shadow-sm"
             />
             {searchQuery && (
               <button 
@@ -218,7 +218,7 @@ export default function AtsActionVerbs() {
       {/* --- VERBS DIRECTORY LIST --- */}
       <main className="max-w-6xl mx-auto px-4 py-12 space-y-12">
         {filteredCategories.length === 0 ? (
-          <div className="py-16 text-center text-gray-500 space-y-3 bg-white rounded-3xl border border-gray-200 p-8">
+          <div className="py-16 text-center text-gray-500 space-y-3 bg-white rounded-2xl border border-gray-200 p-8">
             <p className="font-bold text-lg">No action verbs matched "{searchQuery}"</p>
             <p className="text-xs text-gray-400">Try searching for a different keyword or resetting your category filter.</p>
             <button
@@ -236,7 +236,7 @@ export default function AtsActionVerbs() {
                 <div>
                   <h2 className="text-2xl font-bold text-gray-900 flex items-center gap-2">
                     <span>{category.name}</span>
-                    <span className="text-xs px-2.5 py-0.5 rounded-full bg-purple-100 text-purple-800 font-extrabold uppercase">
+                    <span className="text-xs px-2.5 py-0.5 rounded-md bg-purple-100 text-purple-800 font-extrabold uppercase">
                       {category.verbs.length} Verbs
                     </span>
                   </h2>
@@ -248,7 +248,7 @@ export default function AtsActionVerbs() {
                 {category.verbs.map((item, vIdx) => (
                   <div 
                     key={vIdx}
-                    className="bg-white rounded-2xl border border-gray-200 p-5 shadow-sm hover:shadow-md hover:border-purple-300 transition-all flex flex-col justify-between group space-y-4"
+                    className="bg-white rounded-xl border border-gray-200 p-5 shadow-sm hover:shadow-md hover:border-purple-300 transition-all flex flex-col justify-between group space-y-4"
                   >
                     <div>
                       <div className="flex items-center justify-between mb-1.5">
@@ -272,7 +272,7 @@ export default function AtsActionVerbs() {
 
                     <button
                       onClick={() => handleCopyExample(item.example, item.verb)}
-                      className="w-full py-2 bg-gray-50 hover:bg-purple-50 group-hover:border-purple-200 border border-gray-200 text-gray-700 hover:text-purple-800 rounded-xl text-xs font-bold flex items-center justify-center gap-1.5 transition-colors"
+                      className="w-full py-2 bg-gray-50 hover:bg-purple-50 group-hover:border-purple-200 border border-gray-200 text-gray-700 hover:text-purple-800 rounded-lg text-xs font-bold flex items-center justify-center gap-1.5 transition-colors"
                     >
                       {copiedVerb === item.verb ? (
                         <>
@@ -357,7 +357,7 @@ export default function AtsActionVerbs() {
 
           <div className="space-y-4">
             {faqs.map((faq, i) => (
-              <div key={i} className="bg-white rounded-2xl p-6 border border-gray-200 shadow-sm">
+              <div key={i} className="bg-white rounded-xl p-6 border border-gray-200 shadow-sm">
                 <h4 className="font-bold text-gray-900 text-base mb-2 flex items-start gap-2">
                   <HelpCircle className="w-5 h-5 text-lime-600 shrink-0 mt-0.5" />
                   <span>{faq.q}</span>

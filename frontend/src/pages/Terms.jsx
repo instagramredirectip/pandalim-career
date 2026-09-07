@@ -17,7 +17,7 @@ export default function Terms() {
           <ArrowLeft className="w-4 h-4" /> Back to Home
         </Link>
         
-        <div className="bg-white rounded-3xl shadow-sm border border-gray-200 p-8 md:p-12">
+        <div className="bg-white rounded-2xl shadow-sm border border-gray-200 p-8 md:p-12">
           <div className="flex items-center gap-4 mb-8 pb-8 border-b border-gray-100">
             <div className="w-12 h-12 bg-gray-100 text-gray-600 rounded-xl flex items-center justify-center">
               <FileText className="w-6 h-6" />

@@ -193,7 +193,7 @@ export default function Home() {
       <nav className="bg-white/95 backdrop-blur-md border-b border-gray-200 sticky top-0 z-50">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-3 sm:py-4 flex justify-between items-center gap-2">
           <Link to="/" className="flex items-center gap-2 text-gray-900 font-black text-xl sm:text-2xl tracking-tight shrink-0">
-            <div className="w-8 h-8 sm:w-9 sm:h-9 bg-lime-500 rounded-xl flex items-center justify-center text-white shadow-md shadow-lime-500/20 shrink-0">
+            <div className="w-8 h-8 sm:w-9 sm:h-9 bg-lime-500 rounded-lg flex items-center justify-center text-gray-950 shadow-md shadow-lime-500/20 shrink-0">
               <Sparkles className="w-4 h-4 sm:w-5 sm:h-5" />
             </div>
             <span>PandaLime</span>
@@ -202,11 +202,11 @@ export default function Home() {
             <LanguageSelector variant="nav" />
             <Link 
               to="/portfolio-builder" 
-              className="text-xs sm:text-sm font-bold text-emerald-700 hover:text-emerald-800 bg-emerald-50 hover:bg-emerald-100 border border-emerald-200 px-3 py-1.5 rounded-xl transition-all hidden md:flex items-center gap-1.5"
+              className="text-xs sm:text-sm font-bold text-emerald-700 hover:text-emerald-800 bg-emerald-50 hover:bg-emerald-100 border border-emerald-200 px-3 py-1.5 rounded-lg transition-all hidden md:flex items-center gap-1.5"
             >
               <Globe className="w-3.5 h-3.5 text-emerald-600" />
               <span>AI Portfolio</span>
-              <span className="text-[9px] bg-emerald-600 text-white font-extrabold px-1.5 py-0.2 rounded-full uppercase">New</span>
+              <span className="text-[9px] bg-emerald-600 text-white font-extrabold px-1.5 py-0.5 rounded uppercase">New</span>
             </Link>
             <Link to="/tools" className="text-sm font-semibold text-gray-600 hover:text-lime-600 transition-colors hidden sm:block">
               Free Tools
@@ -216,7 +216,7 @@ export default function Home() {
             </Link>
             <Link 
               to="/dashboard" 
-              className="px-3.5 py-2 sm:px-5 sm:py-2.5 bg-lime-500 hover:bg-lime-600 active:scale-95 text-white rounded-xl font-bold text-xs sm:text-sm shadow-md shadow-lime-500/20 transition-all hover:-translate-y-0.5 shrink-0 flex items-center gap-1.5 whitespace-nowrap"
+              className="px-3.5 py-2 sm:px-5 sm:py-2.5 bg-lime-500 hover:bg-lime-600 active:scale-95 text-gray-950 rounded-lg font-extrabold text-xs sm:text-sm shadow-md shadow-lime-500/20 transition-all hover:-translate-y-0.5 shrink-0 flex items-center gap-1.5 whitespace-nowrap cursor-pointer"
             >
               <ScanLine className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
               <span className="hidden sm:inline">Scan Resume Free</span>
@@ -226,7 +226,7 @@ export default function Home() {
             {/* Mobile Hamburger Menu Trigger */}
             <button
               onClick={() => setMobileMenuOpen(true)}
-              className="p-2 text-gray-700 hover:text-gray-900 rounded-xl hover:bg-gray-100 transition-colors md:hidden flex items-center justify-center shrink-0 border border-gray-200"
+              className="p-2 text-gray-700 hover:text-gray-900 rounded-lg hover:bg-gray-100 transition-colors md:hidden flex items-center justify-center shrink-0 border border-gray-200"
               aria-label="Open navigation menu"
             >
               <Menu className="w-5 h-5 text-gray-800" />
@@ -243,7 +243,7 @@ export default function Home() {
         <div className="absolute inset-0 bg-[radial-gradient(#e5e7eb_1px,transparent_1px)] [background-size:16px_16px] opacity-30"></div>
         <div className="max-w-6xl mx-auto px-4 relative z-10 text-center">
           
-          <div className="inline-flex items-center gap-2 px-3.5 py-1.5 sm:px-4 sm:py-2 rounded-full bg-gradient-to-r from-lime-100 via-emerald-100 to-teal-100 text-gray-900 font-bold text-xs sm:text-sm mb-6 border border-emerald-200/60 shadow-sm">
+          <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-lg bg-emerald-50 text-emerald-950 font-bold text-xs sm:text-sm mb-6 border border-emerald-200 shadow-xs">
             <Sparkles className="w-4 h-4 text-emerald-600 shrink-0" />
             <span>AI Career Suite • ATS Resume Scanner & Portfolio Website Builder</span>
           </div>
@@ -263,7 +263,7 @@ export default function Home() {
             <div className="flex flex-col sm:flex-row justify-center items-center gap-3.5 w-full sm:w-auto px-2">
               <Link 
                 to="/dashboard" 
-                className="w-full sm:w-auto px-7 py-4 bg-lime-500 hover:bg-lime-600 text-white rounded-2xl font-black text-base sm:text-lg shadow-xl shadow-lime-500/25 transition-all hover:-translate-y-0.5 flex items-center justify-center gap-2 cursor-pointer"
+                className="w-full sm:w-auto px-7 py-4 bg-lime-500 hover:bg-lime-600 text-gray-950 rounded-xl font-black text-base sm:text-lg shadow-xl shadow-lime-500/20 transition-all hover:-translate-y-0.5 flex items-center justify-center gap-2 cursor-pointer active:scale-[0.98]"
               >
                 <ScanLine className="w-5 h-5" />
                 <span>Scan Resume for Free</span>
@@ -272,11 +272,11 @@ export default function Home() {
 
               <Link
                 to="/portfolio-builder" 
-                className="w-full sm:w-auto px-7 py-4 bg-gray-900 hover:bg-black text-white rounded-2xl font-black text-base sm:text-lg shadow-xl shadow-gray-900/20 transition-all hover:-translate-y-0.5 flex items-center justify-center gap-2 border border-gray-800 cursor-pointer group"
+                className="w-full sm:w-auto px-7 py-4 bg-gray-900 hover:bg-black text-white rounded-xl font-black text-base sm:text-lg shadow-xl shadow-gray-900/20 transition-all hover:-translate-y-0.5 flex items-center justify-center gap-2 border border-gray-800 cursor-pointer group active:scale-[0.98]"
               >
                 <Globe className="w-5 h-5 text-emerald-400 group-hover:scale-110 transition-transform" />
                 <span>Build AI Portfolio</span>
-                <span className="text-[10px] bg-emerald-500 text-gray-950 px-2 py-0.5 rounded-md font-extrabold uppercase ml-1">Free</span>
+                <span className="text-[10px] bg-emerald-500 text-gray-950 px-2 py-0.5 rounded font-extrabold uppercase ml-1">Free</span>
               </Link>
             </div>
             
@@ -292,13 +292,13 @@ export default function Home() {
           {/* Dual Core Pillar Spotlight Cards */}
           <div className="grid sm:grid-cols-2 gap-4 sm:gap-6 mt-12 sm:mt-16 text-left max-w-4xl mx-auto px-2">
             {/* Pillar 1: Resume Scanner */}
-            <div className="bg-gradient-to-br from-lime-500/10 via-white to-lime-500/5 rounded-3xl p-6 sm:p-7 border border-lime-200/80 shadow-sm hover:shadow-md transition-all flex flex-col justify-between">
+            <div className="bg-gradient-to-br from-lime-500/10 via-white to-lime-500/5 rounded-2xl p-6 sm:p-7 border border-lime-200 shadow-sm hover:shadow-md transition-all flex flex-col justify-between">
               <div>
                 <div className="flex items-center justify-between mb-4">
-                  <div className="w-12 h-12 rounded-2xl bg-lime-500 text-white flex items-center justify-center shadow-md shadow-lime-500/20">
+                  <div className="w-12 h-12 rounded-xl bg-lime-500 text-gray-950 flex items-center justify-center shadow-md shadow-lime-500/20 font-black">
                     <ScanLine className="w-6 h-6" />
                   </div>
-                  <span className="text-xs font-black uppercase tracking-wider text-lime-800 bg-lime-100 px-3 py-1 rounded-full">
+                  <span className="text-[11px] font-black uppercase tracking-wider text-lime-900 bg-lime-100 border border-lime-300 px-2.5 py-1 rounded-md">
                     Step 1: Beat ATS
                   </span>
                 </div>
@@ -310,7 +310,7 @@ export default function Home() {
                 </p>
                 <div className="flex flex-wrap gap-1.5 mb-6">
                   {['Missing Keywords', 'STAR Bullets', 'Match Score %', 'Cover Letter AI'].map((tag, idx) => (
-                    <span key={idx} className="text-[11px] font-semibold text-lime-800 bg-lime-100/80 px-2.5 py-1 rounded-lg">
+                    <span key={idx} className="text-[11px] font-bold text-lime-900 bg-lime-100 border border-lime-200 px-2.5 py-1 rounded-md">
                       {tag}
                     </span>
                   ))}
@@ -318,7 +318,7 @@ export default function Home() {
               </div>
               <Link
                 to="/dashboard"
-                className="inline-flex items-center justify-between w-full p-3.5 bg-lime-500 hover:bg-lime-600 text-white rounded-xl font-bold text-xs sm:text-sm transition-colors shadow-md shadow-lime-500/20"
+                className="inline-flex items-center justify-between w-full p-3.5 bg-lime-500 hover:bg-lime-600 text-gray-950 rounded-xl font-extrabold text-xs sm:text-sm transition-colors shadow-md shadow-lime-500/20"
               >
                 <span>Launch Resume Scanner</span>
                 <ArrowRight className="w-4 h-4" />
@@ -326,13 +326,13 @@ export default function Home() {
             </div>
 
             {/* Pillar 2: Portfolio Studio */}
-            <div className="bg-gradient-to-br from-gray-900 via-gray-950 to-gray-900 text-white rounded-3xl p-6 sm:p-7 border border-gray-800 shadow-xl flex flex-col justify-between">
+            <div className="bg-gradient-to-br from-gray-900 via-gray-950 to-gray-900 text-white rounded-2xl p-6 sm:p-7 border border-gray-800 shadow-xl flex flex-col justify-between">
               <div>
                 <div className="flex items-center justify-between mb-4">
-                  <div className="w-12 h-12 rounded-2xl bg-emerald-500 text-gray-950 flex items-center justify-center shadow-md shadow-emerald-500/20">
+                  <div className="w-12 h-12 rounded-xl bg-emerald-500 text-gray-950 flex items-center justify-center shadow-md shadow-emerald-500/20 font-black">
                     <Globe className="w-6 h-6" />
                   </div>
-                  <span className="text-xs font-black uppercase tracking-wider text-emerald-400 bg-emerald-950/80 border border-emerald-500/30 px-3 py-1 rounded-full">
+                  <span className="text-[11px] font-black uppercase tracking-wider text-emerald-400 bg-emerald-950/90 border border-emerald-500/40 px-2.5 py-1 rounded-md">
                     Step 2: Impress Recruiters
                   </span>
                 </div>
@@ -344,7 +344,7 @@ export default function Home() {
                 </p>
                 <div className="flex flex-wrap gap-1.5 mb-6">
                   {['Free URL at /p/:slug', 'Cyber & Tokyo Themes', 'SEO Structured Data', 'QR Code Share'].map((tag, idx) => (
-                    <span key={idx} className="text-[11px] font-semibold text-emerald-300 bg-emerald-950/60 border border-emerald-500/20 px-2.5 py-1 rounded-lg">
+                    <span key={idx} className="text-[11px] font-bold text-emerald-300 bg-emerald-950 border border-emerald-500/30 px-2.5 py-1 rounded-md">
                       {tag}
                     </span>
                   ))}
@@ -385,10 +385,10 @@ export default function Home() {
       {/* --- HOW IT WORKS --- */}
       <section className="max-w-6xl mx-auto px-4 py-20">
         <div className="text-center mb-16">
-          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-lime-100 text-lime-800 font-bold text-xs uppercase tracking-wider mb-3">
+          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-md bg-lime-100 border border-lime-300 text-lime-900 font-bold text-xs uppercase tracking-wider mb-3">
             Simple 3-Step Process
           </div>
-          <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
+          <h2 className="text-3xl md:text-4xl font-extrabold text-gray-900 mb-4 tracking-tight">
             How PandaLime Scans & Optimizes Your Resume
           </h2>
           <p className="text-gray-600 max-w-2xl mx-auto text-lg">
@@ -398,12 +398,12 @@ export default function Home() {
         
         <div className="grid md:grid-cols-3 gap-8">
           {steps.map((step, i) => (
-            <div key={i} className="bg-white p-8 rounded-3xl shadow-sm border border-gray-200 hover:shadow-xl transition-all hover:-translate-y-2 relative group">
-              <div className="w-16 h-16 bg-lime-50 rounded-2xl flex items-center justify-center mb-6 group-hover:bg-lime-100 transition-colors">
+            <div key={i} className="bg-white p-7 sm:p-8 rounded-2xl shadow-sm border border-gray-200 hover:shadow-xl transition-all hover:-translate-y-1 relative group">
+              <div className="w-14 h-14 bg-lime-50 rounded-xl border border-lime-200 flex items-center justify-center mb-6 group-hover:bg-lime-100 transition-colors">
                 {step.icon}
               </div>
               <h3 className="text-xl font-bold text-gray-900 mb-3">{step.title}</h3>
-              <p className="text-gray-600 leading-relaxed">{step.description}</p>
+              <p className="text-gray-600 leading-relaxed text-sm sm:text-base">{step.description}</p>
             </div>
           ))}
         </div>
@@ -413,7 +413,7 @@ export default function Home() {
       <section className="bg-white py-20 border-y border-gray-200">
         <div className="max-w-6xl mx-auto px-4">
           <div className="text-center mb-16">
-            <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
+            <h2 className="text-3xl md:text-4xl font-extrabold text-gray-900 mb-4 tracking-tight">
               What Does an ATS Resume Checker Actually Test?
             </h2>
             <p className="text-gray-600 max-w-2xl mx-auto text-lg">
@@ -421,10 +421,10 @@ export default function Home() {
             </p>
           </div>
 
-          <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-8">
+          <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6 sm:gap-8">
             {atsPillars.map((pillar, idx) => (
-              <div key={idx} className="bg-gray-50 rounded-2xl p-6 border border-gray-200 hover:border-lime-400 transition-colors">
-                <div className="w-12 h-12 bg-white rounded-xl shadow-sm border border-gray-100 flex items-center justify-center mb-4">
+              <div key={idx} className="bg-gray-50 rounded-xl p-6 border border-gray-200 hover:border-lime-400 transition-colors">
+                <div className="w-12 h-12 bg-white rounded-lg shadow-xs border border-gray-200 flex items-center justify-center mb-4">
                   {pillar.icon}
                 </div>
                 <h3 className="text-lg font-bold text-gray-900 mb-2">{pillar.title}</h3>
@@ -439,10 +439,10 @@ export default function Home() {
       <section className="py-20 bg-gradient-to-b from-gray-50 to-white border-b border-gray-200">
         <div className="max-w-6xl mx-auto px-4">
           <div className="text-center mb-16">
-            <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-lime-100 text-lime-800 text-xs font-bold uppercase tracking-wider mb-4">
+            <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-md bg-lime-100 border border-lime-300 text-lime-900 text-xs font-bold uppercase tracking-wider mb-4">
               <Sparkles className="w-3.5 h-3.5" /> 100% Free AI Career Utilities
             </div>
-            <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
+            <h2 className="text-3xl md:text-4xl font-extrabold text-gray-900 mb-4 tracking-tight">
               Supercharge Your Resume Before You Apply
             </h2>
             <p className="text-gray-600 max-w-2xl mx-auto text-base sm:text-lg">
@@ -452,13 +452,13 @@ export default function Home() {
 
           <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
             {/* Tool 1 */}
-            <div className="bg-white rounded-3xl p-6 border border-gray-200 hover:border-lime-400 hover:shadow-xl transition-all duration-300 flex flex-col justify-between group">
+            <div className="bg-white rounded-2xl p-6 border border-gray-200 hover:border-lime-400 hover:shadow-xl transition-all duration-300 flex flex-col justify-between group">
               <div>
-                <div className="w-12 h-12 bg-lime-50 rounded-2xl flex items-center justify-center text-lime-600 mb-5 group-hover:scale-110 transition-transform">
+                <div className="w-12 h-12 bg-lime-50 rounded-xl flex items-center justify-center text-lime-600 mb-5 group-hover:scale-105 transition-transform">
                   <Search className="w-6 h-6" />
                 </div>
                 <div className="flex items-center gap-1.5 mb-2">
-                  <span className="text-[10px] font-bold uppercase tracking-wider text-lime-700 bg-lime-100 px-2 py-0.5 rounded-full">NLP Parser</span>
+                  <span className="text-[10px] font-bold uppercase tracking-wider text-lime-800 bg-lime-100 border border-lime-200 px-2 py-0.5 rounded">NLP Parser</span>
                   <span className="text-[10px] font-semibold text-gray-400">Instant</span>
                 </div>
                 <h3 className="text-lg font-bold text-gray-900 mb-2 group-hover:text-lime-600 transition-colors">
@@ -470,20 +470,20 @@ export default function Home() {
               </div>
               <Link 
                 to="/tools/job-description-keyword-extractor" 
-                className="inline-flex items-center justify-center gap-1.5 w-full py-2.5 bg-gray-50 group-hover:bg-lime-500 text-gray-900 group-hover:text-white rounded-xl font-bold text-xs transition-all shadow-sm"
+                className="inline-flex items-center justify-center gap-1.5 w-full py-2.5 bg-gray-50 group-hover:bg-lime-500 text-gray-900 group-hover:text-gray-950 rounded-lg font-bold text-xs transition-all shadow-xs border border-gray-200 group-hover:border-lime-500"
               >
                 Extract Keywords <ArrowRight className="w-3.5 h-3.5" />
               </Link>
             </div>
 
             {/* Tool 2 */}
-            <div className="bg-white rounded-3xl p-6 border border-gray-200 hover:border-lime-400 hover:shadow-xl transition-all duration-300 flex flex-col justify-between group">
+            <div className="bg-white rounded-2xl p-6 border border-gray-200 hover:border-lime-400 hover:shadow-xl transition-all duration-300 flex flex-col justify-between group">
               <div>
-                <div className="w-12 h-12 bg-lime-50 rounded-2xl flex items-center justify-center text-lime-600 mb-5 group-hover:scale-110 transition-transform">
+                <div className="w-12 h-12 bg-lime-50 rounded-xl flex items-center justify-center text-lime-600 mb-5 group-hover:scale-105 transition-transform">
                   <Cpu className="w-6 h-6" />
                 </div>
                 <div className="flex items-center gap-1.5 mb-2">
-                  <span className="text-[10px] font-bold uppercase tracking-wider text-lime-700 bg-lime-100 px-2 py-0.5 rounded-full">Google X-Y-Z</span>
+                  <span className="text-[10px] font-bold uppercase tracking-wider text-lime-800 bg-lime-100 border border-lime-200 px-2 py-0.5 rounded">Google X-Y-Z</span>
                   <span className="text-[10px] font-semibold text-gray-400">AI Powered</span>
                 </div>
                 <h3 className="text-lg font-bold text-gray-900 mb-2 group-hover:text-lime-600 transition-colors">
@@ -495,20 +495,20 @@ export default function Home() {
               </div>
               <Link 
                 to="/tools/star-bullet-generator" 
-                className="inline-flex items-center justify-center gap-1.5 w-full py-2.5 bg-gray-50 group-hover:bg-lime-500 text-gray-900 group-hover:text-white rounded-xl font-bold text-xs transition-all shadow-sm"
+                className="inline-flex items-center justify-center gap-1.5 w-full py-2.5 bg-gray-50 group-hover:bg-lime-500 text-gray-900 group-hover:text-gray-950 rounded-lg font-bold text-xs transition-all shadow-xs border border-gray-200 group-hover:border-lime-500"
               >
                 Generate Bullets <ArrowRight className="w-3.5 h-3.5" />
               </Link>
             </div>
 
             {/* Tool 3 */}
-            <div className="bg-white rounded-3xl p-6 border border-gray-200 hover:border-lime-400 hover:shadow-xl transition-all duration-300 flex flex-col justify-between group">
+            <div className="bg-white rounded-2xl p-6 border border-gray-200 hover:border-lime-400 hover:shadow-xl transition-all duration-300 flex flex-col justify-between group">
               <div>
-                <div className="w-12 h-12 bg-lime-50 rounded-2xl flex items-center justify-center text-lime-600 mb-5 group-hover:scale-110 transition-transform">
+                <div className="w-12 h-12 bg-lime-50 rounded-xl flex items-center justify-center text-lime-600 mb-5 group-hover:scale-105 transition-transform">
                   <FileText className="w-6 h-6" />
                 </div>
                 <div className="flex items-center gap-1.5 mb-2">
-                  <span className="text-[10px] font-bold uppercase tracking-wider text-lime-700 bg-lime-100 px-2 py-0.5 rounded-full">250+ Verbs</span>
+                  <span className="text-[10px] font-bold uppercase tracking-wider text-lime-800 bg-lime-100 border border-lime-200 px-2 py-0.5 rounded">250+ Verbs</span>
                   <span className="text-[10px] font-semibold text-gray-400">Recruiter Approved</span>
                 </div>
                 <h3 className="text-lg font-bold text-gray-900 mb-2 group-hover:text-lime-600 transition-colors">
@@ -520,20 +520,20 @@ export default function Home() {
               </div>
               <Link 
                 to="/tools/ats-action-verbs" 
-                className="inline-flex items-center justify-center gap-1.5 w-full py-2.5 bg-gray-50 group-hover:bg-lime-500 text-gray-900 group-hover:text-white rounded-xl font-bold text-xs transition-all shadow-sm"
+                className="inline-flex items-center justify-center gap-1.5 w-full py-2.5 bg-gray-50 group-hover:bg-lime-500 text-gray-900 group-hover:text-gray-950 rounded-lg font-bold text-xs transition-all shadow-xs border border-gray-200 group-hover:border-lime-500"
               >
                 Explore Verbs <ArrowRight className="w-3.5 h-3.5" />
               </Link>
             </div>
 
             {/* Tool 4: Portfolio Builder */}
-            <div className="bg-white rounded-3xl p-6 border border-gray-200 hover:border-lime-400 hover:shadow-xl transition-all duration-300 flex flex-col justify-between group">
+            <div className="bg-white rounded-2xl p-6 border border-gray-200 hover:border-lime-400 hover:shadow-xl transition-all duration-300 flex flex-col justify-between group">
               <div>
-                <div className="w-12 h-12 bg-emerald-50 rounded-2xl flex items-center justify-center text-emerald-600 mb-5 group-hover:scale-110 transition-transform">
+                <div className="w-12 h-12 bg-emerald-50 rounded-xl flex items-center justify-center text-emerald-600 mb-5 group-hover:scale-105 transition-transform">
                   <Zap className="w-6 h-6" />
                 </div>
                 <div className="flex items-center gap-1.5 mb-2">
-                  <span className="text-[10px] font-bold uppercase tracking-wider text-emerald-700 bg-emerald-100 px-2 py-0.5 rounded-full">Hosted URL</span>
+                  <span className="text-[10px] font-bold uppercase tracking-wider text-emerald-700 bg-emerald-100 border border-emerald-200 px-2 py-0.5 rounded">Hosted URL</span>
                   <span className="text-[10px] font-semibold text-gray-400">Free</span>
                 </div>
                 <h3 className="text-lg font-bold text-gray-900 mb-2 group-hover:text-lime-600 transition-colors">
@@ -545,7 +545,7 @@ export default function Home() {
               </div>
               <Link 
                 to="/portfolio-builder" 
-                className="inline-flex items-center justify-center gap-1.5 w-full py-2.5 bg-gray-50 group-hover:bg-lime-500 text-gray-900 group-hover:text-white rounded-xl font-bold text-xs transition-all shadow-sm"
+                className="inline-flex items-center justify-center gap-1.5 w-full py-2.5 bg-gray-50 group-hover:bg-lime-500 text-gray-900 group-hover:text-gray-950 rounded-lg font-bold text-xs transition-all shadow-xs border border-gray-200 group-hover:border-lime-500"
               >
                 Build Portfolio <ArrowRight className="w-3.5 h-3.5" />
               </Link>
@@ -569,7 +569,7 @@ export default function Home() {
         <div className="max-w-6xl mx-auto px-4 relative z-10">
           
           <div className="text-center mb-14">
-            <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 text-xs font-bold uppercase tracking-wider mb-4">
+            <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-md bg-emerald-500/10 text-emerald-400 border border-emerald-500/30 text-xs font-bold uppercase tracking-wider mb-4">
               <Zap className="w-3.5 h-3.5" /> Instant Personal Website Builder
             </div>
             <h2 className="text-3xl sm:text-4xl md:text-5xl font-black tracking-tight text-white mb-4">
@@ -585,8 +585,8 @@ export default function Home() {
 
           {/* 3 Value Pillars */}
           <div className="grid md:grid-cols-3 gap-6 mb-12">
-            <div className="bg-gray-900/90 rounded-2xl p-6 border border-gray-800 hover:border-emerald-500/40 transition-all">
-              <div className="w-12 h-12 bg-emerald-500/10 rounded-xl flex items-center justify-center text-emerald-400 mb-4 border border-emerald-500/20">
+            <div className="bg-gray-900/90 rounded-xl p-6 border border-gray-800 hover:border-emerald-500/40 transition-all">
+              <div className="w-12 h-12 bg-emerald-500/10 rounded-lg flex items-center justify-center text-emerald-400 mb-4 border border-emerald-500/20">
                 <Terminal className="w-6 h-6" />
               </div>
               <h3 className="text-lg font-bold text-white mb-2">5 Developer & Cyber Themes</h3>
@@ -595,8 +595,8 @@ export default function Home() {
               </p>
             </div>
 
-            <div className="bg-gray-900/90 rounded-2xl p-6 border border-gray-800 hover:border-emerald-500/40 transition-all">
-              <div className="w-12 h-12 bg-teal-500/10 rounded-xl flex items-center justify-center text-teal-400 mb-4 border border-teal-500/20">
+            <div className="bg-gray-900/90 rounded-xl p-6 border border-gray-800 hover:border-emerald-500/40 transition-all">
+              <div className="w-12 h-12 bg-teal-500/10 rounded-lg flex items-center justify-center text-teal-400 mb-4 border border-teal-500/20">
                 <Globe className="w-6 h-6" />
               </div>
               <h3 className="text-lg font-bold text-white mb-2">Instant Public URL & QR Code</h3>
@@ -605,8 +605,8 @@ export default function Home() {
               </p>
             </div>
 
-            <div className="bg-gray-900/90 rounded-2xl p-6 border border-gray-800 hover:border-emerald-500/40 transition-all">
-              <div className="w-12 h-12 bg-lime-500/10 rounded-xl flex items-center justify-center text-lime-400 mb-4 border border-lime-500/20">
+            <div className="bg-gray-900/90 rounded-xl p-6 border border-gray-800 hover:border-emerald-500/40 transition-all">
+              <div className="w-12 h-12 bg-lime-500/10 rounded-lg flex items-center justify-center text-lime-400 mb-4 border border-lime-500/20">
                 <ShieldCheck className="w-6 h-6" />
               </div>
               <h3 className="text-lg font-bold text-white mb-2">SEO & Recruiter Optimized</h3>
@@ -617,10 +617,10 @@ export default function Home() {
           </div>
 
           {/* Interactive Live Theme Showcase Card */}
-          <div className="bg-gray-900 rounded-3xl p-6 sm:p-10 border border-gray-800 shadow-2xl relative overflow-hidden">
+          <div className="bg-gray-900 rounded-2xl p-6 sm:p-10 border border-gray-800 shadow-2xl relative overflow-hidden">
             <div className="flex flex-col lg:flex-row items-center justify-between gap-8">
               <div className="flex-1 space-y-4 text-left">
-                <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-emerald-950 text-emerald-400 text-xs font-bold border border-emerald-500/30">
+                <div className="inline-flex items-center gap-2 px-3 py-1 rounded-md bg-emerald-950 text-emerald-400 text-xs font-bold border border-emerald-500/30">
                   <Eye className="w-3.5 h-3.5" /> Live Interactive Preview
                 </div>
                 <h3 className="text-2xl sm:text-3xl font-extrabold text-white">
@@ -632,15 +632,15 @@ export default function Home() {
                 <div className="pt-2 flex flex-wrap gap-3">
                   <Link
                     to="/portfolio-builder"
-                    className="px-6 py-3.5 bg-emerald-500 hover:bg-emerald-400 text-gray-950 rounded-xl font-black text-sm flex items-center gap-2 shadow-lg shadow-emerald-500/20 transition-all"
+                    className="px-6 py-3.5 bg-emerald-500 hover:bg-emerald-400 text-gray-950 rounded-lg font-black text-sm flex items-center gap-2 shadow-lg shadow-emerald-500/20 transition-all"
                   >
                     <Globe className="w-4 h-4" />
                     <span>Create Your Portfolio Free</span>
                     <ArrowRight className="w-4 h-4" />
                   </Link>
                   <Link
-                    to="/p/sample-developer"
-                    className="px-5 py-3.5 bg-gray-800 hover:bg-gray-700 text-gray-200 rounded-xl font-bold text-sm flex items-center gap-2 transition-all border border-gray-700"
+                    to="/p/alex-secops"
+                    className="px-5 py-3.5 bg-gray-800 hover:bg-gray-700 text-gray-200 rounded-lg font-bold text-sm flex items-center gap-2 transition-all border border-gray-700"
                   >
                     <span>View Live Sample</span>
                     <ExternalLink className="w-4 h-4 text-gray-400" />
@@ -649,7 +649,7 @@ export default function Home() {
               </div>
 
               {/* Visual Card Mockup */}
-              <div className="w-full lg:w-96 bg-gray-950 rounded-2xl p-5 border border-gray-800 shadow-xl space-y-4">
+              <div className="w-full lg:w-96 bg-gray-950 rounded-xl p-5 border border-gray-800 shadow-xl space-y-4">
                 <div className="flex items-center justify-between border-b border-gray-800 pb-3">
                   <div className="flex items-center gap-2">
                     <div className="w-3 h-3 rounded-full bg-red-500/80"></div>
@@ -657,21 +657,21 @@ export default function Home() {
                     <div className="w-3 h-3 rounded-full bg-green-500/80"></div>
                   </div>
                   <span className="text-[11px] font-mono text-emerald-400 bg-emerald-950/60 px-2 py-0.5 rounded border border-emerald-500/30">
-                    pandalime.com/p/rahul-cloud
+                    pandalime.com/p/alex-secops
                   </span>
                 </div>
                 <div className="space-y-3">
                   <div className="flex items-center gap-3">
-                    <div className="w-12 h-12 rounded-full bg-gradient-to-tr from-emerald-500 to-lime-400 flex items-center justify-center font-black text-gray-950 text-lg shadow-md">
-                      RC
+                    <div className="w-12 h-12 rounded-lg bg-gradient-to-tr from-emerald-500 to-lime-400 flex items-center justify-center font-black text-gray-950 text-lg shadow-md">
+                      AV
                     </div>
                     <div>
-                      <h4 className="text-white font-bold text-sm">Rahul Cloud</h4>
-                      <p className="text-emerald-400 text-xs font-mono">DevOps & Cloud Architect</p>
+                      <h4 className="text-white font-bold text-sm">Alex Vance</h4>
+                      <p className="text-emerald-400 text-xs font-mono">SecOps & Cloud Security</p>
                     </div>
                   </div>
                   <p className="text-xs text-gray-400 line-clamp-2">
-                    "Specializing in Kubernetes, AWS multi-region infrastructure, and zero-downtime CI/CD deployment pipelines."
+                    "Specializing in Kubernetes threat modeling, AWS IAM policies, and automated DevSecOps pipelines."
                   </p>
                   <div className="flex flex-wrap gap-1.5 pt-1">
                     {['Kubernetes', 'Terraform', 'AWS', 'Docker', 'Go'].map((skill, i) => (
@@ -699,14 +699,14 @@ export default function Home() {
             <div className="flex-1 space-y-8">
               <div>
                 <span className="text-lime-600 font-bold text-sm uppercase tracking-wider">Complete Career Toolkit</span>
-                <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mt-2">
+                <h2 className="text-3xl md:text-4xl font-extrabold text-gray-900 mt-2 tracking-tight">
                   Everything You Need to Beat the Resume Screening Bots
                 </h2>
               </div>
               
-              <div className="space-y-6">
+              <div className="space-y-4">
                 {features.map((feature, i) => (
-                  <div key={i} className="flex gap-4 bg-white p-5 rounded-2xl border border-gray-200 shadow-sm">
+                  <div key={i} className="flex gap-4 bg-white p-5 rounded-xl border border-gray-200 shadow-xs">
                     <div className="flex-shrink-0 mt-1">
                       {feature.premium ? (
                         <Award className="w-6 h-6 text-amber-500" />
@@ -717,7 +717,7 @@ export default function Home() {
                     <div>
                       <h3 className="text-lg font-bold text-gray-900 flex items-center gap-2">
                         {feature.title} 
-                        {feature.premium && <span className="text-xs bg-amber-100 text-amber-800 px-2 py-0.5 rounded-full font-bold">Premium</span>}
+                        {feature.premium && <span className="text-xs bg-amber-100 text-amber-900 px-2 py-0.5 rounded font-bold border border-amber-200">Premium</span>}
                       </h3>
                       <p className="text-gray-600 mt-1 text-sm">{feature.description}</p>
                     </div>
@@ -728,15 +728,15 @@ export default function Home() {
               <div>
                 <Link 
                   to="/dashboard"
-                  className="inline-flex items-center gap-2 px-8 py-4 bg-gray-900 hover:bg-black text-white rounded-xl font-bold text-base shadow-lg transition-all"
+                  className="inline-flex items-center gap-2 px-8 py-4 bg-gray-900 hover:bg-black text-white rounded-xl font-bold text-base shadow-lg transition-all active:scale-[0.98]"
                 >
                   Start Your Free Resume Scan <ArrowRight className="w-5 h-5" />
                 </Link>
               </div>
             </div>
             
-            <div className="flex-1 w-full bg-gray-900 rounded-3xl p-8 border border-gray-800 shadow-2xl relative overflow-hidden text-white">
-              <div className="absolute top-0 right-0 bg-lime-500 text-gray-900 font-bold text-xs px-4 py-1.5 rounded-bl-xl shadow-md">
+            <div className="flex-1 w-full bg-gray-900 rounded-2xl p-8 border border-gray-800 shadow-2xl relative overflow-hidden text-white">
+              <div className="absolute top-0 right-0 bg-lime-500 text-gray-950 font-black text-xs px-4 py-1.5 rounded-bl-lg shadow-md">
                 Live Scanner Output
               </div>
               
@@ -746,7 +746,7 @@ export default function Home() {
                     <p className="text-xs text-gray-400 uppercase tracking-wider font-semibold">Target Match Score</p>
                     <div className="text-5xl font-black text-lime-400 mt-1">88%</div>
                   </div>
-                  <span className="px-3 py-1 bg-lime-500/20 text-lime-400 rounded-full text-xs font-bold border border-lime-500/30">
+                  <span className="px-3 py-1 bg-lime-500/20 text-lime-400 rounded-md text-xs font-bold border border-lime-500/30">
                     High ATS Pass Rate
                   </span>
                 </div>
@@ -755,14 +755,14 @@ export default function Home() {
                   <p className="text-xs text-gray-400 uppercase tracking-wider font-semibold mb-3">Detected Missing Keywords</p>
                   <div className="flex flex-wrap gap-2">
                     {['Distributed Systems', 'Redis Caching', 'Kubernetes', 'CI/CD Pipelines', 'GraphQL'].map((kw, idx) => (
-                      <span key={idx} className="px-3 py-1 bg-red-500/10 text-red-400 border border-red-500/20 rounded-lg text-xs font-medium">
+                      <span key={idx} className="px-2.5 py-1 bg-red-500/10 text-red-400 border border-red-500/20 rounded-md text-xs font-semibold">
                         + {kw}
                       </span>
                     ))}
                   </div>
                 </div>
 
-                <div className="bg-gray-800/60 p-4 rounded-xl border border-gray-700 text-xs text-gray-300">
+                <div className="bg-gray-800/60 p-4 rounded-lg border border-gray-700 text-xs text-gray-300">
                   <p className="font-bold text-lime-400 mb-1">AI Recruiter Critique:</p>
                   <p className="italic">"Your bullet points show strong leadership, but you lack specific cloud deployment keywords and measurable scale numbers in your primary experience section."</p>
                 </div>
@@ -930,7 +930,7 @@ export default function Home() {
                 <Link
                   key={niche.slug}
                   to={`/scanner/${niche.slug}`}
-                  className="px-4 py-2 bg-gray-50 hover:bg-lime-50 hover:border-lime-300 text-gray-700 hover:text-lime-800 text-xs font-semibold rounded-full border border-gray-200 transition-all"
+                  className="px-4 py-2 bg-gray-50 hover:bg-lime-50 hover:border-lime-300 text-gray-700 hover:text-lime-800 text-xs font-semibold rounded-lg border border-gray-200 transition-all"
                 >
                   {niche.title}
                 </Link>

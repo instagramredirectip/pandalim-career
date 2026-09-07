@@ -191,7 +191,7 @@ export default function JobKeywordExtractor() {
       {/* --- HERO HEADER --- */}
       <header className="bg-white py-14 sm:py-16 border-b border-gray-200 text-center">
         <div className="max-w-4xl mx-auto px-4">
-          <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-lime-100 text-lime-800 font-bold text-xs uppercase tracking-wider mb-5">
+          <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-md bg-lime-100 border border-lime-300 text-lime-800 font-bold text-xs uppercase tracking-wider mb-5">
             <Search className="w-3.5 h-3.5" />
             <span>Instant ATS Skill & Keyword Parser</span>
           </div>
@@ -215,7 +215,7 @@ export default function JobKeywordExtractor() {
           
           {/* LEFT: Input Area */}
           <div className="lg:col-span-7 space-y-4">
-            <div className="bg-white rounded-3xl border border-gray-200 shadow-sm p-6 sm:p-8 space-y-4">
+            <div className="bg-white rounded-2xl border border-gray-200 shadow-sm p-6 sm:p-8 space-y-4">
               <div className="flex items-center justify-between">
                 <label htmlFor="jd-input" className="font-bold text-gray-900 text-sm sm:text-base flex items-center gap-2">
                   <FileText className="w-4 h-4 text-lime-600" />
@@ -237,7 +237,7 @@ export default function JobKeywordExtractor() {
                 value={jobText}
                 onChange={(e) => setJobText(e.target.value)}
                 placeholder="Paste the target job description here (e.g. Senior Software Engineer at Amazon, TCS Digital Fresher, Data Scientist)..."
-                className="w-full p-4 rounded-2xl border border-gray-200 focus:border-lime-500 focus:ring-4 focus:ring-lime-500/10 outline-none text-sm text-gray-800 leading-relaxed resize-y transition-all font-mono placeholder:font-sans placeholder:text-gray-400"
+                className="w-full p-4 rounded-xl border border-gray-200 focus:border-lime-500 focus:ring-4 focus:ring-lime-500/10 outline-none text-sm text-gray-800 leading-relaxed resize-y transition-all font-mono placeholder:font-sans placeholder:text-gray-400"
               />
 
               {/* Sample JDs Quick Load */}
@@ -251,7 +251,7 @@ export default function JobKeywordExtractor() {
                       key={sample.id}
                       type="button"
                       onClick={() => loadSample(sample)}
-                      className="px-3 py-1.5 bg-gray-50 hover:bg-lime-50 hover:text-lime-800 hover:border-lime-300 text-gray-700 text-xs font-semibold rounded-xl border border-gray-200 transition-all text-left"
+                      className="px-3 py-1.5 bg-gray-50 hover:bg-lime-50 hover:text-lime-800 hover:border-lime-300 text-gray-700 text-xs font-semibold rounded-lg border border-gray-200 transition-all text-left"
                     >
                       + {sample.title.split('(')[0]}
                     </button>
@@ -263,7 +263,7 @@ export default function JobKeywordExtractor() {
 
           {/* RIGHT: Extraction Results */}
           <div className="lg:col-span-5 space-y-4">
-            <div className="bg-white rounded-3xl border border-gray-200 shadow-sm p-6 sm:p-8 space-y-6">
+            <div className="bg-white rounded-2xl border border-gray-200 shadow-sm p-6 sm:p-8 space-y-6">
               
               <div className="flex items-center justify-between pb-4 border-b border-gray-100">
                 <div>
@@ -278,7 +278,7 @@ export default function JobKeywordExtractor() {
                 {extractedResults && extractedResults.totalCount > 0 && (
                   <button
                     onClick={handleCopyKeywords}
-                    className="px-3 py-1.5 bg-gray-100 hover:bg-gray-200 text-gray-700 rounded-xl text-xs font-bold flex items-center gap-1.5 transition-colors"
+                    className="px-3 py-1.5 bg-gray-100 hover:bg-gray-200 text-gray-700 rounded-lg text-xs font-bold flex items-center gap-1.5 transition-colors"
                   >
                     {copied ? <Check className="w-3.5 h-3.5 text-green-600" /> : <Copy className="w-3.5 h-3.5" />}
                     <span>{copied ? 'Copied!' : 'Copy All'}</span>
@@ -288,7 +288,7 @@ export default function JobKeywordExtractor() {
 
               {!extractedResults || extractedResults.totalCount === 0 ? (
                 <div className="py-12 text-center text-gray-400 space-y-3">
-                  <div className="w-12 h-12 rounded-2xl bg-gray-50 mx-auto flex items-center justify-center text-gray-300">
+                  <div className="w-12 h-12 rounded-xl bg-gray-50 mx-auto flex items-center justify-center text-gray-300">
                     <Tag className="w-6 h-6" />
                   </div>
                   <p className="text-sm font-medium">
@@ -306,13 +306,13 @@ export default function JobKeywordExtractor() {
                     <div key={catKey} className="space-y-2">
                       <div className="flex items-center justify-between text-xs font-bold text-gray-500 uppercase tracking-wider">
                         <span>{catData.label}</span>
-                        <span className="text-[10px] bg-gray-100 px-2 py-0.5 rounded-full text-gray-600">{catData.skills.length}</span>
+                        <span className="text-[10px] bg-gray-100 px-2 py-0.5 rounded-md text-gray-600">{catData.skills.length}</span>
                       </div>
                       <div className="flex flex-wrap gap-2">
                         {catData.skills.map((skill, sIdx) => (
                           <span 
                             key={sIdx}
-                            className={`px-3 py-1 rounded-xl text-xs font-bold border transition-transform hover:scale-105 ${catData.color}`}
+                            className={`px-2.5 py-1 rounded-lg text-xs font-bold border transition-transform hover:scale-105 ${catData.color}`}
                           >
                             ✓ {skill}
                           </span>
@@ -325,7 +325,7 @@ export default function JobKeywordExtractor() {
                   <div className="pt-4 border-t border-gray-100 space-y-3">
                     <button
                       onClick={handleScanResume}
-                      className="w-full py-4 bg-lime-500 hover:bg-lime-600 text-white rounded-2xl font-black text-sm sm:text-base flex items-center justify-center gap-2 shadow-lg shadow-lime-500/25 transition-all hover:-translate-y-0.5 cursor-pointer"
+                      className="w-full py-3.5 bg-lime-500 hover:bg-lime-600 text-white rounded-xl font-black text-sm sm:text-base flex items-center justify-center gap-2 shadow-lg shadow-lime-500/25 transition-all hover:-translate-y-0.5 cursor-pointer"
                     >
                       <ScanLine className="w-5 h-5" />
                       <span>Scan Resume Against This JD (1-Click)</span>
@@ -358,24 +358,24 @@ export default function JobKeywordExtractor() {
           </div>
 
           <div className="grid md:grid-cols-3 gap-8">
-            <div className="bg-gray-50 p-6 rounded-2xl border border-gray-200 space-y-3">
-              <div className="w-8 h-8 rounded-xl bg-lime-500 text-white font-black flex items-center justify-center text-sm">1</div>
+            <div className="bg-gray-50 p-6 rounded-xl border border-gray-200 space-y-3">
+              <div className="w-8 h-8 rounded-lg bg-lime-500 text-white font-black flex items-center justify-center text-sm">1</div>
               <h4 className="font-bold text-gray-900 text-base">Match Exact Technical Terms</h4>
               <p className="text-xs text-gray-600 leading-relaxed">
                 If the posting specifies "AWS Lambda" and "PostgreSQL", don't just write "Cloud" and "SQL". Match the exact naming conventions the ATS filter algorithm was configured to search for.
               </p>
             </div>
 
-            <div className="bg-gray-50 p-6 rounded-2xl border border-gray-200 space-y-3">
-              <div className="w-8 h-8 rounded-xl bg-lime-500 text-white font-black flex items-center justify-center text-sm">2</div>
+            <div className="bg-gray-50 p-6 rounded-xl border border-gray-200 space-y-3">
+              <div className="w-8 h-8 rounded-lg bg-lime-500 text-white font-black flex items-center justify-center text-sm">2</div>
               <h4 className="font-bold text-gray-900 text-base">Weave into STAR Bullets</h4>
               <p className="text-xs text-gray-600 leading-relaxed">
                 Avoid a raw "Skills" laundry list. Integrate your top tools directly into achievement bullets: <em>"Architected microservices using Docker and Redis, improving latency by 35%."</em>
               </p>
             </div>
 
-            <div className="bg-gray-50 p-6 rounded-2xl border border-gray-200 space-y-3">
-              <div className="w-8 h-8 rounded-xl bg-lime-500 text-white font-black flex items-center justify-center text-sm">3</div>
+            <div className="bg-gray-50 p-6 rounded-xl border border-gray-200 space-y-3">
+              <div className="w-8 h-8 rounded-lg bg-lime-500 text-white font-black flex items-center justify-center text-sm">3</div>
               <h4 className="font-bold text-gray-900 text-base">Check Final ATS Score</h4>
               <p className="text-xs text-gray-600 leading-relaxed">
                 Upload your completed PDF resume to <Link to="/dashboard" className="text-lime-600 font-bold hover:underline">PandaLime</Link> to simulate how Workday, Taleo, or TCS iON evaluate your keyword match density.
@@ -400,7 +400,7 @@ export default function JobKeywordExtractor() {
 
           <div className="space-y-4">
             {faqs.map((faq, i) => (
-              <div key={i} className="bg-white rounded-2xl p-6 border border-gray-200 shadow-sm">
+              <div key={i} className="bg-white rounded-xl p-6 border border-gray-200 shadow-sm">
                 <h4 className="font-bold text-gray-900 text-base mb-2 flex items-start gap-2">
                   <HelpCircle className="w-5 h-5 text-lime-600 shrink-0 mt-0.5" />
                   <span>{faq.q}</span>

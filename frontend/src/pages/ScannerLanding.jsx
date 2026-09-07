@@ -169,7 +169,7 @@ export default function ScannerLanding() {
       <header className="relative bg-white pt-16 pb-20 border-b border-gray-200 overflow-hidden">
         <div className="max-w-6xl mx-auto px-4 text-center relative z-10">
           
-          <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-lime-100 text-lime-800 font-bold text-xs uppercase tracking-wider mb-6">
+          <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-md bg-lime-100 border border-lime-300 text-lime-800 font-bold text-xs uppercase tracking-wider mb-6">
             <Sparkles className="w-3.5 h-3.5" />
             <span>Targeted ATS Keyword Optimization</span>
           </div>
@@ -187,25 +187,25 @@ export default function ScannerLanding() {
 
           {/* Quick Metrics Bar */}
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4 max-w-4xl mx-auto mb-10 text-left">
-            <div className="bg-gray-50 p-4 rounded-2xl border border-gray-200">
+            <div className="bg-gray-50 p-4 rounded-xl border border-gray-200">
               <div className="flex items-center gap-2 text-gray-500 text-xs font-semibold mb-1">
                 <Building2 className="w-4 h-4 text-lime-600" /> Employer
               </div>
               <p className="text-base font-bold text-gray-900">{pageData.companyName}</p>
             </div>
-            <div className="bg-gray-50 p-4 rounded-2xl border border-gray-200">
+            <div className="bg-gray-50 p-4 rounded-xl border border-gray-200">
               <div className="flex items-center gap-2 text-gray-500 text-xs font-semibold mb-1">
                 <Cpu className="w-4 h-4 text-lime-600" /> Filter Engine
               </div>
               <p className="text-base font-bold text-gray-900 truncate">{pageData.atsType.split('/')[0]}</p>
             </div>
-            <div className="bg-gray-50 p-4 rounded-2xl border border-gray-200">
+            <div className="bg-gray-50 p-4 rounded-xl border border-gray-200">
               <div className="flex items-center gap-2 text-gray-500 text-xs font-semibold mb-1">
                 <Target className="w-4 h-4 text-lime-600" /> Target Match
               </div>
               <p className="text-base font-bold text-lime-600">75% - 90%+</p>
             </div>
-            <div className="bg-gray-50 p-4 rounded-2xl border border-gray-200">
+            <div className="bg-gray-50 p-4 rounded-xl border border-gray-200">
               <div className="flex items-center gap-2 text-gray-500 text-xs font-semibold mb-1">
                 <DollarSign className="w-4 h-4 text-lime-600" /> Compensation
               </div>
@@ -219,7 +219,7 @@ export default function ScannerLanding() {
           <div>
             <Link 
               to="/dashboard" 
-              className="inline-flex items-center justify-center gap-2 px-10 py-5 bg-lime-500 hover:bg-lime-600 text-white font-extrabold text-lg rounded-2xl shadow-xl shadow-lime-500/30 transition-all hover:-translate-y-1 cursor-pointer"
+              className="inline-flex items-center justify-center gap-2 px-10 py-4 bg-lime-500 hover:bg-lime-600 text-white font-extrabold text-base sm:text-lg rounded-xl shadow-xl shadow-lime-500/30 transition-all hover:-translate-y-1 cursor-pointer"
             >
               Scan Resume For {pageData.roleName} Now <ArrowRight className="w-5 h-5" />
             </Link>
@@ -243,7 +243,7 @@ export default function ScannerLanding() {
               {pageData.overview}
             </p>
 
-            <div className="bg-lime-50/70 p-6 rounded-2xl border border-lime-200 space-y-3">
+            <div className="bg-lime-50/70 p-6 rounded-xl border border-lime-200 space-y-3">
               <h3 className="font-bold text-lime-900 text-lg flex items-center gap-2">
                 <ShieldCheck className="w-5 h-5 text-lime-600" /> {pageData.companyName} Screening Priorities
               </h3>
@@ -266,12 +266,12 @@ export default function ScannerLanding() {
           </div>
 
           {/* Essential Keywords Box */}
-          <div className="bg-white p-8 rounded-3xl border border-gray-200 shadow-sm space-y-6">
+          <div className="bg-white p-8 rounded-2xl border border-gray-200 shadow-sm space-y-6">
             <div className="flex items-center justify-between pb-4 border-b border-gray-100">
               <h3 className="text-xl font-bold text-gray-900 flex items-center gap-2">
                 <Zap className="w-5 h-5 text-amber-500" /> Must-Have Keywords for {pageData.roleName}
               </h3>
-              <span className="text-xs bg-lime-100 text-lime-800 font-bold px-2.5 py-1 rounded-full">
+              <span className="text-xs bg-lime-100 text-lime-800 font-bold px-2.5 py-1 rounded-md">
                 High Weight
               </span>
             </div>
@@ -284,7 +284,7 @@ export default function ScannerLanding() {
               {pageData.topKeywords.map((kw, i) => (
                 <span 
                   key={i} 
-                  className="px-3.5 py-2 bg-gray-50 hover:bg-lime-50 hover:text-lime-800 text-gray-700 text-xs font-semibold rounded-xl border border-gray-200 transition-colors"
+                  className="px-3 py-1.5 bg-gray-50 hover:bg-lime-50 hover:text-lime-800 text-gray-700 text-xs font-semibold rounded-lg border border-gray-200 transition-colors"
                 >
                   ✓ {kw}
                 </span>
@@ -315,18 +315,18 @@ export default function ScannerLanding() {
           </div>
 
           <div className="grid md:grid-cols-3 gap-8">
-            <div className="p-6 bg-gray-50 rounded-2xl border border-gray-200">
-              <div className="w-10 h-10 bg-lime-500 text-white rounded-xl font-black flex items-center justify-center mb-4">1</div>
+            <div className="p-6 bg-gray-50 rounded-xl border border-gray-200">
+              <div className="w-10 h-10 bg-lime-500 text-white rounded-lg font-black flex items-center justify-center mb-4">1</div>
               <h3 className="font-bold text-gray-900 text-lg mb-2">Upload & Compare</h3>
               <p className="text-sm text-gray-600">Upload your PDF resume and the target {pageData.companyName} {pageData.roleName} job description.</p>
             </div>
-            <div className="p-6 bg-gray-50 rounded-2xl border border-gray-200">
-              <div className="w-10 h-10 bg-lime-500 text-white rounded-xl font-black flex items-center justify-center mb-4">2</div>
+            <div className="p-6 bg-gray-50 rounded-xl border border-gray-200">
+              <div className="w-10 h-10 bg-lime-500 text-white rounded-lg font-black flex items-center justify-center mb-4">2</div>
               <h3 className="font-bold text-gray-900 text-lg mb-2">Identify Keyword Gaps</h3>
               <p className="text-sm text-gray-600">Our neural parser flags missing skills like {pageData.topKeywords.slice(0, 2).join(' and ')}.</p>
             </div>
-            <div className="p-6 bg-gray-50 rounded-2xl border border-gray-200">
-              <div className="w-10 h-10 bg-lime-500 text-white rounded-xl font-black flex items-center justify-center mb-4">3</div>
+            <div className="p-6 bg-gray-50 rounded-xl border border-gray-200">
+              <div className="w-10 h-10 bg-lime-500 text-white rounded-lg font-black flex items-center justify-center mb-4">3</div>
               <h3 className="font-bold text-gray-900 text-lg mb-2">STAR Bullet Optimization</h3>
               <p className="text-sm text-gray-600">Generate recruiter-ready bullet points with quantified business metrics to pass human review.</p>
             </div>
@@ -345,7 +345,7 @@ export default function ScannerLanding() {
 
         <div className="space-y-4">
           {roleFaqs.map((faq, index) => (
-            <div key={index} className="bg-white rounded-2xl border border-gray-200 overflow-hidden shadow-sm">
+            <div key={index} className="bg-white rounded-xl border border-gray-200 overflow-hidden shadow-sm">
               <button
                 onClick={() => toggleFaq(index)}
                 className="w-full p-6 text-left font-bold text-base text-gray-900 flex justify-between items-center gap-4 hover:text-lime-600 transition-colors"

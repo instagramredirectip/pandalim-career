@@ -113,7 +113,7 @@ export default function TrustpilotWidget() {
     >
       {isExpanded ? (
         /* EXPANDED SMART CARD */
-        <div className="bg-gray-950/95 backdrop-blur-xl text-white rounded-2xl sm:rounded-3xl border border-gray-800/90 shadow-2xl shadow-black/60 p-4 sm:p-5 relative overflow-hidden transition-all duration-300">
+        <div className="bg-gray-950/95 backdrop-blur-xl text-white rounded-2xl border border-gray-800/90 shadow-2xl shadow-black/60 p-4 sm:p-5 relative overflow-hidden transition-all duration-300">
           
           {/* Subtle Trustpilot Green Glow Background Accent */}
           <div className="absolute top-0 right-0 w-32 h-32 bg-[#00b67a]/15 rounded-full blur-2xl pointer-events-none -translate-y-1/2 translate-x-1/2" />
@@ -126,7 +126,7 @@ export default function TrustpilotWidget() {
               </div>
               <div className="flex items-center gap-1.5">
                 <span className="text-xs sm:text-sm font-black tracking-tight text-white">Trustpilot</span>
-                <span className="inline-flex items-center px-1.5 py-0.5 rounded-full text-[10px] font-bold bg-[#00b67a]/20 text-[#00b67a] border border-[#00b67a]/30">
+                <span className="inline-flex items-center px-1.5 py-0.5 rounded-md text-[10px] font-bold bg-[#00b67a]/20 text-[#00b67a] border border-[#00b67a]/30">
                   Verified
                 </span>
               </div>
@@ -192,13 +192,13 @@ export default function TrustpilotWidget() {
         </div>
       ) : (
         /* MINIMIZED SLEEK FLOATING PILL */
-        <div className="flex items-center gap-1 bg-gray-950/95 backdrop-blur-md text-white rounded-full border border-gray-800/90 shadow-xl shadow-black/50 p-1.5 pr-3 transition-all duration-300 hover:border-[#00b67a]/50 hover:shadow-[#00b67a]/20 group">
+        <div className="flex items-center gap-1.5 bg-gray-950/95 backdrop-blur-md text-white rounded-xl border border-gray-800/90 shadow-xl shadow-black/50 p-1.5 pr-2.5 transition-all duration-300 hover:border-[#00b67a]/50 hover:shadow-[#00b67a]/20 group">
           <button
             onClick={() => setIsExpanded(true)}
             className="flex items-center gap-2 text-left cursor-pointer focus:outline-none"
             aria-label="Expand Trustpilot review widget"
           >
-            <div className="w-7 h-7 rounded-full bg-[#00b67a] flex items-center justify-center text-white shadow-xs">
+            <div className="w-7 h-7 rounded-lg bg-[#00b67a] flex items-center justify-center text-white shadow-xs">
               <TrustpilotStar size={14} />
             </div>
             <div className="flex flex-col">
@@ -212,7 +212,7 @@ export default function TrustpilotWidget() {
 
           <button
             onClick={() => setIsExpanded(true)}
-            className="ml-1 p-1 text-gray-400 hover:text-white rounded-full hover:bg-gray-800 transition-colors"
+            className="ml-1 p-1 text-gray-400 hover:text-white rounded-md hover:bg-gray-800 transition-colors"
             title="Expand widget"
             aria-label="Expand widget"
           >
@@ -221,7 +221,7 @@ export default function TrustpilotWidget() {
 
           <button
             onClick={handleDismiss}
-            className="p-1 text-gray-400 hover:text-white rounded-full hover:bg-gray-800 transition-colors"
+            className="p-1 text-gray-400 hover:text-white rounded-md hover:bg-gray-800 transition-colors"
             title="Close widget"
             aria-label="Close widget"
           >

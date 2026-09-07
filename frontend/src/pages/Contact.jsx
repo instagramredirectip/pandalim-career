@@ -34,7 +34,7 @@ export default function Contact() {
         
         <div className="grid md:grid-cols-2 gap-8">
           {/* Info Card */}
-          <div className="bg-gray-900 text-white rounded-3xl p-10 shadow-xl relative overflow-hidden">
+          <div className="bg-gray-900 text-white rounded-2xl p-10 shadow-xl relative overflow-hidden">
             <div className="absolute top-0 right-0 w-64 h-64 bg-lime-500 rounded-full blur-3xl opacity-20 -translate-y-1/2 translate-x-1/3"></div>
             
             <h1 className="text-3xl font-extrabold mb-4 relative z-10">Get in Touch</h1>
@@ -66,7 +66,7 @@ export default function Contact() {
           </div>
 
           {/* Contact Form Card */}
-          <div className="bg-white rounded-3xl p-10 shadow-sm border border-gray-200">
+          <div className="bg-white rounded-2xl p-10 shadow-sm border border-gray-200">
             <h2 className="text-2xl font-bold text-gray-900 mb-6 flex items-center gap-2">
               <MessageSquare className="w-6 h-6 text-lime-500" /> Send a Message
             </h2>

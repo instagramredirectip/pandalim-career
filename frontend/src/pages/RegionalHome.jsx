@@ -145,7 +145,7 @@ export default function RegionalHome() {
         <div className="absolute inset-0 bg-[radial-gradient(#e5e7eb_1px,transparent_1px)] [background-size:16px_16px] opacity-30"></div>
         <div className="max-w-6xl mx-auto px-4 relative z-10 text-center">
           
-          <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-lime-100 text-lime-800 font-semibold text-sm mb-6 animate-bounce">
+          <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-md bg-lime-100 border border-lime-300 text-lime-800 font-semibold text-xs uppercase tracking-wider mb-6">
             <Sparkles className="w-4 h-4" />
             <span>{t.badge}</span>
           </div>
@@ -216,8 +216,8 @@ export default function RegionalHome() {
         
         <div className="grid md:grid-cols-3 gap-8">
           {t.steps.map((step, i) => (
-            <div key={i} className="bg-white p-8 rounded-3xl shadow-sm border border-gray-200 hover:shadow-xl transition-all hover:-translate-y-2 relative group">
-              <div className="w-16 h-16 bg-lime-50 rounded-2xl flex items-center justify-center mb-6 text-lime-600 font-black text-2xl">
+            <div key={i} className="bg-white p-8 rounded-2xl shadow-sm border border-gray-200 hover:shadow-xl transition-all hover:-translate-y-2 relative group">
+              <div className="w-16 h-16 bg-lime-50 rounded-xl flex items-center justify-center mb-6 text-lime-600 font-black text-2xl">
                 {i + 1}
               </div>
               <h3 className="text-xl font-bold text-gray-900 mb-3">{step.title}</h3>
@@ -239,33 +239,14 @@ export default function RegionalHome() {
             </p>
           </div>
 
-          <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-8">
-            {t.pillars.map((pillar, idx) => (
-              <div key={idx} className="bg-gray-50 rounded-2xl p-6 border border-gray-200 hover:border-lime-400 transition-colors">
-                <div className="w-10 h-10 bg-lime-100 rounded-xl text-lime-700 font-bold flex items-center justify-center mb-4 text-sm">
-                  0{idx + 1}
-                </div>
-                <h3 className="text-lg font-bold text-gray-900 mb-2">{pillar.title}</h3>
-                <p className="text-sm text-gray-600 leading-relaxed">{pillar.desc}</p>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* --- FEATURES & DIRECT SCAN CTA --- */}
-      <section className="py-20">
-        <div className="max-w-6xl mx-auto px-4">
-          <div className="flex flex-col md:flex-row items-center gap-16">
-            <div className="flex-1 space-y-8">
-              <h2 className="text-3xl md:text-4xl font-bold text-gray-900">
-                {t.featuresTitle}
-              </h2>
-              
+          <div className="flex flex-col lg:flex-row items-center gap-12">
+            <div className="flex-1 space-y-6">
               <div className="space-y-4">
-                {t.features.map((feature, i) => (
-                  <div key={i} className="flex gap-4 bg-white p-5 rounded-2xl border border-gray-200 shadow-sm">
-                    <CheckCircle2 className="w-6 h-6 text-lime-500 shrink-0 mt-0.5" />
+                {t.pillarFeatures.map((feature, i) => (
+                  <div key={i} className="flex gap-4 p-4 rounded-xl hover:bg-gray-50 transition-colors">
+                    <div className="w-10 h-10 rounded-lg bg-lime-100 flex items-center justify-center text-lime-600 shrink-0 mt-1">
+                      <CheckCircle2 className="w-5 h-5" />
+                    </div>
                     <div>
                       <h3 className="text-base font-bold text-gray-900">{feature.title}</h3>
                       <p className="text-gray-600 text-sm mt-0.5">{feature.desc}</p>
@@ -284,8 +265,8 @@ export default function RegionalHome() {
               </div>
             </div>
 
-            <div className="flex-1 w-full bg-gray-900 rounded-3xl p-8 border border-gray-800 shadow-2xl text-white">
-              <span className="px-3 py-1 bg-lime-500/20 text-lime-400 rounded-full text-xs font-bold border border-lime-500/30 inline-block mb-6">
+            <div className="flex-1 w-full bg-gray-900 rounded-2xl p-8 border border-gray-800 shadow-2xl text-white">
+              <span className="px-3 py-1 bg-lime-500/20 text-lime-400 rounded-md text-xs font-bold border border-lime-500/30 inline-block mb-6">
                 Live ATS Evaluation
               </span>
               <div className="space-y-4">
@@ -318,7 +299,7 @@ export default function RegionalHome() {
             {t.faqs.map((faq, index) => (
               <div 
                 key={index} 
-                className="bg-white rounded-2xl border border-gray-200 overflow-hidden shadow-sm"
+                className="bg-white rounded-xl border border-gray-200 overflow-hidden shadow-sm"
               >
                 <button
                   onClick={() => toggleFaq(index)}
@@ -367,7 +348,7 @@ export default function RegionalHome() {
                 <Link
                   key={niche.slug}
                   to={`/scanner/${niche.slug}`}
-                  className="px-4 py-2 bg-gray-50 hover:bg-lime-50 hover:border-lime-300 text-gray-700 hover:text-lime-800 text-xs font-semibold rounded-full border border-gray-200 transition-all"
+                  className="px-4 py-2 bg-gray-50 hover:bg-lime-50 hover:border-lime-300 text-gray-700 hover:text-lime-800 text-xs font-semibold rounded-lg border border-gray-200 transition-all"
                 >
                   {niche.title}
                 </Link>

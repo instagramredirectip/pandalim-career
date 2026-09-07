@@ -158,7 +158,7 @@ export default function ToolsHub() {
             >
               <Globe className="w-3.5 h-3.5 text-emerald-600" />
               <span>AI Portfolio</span>
-              <span className="text-[9px] bg-emerald-600 text-white font-extrabold px-1.5 py-0.2 rounded-full uppercase">New</span>
+              <span className="text-[9px] bg-emerald-600 text-white font-extrabold px-1.5 py-0.2 rounded-md uppercase">New</span>
             </Link>
             <Link to="/sitemap" className="text-sm font-semibold text-gray-600 hover:text-lime-600 transition-colors hidden md:block">
               Directory
@@ -199,7 +199,7 @@ export default function ToolsHub() {
       {/* --- HERO SECTION --- */}
       <header className="bg-white py-16 sm:py-20 border-b border-gray-200 text-center">
         <div className="max-w-4xl mx-auto px-4">
-          <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-lime-100 text-lime-800 font-bold text-xs uppercase tracking-wider mb-6">
+          <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-md bg-lime-100 border border-lime-300 text-lime-800 font-bold text-xs uppercase tracking-wider mb-6">
             <Zap className="w-3.5 h-3.5" />
             <span>100% Free AI Career Optimization Suite</span>
           </div>
@@ -223,14 +223,14 @@ export default function ToolsHub() {
           {tools.map((tool) => (
             <div 
               key={tool.id} 
-              className="bg-white rounded-3xl border border-gray-200 p-8 shadow-sm hover:shadow-xl transition-all duration-300 flex flex-col justify-between group hover:border-lime-400"
+              className="bg-white rounded-2xl border border-gray-200 p-8 shadow-sm hover:shadow-xl transition-all duration-300 flex flex-col justify-between group hover:border-lime-400"
             >
               <div>
                 <div className="flex items-center justify-between mb-6">
-                  <div className="w-12 h-12 rounded-2xl bg-gray-50 group-hover:bg-lime-50 flex items-center justify-center transition-colors border border-gray-100">
+                  <div className="w-12 h-12 rounded-xl bg-gray-50 group-hover:bg-lime-50 flex items-center justify-center transition-colors border border-gray-100">
                     {tool.icon}
                   </div>
-                  <span className={`text-[11px] font-extrabold px-3 py-1 rounded-full uppercase tracking-wider ${tool.badgeColor}`}>
+                  <span className={`text-[11px] font-extrabold px-3 py-1 rounded-md uppercase tracking-wider ${tool.badgeColor}`}>
                     {tool.badge}
                   </span>
                 </div>
@@ -255,7 +255,7 @@ export default function ToolsHub() {
 
               <Link 
                 to={tool.path}
-                className="w-full py-3.5 bg-gray-900 group-hover:bg-lime-500 text-white group-hover:text-white rounded-2xl font-bold text-sm text-center flex items-center justify-center gap-2 transition-all shadow-md group-hover:shadow-lime-500/25"
+                className="w-full py-3.5 bg-gray-900 group-hover:bg-lime-500 text-white group-hover:text-white rounded-xl font-bold text-sm text-center flex items-center justify-center gap-2 transition-all shadow-md group-hover:shadow-lime-500/25"
               >
                 <span>{tool.cta}</span>
                 <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
@@ -267,9 +267,9 @@ export default function ToolsHub() {
 
       {/* --- BANNER: CORE SCANNER PROMO --- */}
       <section className="max-w-6xl mx-auto px-4 pb-16">
-        <div className="bg-gradient-to-r from-gray-900 to-gray-800 rounded-3xl p-8 sm:p-12 text-white shadow-xl relative overflow-hidden flex flex-col md:flex-row items-center justify-between gap-8">
+        <div className="bg-gradient-to-r from-gray-900 to-gray-800 rounded-2xl p-8 sm:p-12 text-white shadow-xl relative overflow-hidden flex flex-col md:flex-row items-center justify-between gap-8">
           <div className="max-w-xl space-y-4">
-            <div className="inline-flex items-center gap-2 px-3 py-1 bg-lime-500/20 text-lime-400 rounded-full text-xs font-bold border border-lime-500/30">
+            <div className="inline-flex items-center gap-2 px-3 py-1 bg-lime-500/20 text-lime-400 rounded-md text-xs font-bold border border-lime-500/30">
               <Sparkles className="w-3.5 h-3.5" /> Core AI Technology
             </div>
             <h3 className="text-2xl sm:text-3xl font-extrabold tracking-tight">
@@ -281,7 +281,7 @@ export default function ToolsHub() {
           </div>
           <Link 
             to="/dashboard"
-            className="px-8 py-4 bg-lime-500 hover:bg-lime-400 text-gray-950 rounded-2xl font-black text-base shadow-lg shadow-lime-500/30 transition-all hover:-translate-y-1 shrink-0 flex items-center gap-2"
+            className="px-8 py-4 bg-lime-500 hover:bg-lime-400 text-gray-950 rounded-xl font-black text-base shadow-lg shadow-lime-500/30 transition-all hover:-translate-y-1 shrink-0 flex items-center gap-2"
           >
             <span>Scan Resume Free Now</span>
             <ArrowRight className="w-5 h-5" />
@@ -303,7 +303,7 @@ export default function ToolsHub() {
 
           <div className="space-y-4">
             {faqs.map((faq, i) => (
-              <div key={i} className="bg-gray-50 rounded-2xl p-6 border border-gray-200">
+              <div key={i} className="bg-gray-50 rounded-xl p-6 border border-gray-200">
                 <h4 className="font-bold text-gray-900 text-base mb-2 flex items-start gap-2">
                   <HelpCircle className="w-5 h-5 text-lime-600 shrink-0 mt-0.5" />
                   <span>{faq.q}</span>

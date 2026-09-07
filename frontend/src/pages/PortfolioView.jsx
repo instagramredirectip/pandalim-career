@@ -224,12 +224,12 @@ export default function PortfolioView() {
       <main className="max-w-5xl mx-auto px-3.5 sm:px-6 py-6 sm:py-16 space-y-10 sm:space-y-16 w-full overflow-hidden">
         
         {/* Profile Card */}
-        <section className={`p-5 sm:p-10 rounded-2xl sm:rounded-3xl border ${theme.cardClass} relative overflow-hidden backdrop-blur-xl shadow-2xl w-full`}>
+        <section className={`p-5 sm:p-10 rounded-2xl border ${theme.cardClass} relative overflow-hidden backdrop-blur-xl shadow-2xl w-full`}>
           
           {/* Cyber Terminal Watermark Pill (Clean on mobile, absolute on desktop) */}
           {p.theme === 'cyber' && (
             <div className="flex justify-center md:justify-end mb-4 md:mb-0 md:absolute md:top-6 md:right-6">
-              <div className="font-mono text-[10px] text-emerald-400/80 bg-emerald-950/80 border border-emerald-500/30 px-2.5 py-1 rounded-full flex items-center gap-1.5 shadow-sm">
+              <div className="font-mono text-[10px] text-emerald-400/80 bg-emerald-950/80 border border-emerald-500/30 px-2.5 py-1 rounded-md flex items-center gap-1.5 shadow-sm">
                 <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-ping"></span>
                 <span>[SEC_STATUS: CLEAR]</span>
               </div>
@@ -243,11 +243,11 @@ export default function PortfolioView() {
               <img
                 src={p.avatarUrl}
                 alt={p.fullName}
-                className="w-24 h-24 sm:w-36 sm:h-36 rounded-2xl sm:rounded-3xl object-cover border-2 shadow-2xl"
+                className="w-24 h-24 sm:w-36 sm:h-36 rounded-2xl object-cover border-2 shadow-2xl"
                 style={{ borderColor: accent.hex }}
               />
               {p.availabilityStatus && (
-                <div className="absolute -bottom-2 -right-2 bg-gray-900 border border-gray-700 px-2 py-0.5 rounded-full text-[10px] font-bold text-lime-400 shadow-md flex items-center gap-1">
+                <div className="absolute -bottom-2 -right-2 bg-gray-900 border border-gray-700 px-2 py-0.5 rounded-md text-[10px] font-bold text-lime-400 shadow-md flex items-center gap-1">
                   <span className="w-2 h-2 rounded-full bg-lime-400"></span>
                   <span>Available</span>
                 </div>
@@ -424,7 +424,7 @@ export default function PortfolioView() {
               {p.projects.map((proj, pIdx) => (
                 <div 
                   key={pIdx} 
-                  className={`p-5 sm:p-6 rounded-2xl sm:rounded-3xl border ${theme.cardClass} flex flex-col justify-between space-y-4 hover:translate-y-[-2px] transition-all group`}
+                  className={`p-5 sm:p-6 rounded-xl border ${theme.cardClass} flex flex-col justify-between space-y-4 hover:translate-y-[-2px] transition-all group`}
                 >
                   <div className="space-y-3">
                     <div className="flex flex-wrap justify-between items-start gap-2">
@@ -432,7 +432,7 @@ export default function PortfolioView() {
                         {proj.title}
                       </h3>
                       {proj.metric && (
-                        <span className="text-[10px] font-bold px-2.5 py-1 rounded-full bg-lime-950/80 text-lime-400 border border-lime-500/30 shrink-0">
+                        <span className="text-[10px] font-bold px-2.5 py-1 rounded-md bg-lime-950/80 text-lime-400 border border-lime-500/30 shrink-0">
                           {proj.metric}
                         </span>
                       )}
@@ -498,7 +498,7 @@ export default function PortfolioView() {
 
             <div className="space-y-4 sm:space-y-6">
               {p.experience.map((exp, eIdx) => (
-                <div key={eIdx} className={`p-5 sm:p-8 rounded-2xl sm:rounded-3xl border ${theme.cardClass} space-y-3`}>
+                <div key={eIdx} className={`p-5 sm:p-8 rounded-xl border ${theme.cardClass} space-y-3`}>
                   <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-1.5">
                     <div>
                       <h3 className="text-base sm:text-lg font-bold text-white break-words">
@@ -508,7 +508,7 @@ export default function PortfolioView() {
                         <p className="text-xs text-gray-500">{exp.location}</p>
                       )}
                     </div>
-                    <span className="text-[11px] sm:text-xs font-mono text-gray-400 bg-gray-900 px-2.5 py-1 rounded-full border border-gray-800 self-start sm:self-auto shrink-0">
+                    <span className="text-[11px] sm:text-xs font-mono text-gray-400 bg-gray-900 px-2.5 py-1 rounded-md border border-gray-800 self-start sm:self-auto shrink-0">
                       {exp.period}
                     </span>
                   </div>
@@ -538,7 +538,7 @@ export default function PortfolioView() {
 
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 sm:gap-4">
               {p.certifications.map((cert, cIdx) => (
-                <div key={cIdx} className={`p-3.5 sm:p-4 rounded-xl sm:rounded-2xl border ${theme.cardClass} space-y-1`}>
+                <div key={cIdx} className={`p-3.5 sm:p-4 rounded-xl border ${theme.cardClass} space-y-1`}>
                   <p className="font-bold text-sm text-white break-words">{cert.name}</p>
                   <p className="text-xs text-gray-400 break-words">{cert.issuer} • {cert.year}</p>
                 </div>
@@ -548,9 +548,9 @@ export default function PortfolioView() {
         )}
 
         {/* --- BOTTOM CTA: ATS RESUME SCANNER & PORTFOLIO CREATOR --- */}
-        <section className="bg-gradient-to-r from-lime-950/40 via-gray-900 to-lime-950/40 border border-lime-500/30 rounded-2xl sm:rounded-3xl p-6 sm:p-12 text-center space-y-6 shadow-2xl">
+        <section className="bg-gradient-to-r from-lime-950/40 via-gray-900 to-lime-950/40 border border-lime-500/30 rounded-2xl p-6 sm:p-12 text-center space-y-6 shadow-2xl">
           <div className="max-w-xl mx-auto space-y-3">
-            <div className="w-12 h-12 bg-lime-500 text-gray-950 rounded-2xl flex items-center justify-center mx-auto shadow-lg shadow-lime-500/30">
+            <div className="w-12 h-12 bg-lime-500 text-gray-950 rounded-xl flex items-center justify-center mx-auto shadow-lg shadow-lime-500/30">
               <ScanLine className="w-6 h-6" />
             </div>
             <h2 className="text-xl sm:text-3xl font-black text-white break-words">

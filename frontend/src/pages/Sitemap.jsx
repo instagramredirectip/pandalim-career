@@ -59,7 +59,7 @@ export default function Sitemap() {
           <ArrowLeft className="w-4 h-4" /> Back to Home
         </Link>
         
-        <div className="bg-white rounded-3xl shadow-sm border border-gray-200 p-8 md:p-12 mb-12">
+        <div className="bg-white rounded-2xl shadow-sm border border-gray-200 p-8 md:p-12 mb-12">
           
           <div className="flex items-center gap-4 mb-10 pb-8 border-b border-gray-100">
             <div className="w-12 h-12 bg-lime-100 text-lime-600 rounded-xl flex items-center justify-center">
@@ -73,7 +73,7 @@ export default function Sitemap() {
 
           {/* Section 1: Core Pages & Legal */}
           <div className="grid md:grid-cols-2 gap-8 mb-12">
-            <div className="bg-gray-50 p-6 rounded-2xl border border-gray-200">
+            <div className="bg-gray-50 p-6 rounded-xl border border-gray-200">
               <h2 className="text-lg font-bold text-gray-900 mb-4 flex items-center gap-2">
                 <Sparkles className="w-5 h-5 text-lime-600" /> Core Pages & App
               </h2>
@@ -89,7 +89,7 @@ export default function Sitemap() {
               </ul>
             </div>
 
-            <div className="bg-gray-50 p-6 rounded-2xl border border-gray-200">
+            <div className="bg-gray-50 p-6 rounded-xl border border-gray-200">
               <h2 className="text-lg font-bold text-gray-900 mb-4 flex items-center gap-2">
                 <ShieldCheck className="w-5 h-5 text-lime-600" /> Legal, Policy & Support
               </h2>
@@ -121,7 +121,7 @@ export default function Sitemap() {
                 <Link
                   key={idx}
                   to={tool.path}
-                  className="p-5 bg-lime-50/50 hover:bg-lime-50 rounded-2xl border border-lime-200 hover:border-lime-400 transition-all block group shadow-sm"
+                  className="p-5 bg-lime-50/50 hover:bg-lime-50 rounded-xl border border-lime-200 hover:border-lime-400 transition-all block group shadow-sm"
                 >
                   <p className="font-bold text-gray-900 text-sm group-hover:text-lime-700 flex items-center justify-between">
                     <span>{tool.name}</span>
@@ -211,7 +211,7 @@ export default function Sitemap() {
             </h2>
             <div className="space-y-8">
               {COMPANIES.map(company => (
-                <div key={company.id} className="bg-gray-50 p-6 rounded-2xl border border-gray-200">
+                <div key={company.id} className="bg-gray-50 p-6 rounded-xl border border-gray-200">
                   <h3 className="font-bold text-gray-900 text-base mb-3 flex items-center gap-2">
                     <Building2 className="w-4 h-4 text-lime-600" /> {company.name} ATS Resume Scanners
                   </h3>

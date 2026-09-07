@@ -524,7 +524,7 @@ export default function PortfolioBuilder() {
             </Link>
             <span className="text-gray-600 hidden sm:inline">/</span>
             <div className="flex items-center gap-2">
-              <span className="text-xs font-bold uppercase tracking-wider text-lime-400 bg-lime-950/80 border border-lime-500/30 px-2 py-0.5 rounded-full">
+              <span className="text-xs font-bold uppercase tracking-wider text-lime-400 bg-lime-950/80 border border-lime-500/30 px-2 py-0.5 rounded-md">
                 Portfolio Studio
               </span>
               {statusMessage && (
@@ -712,7 +712,7 @@ export default function PortfolioBuilder() {
           </div>
 
           {/* Form Container */}
-          <div className="bg-gray-900 rounded-3xl p-5 sm:p-6 border border-gray-800 overflow-y-auto max-h-[calc(100vh-280px)] space-y-6">
+          <div className="bg-gray-900 rounded-2xl p-5 sm:p-6 border border-gray-800 overflow-y-auto max-h-[calc(100vh-280px)] space-y-6">
             
             {/* ----------------- TAB 1: THEME & PALETTE ----------------- */}
             {activeTab === 'theme' && (
@@ -724,13 +724,13 @@ export default function PortfolioBuilder() {
                       <div
                         key={theme.id}
                         onClick={() => handleInputChange('theme', theme.id)}
-                        className={`p-3.5 rounded-2xl border cursor-pointer transition-all ${portfolioData.theme === theme.id ? 'border-lime-400 bg-gray-850 shadow-md ring-1 ring-lime-400' : 'border-gray-800 bg-gray-950/60 hover:border-gray-700'}`}
+                        className={`p-3.5 rounded-xl border cursor-pointer transition-all ${portfolioData.theme === theme.id ? 'border-lime-400 bg-gray-850 shadow-md ring-1 ring-lime-400' : 'border-gray-800 bg-gray-950/60 hover:border-gray-700'}`}
                       >
                         <div className="flex items-center justify-between mb-1">
                           <span className="font-bold text-sm text-white flex items-center gap-2">
                             {theme.name}
                           </span>
-                          <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-gray-800 text-lime-400 border border-gray-700">
+                          <span className="text-[10px] font-bold px-2 py-0.5 rounded-md bg-gray-800 text-lime-400 border border-gray-700">
                             {theme.badge}
                           </span>
                         </div>
@@ -760,17 +760,17 @@ export default function PortfolioBuilder() {
                   <div className="flex items-center justify-between">
                     <label className="text-sm font-bold text-gray-200 block">Your Vanity URL Slug</label>
                     {slugStatus.state === 'available' && (
-                      <span className="text-[11px] font-bold text-emerald-400 bg-emerald-950/60 border border-emerald-500/30 px-2 py-0.5 rounded-full flex items-center gap-1">
+                      <span className="text-[11px] font-bold text-emerald-400 bg-emerald-950/60 border border-emerald-500/30 px-2 py-0.5 rounded-md flex items-center gap-1">
                         <CheckCircle2 className="w-3 h-3" /> Available
                       </span>
                     )}
                     {slugStatus.state === 'taken' && (
-                      <span className="text-[11px] font-bold text-red-400 bg-red-950/60 border border-red-500/30 px-2 py-0.5 rounded-full flex items-center gap-1">
+                      <span className="text-[11px] font-bold text-red-400 bg-red-950/60 border border-red-500/30 px-2 py-0.5 rounded-md flex items-center gap-1">
                         <AlertCircle className="w-3 h-3" /> Already Taken
                       </span>
                     )}
                     {slugStatus.state === 'reserved' && (
-                      <span className="text-[11px] font-bold text-amber-400 bg-amber-950/60 border border-amber-500/30 px-2 py-0.5 rounded-full flex items-center gap-1">
+                      <span className="text-[11px] font-bold text-amber-400 bg-amber-950/60 border border-amber-500/30 px-2 py-0.5 rounded-md flex items-center gap-1">
                         <AlertCircle className="w-3 h-3" /> Reserved
                       </span>
                     )}
@@ -1314,17 +1314,17 @@ export default function PortfolioBuilder() {
           </div>
 
           {/* Interactive Frame Wrapper */}
-          <div className={`w-full bg-gray-900 border border-gray-800 rounded-3xl p-2 sm:p-4 shadow-2xl transition-all ${previewMode === 'mobile' ? 'max-w-sm' : 'max-w-full'}`}>
+          <div className={`w-full bg-gray-900 border border-gray-800 rounded-2xl p-2 sm:p-4 shadow-2xl transition-all ${previewMode === 'mobile' ? 'max-w-sm' : 'max-w-full'}`}>
             
             {/* Live Portfolio Card Mockup Rendering */}
-            <div className={`w-full rounded-2xl overflow-hidden border border-gray-800 transition-all ${selectedTheme.bgClass} max-h-[calc(100vh-280px)] overflow-y-auto p-4 sm:p-8 space-y-8`}>
+            <div className={`w-full rounded-xl overflow-hidden border border-gray-800 transition-all ${selectedTheme.bgClass} max-h-[calc(100vh-280px)] overflow-y-auto p-4 sm:p-8 space-y-8`}>
               
               {/* Profile Top Bar */}
               <div className="flex flex-col sm:flex-row items-center gap-5 pb-6 border-b border-gray-800/60">
                 <img
                   src={portfolioData.avatarUrl || PRESET_AVATARS[0].url}
                   alt={portfolioData.fullName}
-                  className="w-20 h-20 sm:w-24 sm:h-24 rounded-2xl object-cover border-2 shadow-xl shrink-0"
+                  className="w-20 h-20 sm:w-24 sm:h-24 rounded-xl object-cover border-2 shadow-xl shrink-0"
                   style={{ borderColor: selectedAccent.hex }}
                 />
                 <div className="text-center sm:text-left flex-1 space-y-1">
@@ -1333,7 +1333,7 @@ export default function PortfolioBuilder() {
                       {portfolioData.fullName || 'Alex Vance'}
                     </h2>
                     {portfolioData.availabilityStatus && (
-                      <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-emerald-950/80 text-emerald-400 border border-emerald-500/30">
+                      <span className="text-[10px] font-bold px-2 py-0.5 rounded-md bg-emerald-950/80 text-emerald-400 border border-emerald-500/30">
                         {portfolioData.availabilityStatus}
                       </span>
                     )}
@@ -1395,11 +1395,11 @@ export default function PortfolioBuilder() {
                 </h4>
                 <div className="space-y-3">
                   {(portfolioData.projects || []).slice(0, 3).map((proj, pIdx) => (
-                    <div key={pIdx} className={`p-4 rounded-2xl border ${selectedTheme.cardClass} space-y-2`}>
+                    <div key={pIdx} className={`p-4 rounded-xl border ${selectedTheme.cardClass} space-y-2`}>
                       <div className="flex justify-between items-start">
                         <h5 className="font-bold text-sm text-white">{proj.title}</h5>
                         {proj.metric && (
-                          <span className="text-[10px] font-bold text-lime-400 bg-lime-950/60 px-2 py-0.5 rounded-full border border-lime-500/20">
+                          <span className="text-[10px] font-bold text-lime-400 bg-lime-950/60 px-2 py-0.5 rounded-md border border-lime-500/20">
                             {proj.metric}
                           </span>
                         )}
@@ -1460,10 +1460,10 @@ export default function PortfolioBuilder() {
       {/* ================= PUBLISH & SHARE MODAL ================= */}
       {publishModalOpen && (
         <div className="fixed inset-0 z-50 bg-black/80 backdrop-blur-sm flex items-center justify-center p-4">
-          <div className="bg-gray-900 border border-gray-800 rounded-3xl p-6 sm:p-8 max-w-lg w-full space-y-6 text-white shadow-2xl relative animate-in fade-in zoom-in-95">
+          <div className="bg-gray-900 border border-gray-800 rounded-2xl p-6 sm:p-8 max-w-lg w-full space-y-6 text-white shadow-2xl relative animate-in fade-in zoom-in-95">
             
             <div className="text-center space-y-2">
-              <div className="w-12 h-12 bg-lime-500/20 text-lime-400 rounded-2xl flex items-center justify-center mx-auto mb-3 border border-lime-500/30">
+              <div className="w-12 h-12 bg-lime-500/20 text-lime-400 rounded-xl flex items-center justify-center mx-auto mb-3 border border-lime-500/30">
                 <CheckCircle2 className="w-7 h-7" />
               </div>
               <h3 className="text-2xl font-black tracking-tight">Your Portfolio is Live!</h3>

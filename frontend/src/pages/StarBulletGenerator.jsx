@@ -201,7 +201,7 @@ export default function StarBulletGenerator() {
       {/* --- HERO HEADER --- */}
       <header className="bg-white py-14 sm:py-16 border-b border-gray-200 text-center">
         <div className="max-w-4xl mx-auto px-4">
-          <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-blue-100 text-blue-800 font-bold text-xs uppercase tracking-wider mb-5">
+          <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-md bg-blue-100 border border-blue-300 text-blue-800 font-bold text-xs uppercase tracking-wider mb-5">
             <Award className="w-3.5 h-3.5" />
             <span>Google X-Y-Z Formula Bullet Rewriter</span>
           </div>
@@ -225,7 +225,7 @@ export default function StarBulletGenerator() {
           
           {/* LEFT: Inputs */}
           <div className="lg:col-span-6 space-y-6">
-            <div className="bg-white rounded-3xl border border-gray-200 shadow-sm p-6 sm:p-8 space-y-5">
+            <div className="bg-white rounded-2xl border border-gray-200 shadow-sm p-6 sm:p-8 space-y-5">
               
               <div className="flex items-center justify-between pb-2 border-b border-gray-100">
                 <h2 className="text-lg font-bold text-gray-900 flex items-center gap-2">
@@ -255,7 +255,7 @@ export default function StarBulletGenerator() {
                       key={i}
                       type="button"
                       onClick={() => loadScenario(sc)}
-                      className="px-3 py-1.5 bg-gray-50 hover:bg-blue-50 hover:text-blue-800 hover:border-blue-300 text-gray-700 text-xs font-semibold rounded-xl border border-gray-200 transition-all text-left"
+                      className="px-3 py-1.5 bg-gray-50 hover:bg-blue-50 hover:text-blue-800 hover:border-blue-300 text-gray-700 text-xs font-semibold rounded-lg border border-gray-200 transition-all text-left"
                     >
                       + {sc.role}
                     </button>
@@ -335,7 +335,7 @@ export default function StarBulletGenerator() {
 
           {/* RIGHT: Generated STAR Bullets */}
           <div className="lg:col-span-6 space-y-6">
-            <div className="bg-white rounded-3xl border border-gray-200 shadow-sm p-6 sm:p-8 space-y-6">
+            <div className="bg-white rounded-2xl border border-gray-200 shadow-sm p-6 sm:p-8 space-y-6">
               
               <div className="flex items-center justify-between pb-3 border-b border-gray-100">
                 <div>
@@ -352,10 +352,10 @@ export default function StarBulletGenerator() {
                 {displayedBullets.map((bullet, idx) => (
                   <div 
                     key={idx}
-                    className="p-5 rounded-2xl bg-gray-50 border border-gray-200 hover:border-blue-300 hover:bg-blue-50/40 transition-all space-y-3 group"
+                    className="p-5 rounded-xl bg-gray-50 border border-gray-200 hover:border-blue-300 hover:bg-blue-50/40 transition-all space-y-3 group"
                   >
                     <div className="flex items-center justify-between">
-                      <span className="text-[10px] font-extrabold uppercase tracking-wider px-2.5 py-0.5 rounded-full bg-blue-100 text-blue-800">
+                      <span className="text-[10px] font-extrabold uppercase tracking-wider px-2.5 py-0.5 rounded-md bg-blue-100 text-blue-800">
                         STAR Option #{idx + 1}
                       </span>
                       <button
@@ -384,7 +384,7 @@ export default function StarBulletGenerator() {
               <div className="pt-4 border-t border-gray-100 space-y-3">
                 <Link
                   to="/dashboard"
-                  className="w-full py-4 bg-lime-500 hover:bg-lime-600 text-white rounded-2xl font-black text-sm sm:text-base flex items-center justify-center gap-2 shadow-lg shadow-lime-500/25 transition-all hover:-translate-y-0.5"
+                  className="w-full py-3.5 bg-lime-500 hover:bg-lime-600 text-white rounded-xl font-black text-sm sm:text-base flex items-center justify-center gap-2 shadow-lg shadow-lime-500/25 transition-all hover:-translate-y-0.5"
                 >
                   <ScanLine className="w-5 h-5" />
                   <span>Test Your Complete Resume Score Free</span>
@@ -412,7 +412,7 @@ export default function StarBulletGenerator() {
             </p>
           </div>
 
-          <div className="bg-gradient-to-r from-blue-50 to-lime-50 p-8 rounded-3xl border border-blue-200 text-gray-800 space-y-4">
+          <div className="bg-gradient-to-r from-blue-50 to-lime-50 p-8 rounded-2xl border border-blue-200 text-gray-800 space-y-4">
             <p className="text-lg font-bold text-gray-900 text-center">
               "Accomplished <span className="text-blue-700">[X]</span> as measured by <span className="text-purple-700">[Y]</span>, by doing <span className="text-emerald-700">[Z]</span>"
             </p>
@@ -448,7 +448,7 @@ export default function StarBulletGenerator() {
 
           <div className="space-y-4">
             {faqs.map((faq, i) => (
-              <div key={i} className="bg-white rounded-2xl p-6 border border-gray-200 shadow-sm">
+              <div key={i} className="bg-white rounded-xl p-6 border border-gray-200 shadow-sm">
                 <h4 className="font-bold text-gray-900 text-base mb-2 flex items-start gap-2">
                   <HelpCircle className="w-5 h-5 text-lime-600 shrink-0 mt-0.5" />
                   <span>{faq.q}</span>

@@ -146,7 +146,7 @@ export default function RoastWall() {
               <div key={roast.id} className="bg-white rounded-xl shadow-sm border border-gray-200 p-6 transition hover:shadow-md">
                 <div className="flex justify-between items-start mb-4">
                   <div>
-                    <span className="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-gray-100 text-gray-800">
+                    <span className="inline-flex items-center px-2.5 py-1 rounded-md text-xs font-semibold bg-gray-100 text-gray-800 border border-gray-200">
                       Applied for: {roast.job_title || 'Unknown Role'}
                     </span>
                   </div>
