@@ -1,6 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import SEOHead from '../components/SEOHead';
+import Navbar from '../components/Navbar';
+import Footer from '../components/Footer';
+import MobileDrawer from '../components/MobileDrawer';
 
 // --- SUB-COMPONENT: COMMENT SECTION ---
 const CommentSection = ({ reportId }) => {
@@ -85,6 +88,7 @@ const CommentSection = ({ reportId }) => {
 export default function RoastWall() {
   const [roasts, setRoasts] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   useEffect(() => {
     fetch('https://pandalime-backend.onrender.com/api/roasts')
@@ -100,34 +104,23 @@ export default function RoastWall() {
   }, []);
 
   const shareOnTwitter = (score, jobTitle) => {
-    const text = `PandaLime's AI just reviewed a resume with a ${score}% for a ${jobTitle} role 💥. Scan yours before you apply: https://pandalime.com/wall`;
+    const text = `PandaLime's AI just reviewed a resume with a ${score}% for a ${jobTitle} role 💥. Scan yours before you apply: https://pandalime.com/roast-wall`;
     window.open(`https://twitter.com/intent/tweet?text=${encodeURIComponent(text)}`, '_blank');
   };
 
   return (
-    <div className="min-h-screen bg-gray-50 text-gray-900 font-sans">
+    <div className="min-h-screen bg-gray-50 text-gray-900 font-sans flex flex-col justify-between">
       <SEOHead 
         title="Community Resume Roast Wall & AI ATS Critiques | PandaLime"
         description="Explore real, anonymous AI resume critiques, ATS match scores, and recruiter feedback. Learn from common resume mistakes to improve your application."
         canonical="/roast-wall"
       />
 
-      {/* Navigation Header */}
-      <nav className="bg-white border-b border-gray-200">
-        <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
-          <div className="flex justify-between items-center">
-            <Link to="/" className="text-gray-600 hover:text-lime-600 font-medium text-sm transition-colors">
-              ← Back to Home
-            </Link>
-            <Link to="/dashboard" className="text-lime-600 hover:text-lime-700 font-medium text-sm transition-colors">
-              Scan Resume →
-            </Link>
-          </div>
-        </div>
-      </nav>
+      <Navbar onOpenMobileMenu={() => setMobileMenuOpen(true)} />
+      <MobileDrawer isOpen={mobileMenuOpen} onClose={() => setMobileMenuOpen(false)} />
 
       {/* Main Content */}
-      <div className="py-12 px-4 sm:px-6 lg:px-8">
+      <main className="flex-1 py-12 px-4 sm:px-6 lg:px-8">
         <div className="max-w-3xl mx-auto">
         <div className="text-center mb-12">
           <h1 className="text-4xl font-extrabold text-gray-900 tracking-tight">
@@ -184,8 +177,10 @@ export default function RoastWall() {
             )}
           </div>
         )}
-      </div>
-      </div>
+        </div>
+      </main>
+
+      <Footer />
     </div>
   );
 }

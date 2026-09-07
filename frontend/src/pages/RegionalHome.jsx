@@ -19,6 +19,8 @@ import {
 import SEOHead from '../components/SEOHead';
 import LanguageSelector from '../components/LanguageSelector';
 import MobileDrawer from '../components/MobileDrawer';
+import Navbar from '../components/Navbar';
+import Footer from '../components/Footer';
 import { TRANSLATIONS, SUPPORTED_LANGUAGES } from '../data/translations';
 import { ROLES, COMPANIES, SPECIAL_NICHES } from '../data/pseoData';
 
@@ -93,51 +95,7 @@ export default function RegionalHome() {
       </style>
 
       {/* --- TOP NAVBAR --- */}
-      <nav className="bg-white/95 backdrop-blur-md border-b border-gray-200 sticky top-0 z-50">
-        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-3 sm:py-4 flex justify-between items-center gap-2">
-          <Link to={`/${lang}`} className="flex items-center gap-2 text-gray-900 font-black text-xl sm:text-2xl tracking-tight shrink-0">
-            <div className="w-8 h-8 sm:w-9 sm:h-9 bg-lime-500 rounded-xl flex items-center justify-center text-white shadow-md shadow-lime-500/20 shrink-0">
-              <Sparkles className="w-4 h-4 sm:w-5 sm:h-5" />
-            </div>
-            <span>PandaLime</span>
-          </Link>
-          <div className="flex items-center gap-2 sm:gap-3 shrink-0">
-            <LanguageSelector variant="nav" />
-            <Link 
-              to="/portfolio-builder" 
-              className="text-xs sm:text-sm font-bold text-emerald-700 hover:text-emerald-800 bg-emerald-50 hover:bg-emerald-100 border border-emerald-200 px-3 py-1.5 rounded-xl transition-all hidden md:flex items-center gap-1.5"
-            >
-              <Globe className="w-3.5 h-3.5 text-emerald-600" />
-              <span>AI Portfolio</span>
-            </Link>
-            <Link to="/tools" className="text-sm font-semibold text-gray-600 hover:text-lime-600 transition-colors hidden sm:block">
-              Free Tools
-            </Link>
-            <Link to="/roast-wall" className="text-sm font-semibold text-gray-600 hover:text-lime-600 transition-colors hidden md:block">
-              {t.viewCommunity}
-            </Link>
-            <Link 
-              to="/dashboard" 
-              className="px-3.5 py-2 sm:px-5 sm:py-2.5 bg-lime-500 hover:bg-lime-600 active:scale-95 text-white rounded-xl font-bold text-xs sm:text-sm shadow-md shadow-lime-500/20 transition-all hover:-translate-y-0.5 shrink-0 flex items-center gap-1.5 whitespace-nowrap"
-            >
-              <ScanLine className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
-              <span className="hidden sm:inline">{t.scanButton}</span>
-              <span className="sm:hidden">{t.scanButtonShort || t.scanButton}</span>
-            </Link>
-
-            {/* Mobile Hamburger Menu Trigger */}
-            <button
-              onClick={() => setMobileMenuOpen(true)}
-              className="p-2 text-gray-700 hover:text-gray-900 rounded-xl hover:bg-gray-100 transition-colors md:hidden flex items-center justify-center shrink-0 border border-gray-200"
-              aria-label="Open navigation menu"
-            >
-              <Menu className="w-5 h-5 text-gray-800" />
-            </button>
-          </div>
-        </div>
-      </nav>
-
-      {/* Slide-out Mobile Sidebar Drawer */}
+      <Navbar onOpenMobileMenu={() => setMobileMenuOpen(true)} />
       <MobileDrawer isOpen={mobileMenuOpen} onClose={() => setMobileMenuOpen(false)} />
 
       {/* --- HERO SECTION --- */}
@@ -359,54 +317,7 @@ export default function RegionalHome() {
       </section>
 
       {/* --- FOOTER --- */}
-      <footer className="bg-gray-900 text-gray-300 py-16 border-t border-gray-800">
-        <div className="max-w-6xl mx-auto px-4 grid grid-cols-1 md:grid-cols-4 gap-12">
-          
-          <div className="md:col-span-2 space-y-4">
-            <Link to={`/${lang}`} className="flex items-center gap-2 text-white text-2xl font-black tracking-tight">
-              <div className="w-8 h-8 bg-lime-400 rounded-lg flex items-center justify-center text-gray-900">
-                <Sparkles className="w-5 h-5" />
-              </div>
-              PandaLime Career
-            </Link>
-            <p className="text-gray-400 max-w-sm text-sm leading-relaxed">
-              {t.footerAbout}
-            </p>
-            <div className="pt-2">
-              <LanguageSelector variant="footer" />
-            </div>
-          </div>
-
-          <div>
-            <h4 className="text-white font-bold mb-4 uppercase tracking-wider text-sm">Legal & Policies</h4>
-            <ul className="space-y-3 text-sm">
-              <li><Link to="/privacy-policy" className="hover:text-lime-400 transition-colors flex items-center gap-2"><ShieldCheck className="w-4 h-4"/> Privacy Policy</Link></li>
-              <li><Link to="/terms" className="hover:text-lime-400 transition-colors flex items-center gap-2"><Briefcase className="w-4 h-4"/> Terms of Service</Link></li>
-              <li><Link to="/contact" className="hover:text-lime-400 transition-colors flex items-center gap-2"><Mail className="w-4 h-4"/> Contact Support</Link></li>
-            </ul>
-          </div>
-
-          <div>
-            <h4 className="text-white font-bold mb-4 uppercase tracking-wider text-sm">Languages & Tools</h4>
-            <ul className="space-y-2 text-xs text-gray-400">
-              <li><Link to="/tools" className="text-lime-400 font-bold hover:underline">Free Career Tools Suite</Link></li>
-              <li><Link to="/" className="hover:text-white">English (Global & India)</Link></li>
-              <li><Link to="/hi" className="hover:text-white">हिन्दी (Hindi)</Link></li>
-              <li><Link to="/ta" className="hover:text-white">தமிழ் (Tamil)</Link></li>
-              <li><Link to="/te" className="hover:text-white">తెలుగు (Telugu)</Link></li>
-              <li><Link to="/kn" className="hover:text-white">ಕನ್ನಡ (Kannada)</Link></li>
-              <li><Link to="/mr" className="hover:text-white">मराठी (Marathi)</Link></li>
-              <li><Link to="/bn" className="hover:text-white">বাংলা (Bengali)</Link></li>
-              <li><Link to="/sitemap" className="hover:text-white font-bold text-lime-400">Full Directory (All Scanners)</Link></li>
-            </ul>
-          </div>
-          
-        </div>
-        
-        <div className="max-w-6xl mx-auto px-4 mt-16 pt-8 border-t border-gray-800 text-center text-xs text-gray-500">
-          <p>&copy; {new Date().getFullYear()} PandaLime Career (www.pandalime.com). All rights reserved.</p>
-        </div>
-      </footer>
+      <Footer />
 
     </div>
   );

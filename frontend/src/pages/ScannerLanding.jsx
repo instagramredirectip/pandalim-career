@@ -21,12 +21,16 @@ import {
   ScanLine
 } from 'lucide-react';
 import SEOHead from '../components/SEOHead';
+import Navbar from '../components/Navbar';
+import Footer from '../components/Footer';
+import MobileDrawer from '../components/MobileDrawer';
 import { getPseoData, ROLES, COMPANIES } from '../data/pseoData';
 
 export default function ScannerLanding() {
   const { slug } = useParams();
   const pageData = getPseoData(slug);
   const [openFaq, setOpenFaq] = useState(null);
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   if (!pageData) {
     return (
@@ -130,29 +134,8 @@ export default function ScannerLanding() {
       />
 
       {/* Navigation Header */}
-      <nav className="bg-white/95 backdrop-blur-md border-b border-gray-200 sticky top-0 z-50">
-        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-3 sm:py-4 flex justify-between items-center gap-2">
-          <Link to="/" className="flex items-center gap-2 text-gray-900 font-black text-xl sm:text-2xl tracking-tight shrink-0">
-            <div className="w-8 h-8 sm:w-9 sm:h-9 bg-lime-500 rounded-xl flex items-center justify-center text-white shadow-md shadow-lime-500/20 shrink-0">
-              <Sparkles className="w-4 h-4 sm:w-5 sm:h-5" />
-            </div>
-            <span>PandaLime</span>
-          </Link>
-          <div className="flex items-center gap-2 sm:gap-4 shrink-0">
-            <Link to="/sitemap" className="text-sm font-semibold text-gray-600 hover:text-lime-600 transition-colors hidden sm:block">
-              All Scanners
-            </Link>
-            <Link 
-              to="/dashboard" 
-              className="px-3.5 py-2 sm:px-5 sm:py-2.5 bg-lime-500 hover:bg-lime-600 active:scale-95 text-white rounded-xl font-bold text-xs sm:text-sm shadow-md shadow-lime-500/20 transition-all hover:-translate-y-0.5 shrink-0 flex items-center gap-1.5 whitespace-nowrap"
-            >
-              <ScanLine className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
-              <span className="hidden sm:inline">Scan Resume Free</span>
-              <span className="sm:hidden">Scan Free</span>
-            </Link>
-          </div>
-        </div>
-      </nav>
+      <Navbar onOpenMobileMenu={() => setMobileMenuOpen(true)} />
+      <MobileDrawer isOpen={mobileMenuOpen} onClose={() => setMobileMenuOpen(false)} />
 
       {/* Breadcrumb Bar */}
       <div className="bg-gray-100 border-b border-gray-200 py-2.5">
@@ -408,25 +391,7 @@ export default function ScannerLanding() {
       </section>
 
       {/* Footer */}
-      <footer className="bg-gray-900 text-gray-300 py-12 border-t border-gray-800">
-        <div className="max-w-6xl mx-auto px-4 flex flex-col md:flex-row justify-between items-center gap-6 text-sm">
-          <div className="flex items-center gap-2">
-            <div className="w-7 h-7 bg-lime-400 rounded-lg flex items-center justify-center text-gray-900">
-              <Sparkles className="w-4 h-4" />
-            </div>
-            <span className="text-white font-bold">PandaLime Career</span>
-          </div>
-          <div className="flex flex-wrap gap-6 text-xs text-gray-400">
-            <Link to="/" className="hover:text-white transition-colors">Home</Link>
-            <Link to="/dashboard" className="hover:text-white transition-colors">Resume Scanner</Link>
-            <Link to="/sitemap" className="hover:text-white transition-colors">All 50+ ATS Scanners</Link>
-            <Link to="/privacy-policy" className="hover:text-white transition-colors">Privacy Policy</Link>
-            <Link to="/terms" className="hover:text-white transition-colors">Terms of Service</Link>
-            <Link to="/contact" className="hover:text-white transition-colors">Contact</Link>
-          </div>
-          <p className="text-xs text-gray-500">&copy; {new Date().getFullYear()} PandaLime. All rights reserved.</p>
-        </div>
-      </footer>
+      <Footer />
 
     </div>
   );

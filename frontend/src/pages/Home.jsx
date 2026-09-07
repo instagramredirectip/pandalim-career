@@ -32,7 +32,10 @@ import {
 import SEOHead from '../components/SEOHead';
 import LanguageSelector from '../components/LanguageSelector';
 import MobileDrawer from '../components/MobileDrawer';
+import Navbar from '../components/Navbar';
+import Footer from '../components/Footer';
 import { ROLES, COMPANIES, SPECIAL_NICHES } from '../data/pseoData';
+import { BLOG_POSTS } from '../data/blogPosts';
 import { prefetchRoute } from '../utils/prefetch';
 
 export default function Home() {
@@ -190,67 +193,8 @@ export default function Home() {
         `}
       </style>
 
-      {/* --- TOP NAVBAR --- */}
-      <nav className="bg-white/95 backdrop-blur-md border-b border-gray-200 sticky top-0 z-50">
-        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-3 sm:py-4 flex justify-between items-center gap-2">
-          <Link to="/" className="flex items-center gap-2 text-gray-900 font-black text-xl sm:text-2xl tracking-tight shrink-0">
-            <div className="w-8 h-8 sm:w-9 sm:h-9 bg-lime-500 rounded-lg flex items-center justify-center text-gray-950 shadow-md shadow-lime-500/20 shrink-0">
-              <Sparkles className="w-4 h-4 sm:w-5 sm:h-5" />
-            </div>
-            <span>PandaLime</span>
-          </Link>
-          <div className="flex items-center gap-2 sm:gap-3 shrink-0">
-            <LanguageSelector variant="nav" />
-            <Link 
-              to="/portfolio-builder" 
-              onMouseEnter={() => prefetchRoute('/portfolio-builder')}
-              onTouchStart={() => prefetchRoute('/portfolio-builder')}
-              className="text-xs sm:text-sm font-bold text-emerald-700 hover:text-emerald-800 bg-emerald-50 hover:bg-emerald-100 border border-emerald-200 px-3 py-1.5 rounded-lg transition-all hidden md:flex items-center gap-1.5"
-            >
-              <Globe className="w-3.5 h-3.5 text-emerald-600" />
-              <span>AI Portfolio</span>
-              <span className="text-[9px] bg-emerald-600 text-white font-extrabold px-1.5 py-0.5 rounded uppercase">New</span>
-            </Link>
-            <Link 
-              to="/tools" 
-              onMouseEnter={() => prefetchRoute('/tools')}
-              onTouchStart={() => prefetchRoute('/tools')}
-              className="text-sm font-semibold text-gray-600 hover:text-lime-600 transition-colors hidden sm:block"
-            >
-              Free Tools
-            </Link>
-            <Link 
-              to="/roast-wall" 
-              onMouseEnter={() => prefetchRoute('/roast-wall')}
-              onTouchStart={() => prefetchRoute('/roast-wall')}
-              className="text-sm font-semibold text-gray-600 hover:text-lime-600 transition-colors hidden lg:block"
-            >
-              Community Wall
-            </Link>
-            <Link 
-              to="/dashboard" 
-              onMouseEnter={() => prefetchRoute('/dashboard')}
-              onTouchStart={() => prefetchRoute('/dashboard')}
-              className="px-3.5 py-2 sm:px-5 sm:py-2.5 bg-lime-500 hover:bg-lime-600 active:scale-95 text-gray-950 rounded-lg font-extrabold text-xs sm:text-sm shadow-md shadow-lime-500/20 transition-all hover:-translate-y-0.5 shrink-0 flex items-center gap-1.5 whitespace-nowrap cursor-pointer"
-            >
-              <ScanLine className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
-              <span className="hidden sm:inline">Scan Resume Free</span>
-              <span className="sm:hidden">Scan Free</span>
-            </Link>
-
-            {/* Mobile Hamburger Menu Trigger */}
-            <button
-              onClick={() => setMobileMenuOpen(true)}
-              className="p-2 text-gray-700 hover:text-gray-900 rounded-lg hover:bg-gray-100 transition-colors md:hidden flex items-center justify-center shrink-0 border border-gray-200"
-              aria-label="Open navigation menu"
-            >
-              <Menu className="w-5 h-5 text-gray-800" />
-            </button>
-          </div>
-        </div>
-      </nav>
-
-      {/* Slide-out Mobile Sidebar Drawer */}
+      {/* --- UNIFIED TOP NAVBAR --- */}
+      <Navbar onOpenMobileMenu={() => setMobileMenuOpen(true)} />
       <MobileDrawer isOpen={mobileMenuOpen} onClose={() => setMobileMenuOpen(false)} />
 
       {/* --- HERO SECTION --- */}
@@ -960,94 +904,65 @@ export default function Home() {
         </div>
       </section>
 
-      {/* --- FOOTER & SEO LINKS --- */}
-      <footer className="bg-gray-900 text-gray-300 py-16 border-t border-gray-800">
-        <div className="max-w-6xl mx-auto px-4 grid grid-cols-1 md:grid-cols-4 gap-12">
-          
-          {/* Brand */}
-          <div className="md:col-span-2">
-            <Link to="/" className="flex items-center gap-2 text-white text-2xl font-black tracking-tight mb-4">
-              <div className="w-8 h-8 bg-lime-400 rounded-lg flex items-center justify-center text-gray-900">
-                <Sparkles className="w-5 h-5" />
+      {/* --- FEATURED CAREER GUIDES & ATS RESEARCH --- */}
+      <section className="py-16 bg-gray-50 border-t border-gray-200">
+        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="flex flex-col sm:flex-row items-start sm:items-end justify-between mb-10 gap-4">
+            <div>
+              <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-md bg-lime-100 text-lime-800 text-xs font-bold uppercase tracking-wider mb-2">
+                <BookOpen className="w-3.5 h-3.5" /> Editorial Research Lab
               </div>
-              PandaLime Career
-            </Link>
-            <p className="text-gray-400 mb-6 max-w-sm text-sm leading-relaxed">
-              Helping job seekers across India and worldwide scan resumes for free, uncover critical ATS keyword gaps, and land high-paying careers through artificial intelligence.
-            </p>
-            <div className="flex items-center gap-2 text-lime-400 text-sm mb-4">
-              <Mail className="w-4 h-4" />
-              <a href="mailto:microapkdeveolper@gmail.com" className="hover:text-white transition-colors">
-                microapkdeveolper@gmail.com
-              </a>
+              <h2 className="text-2xl sm:text-3xl font-extrabold text-gray-950">
+                Latest ATS Optimization & Career Guides
+              </h2>
+              <p className="text-sm text-gray-600 mt-1">
+                Data-backed blueprints, parser reverse-engineering, and hiring manager insights.
+              </p>
             </div>
-
-            <a 
-              href="https://www.trustpilot.com/review/pandalime.com" 
-              target="_blank" 
-              rel="noopener noreferrer"
-              className="inline-flex items-center gap-2 px-3 py-1.5 rounded-xl bg-gray-800/80 border border-gray-700/80 hover:border-[#00b67a]/50 text-xs text-gray-300 hover:text-white transition-all mb-6 group"
+            <Link
+              to="/blog"
+              onMouseEnter={() => prefetchRoute('/blog')}
+              className="px-4 py-2 bg-gray-900 hover:bg-black text-white text-xs font-bold rounded-xl flex items-center gap-1.5 transition-colors shrink-0"
             >
-              <span className="text-[#00b67a] font-bold">★ Trustpilot</span>
-              <span className="text-gray-500">|</span>
-              <span>Rate us on Trustpilot</span>
-              <span className="text-[#00b67a] group-hover:translate-x-0.5 transition-transform">→</span>
-            </a>
-
-            {/* Language Selector in Footer */}
-            <div className="pt-4 border-t border-gray-800 max-w-sm">
-              <p className="text-xs font-semibold text-gray-400 uppercase tracking-wider mb-2">Language & Region</p>
-              <LanguageSelector variant="footer" />
-            </div>
+              <span>Explore All 12 Guides</span>
+              <ArrowRight className="w-3.5 h-3.5" />
+            </Link>
           </div>
 
-          {/* Legal & Policies */}
-          <div>
-            <h4 className="text-white font-bold mb-4 uppercase tracking-wider text-sm">Legal & Policies</h4>
-            <ul className="space-y-3 text-sm">
-              <li><Link to="/privacy-policy" className="hover:text-lime-400 transition-colors flex items-center gap-2"><ShieldCheck className="w-4 h-4"/> Privacy Policy</Link></li>
-              <li><Link to="/terms" className="hover:text-lime-400 transition-colors flex items-center gap-2"><FileText className="w-4 h-4"/> Terms & Conditions</Link></li>
-              <li><Link to="/contact" className="hover:text-lime-400 transition-colors flex items-center gap-2"><Mail className="w-4 h-4"/> Contact Support</Link></li>
-            </ul>
-
-            <h4 className="text-white font-bold mt-6 mb-3 uppercase tracking-wider text-sm">Regional Indian Portals</h4>
-            <div className="flex flex-wrap gap-2 text-xs">
-              <Link to="/hi" className="text-gray-400 hover:text-lime-400 transition-colors">हिन्दी</Link>
-              <span className="text-gray-600">•</span>
-              <Link to="/ta" className="text-gray-400 hover:text-lime-400 transition-colors">தமிழ்</Link>
-              <span className="text-gray-600">•</span>
-              <Link to="/te" className="text-gray-400 hover:text-lime-400 transition-colors">తెలుగు</Link>
-              <span className="text-gray-600">•</span>
-              <Link to="/kn" className="text-gray-400 hover:text-lime-400 transition-colors">ಕನ್ನಡ</Link>
-              <span className="text-gray-600">•</span>
-              <Link to="/mr" className="text-gray-400 hover:text-lime-400 transition-colors">मराठी</Link>
-              <span className="text-gray-600">•</span>
-              <Link to="/bn" className="text-gray-400 hover:text-lime-400 transition-colors">বাংলা</Link>
-            </div>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            {BLOG_POSTS.slice(0, 3).map(post => (
+              <Link
+                key={post.slug}
+                to={`/blog/${post.slug}`}
+                onMouseEnter={() => prefetchRoute(`/blog/${post.slug}`)}
+                className="bg-white p-6 rounded-2xl border border-gray-200 hover:border-lime-500 hover:shadow-lg transition-all group flex flex-col justify-between"
+              >
+                <div className="space-y-3">
+                  <div className="flex items-center justify-between text-xs">
+                    <span className="px-2.5 py-0.5 rounded bg-lime-50 text-lime-800 font-bold border border-lime-200/60 text-[11px]">
+                      {post.category}
+                    </span>
+                    <span className="text-gray-400 text-[11px]">{post.readTime}</span>
+                  </div>
+                  <h3 className="font-bold text-base text-gray-950 group-hover:text-lime-700 transition-colors line-clamp-2">
+                    {post.title}
+                  </h3>
+                  <p className="text-xs text-gray-600 line-clamp-3 leading-relaxed">
+                    {post.excerpt}
+                  </p>
+                </div>
+                <div className="pt-4 mt-4 border-t border-gray-100 flex items-center justify-between text-xs font-bold text-lime-700">
+                  <span>Read Blueprint</span>
+                  <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-1 transition-transform" />
+                </div>
+              </Link>
+            ))}
           </div>
-
-          {/* Navigation */}
-          <div>
-            <h4 className="text-white font-bold mb-4 uppercase tracking-wider text-sm">Directory & Tools</h4>
-            <ul className="space-y-2.5 text-sm">
-              <li><Link to="/" className="hover:text-lime-400 transition-colors flex items-center gap-2"><Map className="w-4 h-4"/> Home</Link></li>
-              <li><Link to="/dashboard" className="hover:text-lime-400 transition-colors flex items-center gap-2"><ScanLine className="w-4 h-4"/> Free Resume Scanner</Link></li>
-              <li><Link to="/tools" className="hover:text-lime-400 font-semibold text-lime-400 transition-colors flex items-center gap-2"><Sparkles className="w-4 h-4"/> Free Career Tools Suite</Link></li>
-              <li><Link to="/portfolio-builder" className="hover:text-lime-400 transition-colors text-xs text-emerald-400 pl-6">• AI Portfolio Studio</Link></li>
-              <li><Link to="/tools/job-description-keyword-extractor" className="hover:text-lime-400 transition-colors text-xs text-gray-400 pl-6">• JD Keyword Extractor</Link></li>
-              <li><Link to="/tools/star-bullet-generator" className="hover:text-lime-400 transition-colors text-xs text-gray-400 pl-6">• STAR Bullet Generator</Link></li>
-              <li><Link to="/tools/ats-action-verbs" className="hover:text-lime-400 transition-colors text-xs text-gray-400 pl-6">• 250+ ATS Action Verbs</Link></li>
-              <li><Link to="/roast-wall" className="hover:text-lime-400 transition-colors flex items-center gap-2"><Sparkles className="w-4 h-4"/> Community Roast Wall</Link></li>
-              <li><Link to="/sitemap" className="hover:text-lime-400 transition-colors flex items-center gap-2"><Map className="w-4 h-4"/> Full Sitemap Directory</Link></li>
-            </ul>
-          </div>
-          
         </div>
-        
-        <div className="max-w-6xl mx-auto px-4 mt-16 pt-8 border-t border-gray-800 text-center text-xs text-gray-500">
-          <p>&copy; {new Date().getFullYear()} PandaLime Career (www.pandalime.com). All rights reserved.</p>
-        </div>
-      </footer>
+      </section>
+
+      {/* --- UNIFIED SITE FOOTER --- */}
+      <Footer />
 
     </div>
   );

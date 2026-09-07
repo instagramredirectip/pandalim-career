@@ -13,7 +13,8 @@ import {
   ChevronRight, 
   ArrowRight,
   MapPin,
-  Languages
+  Languages,
+  BookOpen
 } from 'lucide-react';
 import LanguageSelector from './LanguageSelector';
 import { prefetchRoute } from '../utils/prefetch';
@@ -76,6 +77,12 @@ export default function MobileDrawer({ isOpen, onClose }) {
   ];
 
   const communityLinks = [
+    {
+      title: "Career Guides & Blog",
+      desc: "12 in-depth guides on beating ATS & interviews",
+      path: "/blog",
+      icon: <BookOpen className="w-4 h-4 text-cyan-400" />
+    },
     {
       title: "Community Roast Wall",
       desc: "Live public resume reviews and critiques",

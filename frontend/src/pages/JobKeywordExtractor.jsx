@@ -24,11 +24,15 @@ import {
 } from 'lucide-react';
 import SEOHead from '../components/SEOHead';
 import LanguageSelector from '../components/LanguageSelector';
+import Navbar from '../components/Navbar';
+import Footer from '../components/Footer';
+import MobileDrawer from '../components/MobileDrawer';
 import { SKILL_CATEGORIES, SAMPLE_JOB_DESCRIPTIONS } from '../data/toolsData';
 
 export default function JobKeywordExtractor() {
   const [jobText, setJobText] = useState('');
   const [copied, setCopied] = useState(false);
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const navigate = useNavigate();
 
   // Instant client-side NLP extraction matching against comprehensive technical skill dictionary
@@ -152,30 +156,8 @@ export default function JobKeywordExtractor() {
       />
 
       {/* --- TOP NAVBAR --- */}
-      <nav className="bg-white/95 backdrop-blur-md border-b border-gray-200 sticky top-0 z-50">
-        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-3 sm:py-4 flex justify-between items-center gap-2">
-          <Link to="/" className="flex items-center gap-2 text-gray-900 font-black text-xl sm:text-2xl tracking-tight shrink-0">
-            <div className="w-8 h-8 sm:w-9 sm:h-9 bg-lime-500 rounded-xl flex items-center justify-center text-white shadow-md shadow-lime-500/20 shrink-0">
-              <Sparkles className="w-4 h-4 sm:w-5 sm:h-5" />
-            </div>
-            <span>PandaLime</span>
-          </Link>
-          <div className="flex items-center gap-2 sm:gap-3 shrink-0">
-            <LanguageSelector variant="nav" />
-            <Link to="/tools" className="text-sm font-semibold text-gray-600 hover:text-lime-600 transition-colors hidden sm:block">
-              All Tools
-            </Link>
-            <Link 
-              to="/dashboard" 
-              className="px-3.5 py-2 sm:px-5 sm:py-2.5 bg-lime-500 hover:bg-lime-600 active:scale-95 text-white rounded-xl font-bold text-xs sm:text-sm shadow-md shadow-lime-500/20 transition-all hover:-translate-y-0.5 shrink-0 flex items-center gap-1.5 whitespace-nowrap"
-            >
-              <ScanLine className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
-              <span className="hidden sm:inline">Scan Resume Free</span>
-              <span className="sm:hidden">Scan Free</span>
-            </Link>
-          </div>
-        </div>
-      </nav>
+      <Navbar onOpenMobileMenu={() => setMobileMenuOpen(true)} />
+      <MobileDrawer isOpen={mobileMenuOpen} onClose={() => setMobileMenuOpen(false)} />
 
       {/* --- BREADCRUMBS --- */}
       <div className="bg-gray-100 border-b border-gray-200 py-2.5">
@@ -415,20 +397,7 @@ export default function JobKeywordExtractor() {
       </section>
 
       {/* --- FOOTER --- */}
-      <footer className="bg-gray-900 text-gray-400 py-12 border-t border-gray-800 text-xs text-center">
-        <div className="max-w-6xl mx-auto px-4 space-y-4">
-          <div className="flex flex-wrap justify-center gap-6 text-sm text-gray-300">
-            <Link to="/" className="hover:text-white transition-colors">Home</Link>
-            <Link to="/tools" className="hover:text-white transition-colors">All Tools</Link>
-            <Link to="/tools/job-description-keyword-extractor" className="hover:text-white transition-colors text-lime-400 font-bold">JD Keyword Extractor</Link>
-            <Link to="/tools/star-bullet-generator" className="hover:text-white transition-colors">STAR Bullet Generator</Link>
-            <Link to="/tools/ats-action-verbs" className="hover:text-white transition-colors">250+ Action Verbs</Link>
-            <Link to="/dashboard" className="hover:text-white transition-colors">Resume Scanner</Link>
-            <Link to="/sitemap" className="hover:text-white transition-colors">Sitemap</Link>
-          </div>
-          <p>&copy; {new Date().getFullYear()} PandaLime Career (www.pandalime.com). All rights reserved.</p>
-        </div>
-      </footer>
+      <Footer />
 
     </div>
   );

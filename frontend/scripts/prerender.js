@@ -5,6 +5,7 @@ import { fileURLToPath } from 'url';
 import { ROLES, COMPANIES, SPECIAL_NICHES, getAllPseoSlugs, getPseoData } from '../src/data/pseoData.js';
 import { SUPPORTED_LANGUAGES, TRANSLATIONS } from '../src/data/translations.js';
 import { ROLE_PRESETS } from '../src/data/portfolioTemplates.js';
+import { BLOG_POSTS } from '../src/data/blogPosts.js';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -682,6 +683,104 @@ ROLE_PRESETS.forEach(preset => {
   writeStaticFile(`/portfolio/${preset.slug}`, samplePortfolioHtml);
   addSitemapUrl(`/p/${preset.slug}`, '0.8', 'weekly');
   console.log(`✓ Pre-rendered Showcase Portfolio: /p/${preset.slug} (${preset.fullName})`);
+});
+
+// 4g. Pre-render Blog Index & All 12 Knowledge Base Articles
+const blogIndexHtml = generatePageHtml({
+  title: 'Career Guides, ATS Resume Optimization & Portfolio Blueprints | PandaLime',
+  description: 'Comprehensive research guides on beating ATS filters, Google X-Y-Z resume bullet formulas, developer portfolios, and tech interview preparation.',
+  canonicalPath: '/blog',
+  jsonLd: [
+    {
+      "@context": "https://schema.org",
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        { "@type": "ListItem", "position": 1, "name": "Home", "item": `${BASE_URL}/` },
+        { "@type": "ListItem", "position": 2, "name": "Blog", "item": `${BASE_URL}/blog` }
+      ]
+    },
+    {
+      "@context": "https://schema.org",
+      "@type": "Blog",
+      "name": "PandaLime Career & ATS Optimization Guides",
+      "description": "Authoritative research guides and blueprints on beating Applicant Tracking Systems (ATS), Google X-Y-Z resume bullet formulas, developer portfolios, and tech interview preparation.",
+      "url": `${BASE_URL}/blog`
+    }
+  ],
+  bodyContent: `
+    <main style="max-width:1000px;margin:0 auto;padding:40px 20px;font-family:sans-serif;">
+      <nav aria-label="breadcrumb"><a href="/">Home</a> &gt; <span>Blog</span></nav>
+      <h1>PandaLime Career Guides & ATS Optimization Blueprints</h1>
+      <p>In-depth research, parser reverse-engineering, and proven frameworks to help you bypass corporate screening bots and land high-paying tech offers.</p>
+      <h2>Published Authoritative Guides</h2>
+      <ul>
+        ${BLOG_POSTS.map(p => `<li><a href="/blog/${p.slug}"><strong>${escapeHtml(p.title)}</strong></a> — ${escapeHtml(p.excerpt)} (${p.readTime})</li>`).join('\n')}
+      </ul>
+    </main>
+  `
+});
+writeStaticFile('/blog', blogIndexHtml);
+addSitemapUrl('/blog', '0.9', 'weekly');
+console.log('✓ Pre-rendered: /blog');
+
+BLOG_POSTS.forEach(post => {
+  const postJsonLd = [
+    {
+      "@context": "https://schema.org",
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        { "@type": "ListItem", "position": 1, "name": "Home", "item": `${BASE_URL}/` },
+        { "@type": "ListItem", "position": 2, "name": "Blog", "item": `${BASE_URL}/blog` },
+        { "@type": "ListItem", "position": 3, "name": post.title, "item": `${BASE_URL}/blog/${post.slug}` }
+      ]
+    },
+    {
+      "@context": "https://schema.org",
+      "@type": "BlogPosting",
+      "headline": post.title,
+      "description": post.excerpt,
+      "datePublished": post.publishedDate,
+      "author": {
+        "@type": "Person",
+        "name": post.author.name
+      },
+      "publisher": {
+        "@type": "Organization",
+        "name": "PandaLime Career"
+      }
+    }
+  ];
+
+  const postHtml = generatePageHtml({
+    title: `${post.title} | PandaLime`,
+    description: post.excerpt,
+    canonicalPath: `/blog/${post.slug}`,
+    jsonLd: postJsonLd,
+    bodyContent: `
+      <main style="max-width:900px;margin:0 auto;padding:40px 20px;font-family:sans-serif;line-height:1.7;">
+        <nav aria-label="breadcrumb"><a href="/">Home</a> &gt; <a href="/blog">Blog</a> &gt; <span>${escapeHtml(post.title)}</span></nav>
+        <article>
+          <h1>${escapeHtml(post.title)}</h1>
+          <p><em>Published on ${post.publishedDate} by ${escapeHtml(post.author.name)} • ${post.readTime} • ${post.wordCount} words</em></p>
+          <p><strong>${escapeHtml(post.excerpt)}</strong></p>
+          <div>
+            ${post.content.split('\n\n').map(b => {
+              const t = b.trim();
+              if (t.startsWith('## ')) return `<h2>${escapeHtml(t.replace('## ', ''))}</h2>`;
+              if (t.startsWith('### ')) return `<h3>${escapeHtml(t.replace('### ', ''))}</h3>`;
+              if (t.startsWith('> ')) return `<blockquote>${escapeHtml(t.replace('> ', ''))}</blockquote>`;
+              return `<p>${escapeHtml(t)}</p>`;
+            }).join('\n')}
+          </div>
+          <p><a href="/dashboard">Scan Your Resume For Free on PandaLime</a></p>
+        </article>
+      </main>
+    `
+  });
+
+  writeStaticFile(`/blog/${post.slug}`, postHtml);
+  addSitemapUrl(`/blog/${post.slug}`, '0.85', 'weekly');
+  console.log(`✓ Pre-rendered Blog Guide: /blog/${post.slug}`);
 });
 
 // 5. Contact

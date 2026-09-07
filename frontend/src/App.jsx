@@ -22,6 +22,8 @@ const StarBulletGenerator = lazy(() => import('./pages/StarBulletGenerator'));
 const AtsActionVerbs = lazy(() => import('./pages/AtsActionVerbs'));
 const PortfolioBuilder = lazy(() => import('./pages/PortfolioBuilder'));
 const PortfolioView = lazy(() => import('./pages/PortfolioView'));
+const BlogIndex = lazy(() => import('./pages/BlogIndex'));
+const BlogPost = lazy(() => import('./pages/BlogPost'));
 
 // Minimalist zero-CLS route loading fallback indicator
 function RouteFallback() {
@@ -55,6 +57,10 @@ function App() {
             <Route path="/tools/ats-action-verbs" element={<AtsActionVerbs />} />
             <Route path="/tools/portfolio-builder" element={<PortfolioBuilder />} />
             <Route path="/portfolio-builder" element={<PortfolioBuilder />} />
+
+            {/* Career Guides & Editorial Blog */}
+            <Route path="/blog" element={<BlogIndex />} />
+            <Route path="/blog/:slug" element={<BlogPost />} />
 
             {/* Hosted Public Portfolio Pages */}
             <Route path="/p/:slug" element={<PortfolioView />} />
