@@ -16,6 +16,7 @@ import {
   Languages
 } from 'lucide-react';
 import LanguageSelector from './LanguageSelector';
+import { prefetchRoute } from '../utils/prefetch';
 
 export default function MobileDrawer({ isOpen, onClose }) {
   const location = useLocation();
@@ -23,7 +24,7 @@ export default function MobileDrawer({ isOpen, onClose }) {
   // Close drawer on route change
   useEffect(() => {
     onClose();
-  }, [location.pathname]);
+  }, [location.pathname, onClose]);
 
   // Lock body scroll when drawer is open
   useEffect(() => {
@@ -138,6 +139,8 @@ export default function MobileDrawer({ isOpen, onClose }) {
                 <Link
                   key={tool.path}
                   to={tool.path}
+                  onMouseEnter={() => prefetchRoute(tool.path)}
+                  onTouchStart={() => prefetchRoute(tool.path)}
                   onClick={onClose}
                   className="flex items-start gap-3 p-3 rounded-2xl bg-gray-950/60 hover:bg-gray-800 border border-gray-800/80 hover:border-lime-500/40 transition-all group"
                 >
@@ -175,6 +178,8 @@ export default function MobileDrawer({ isOpen, onClose }) {
                 <Link
                   key={item.path}
                   to={item.path}
+                  onMouseEnter={() => prefetchRoute(item.path)}
+                  onTouchStart={() => prefetchRoute(item.path)}
                   onClick={onClose}
                   className="flex items-center justify-between p-2.5 rounded-xl hover:bg-gray-800 text-gray-300 hover:text-white transition-colors"
                 >
@@ -207,6 +212,8 @@ export default function MobileDrawer({ isOpen, onClose }) {
                 <Link
                   key={lang.code}
                   to={`/${lang.code}`}
+                  onMouseEnter={() => prefetchRoute(`/${lang.code}`)}
+                  onTouchStart={() => prefetchRoute(`/${lang.code}`)}
                   onClick={onClose}
                   className="px-3 py-2 bg-gray-950/70 hover:bg-gray-800 border border-gray-800 hover:border-gray-700 rounded-xl text-xs font-medium text-gray-300 hover:text-white transition-colors text-center"
                 >
@@ -222,6 +229,8 @@ export default function MobileDrawer({ isOpen, onClose }) {
         <div className="p-4 sm:p-5 border-t border-gray-800 bg-gray-950/90 space-y-2 sticky bottom-0">
           <Link
             to="/dashboard"
+            onMouseEnter={() => prefetchRoute('/dashboard')}
+            onTouchStart={() => prefetchRoute('/dashboard')}
             onClick={onClose}
             className="w-full py-3 bg-lime-500 hover:bg-lime-400 text-gray-950 font-black rounded-xl text-xs flex items-center justify-center gap-2 shadow-lg shadow-lime-500/20 transition-all"
           >
@@ -231,6 +240,8 @@ export default function MobileDrawer({ isOpen, onClose }) {
           
           <Link
             to="/portfolio-builder"
+            onMouseEnter={() => prefetchRoute('/portfolio-builder')}
+            onTouchStart={() => prefetchRoute('/portfolio-builder')}
             onClick={onClose}
             className="w-full py-2.5 bg-gray-900 hover:bg-gray-800 text-lime-400 border border-lime-500/30 rounded-xl text-xs font-bold flex items-center justify-center gap-2 transition-all"
           >

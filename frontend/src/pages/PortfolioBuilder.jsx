@@ -381,7 +381,7 @@ export default function PortfolioBuilder() {
           setStatusMessage('✨ Bio successfully polished!');
         }
       }
-    } catch (e) {
+    } catch {
       console.warn('Bio polish fallback');
     } finally {
       setIsPolishingBio(false);
@@ -485,7 +485,7 @@ export default function PortfolioBuilder() {
           setStatusMessage('✓ Successfully imported portfolio JSON!');
           setTimeout(() => setStatusMessage(''), 3000);
         }
-      } catch (err) {
+      } catch {
         alert('Invalid JSON file format.');
       }
     };

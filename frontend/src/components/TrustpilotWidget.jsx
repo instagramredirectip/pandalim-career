@@ -69,12 +69,10 @@ export default function TrustpilotWidget() {
   const [hoveredStar, setHoveredStar] = useState(0);
   const location = useLocation();
 
+  const isPortfolioPage = location.pathname.startsWith('/p/') || location.pathname.startsWith('/portfolio/');
+
   useEffect(() => {
-    // Do not show on personal portfolio showcase pages to keep user portfolios clean
-    if (location.pathname.startsWith('/p/') || location.pathname.startsWith('/portfolio/')) {
-      setIsVisible(false);
-      return;
-    }
+    if (isPortfolioPage) return;
 
     // Check 7-day dismissal status
     try {
@@ -82,7 +80,9 @@ export default function TrustpilotWidget() {
       if (dismissedAt && (Date.now() - parseInt(dismissedAt, 10)) < SEVEN_DAYS_MS) {
         return;
       }
-    } catch (e) {}
+    } catch {
+      // LocalStorage access restriction fallback
+    }
 
     // Smooth reveal after 2.8s delay
     const timer = setTimeout(() => {
@@ -90,20 +90,22 @@ export default function TrustpilotWidget() {
     }, 2800);
 
     return () => clearTimeout(timer);
-  }, [location.pathname]);
+  }, [isPortfolioPage]);
 
   const handleDismiss = () => {
     setIsVisible(false);
     try {
       localStorage.setItem(DISMISS_KEY, Date.now().toString());
-    } catch (e) {}
+    } catch {
+      // LocalStorage access restriction fallback
+    }
   };
 
-  const handleOpenReview = (starCount = 5) => {
+  const handleOpenReview = () => {
     window.open(TRUSTPILOT_REVIEW_URL, '_blank', 'noopener,noreferrer');
   };
 
-  if (!isVisible) return null;
+  if (isPortfolioPage || !isVisible) return null;
 
   return (
     <aside

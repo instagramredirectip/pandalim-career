@@ -17,7 +17,7 @@ export default function Login() {
     setError('');
     
     try {
-      const res = await fetch('http://localhost:5000/api/auth/send-otp', {
+      const res = await fetch('https://pandalime-backend.onrender.com/api/auth/send-otp', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ email })
@@ -29,7 +29,7 @@ export default function Login() {
       } else {
         setError(data.error || 'Failed to send OTP');
       }
-    } catch (err) {
+    } catch {
       setError('Server error. Is your backend running?');
     } finally {
       setLoading(false);
@@ -42,7 +42,7 @@ export default function Login() {
     setError('');
     
     try {
-      const res = await fetch('http://localhost:5000/api/auth/verify-otp', {
+      const res = await fetch('https://pandalime-backend.onrender.com/api/auth/verify-otp', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ email, otp })
@@ -53,10 +53,9 @@ export default function Login() {
         localStorage.setItem('token', data.token);
         navigate('/dashboard'); // We will build this page next
       } else {
-        setError(data.error ||
- 'Invalid OTP code');
+        setError(data.error || 'Invalid OTP code');
       }
-    } catch (err) {
+    } catch {
       setError('Server error. Please try again.');
     } finally {
       setLoading(false);

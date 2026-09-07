@@ -65,14 +65,36 @@
       }
     </script>
 
-    <!-- Google Analytics -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-1D13GLWTCS"></script>
+    <!-- Performance & Network Preconnects -->
+    <link rel="preconnect" href="https://pandalime-backend.onrender.com" crossorigin />
+    <link rel="dns-prefetch" href="https://pandalime-backend.onrender.com" />
+    <link rel="preconnect" href="https://www.googletagmanager.com" crossorigin />
+    <link rel="dns-prefetch" href="https://www.googletagmanager.com" />
+    <link rel="preconnect" href="https://www.google-analytics.com" crossorigin />
+    <link rel="dns-prefetch" href="https://www.google-analytics.com" />
+
+    <!-- Google Analytics (Deferred Non-Blocking Idle Execution) -->
     <script>
       window.dataLayer = window.dataLayer || [];
       function gtag(){dataLayer.push(arguments);}
       gtag('js', new Date());
-
       gtag('config', 'G-1D13GLWTCS');
+
+      (function() {
+        var loadGtag = function() {
+          var s = document.createElement('script');
+          s.async = true;
+          s.src = 'https://www.googletagmanager.com/gtag/js?id=G-1D13GLWTCS';
+          document.head.appendChild(s);
+        };
+        if ('requestIdleCallback' in window) {
+          window.requestIdleCallback(loadGtag, { timeout: 2500 });
+        } else {
+          window.addEventListener('load', function() {
+            setTimeout(loadGtag, 1500);
+          });
+        }
+      })();
     </script>
   </head>
   <body>

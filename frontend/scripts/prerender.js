@@ -1,5 +1,6 @@
 import fs from 'fs';
 import path from 'path';
+import process from 'process';
 import { fileURLToPath } from 'url';
 import { ROLES, COMPANIES, SPECIAL_NICHES, getAllPseoSlugs, getPseoData } from '../src/data/pseoData.js';
 import { SUPPORTED_LANGUAGES, TRANSLATIONS } from '../src/data/translations.js';

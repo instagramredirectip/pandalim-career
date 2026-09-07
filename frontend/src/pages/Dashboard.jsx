@@ -48,9 +48,11 @@ export default function Dashboard() {
       setPrefilledFromTools(true);
       try {
         sessionStorage.removeItem('prefill_job_description');
-      } catch (e) {}
+      } catch {
+        // sessionStorage restriction fallback
+      }
     }
-  }, [location.state]);
+  }, [location.state, jobDescription]);
 
 
 const [isSharedToWall, setIsSharedToWall] = useState(false);
@@ -93,7 +95,7 @@ const [isSharedToWall, setIsSharedToWall] = useState(false);
     }
   }, [loading, result]);
 
-  const handleLogout = () => {
+  const _handleLogout = () => {
     localStorage.removeItem('token');
     navigate('/login');
   };
@@ -131,7 +133,7 @@ const [isSharedToWall, setIsSharedToWall] = useState(false);
       } else {
         alert(data.error || "Analysis failed.");
       }
-    } catch (error) {
+    } catch {
       alert("Server error. Ensure backend is running.");
     } finally {
       setLoading(false);
@@ -193,7 +195,7 @@ const [isSharedToWall, setIsSharedToWall] = useState(false);
                     } else {
                         alert(verifyData.error || 'Payment verification failed');
                     }
-                } catch (err) {
+                } catch {
                     alert("Verification error. Please contact support.");
                 }
             },

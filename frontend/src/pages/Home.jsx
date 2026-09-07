@@ -33,6 +33,7 @@ import SEOHead from '../components/SEOHead';
 import LanguageSelector from '../components/LanguageSelector';
 import MobileDrawer from '../components/MobileDrawer';
 import { ROLES, COMPANIES, SPECIAL_NICHES } from '../data/pseoData';
+import { prefetchRoute } from '../utils/prefetch';
 
 export default function Home() {
   const [openFaq, setOpenFaq] = useState(null);
@@ -202,20 +203,34 @@ export default function Home() {
             <LanguageSelector variant="nav" />
             <Link 
               to="/portfolio-builder" 
+              onMouseEnter={() => prefetchRoute('/portfolio-builder')}
+              onTouchStart={() => prefetchRoute('/portfolio-builder')}
               className="text-xs sm:text-sm font-bold text-emerald-700 hover:text-emerald-800 bg-emerald-50 hover:bg-emerald-100 border border-emerald-200 px-3 py-1.5 rounded-lg transition-all hidden md:flex items-center gap-1.5"
             >
               <Globe className="w-3.5 h-3.5 text-emerald-600" />
               <span>AI Portfolio</span>
               <span className="text-[9px] bg-emerald-600 text-white font-extrabold px-1.5 py-0.5 rounded uppercase">New</span>
             </Link>
-            <Link to="/tools" className="text-sm font-semibold text-gray-600 hover:text-lime-600 transition-colors hidden sm:block">
+            <Link 
+              to="/tools" 
+              onMouseEnter={() => prefetchRoute('/tools')}
+              onTouchStart={() => prefetchRoute('/tools')}
+              className="text-sm font-semibold text-gray-600 hover:text-lime-600 transition-colors hidden sm:block"
+            >
               Free Tools
             </Link>
-            <Link to="/roast-wall" className="text-sm font-semibold text-gray-600 hover:text-lime-600 transition-colors hidden lg:block">
+            <Link 
+              to="/roast-wall" 
+              onMouseEnter={() => prefetchRoute('/roast-wall')}
+              onTouchStart={() => prefetchRoute('/roast-wall')}
+              className="text-sm font-semibold text-gray-600 hover:text-lime-600 transition-colors hidden lg:block"
+            >
               Community Wall
             </Link>
             <Link 
               to="/dashboard" 
+              onMouseEnter={() => prefetchRoute('/dashboard')}
+              onTouchStart={() => prefetchRoute('/dashboard')}
               className="px-3.5 py-2 sm:px-5 sm:py-2.5 bg-lime-500 hover:bg-lime-600 active:scale-95 text-gray-950 rounded-lg font-extrabold text-xs sm:text-sm shadow-md shadow-lime-500/20 transition-all hover:-translate-y-0.5 shrink-0 flex items-center gap-1.5 whitespace-nowrap cursor-pointer"
             >
               <ScanLine className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
@@ -263,6 +278,8 @@ export default function Home() {
             <div className="flex flex-col sm:flex-row justify-center items-center gap-3.5 w-full sm:w-auto px-2">
               <Link 
                 to="/dashboard" 
+                onMouseEnter={() => prefetchRoute('/dashboard')}
+                onTouchStart={() => prefetchRoute('/dashboard')}
                 className="w-full sm:w-auto px-7 py-4 bg-lime-500 hover:bg-lime-600 text-gray-950 rounded-xl font-black text-base sm:text-lg shadow-xl shadow-lime-500/20 transition-all hover:-translate-y-0.5 flex items-center justify-center gap-2 cursor-pointer active:scale-[0.98]"
               >
                 <ScanLine className="w-5 h-5" />
@@ -272,6 +289,8 @@ export default function Home() {
 
               <Link
                 to="/portfolio-builder" 
+                onMouseEnter={() => prefetchRoute('/portfolio-builder')}
+                onTouchStart={() => prefetchRoute('/portfolio-builder')}
                 className="w-full sm:w-auto px-7 py-4 bg-gray-900 hover:bg-black text-white rounded-xl font-black text-base sm:text-lg shadow-xl shadow-gray-900/20 transition-all hover:-translate-y-0.5 flex items-center justify-center gap-2 border border-gray-800 cursor-pointer group active:scale-[0.98]"
               >
                 <Globe className="w-5 h-5 text-emerald-400 group-hover:scale-110 transition-transform" />
