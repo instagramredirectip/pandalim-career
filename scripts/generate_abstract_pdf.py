@@ -10,10 +10,12 @@ from reportlab.platypus import (
 )
 from reportlab.pdfgen import canvas
 
-# Canvas for 2-page document with headers and footers
-class NumberedCanvas(canvas.Canvas):
+# =========================================================================
+# BLACK & WHITE CLASSIC CANVAS (2-Page)
+# =========================================================================
+class BlackWhiteNumberedCanvas(canvas.Canvas):
     def __init__(self, *args, **kwargs):
-        super(NumberedCanvas, self).__init__(*args, **kwargs)
+        super(BlackWhiteNumberedCanvas, self).__init__(*args, **kwargs)
         self._saved_page_states = []
 
     def showPage(self):
@@ -24,203 +26,257 @@ class NumberedCanvas(canvas.Canvas):
         num_pages = len(self._saved_page_states)
         for state in self._saved_page_states:
             self.__dict__.update(state)
-            self.draw_page_decorations(num_pages)
+            self.draw_decorations(num_pages)
             canvas.Canvas.showPage(self)
         canvas.Canvas.save(self)
 
-    def draw_page_decorations(self, page_count):
+    def draw_decorations(self, page_count):
         self.saveState()
         self.setFont("Helvetica", 8)
-        self.setFillColor(colors.HexColor("#64748b"))
+        self.setFillColor(colors.black)
         
-        # Header on page 2+
+        # Header on page 2
         if self._pageNumber > 1:
-            self.drawString(40, 762, "PandaLime — Project Abstract, Resume Scanner & Portfolio System")
-            self.drawRightString(572, 762, "https://www.pandalime.com")
-            self.setStrokeColor(colors.HexColor("#cbd5e1"))
-            self.setLineWidth(0.5)
-            self.line(40, 754, 572, 754)
+            self.drawString(40, 755, "PandaLime — Project Abstract & Technical System Overview")
+            self.drawRightString(572, 755, "pandalime.com")
+            self.setStrokeColor(colors.black)
+            self.setLineWidth(0.75)
+            self.line(40, 748, 572, 748)
         
         # Footer on all pages
         footer_text = f"Page {self._pageNumber} of {page_count}"
         self.drawRightString(572, 22, footer_text)
-        self.drawString(40, 22, "PandaLime • Hosted on Render • Neon PostgreSQL • Google Gemini AI • Free & Open Access")
-        self.setStrokeColor(colors.HexColor("#cbd5e1"))
-        self.setLineWidth(0.5)
+        self.drawString(40, 22, "PandaLime Project Abstract • Hosted on Render • Neon PostgreSQL DB • Google Gemini AI")
+        self.setStrokeColor(colors.black)
+        self.setLineWidth(0.75)
         self.line(40, 32, 572, 32)
         self.restoreState()
 
-# Canvas for 1-page document
-class SinglePageCanvas(canvas.Canvas):
+
+# =========================================================================
+# BLACK & WHITE CLASSIC CANVAS (1-Page)
+# =========================================================================
+class BlackWhiteSinglePageCanvas(canvas.Canvas):
     def __init__(self, *args, **kwargs):
-        super(SinglePageCanvas, self).__init__(*args, **kwargs)
+        super(BlackWhiteSinglePageCanvas, self).__init__(*args, **kwargs)
 
     def draw_decorations(self):
         self.saveState()
         self.setFont("Helvetica", 7.5)
-        self.setFillColor(colors.HexColor("#64748b"))
-        self.drawString(36, 16, "PandaLime Career Suite • Hosted on Render • Neon PostgreSQL • Google Gemini AI")
-        self.drawRightString(576, 16, "1-Page Executive Abstract")
-        self.setStrokeColor(colors.HexColor("#cbd5e1"))
-        self.setLineWidth(0.5)
+        self.setFillColor(colors.black)
+        self.drawString(36, 16, "PandaLime Project Abstract • Hosted on Render • Neon DB • Google Gemini AI • https://www.pandalime.com")
+        self.drawRightString(576, 16, "Page 1 of 1")
+        self.setStrokeColor(colors.black)
+        self.setLineWidth(0.75)
         self.line(36, 24, 576, 24)
         self.restoreState()
 
     def showPage(self):
         self.draw_decorations()
-        super(SinglePageCanvas, self).showPage()
+        super(BlackWhiteSinglePageCanvas, self).showPage()
 
 
+# =========================================================================
+# 2-PAGE BLACK & WHITE DOCUMENT BUILDER
+# =========================================================================
 def build_2page_pdf(filename):
     doc = SimpleDocTemplate(
         filename,
         pagesize=letter,
         leftMargin=40,
         rightMargin=40,
-        topMargin=42,
+        topMargin=38,
         bottomMargin=38
     )
 
     styles = getSampleStyleSheet()
-    
-    PRIMARY_DARK = colors.HexColor("#3f6212")   # Lime-800
-    PRIMARY = colors.HexColor("#4d7c0f")        # Lime-700
-    DARK = colors.HexColor("#0f172a")           # Slate-900
-    BODY = colors.HexColor("#334155")           # Slate-700
-    MUTED = colors.HexColor("#64748b")          # Slate-500
-    BG_LIGHT = colors.HexColor("#f8fafc")       # Slate-50
-    BORDER = colors.HexColor("#e2e8f0")         # Slate-200
-    WHITE = colors.HexColor("#ffffff")
-    LIME_BG = colors.HexColor("#f7fee7")        # Lime-50
-    LIME_BORDER = colors.HexColor("#bef264")    # Lime-300
-    BLUE_BG = colors.HexColor("#eff6ff")        # Blue-50
-    BLUE_BORDER = colors.HexColor("#bfdbfe")    # Blue-200
 
-    title_style = ParagraphStyle('DocTitle', parent=styles['Normal'], fontName='Helvetica-Bold', fontSize=17, leading=21, textColor=DARK)
-    h1_style = ParagraphStyle('SectionH1', parent=styles['Normal'], fontName='Helvetica-Bold', fontSize=10.5, leading=14, textColor=PRIMARY_DARK, spaceBefore=7, spaceAfter=3)
-    h2_style = ParagraphStyle('SectionH2', parent=styles['Normal'], fontName='Helvetica-Bold', fontSize=9, leading=12, textColor=DARK, spaceBefore=3, spaceAfter=2)
-    body_style = ParagraphStyle('BodyCustom', parent=styles['Normal'], fontName='Helvetica', fontSize=8.2, leading=11.8, textColor=BODY, spaceAfter=3)
-    body_bold = ParagraphStyle('BodyBold', parent=body_style, fontName='Helvetica-Bold')
-    card_header = ParagraphStyle('CardHeader', parent=styles['Normal'], fontName='Helvetica-Bold', fontSize=8.5, leading=11.5, textColor=DARK, spaceAfter=2)
-    card_body = ParagraphStyle('CardBody', parent=styles['Normal'], fontName='Helvetica', fontSize=7.8, leading=10.8, textColor=BODY)
-    table_header = ParagraphStyle('TableHeader', parent=styles['Normal'], fontName='Helvetica-Bold', fontSize=8.2, leading=10.5, textColor=WHITE)
+    # Pure Black & White Typography
+    title_style = ParagraphStyle(
+        'BwTitle',
+        parent=styles['Normal'],
+        fontName='Helvetica-Bold',
+        fontSize=16,
+        leading=20,
+        textColor=colors.black,
+        alignment=0
+    )
+
+    meta_style = ParagraphStyle(
+        'BwMeta',
+        parent=styles['Normal'],
+        fontName='Helvetica',
+        fontSize=8,
+        leading=11,
+        textColor=colors.black,
+        alignment=2
+    )
+
+    h1_style = ParagraphStyle(
+        'BwH1',
+        parent=styles['Normal'],
+        fontName='Helvetica-Bold',
+        fontSize=10.5,
+        leading=14,
+        textColor=colors.black,
+        spaceBefore=7,
+        spaceAfter=3
+    )
+
+    h2_style = ParagraphStyle(
+        'BwH2',
+        parent=styles['Normal'],
+        fontName='Helvetica-Bold',
+        fontSize=9,
+        leading=12,
+        textColor=colors.black,
+        spaceBefore=3,
+        spaceAfter=2
+    )
+
+    body_style = ParagraphStyle(
+        'BwBody',
+        parent=styles['Normal'],
+        fontName='Helvetica',
+        fontSize=8.3,
+        leading=12,
+        textColor=colors.black,
+        spaceAfter=3
+    )
+
+    body_bold = ParagraphStyle('BwBold', parent=body_style, fontName='Helvetica-Bold')
+
+    table_header = ParagraphStyle(
+        'BwTableHdr',
+        parent=styles['Normal'],
+        fontName='Helvetica-Bold',
+        fontSize=8.3,
+        leading=11,
+        textColor=colors.black
+    )
 
     story = []
 
-    # ================= PAGE 1 =================
-    hdr_left = Paragraph("<b>PandaLime</b> <font color='#65a30d'>Career & Portfolio Platform</font><br/><font size='8' color='#64748b'>Project Abstract, Resume Scanner, Portfolio Builder & System Architecture</font>", title_style)
-    hdr_right = Paragraph("<b>PROJECT ABSTRACT</b><br/><font color='#64748b' size='7.5'>Platform URL: <b>pandalime.com</b><br/>Host: Render • DB: Neon PostgreSQL<br/>Updated: September 2026</font>", ParagraphStyle('HdrR', parent=styles['Normal'], fontName='Helvetica', fontSize=7.5, leading=10.5, alignment=2))
+    # Document Header
+    hdr_left = Paragraph("<b>PANDALIME — PROJECT ABSTRACT</b><br/><font size='8'><b>AI Resume Scanner, Portfolio Builder & Career Suite</b></font>", title_style)
+    hdr_right = Paragraph("<b>Project Report</b><br/>URL: <b>pandalime.com</b><br/>Host: Render | DB: Neon PostgreSQL", meta_style)
     
-    t_hdr = Table([[hdr_left, hdr_right]], colWidths=[340, 192])
+    t_hdr = Table([[hdr_left, hdr_right]], colWidths=[360, 172])
     t_hdr.setStyle(TableStyle([
         ('VALIGN', (0,0), (-1,-1), 'MIDDLE'),
         ('PADDING', (0,0), (-1,-1), 0),
     ]))
     story.append(t_hdr)
-    story.append(HRFlowable(width="100%", thickness=1.5, color=PRIMARY, spaceAfter=6, spaceBefore=4))
+    story.append(Spacer(1, 3))
+    story.append(HRFlowable(width="100%", thickness=1, color=colors.black, spaceAfter=6, spaceBefore=2))
 
-    # Section 1: Executive Summary
-    story.append(Paragraph("1. Executive Summary (What is PandaLime?)", h1_style))
+    # Section 1: Introduction
+    story.append(Paragraph("1. Project Overview & Problem Statement", h1_style))
     story.append(Paragraph(
-        "<b>PandaLime</b> (<b>pandalime.com</b>) is a free, modern career platform designed to help job seekers bypass automated hiring barriers "
-        "(known as <b>Applicant Tracking Systems</b> or <b>ATS</b>) and showcase their talent directly to employers. Over 90% of mid-to-large companies "
-        "use software (like Workday, Taleo, and Greenhouse) to filter resumes before human recruiters read them. Resumes missing critical keywords or formatted "
-        "incorrectly are discarded automatically.",
+        "When people apply for jobs today, their resumes are almost never read by a human first. Instead, over 90% of mid-to-large companies "
+        "use automated software called <b>Applicant Tracking Systems (ATS)</b> (like Workday, Taleo, Greenhouse, and Lever). These systems scan "
+        "resumes for specific keywords, skills, and formatting. If a candidate misses important terms or uses complex layouts, the computer rejects "
+        "their application automatically.",
         body_style
     ))
     story.append(Paragraph(
-        "PandaLime solves this with a dual-engine platform: (1) an <b>AI Resume Scanner</b> that analyzes and fixes resumes against specific job descriptions in 3 seconds, "
-        "and (2) an <b>AI Portfolio Builder</b> that instantly turns resume details into a sleek, published personal developer website.",
+        "<b>PandaLime</b> (<b>pandalime.com</b>) is a free web platform built to solve this problem simply and directly. It acts as an instant "
+        "career assistant with two main tools: (1) an <b>AI Resume Scanner</b> that checks resumes against real job descriptions and shows how to fix them, "
+        "and (2) an <b>AI Portfolio Builder</b> that turns resume information into a clean, published personal website with one click.",
         body_style
     ))
 
-    # 3 Feature Value Cards
-    cards_data = [
+    # Core Principles (Simple B&W Table)
+    principles_data = [
         [
-            Paragraph("<b>100% Free & No Sign-Up</b>", card_header),
-            Paragraph("<b>Instant 3-Sec AI Scanner</b>", card_header),
-            Paragraph("<b>1-Click AI Portfolio Site</b>", card_header)
+            Paragraph("<b>100% Free & No Sign-Up</b>", h2_style),
+            Paragraph("<b>Instant 3-Second AI Review</b>", h2_style),
+            Paragraph("<b>1-Click Live Portfolio</b>", h2_style)
         ],
         [
-            Paragraph("No paywalls or credit cards. Anyone can run full resume scans and generate portfolio previews without mandatory signup.", card_body),
-            Paragraph("Powered by Google Gemini AI to analyze full resumes and job descriptions in 3 to 5 seconds with precise keyword scoring.", card_body),
-            Paragraph("Converts resume data into a live personal portfolio website at <code>pandalime.com/p/yourname</code>, ready to share with recruiters.", card_body)
+            Paragraph("No paywalls or subscriptions. Anyone can run full scans and test tools immediately without forced registration.", body_style),
+            Paragraph("Uses Google Gemini AI to analyze full resumes and job postings in 3 to 5 seconds with clear scores.", body_style),
+            Paragraph("Generates a live developer website at <code>pandalime.com/p/yourname</code>, ready to share with recruiters.", body_style)
         ]
     ]
-    t_cards = Table(cards_data, colWidths=[172, 172, 172])
-    t_cards.setStyle(TableStyle([
-        ('BACKGROUND', (0,0), (-1,-1), LIME_BG),
-        ('BOX', (0,0), (-1,-1), 0.75, LIME_BORDER),
-        ('INNERGRID', (0,0), (-1,-1), 0.5, LIME_BORDER),
+    t_princ = Table(principles_data, colWidths=[177, 177, 178])
+    t_princ.setStyle(TableStyle([
+        ('BOX', (0,0), (-1,-1), 0.75, colors.black),
+        ('INNERGRID', (0,0), (-1,-1), 0.5, colors.black),
         ('TOPPADDING', (0,0), (-1,-1), 4),
         ('BOTTOMPADDING', (0,0), (-1,-1), 5),
-        ('LEFTPADDING', (0,0), (-1,-1), 7),
-        ('RIGHTPADDING', (0,0), (-1,-1), 7),
+        ('LEFTPADDING', (0,0), (-1,-1), 6),
+        ('RIGHTPADDING', (0,0), (-1,-1), 6),
         ('VALIGN', (0,0), (-1,-1), 'TOP'),
     ]))
-    story.append(t_cards)
-    story.append(Spacer(1, 6))
+    story.append(t_princ)
+    story.append(Spacer(1, 5))
 
     # Section 2: How Resume Scanning Works
     story.append(Paragraph("2. How the Resume Scanner Works (Step-by-Step)", h1_style))
+    story.append(Paragraph("The scanning process is straightforward and fast:", body_style))
+
     steps_data = [
         [
             Paragraph("<b>Step 1: Upload & Text Extraction</b>", h2_style),
-            Paragraph("The user uploads their resume as a PDF and pastes a target job description. The server parses the file and extracts clean text while removing unreadable layout quirks.", body_style)
+            Paragraph("The user uploads their resume as a PDF and pastes a target job description. The server reads the PDF file and extracts the plain text cleanly.", body_style)
         ],
         [
-            Paragraph("<b>Step 2: Binary Safety Verification</b>", h2_style),
-            Paragraph("The backend inspects the binary header (<code>%PDF-</code> magic bytes) to ensure the uploaded file is genuinely a safe PDF, protecting against malicious payloads.", body_style)
+            Paragraph("<b>Step 2: File Safety Verification</b>", h2_style),
+            Paragraph("The backend checks the binary header (<code>%PDF-</code> magic bytes) to make sure the file is genuinely a safe PDF, blocking dangerous scripts and keeping user data safe.", body_style)
         ],
         [
-            Paragraph("<b>Step 3: Google Gemini AI Analysis</b>", h2_style),
-            Paragraph("Gemini AI compares the resume text against the job requirements, checking for vital hard skills, frameworks, tools, methodologies, and quantified results.", body_style)
+            Paragraph("<b>Step 3: Google Gemini AI Comparison</b>", h2_style),
+            Paragraph("Google's Gemini AI reads both the resume and the job description. It looks for missing technical tools, programming languages, soft skills, and required experience.", body_style)
         ],
         [
-            Paragraph("<b>Step 4: Interactive Score & Action Plan</b>", h2_style),
-            Paragraph("In seconds, the user gets: an <b>ATS Match Score (0–100)</b>, exact <b>missing keywords</b> to add, <b>rewritten Google X-Y-Z bullet points</b> (<i>'Accomplished [X] by doing [Z], resulting in [Y]'</i>), and formatting alerts.", body_style)
+            Paragraph("<b>Step 4: Score & Practical Fixes</b>", h2_style),
+            Paragraph("The user receives an instant report with:<br/>"
+                      "• <b>ATS Match Score (0 to 100):</b> How well the resume fits the role.<br/>"
+                      "• <b>Missing Keywords:</b> Essential skills found in the job posting that should be added.<br/>"
+                      "• <b>Rewritten Bullets (Google X-Y-Z formula):</b> Weak sentences turned into <i>'Accomplished [X] by doing [Z], resulting in [Y]'</i>.<br/>"
+                      "• <b>Formatting Warnings:</b> Alerts if tables or multi-column layouts might confuse older ATS parsers.", body_style)
         ]
     ]
     t_steps = Table(steps_data, colWidths=[150, 382])
     t_steps.setStyle(TableStyle([
-        ('BACKGROUND', (0,0), (-1,-1), BG_LIGHT),
-        ('BOX', (0,0), (-1,-1), 0.5, BORDER),
-        ('LINEBELOW', (0,0), (-1,-2), 0.5, BORDER),
+        ('BOX', (0,0), (-1,-1), 0.75, colors.black),
+        ('LINEBELOW', (0,0), (-1,-2), 0.5, colors.black),
+        ('INNERGRID', (0,0), (-1,-1), 0.5, colors.black),
         ('TOPPADDING', (0,0), (-1,-1), 3.5),
         ('BOTTOMPADDING', (0,0), (-1,-1), 3.5),
-        ('LEFTPADDING', (0,0), (-1,-1), 7),
-        ('RIGHTPADDING', (0,0), (-1,-1), 7),
+        ('LEFTPADDING', (0,0), (-1,-1), 6),
+        ('RIGHTPADDING', (0,0), (-1,-1), 6),
         ('VALIGN', (0,0), (-1,-1), 'TOP'),
     ]))
     story.append(t_steps)
-    story.append(Spacer(1, 6))
+    story.append(Spacer(1, 5))
 
-    # Section 3: AI Portfolio Builder Feature
-    story.append(Paragraph("3. AI Portfolio Builder (Personal Website in 1-Click)", h1_style))
+    # Section 3: AI Portfolio Builder
+    story.append(Paragraph("3. AI Portfolio Builder (Personal Website in 1 Click)", h1_style))
     story.append(Paragraph(
-        "PandaLime includes a built-in <b>AI Portfolio Builder</b> that automatically transforms a candidate's resume or profile into a professional, "
-        "fully interactive personal website hosted live on the platform:",
+        "PandaLime includes an <b>AI Portfolio Builder</b> that turns a user's resume or work history into a published personal website:",
         body_style
     ))
-    port_features = [
+
+    port_data = [
         [
-            Paragraph("<b>Live Custom URL</b><br/><font color='#64748b'>Each published portfolio gets a clean custom link (e.g., <code>pandalime.com/p/alex-secops</code>) to share on LinkedIn, GitHub, and email signatures.</font>", card_body),
-            Paragraph("<b>Recruiter-Ready Sections</b><br/><font color='#64748b'>Includes interactive project showcases with live demo links, technical skill badges, work experience timelines, and 1-click resume download.</font>", card_body)
+            Paragraph("<b>Custom Shareable Link:</b> Every user gets a personal web address (such as <code>pandalime.com/p/yourname</code>) to put on LinkedIn, GitHub, or emails.", body_style),
+            Paragraph("<b>Recruiter-Ready Sections:</b> Includes project cards with live links, skill badges, job timeline, and a button to download the PDF resume.", body_style)
         ],
         [
-            Paragraph("<b>Modern Themes & Layouts</b><br/><font color='#64748b'>Instant switching between themes (Terminal Dev, Modern Minimal, Sleek Dark, Engineering) with responsive mobile & desktop support.</font>", card_body),
-            Paragraph("<b>Database Backed (Neon DB)</b><br/><font color='#64748b'>User profiles and published portfolios are securely stored in serverless PostgreSQL (Neon DB) for instant global loading and editing.</font>", card_body)
+            Paragraph("<b>Simple Themes:</b> Clean styles (Terminal, Minimal Light, Modern Dark) that look great on phones and computers.", body_style),
+            Paragraph("<b>Stored in Neon DB:</b> Profiles and published portfolios are safely stored in a serverless PostgreSQL database (Neon DB) for instant loading.", body_style)
         ]
     ]
-    t_port = Table(port_features, colWidths=[261, 261])
+    t_port = Table(port_data, colWidths=[266, 266])
     t_port.setStyle(TableStyle([
-        ('BACKGROUND', (0,0), (-1,-1), BLUE_BG),
-        ('BOX', (0,0), (-1,-1), 0.5, BLUE_BORDER),
-        ('INNERGRID', (0,0), (-1,-1), 0.5, BLUE_BORDER),
-        ('TOPPADDING', (0,0), (-1,-1), 4),
-        ('BOTTOMPADDING', (0,0), (-1,-1), 4),
-        ('LEFTPADDING', (0,0), (-1,-1), 7),
-        ('RIGHTPADDING', (0,0), (-1,-1), 7),
+        ('BOX', (0,0), (-1,-1), 0.75, colors.black),
+        ('INNERGRID', (0,0), (-1,-1), 0.5, colors.black),
+        ('TOPPADDING', (0,0), (-1,-1), 3.5),
+        ('BOTTOMPADDING', (0,0), (-1,-1), 3.5),
+        ('LEFTPADDING', (0,0), (-1,-1), 6),
+        ('RIGHTPADDING', (0,0), (-1,-1), 6),
         ('VALIGN', (0,0), (-1,-1), 'TOP'),
     ]))
     story.append(t_port)
@@ -229,131 +285,130 @@ def build_2page_pdf(filename):
     story.append(PageBreak())
 
     # ================= PAGE 2 =================
-    story.append(Paragraph("4. Technology Stack & Infrastructure Architecture", h1_style))
+    story.append(Paragraph("4. Technologies Used (Simple Explanation)", h1_style))
     story.append(Paragraph(
-        "PandaLime is built using modern cloud technologies designed for high performance, serverless scaling, and bulletproof security:",
+        "The platform uses modern, reliable web technologies chosen for fast loading, simplicity, and safety:",
         body_style
     ))
 
     tech_data = [
         [
-            Paragraph("Component / Layer", table_header),
-            Paragraph("Technologies Used", table_header),
-            Paragraph("Practical Role & Purpose (Simple Words)", table_header)
+            Paragraph("<b>Part of the Site</b>", table_header),
+            Paragraph("<b>Technology Used</b>", table_header),
+            Paragraph("<b>What It Does (In Simple Words)</b>", table_header)
         ],
         [
             Paragraph("<b>Frontend (UI)</b>", body_bold),
-            Paragraph("<b>React 18 + Vite</b><br/><font color='#64748b' size='7.5'>Tailwind CSS, Lucide Icons</font>", body_style),
-            Paragraph("Renders an ultra-fast, snappy interface that loads in milliseconds on mobile phones, tablets, and desktop computers.", body_style)
+            Paragraph("React 18 + Vite + Tailwind CSS", body_style),
+            Paragraph("Builds the user interface so pages load instantly, look clean, and work smoothly on mobile phones and computers.", body_style)
         ],
         [
             Paragraph("<b>Backend Server</b>", body_bold),
-            Paragraph("<b>Node.js & Express</b><br/><font color='#64748b' size='7.5'>Multer, PDF-Parse, JWT</font>", body_style),
-            Paragraph("Handles resume file uploads, checks PDF magic bytes, coordinates AI analysis, and exposes secure REST APIs.", body_style)
+            Paragraph("Node.js + Express", body_style),
+            Paragraph("Receives uploaded files, validates PDFs safely, coordinates AI requests, and runs REST APIs.", body_style)
         ],
         [
             Paragraph("<b>Database</b>", body_bold),
-            Paragraph("<b>Neon DB (PostgreSQL)</b><br/><font color='#64748b' size='7.5'>Serverless PostgreSQL</font>", body_style),
-            Paragraph("Stores user profiles, saved resume scan reports, published portfolios (<code>/p/:slug</code>), and community roast comments with instant serverless scaling.", body_style)
+            Paragraph("Neon DB (PostgreSQL)", body_style),
+            Paragraph("Serverless PostgreSQL database that stores user accounts, saved scan reports, and published portfolios.", body_style)
         ],
         [
             Paragraph("<b>Artificial Intelligence</b>", body_bold),
-            Paragraph("<b>Google Gemini AI</b><br/><font color='#64748b' size='7.5'>@google/genai (1.5 Flash)</font>", body_style),
-            Paragraph("Acts as the intelligent recruiter engine: evaluates resume content against job postings, identifies keyword gaps, and rewrites bullet points.", body_style)
+            Paragraph("Google Gemini AI", body_style),
+            Paragraph("Acts like an experienced recruiter: compares resume text with job requirements, finds skill gaps, and rewrites bullet points.", body_style)
         ],
         [
             Paragraph("<b>Cloud Hosting</b>", body_bold),
-            Paragraph("<b>Render Cloud Platform</b><br/><font color='#64748b' size='7.5'>Web Services & API Hosting</font>", body_style),
-            Paragraph("Hosts both the Frontend client and Node.js Backend API on Render with automatic deployments, continuous health checks, and global SSL.", body_style)
+            Paragraph("Render Cloud Platform", body_style),
+            Paragraph("Hosts both the Frontend web app and Backend API services on Render with automatic deployments, health checks, and global SSL.", body_style)
         ],
         [
-            Paragraph("<b>Speed & SEO (SSG)</b>", body_bold),
-            Paragraph("<b>Static Pre-Rendering</b><br/><font color='#64748b' size='7.5'>Node scripts + Sitemap</font>", body_style),
-            Paragraph("Pre-renders 235+ static HTML pages (including 12 career blog guides and 6 regional language hubs) for instant load times and top SEO ranking.", body_style)
+            Paragraph("<b>Speed & SEO</b>", body_bold),
+            Paragraph("Static Site Generation (SSG)", body_style),
+            Paragraph("Pre-renders 235+ static pages (including 12 career blog guides and 6 regional language hubs) so pages load in milliseconds.", body_style)
         ],
         [
             Paragraph("<b>Security & Anti-Abuse</b>", body_bold),
-            Paragraph("<b>HMAC CAPTCHA & Limits</b><br/><font color='#64748b' size='7.5'>Rate Limiters, Input Sanitizer</font>", body_style),
-            Paragraph("Stops spam bots with mathematical proof-of-human challenges, multi-tier sliding-window IP limits, and strict XSS URL sanitizers.", body_style)
+            Paragraph("HMAC CAPTCHA & Rate Limits", body_style),
+            Paragraph("Stops spam bots using simple mathematical human challenges, strict IP rate limiters, and URL sanitization.", body_style)
         ]
     ]
 
-    t_tech = Table(tech_data, colWidths=[90, 135, 307])
+    t_tech = Table(tech_data, colWidths=[95, 140, 297])
     t_tech.setStyle(TableStyle([
-        ('BACKGROUND', (0,0), (-1,0), PRIMARY_DARK),
-        ('BACKGROUND', (0,1), (-1,-1), BG_LIGHT),
-        ('BOX', (0,0), (-1,-1), 0.5, BORDER),
-        ('INNERGRID', (0,0), (-1,-1), 0.5, BORDER),
+        ('BOX', (0,0), (-1,-1), 0.75, colors.black),
+        ('LINEBELOW', (0,0), (-1,0), 1, colors.black),
+        ('INNERGRID', (0,0), (-1,-1), 0.5, colors.black),
         ('TOPPADDING', (0,0), (-1,-1), 3.5),
         ('BOTTOMPADDING', (0,0), (-1,-1), 3.5),
-        ('LEFTPADDING', (0,0), (-1,-1), 6),
-        ('RIGHTPADDING', (0,0), (-1,-1), 6),
+        ('LEFTPADDING', (0,0), (-1,-1), 5),
+        ('RIGHTPADDING', (0,0), (-1,-1), 5),
         ('VALIGN', (0,0), (-1,-1), 'MIDDLE'),
     ]))
     story.append(t_tech)
-    story.append(Spacer(1, 6))
+    story.append(Spacer(1, 5))
 
-    # Section 5: Additional Built-in Career Tools
-    story.append(Paragraph("5. Additional Free Career Tools & Features", h1_style))
-    feat_box_data = [
+    # Section 5: Additional Free Tools
+    story.append(Paragraph("5. Extra Free Built-in Career Tools", h1_style))
+    extra_data = [
         [
-            Paragraph("<b>STAR Bullet Point Generator</b><br/><font color='#64748b'>Walks users through Situation, Task, Action, and Result to turn routine duties into impressive, quantified achievement bullets.</font>", card_body),
-            Paragraph("<b>250+ ATS Action Verbs Library</b><br/><font color='#64748b'>Comprehensive power word library categorized by Engineering, Leadership, Analysis, Scale, and Cost Efficiency.</font>", card_body)
-        ],
-        [
-            Paragraph("<b>Job Keyword Extractor</b><br/><font color='#64748b'>Instant NLP keyword extractor that isolates required hard skills and certifications from any pasted job posting.</font>", card_body),
-            Paragraph("<b>6 Indian Regional Language Portals</b><br/><font color='#64748b'>Dedicated localized interfaces in Hindi, Tamil, Telugu, Kannada, Marathi, and Bengali to democratize career tools.</font>", card_body)
+            Paragraph("• <b>STAR Bullet Generator:</b> Helps users write achievement bullet points using Situation, Task, Action, and Result.<br/>"
+                      "• <b>250+ ATS Action Verbs:</b> Organized library of strong power verbs for engineering, leadership, and management.", body_style),
+            Paragraph("• <b>Job Keyword Extractor:</b> Instant tool that pulls out required hard skills and tools from any job posting.<br/>"
+                      "• <b>6 Regional Language Hubs:</b> Translated portals in Hindi, Tamil, Telugu, Kannada, Marathi, and Bengali.", body_style)
         ]
     ]
-    t_feat = Table(feat_box_data, colWidths=[261, 261])
-    t_feat.setStyle(TableStyle([
-        ('BACKGROUND', (0,0), (-1,-1), BG_LIGHT),
-        ('BOX', (0,0), (-1,-1), 0.5, BORDER),
-        ('INNERGRID', (0,0), (-1,-1), 0.5, BORDER),
+    t_ex = Table(extra_data, colWidths=[266, 266])
+    t_ex.setStyle(TableStyle([
+        ('BOX', (0,0), (-1,-1), 0.75, colors.black),
+        ('INNERGRID', (0,0), (-1,-1), 0.5, colors.black),
         ('TOPPADDING', (0,0), (-1,-1), 4),
         ('BOTTOMPADDING', (0,0), (-1,-1), 4),
-        ('LEFTPADDING', (0,0), (-1,-1), 7),
-        ('RIGHTPADDING', (0,0), (-1,-1), 7),
+        ('LEFTPADDING', (0,0), (-1,-1), 6),
+        ('RIGHTPADDING', (0,0), (-1,-1), 6),
         ('VALIGN', (0,0), (-1,-1), 'TOP'),
     ]))
-    story.append(t_feat)
-    story.append(Spacer(1, 6))
+    story.append(t_ex)
+    story.append(Spacer(1, 5))
 
-    # Section 6: Summary & Mission
-    story.append(Paragraph("6. Project Mission & Summary", h1_style))
+    # Section 6: Summary & Conclusion
+    story.append(Paragraph("6. Project Summary", h1_style))
     story.append(Paragraph(
-        "PandaLime brings together Google Gemini AI intelligence, high-speed React web architecture, and serverless Neon PostgreSQL storage "
-        "on Render to provide job seekers with an all-in-one, zero-cost career companion. It removes the guesswork from resume screening and gives "
-        "every candidate the competitive edge they need to land their dream job.",
+        "PandaLime brings together Google Gemini AI intelligence, fast React web design, and serverless Neon PostgreSQL storage on Render. "
+        "Its goal is simple: take the mystery out of automated resume screening and give job seekers an easy, free way to optimize their resumes "
+        "and showcase their work with confidence.",
         body_style
     ))
 
-    # Document signature box
+    # Verification / Document Table
     story.append(Spacer(1, 3))
     doc_info = [
         [
-            Paragraph("<b>Platform:</b> PandaLime Career Suite", card_body),
-            Paragraph("<b>Hosting:</b> Render Cloud", card_body),
-            Paragraph("<b>Database:</b> Neon PostgreSQL", card_body),
-            Paragraph("<b>Website:</b> https://www.pandalime.com", card_body)
+            Paragraph("<b>Platform:</b> PandaLime Career Suite", body_style),
+            Paragraph("<b>Hosting:</b> Render Cloud", body_style),
+            Paragraph("<b>Database:</b> Neon PostgreSQL", body_style),
+            Paragraph("<b>Website:</b> https://www.pandalime.com", body_style)
         ]
     ]
     t_info = Table(doc_info, colWidths=[130, 110, 145, 147])
     t_info.setStyle(TableStyle([
-        ('BACKGROUND', (0,0), (-1,-1), LIME_BG),
-        ('BOX', (0,0), (-1,-1), 0.5, LIME_BORDER),
+        ('BOX', (0,0), (-1,-1), 0.75, colors.black),
+        ('INNERGRID', (0,0), (-1,-1), 0.5, colors.black),
         ('TOPPADDING', (0,0), (-1,-1), 3.5),
         ('BOTTOMPADDING', (0,0), (-1,-1), 3.5),
-        ('LEFTPADDING', (0,0), (-1,-1), 6),
-        ('RIGHTPADDING', (0,0), (-1,-1), 6),
+        ('LEFTPADDING', (0,0), (-1,-1), 5),
+        ('RIGHTPADDING', (0,0), (-1,-1), 5),
         ('VALIGN', (0,0), (-1,-1), 'MIDDLE'),
     ]))
     story.append(t_info)
 
-    doc.build(story, canvasmaker=NumberedCanvas)
-    print("Successfully built 2-page PDF at:", filename)
+    doc.build(story, canvasmaker=BlackWhiteNumberedCanvas)
+    print("Successfully built 2-page B&W PDF at:", filename)
 
 
+# =========================================================================
+# 1-PAGE BLACK & WHITE DOCUMENT BUILDER
+# =========================================================================
 def build_1page_pdf(filename):
     doc = SimpleDocTemplate(
         filename,
@@ -365,118 +420,107 @@ def build_1page_pdf(filename):
     )
 
     styles = getSampleStyleSheet()
-    
-    PRIMARY_DARK = colors.HexColor("#3f6212")
-    PRIMARY = colors.HexColor("#4d7c0f")
-    DARK = colors.HexColor("#0f172a")
-    BODY = colors.HexColor("#334155")
-    BG_LIGHT = colors.HexColor("#f8fafc")
-    BORDER = colors.HexColor("#e2e8f0")
-    WHITE = colors.HexColor("#ffffff")
-    LIME_BG = colors.HexColor("#f7fee7")
-    LIME_BORDER = colors.HexColor("#bef264")
 
-    title_style = ParagraphStyle('T', parent=styles['Normal'], fontName='Helvetica-Bold', fontSize=15, leading=18, textColor=DARK)
-    h1_style = ParagraphStyle('H1', parent=styles['Normal'], fontName='Helvetica-Bold', fontSize=9, leading=12, textColor=PRIMARY_DARK, spaceBefore=3.5, spaceAfter=1.5)
-    body_style = ParagraphStyle('B', parent=styles['Normal'], fontName='Helvetica', fontSize=7.4, leading=10.2, textColor=BODY, spaceAfter=2)
+    title_style = ParagraphStyle('T', parent=styles['Normal'], fontName='Helvetica-Bold', fontSize=14, leading=17, textColor=colors.black)
+    h1_style = ParagraphStyle('H1', parent=styles['Normal'], fontName='Helvetica-Bold', fontSize=8.5, leading=11, textColor=colors.black, spaceBefore=3, spaceAfter=1.5)
+    body_style = ParagraphStyle('B', parent=styles['Normal'], fontName='Helvetica', fontSize=7.2, leading=9.8, textColor=colors.black, spaceAfter=1.5)
     body_bold = ParagraphStyle('BB', parent=body_style, fontName='Helvetica-Bold')
-    card_body = ParagraphStyle('CB', parent=styles['Normal'], fontName='Helvetica', fontSize=7.2, leading=9.6, textColor=BODY)
-    table_hdr = ParagraphStyle('TH', parent=styles['Normal'], fontName='Helvetica-Bold', fontSize=7.5, leading=9.5, textColor=WHITE)
+    card_body = ParagraphStyle('CB', parent=styles['Normal'], fontName='Helvetica', fontSize=7, leading=9.2, textColor=colors.black)
+    table_hdr = ParagraphStyle('TH', parent=styles['Normal'], fontName='Helvetica-Bold', fontSize=7.2, leading=9.2, textColor=colors.black)
 
     story = []
 
     # Header
-    hdr_left = Paragraph("<b>PandaLime</b> <font color='#65a30d'>Career & Portfolio Platform</font><br/><font size='7' color='#64748b'>Project Abstract • pandalime.com • Hosted on Render • Neon DB</font>", title_style)
-    hdr_right = Paragraph("<b>EXECUTIVE ABSTRACT</b><br/><font color='#64748b' size='6.8'>Version 2026 • Free AI Career Platform</font>", ParagraphStyle('HR', parent=styles['Normal'], fontName='Helvetica', fontSize=7, leading=9.5, alignment=2))
+    hdr_left = Paragraph("<b>PANDALIME — PROJECT ABSTRACT</b><br/><font size='7'><b>AI Resume Scanner, Portfolio Builder & Career Suite • pandalime.com</b></font>", title_style)
+    hdr_right = Paragraph("<b>Executive Summary</b><br/><font size='6.8'>Host: Render • DB: Neon PostgreSQL</font>", ParagraphStyle('HR', parent=styles['Normal'], fontName='Helvetica', fontSize=7, leading=9, alignment=2))
     t_hdr = Table([[hdr_left, hdr_right]], colWidths=[360, 180])
     t_hdr.setStyle(TableStyle([('VALIGN', (0,0), (-1,-1), 'MIDDLE'), ('PADDING', (0,0), (-1,-1), 0)]))
     story.append(t_hdr)
-    story.append(HRFlowable(width="100%", thickness=1.2, color=PRIMARY, spaceAfter=3, spaceBefore=2))
+    story.append(HRFlowable(width="100%", thickness=1, color=colors.black, spaceAfter=3, spaceBefore=2))
 
     # 1. What is PandaLime
     story.append(Paragraph("1. What is PandaLime? (In Simple Words)", h1_style))
     story.append(Paragraph(
-        "<b>PandaLime</b> (<b>pandalime.com</b>) is a free web platform built to solve a major challenge in modern job applications: "
-        "<b>Applicant Tracking Systems (ATS)</b>. Over 90% of mid-to-large companies use automated software to filter resumes before human recruiters read them. "
-        "PandaLime acts as an intelligent career companion that (1) scores and fixes resumes against real job postings in 3 seconds, and (2) instantly creates a live, shareable personal portfolio website for the candidate.",
+        "<b>PandaLime</b> (<b>pandalime.com</b>) is a free website built to solve a major issue in job hunting: "
+        "<b>Applicant Tracking Systems (ATS)</b>. Over 90% of companies use software to filter resumes before human recruiters ever see them. "
+        "If a resume misses key skills or uses bad formatting, it gets rejected automatically. PandaLime gives job seekers a 100% free solution: "
+        "(1) an <b>AI Resume Scanner</b> that reviews and fixes resumes against job postings in 3 seconds, and (2) an <b>AI Portfolio Builder</b> "
+        "that turns resume details into a live personal website in 1 click.",
         body_style
     ))
 
-    # Value Cards
+    # Value Cards (Clean B&W)
     v_cards = [
         [
-            Paragraph("<b>100% Free & Open Access</b><br/><font color='#64748b'>No paywalls, subscriptions, or forced signup.</font>", card_body),
-            Paragraph("<b>3-Second AI Resume Scan</b><br/><font color='#64748b'>Instant score, missing skills & bullet rewrites.</font>", card_body),
-            Paragraph("<b>1-Click AI Portfolio Builder</b><br/><font color='#64748b'>Live personal developer site at <code>/p/yourname</code>.</font>", card_body)
+            Paragraph("<b>100% Free & Open Access</b><br/>No paywalls, subscriptions, or forced signup.", card_body),
+            Paragraph("<b>3-Second AI Resume Scan</b><br/>Instant score, missing skills & bullet rewrites.", card_body),
+            Paragraph("<b>1-Click AI Portfolio Builder</b><br/>Live developer site at <code>/p/yourname</code>.", card_body)
         ]
     ]
     t_vc = Table(v_cards, colWidths=[180, 180, 180])
     t_vc.setStyle(TableStyle([
-        ('BACKGROUND', (0,0), (-1,-1), LIME_BG),
-        ('BOX', (0,0), (-1,-1), 0.5, LIME_BORDER),
-        ('INNERGRID', (0,0), (-1,-1), 0.5, LIME_BORDER),
-        ('PADDING', (0,0), (-1,-1), 3),
+        ('BOX', (0,0), (-1,-1), 0.75, colors.black),
+        ('INNERGRID', (0,0), (-1,-1), 0.5, colors.black),
+        ('PADDING', (0,0), (-1,-1), 2.5),
         ('VALIGN', (0,0), (-1,-1), 'TOP')
     ]))
     story.append(t_vc)
-    story.append(Spacer(1, 2))
+    story.append(Spacer(1, 1.5))
 
     # 2. How Resume Scanning Works
     story.append(Paragraph("2. How Resume Scanning Works (Step-by-Step)", h1_style))
     steps = [
         [
-            Paragraph("<b>1. Upload & Extract:</b> User uploads resume PDF and pastes a job description. Plain text is safely extracted.", body_style),
-            Paragraph("<b>2. Binary File Check:</b> Server verifies <code>%PDF-</code> magic bytes to block malicious payloads and ensure safety.", body_style)
+            Paragraph("<b>1. Upload & Extract:</b> User uploads resume PDF and pastes a job description. Clean text is extracted safely.", body_style),
+            Paragraph("<b>2. File Safety Check:</b> Server verifies binary magic bytes (<code>%PDF-</code>) to ensure the file is safe.", body_style)
         ],
         [
             Paragraph("<b>3. AI Comparison:</b> Google Gemini AI checks skills, tools, and experience against the job requirements.", body_style),
-            Paragraph("<b>4. Instant Report:</b> Returns an <b>ATS Score (0–100)</b>, missing keywords, and Google X-Y-Z rewritten bullets.", body_style)
+            Paragraph("<b>4. Instant Score:</b> Returns an <b>ATS Score (0–100)</b>, missing keywords, and Google X-Y-Z rewritten bullets.", body_style)
         ]
     ]
     t_st = Table(steps, colWidths=[270, 270])
     t_st.setStyle(TableStyle([
-        ('BACKGROUND', (0,0), (-1,-1), BG_LIGHT),
-        ('BOX', (0,0), (-1,-1), 0.5, BORDER),
-        ('INNERGRID', (0,0), (-1,-1), 0.5, BORDER),
+        ('BOX', (0,0), (-1,-1), 0.75, colors.black),
+        ('INNERGRID', (0,0), (-1,-1), 0.5, colors.black),
         ('PADDING', (0,0), (-1,-1), 2.5),
         ('VALIGN', (0,0), (-1,-1), 'TOP')
     ]))
     story.append(t_st)
-    story.append(Spacer(1, 2))
+    story.append(Spacer(1, 1.5))
 
     # 3. AI Portfolio Builder Feature
     story.append(Paragraph("3. AI Portfolio Builder Feature (Live Personal Website)", h1_style))
     story.append(Paragraph(
         "The built-in <b>AI Portfolio Builder</b> turns resume details into a clean, modern personal website in 1 click. "
-        "Each user gets a live shareable URL (e.g., <code>pandalime.com/p/username</code>) with interactive project showcases, live demo links, "
-        "tech skill badges, work timeline, social links, downloadable resume, and instant theme switching (Terminal, Modern, Dark). "
-        "All portfolios and profile data are stored in serverless <b>Neon PostgreSQL DB</b> for instant global loading.",
+        "Each user gets a live shareable URL (such as <code>pandalime.com/p/username</code>) with interactive project showcases, live demo links, "
+        "tech skill badges, work timeline, social links, downloadable resume, and instant theme switching (Terminal, Minimal, Dark). "
+        "All portfolios and profile data are securely stored in serverless <b>Neon PostgreSQL DB</b> for instant global loading.",
         body_style
     ))
-    story.append(Spacer(1, 2))
+    story.append(Spacer(1, 1.5))
 
     # 4. Technologies Used
     story.append(Paragraph("4. Technologies Used Across the Platform", h1_style))
     tech = [
-        [Paragraph("Layer", table_hdr), Paragraph("Technology", table_hdr), Paragraph("What It Does (In Simple Words)", table_hdr)],
-        [Paragraph("<b>Frontend (UI)</b>", body_bold), Paragraph("<b>React 18 + Vite + Tailwind</b>", body_style), Paragraph("Ultra-fast, responsive user interface hosted on Render for smooth mobile/desktop use.", body_style)],
-        [Paragraph("<b>Backend Server</b>", body_bold), Paragraph("<b>Node.js + Express (Render)</b>", body_style), Paragraph("Handles file uploads, validates PDF magic bytes, coordinates AI, and serves REST APIs.", body_style)],
-        [Paragraph("<b>Database</b>", body_bold), Paragraph("<b>Neon DB (PostgreSQL)</b>", body_style), Paragraph("Serverless PostgreSQL storing user accounts, saved scan reports, and live portfolios.", body_style)],
-        [Paragraph("<b>AI Engine</b>", body_bold), Paragraph("<b>Google Gemini AI</b>", body_style), Paragraph("Reads resumes like a senior recruiter, finding skill gaps and rewriting bullet points.", body_style)],
-        [Paragraph("<b>Hosting & Cloud</b>", body_bold), Paragraph("<b>Render Cloud Platform</b>", body_style), Paragraph("Hosts frontend web apps and backend services with global SSL and automatic deploys.", body_style)],
-        [Paragraph("<b>Speed & Security</b>", body_bold), Paragraph("<b>SSG + HMAC CAPTCHA</b>", body_style), Paragraph("235+ pre-rendered static pages + rate limiters to block bots and load in milliseconds.", body_style)]
+        [Paragraph("<b>Layer</b>", table_hdr), Paragraph("<b>Technology</b>", table_hdr), Paragraph("<b>What It Does (In Simple Words)</b>", table_hdr)],
+        [Paragraph("<b>Frontend (UI)</b>", body_bold), Paragraph("React 18 + Vite + Tailwind", body_style), Paragraph("Ultra-fast, responsive user interface hosted on Render for smooth mobile/desktop use.", body_style)],
+        [Paragraph("<b>Backend Server</b>", body_bold), Paragraph("Node.js + Express (Render)", body_style), Paragraph("Handles file uploads, validates PDF magic bytes, coordinates AI, and serves REST APIs.", body_style)],
+        [Paragraph("<b>Database</b>", body_bold), Paragraph("Neon DB (PostgreSQL)", body_style), Paragraph("Serverless PostgreSQL storing user accounts, saved scan reports, and live portfolios.", body_style)],
+        [Paragraph("<b>AI Engine</b>", body_bold), Paragraph("Google Gemini AI", body_style), Paragraph("Reads resumes like a senior recruiter, finding skill gaps and rewriting bullet points.", body_style)],
+        [Paragraph("<b>Hosting & Cloud</b>", body_bold), Paragraph("Render Cloud Platform", body_style), Paragraph("Hosts frontend web apps and backend services with global SSL and automatic deploys.", body_style)],
+        [Paragraph("<b>Speed & Security</b>", body_bold), Paragraph("SSG + HMAC CAPTCHA", body_style), Paragraph("235+ pre-rendered static pages + rate limiters to block bots and load in milliseconds.", body_style)]
     ]
     t_tc = Table(tech, colWidths=[85, 140, 315])
     t_tc.setStyle(TableStyle([
-        ('BACKGROUND', (0,0), (-1,0), PRIMARY_DARK),
-        ('BACKGROUND', (0,1), (-1,-1), BG_LIGHT),
-        ('BOX', (0,0), (-1,-1), 0.5, BORDER),
-        ('INNERGRID', (0,0), (-1,-1), 0.5, BORDER),
-        ('PADDING', (0,0), (-1,-1), 2),
+        ('BOX', (0,0), (-1,-1), 0.75, colors.black),
+        ('LINEBELOW', (0,0), (-1,0), 0.75, colors.black),
+        ('INNERGRID', (0,0), (-1,-1), 0.5, colors.black),
+        ('PADDING', (0,0), (-1,-1), 1.8),
         ('VALIGN', (0,0), (-1,-1), 'MIDDLE')
     ]))
     story.append(t_tc)
-    story.append(Spacer(1, 2))
+    story.append(Spacer(1, 1.5))
 
     # 5. Extra Tools & Summary
     story.append(Paragraph("5. Additional Free Tools & Summary", h1_style))
@@ -490,15 +534,15 @@ def build_1page_pdf(filename):
     ]
     t_ex = Table(extra_data, colWidths=[270, 270])
     t_ex.setStyle(TableStyle([
-        ('BACKGROUND', (0,0), (-1,-1), BG_LIGHT),
-        ('BOX', (0,0), (-1,-1), 0.5, BORDER),
-        ('PADDING', (0,0), (-1,-1), 2.5),
+        ('BOX', (0,0), (-1,-1), 0.75, colors.black),
+        ('INNERGRID', (0,0), (-1,-1), 0.5, colors.black),
+        ('PADDING', (0,0), (-1,-1), 2),
         ('VALIGN', (0,0), (-1,-1), 'TOP')
     ]))
     story.append(t_ex)
 
-    doc.build(story, canvasmaker=SinglePageCanvas)
-    print("Successfully built 1-Page PDF at:", filename)
+    doc.build(story, canvasmaker=BlackWhiteSinglePageCanvas)
+    print("Successfully built 1-Page B&W PDF at:", filename)
 
 
 if __name__ == "__main__":
@@ -516,10 +560,10 @@ if __name__ == "__main__":
     doc_2p = pymupdf.open(out_2p)
     for i in range(len(doc_2p)):
         pix = doc_2p[i].get_pixmap(dpi=150)
-        pix.save(os.path.join(artifact_dir, f"abstract_2p_page_{i+1}.png"))
+        pix.save(os.path.join(artifact_dir, f"abstract_bw_2p_page_{i+1}.png"))
 
     doc_1p = pymupdf.open(out_1p)
     pix1 = doc_1p[0].get_pixmap(dpi=150)
-    pix1.save(os.path.join(artifact_dir, "abstract_1p_preview.png"))
+    pix1.save(os.path.join(artifact_dir, "abstract_bw_1p_preview.png"))
 
-    print("Generation complete!")
+    print("Black & White PDF generation complete!")
