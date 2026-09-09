@@ -850,10 +850,10 @@ writeStaticFile('/dashboard', dashboardHtml);
 addSitemapUrl('/dashboard', '0.6', 'weekly');
 console.log('✓ Pre-rendered: /dashboard');
 
-// 9. Android App Edition
+// 9. Career Tools App Edition
 const appHtml = generatePageHtml({
-  title: 'PandaLime Mobile App — ATS Scanner & AI Portfolio',
-  description: 'Mobile edition of PandaLime Career Suite for Android WebView. Scan your resume with AI and build your personal portfolio website in seconds.',
+  title: 'Career Tools — ATS Resume Scanner & Portfolio Builder',
+  description: 'Scan your resume with AI and build your personal portfolio website in seconds.',
   canonicalPath: '/app'
 });
 writeStaticFile('/app', appHtml);

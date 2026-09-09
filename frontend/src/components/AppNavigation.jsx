@@ -11,55 +11,43 @@ import {
 /**
  * Top App Header Bar for Android WebView
  */
-export function AppHeader({ title = "PandaLime App", showBack = false, rightAction = null }) {
+export function AppHeader({ title = "Career Tools", showBack = false, rightAction = null }) {
   const navigate = useNavigate();
 
   return (
     <header className="sticky top-0 z-40 bg-gray-950/95 backdrop-blur-md border-b border-gray-800/80 px-4 py-3 select-none">
       <div className="max-w-md mx-auto flex items-center justify-between gap-3">
         
-        {/* Left: Back button or Logo */}
+        {/* Left: Back button or Title */}
         <div className="flex items-center gap-2.5">
           {showBack ? (
             <button
               onClick={() => navigate('/app')}
               className="w-8 h-8 rounded-xl bg-gray-900 border border-gray-800 flex items-center justify-center text-gray-300 hover:text-white active:scale-90 transition-all cursor-pointer"
-              aria-label="Back to App Home"
+              aria-label="Back to Home"
             >
               <ChevronLeft className="w-5 h-5" />
             </button>
           ) : (
             <Link 
               to="/app" 
-              className="flex items-center gap-2 text-white font-black text-lg tracking-tight active:scale-95 transition-transform"
+              className="flex items-center gap-2 text-white font-bold text-base tracking-tight active:scale-95 transition-transform"
             >
-              <div className="w-7 h-7 bg-lime-500 rounded-lg flex items-center justify-center text-gray-950 shadow-md shadow-lime-500/20">
-                <Sparkles className="w-4 h-4" />
+              <div className="w-7 h-7 bg-lime-500/20 border border-lime-500/30 rounded-lg flex items-center justify-center text-lime-400">
+                <Layers className="w-4 h-4" />
               </div>
-              <span className="text-sm font-extrabold text-white">PandaLime</span>
+              <span className="text-sm font-bold text-gray-100">Career Tools</span>
             </Link>
           )}
 
           {showBack && (
-            <div className="flex flex-col">
-              <span className="text-xs font-bold text-gray-100 leading-tight truncate max-w-[170px]">{title}</span>
-              <span className="text-[10px] text-lime-400 font-semibold flex items-center gap-1">
-                <span className="w-1.5 h-1.5 rounded-full bg-lime-400 animate-pulse" />
-                App Edition
-              </span>
-            </div>
+            <span className="text-sm font-bold text-gray-100 leading-tight truncate max-w-[200px]">{title}</span>
           )}
         </div>
 
-        {/* Center/Right Badge or Actions */}
+        {/* Right Action */}
         <div className="flex items-center gap-2">
-          {rightAction ? (
-            rightAction
-          ) : (
-            <span className="inline-flex items-center px-2 py-0.5 rounded-full text-[10px] font-bold bg-lime-500/10 text-lime-400 border border-lime-500/20">
-              ● App Mode
-            </span>
-          )}
+          {rightAction}
         </div>
 
       </div>
@@ -111,7 +99,7 @@ export function AppBottomNav() {
           <span className="text-[11px] tracking-tight">ATS Scanner</span>
         </Link>
 
-        {/* Tab 3: AI Portfolio */}
+        {/* Tab 3: Portfolio */}
         <Link
           to="/app/portfolio"
           className={`flex flex-col items-center justify-center py-1.5 px-2 rounded-xl transition-all active:scale-95 ${
@@ -121,7 +109,7 @@ export function AppBottomNav() {
           }`}
         >
           <Layers className={`w-5 h-5 mb-0.5 ${isPortfolio ? 'text-cyan-400 stroke-[2.5]' : 'text-gray-400'}`} />
-          <span className="text-[11px] tracking-tight">AI Portfolio</span>
+          <span className="text-[11px] tracking-tight">Portfolio</span>
         </Link>
 
       </div>

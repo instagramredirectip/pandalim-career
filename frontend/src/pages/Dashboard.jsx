@@ -251,15 +251,6 @@ console.log("======================");
         <AppHeader 
           title="ATS Resume Scanner" 
           showBack={true} 
-          rightAction={
-            <Link 
-              to="/app/portfolio" 
-              className="text-[11px] font-bold text-cyan-400 bg-cyan-950/80 border border-cyan-500/30 px-2.5 py-1 rounded-lg flex items-center gap-1 active:scale-95 transition-all"
-            >
-              <span>AI Portfolio</span>
-              <span>→</span>
-            </Link>
-          }
         />
       ) : (
         <nav className="print:hidden bg-white/95 backdrop-blur-md border-b border-gray-200 sticky top-0 z-40">

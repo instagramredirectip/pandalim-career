@@ -544,7 +544,7 @@ export default function PortfolioBuilder({ isAppMode: propAppMode = false }) {
       {/* --- TOP APP HEADER --- */}
       {isAppMode ? (
         <AppHeader 
-          title="AI Portfolio Builder" 
+          title="Portfolio Builder" 
           showBack={true} 
           rightAction={
             <div className="flex items-center gap-1.5">
@@ -552,7 +552,7 @@ export default function PortfolioBuilder({ isAppMode: propAppMode = false }) {
                 onClick={() => setMobileView(mobileView === 'editor' ? 'preview' : 'editor')}
                 className="text-[11px] font-bold text-lime-400 bg-lime-950/80 border border-lime-500/30 px-2.5 py-1 rounded-lg flex items-center gap-1 active:scale-95 transition-all"
               >
-                <span>{mobileView === 'editor' ? 'Live Preview 👁️' : 'Editor ✏️'}</span>
+                <span>{mobileView === 'editor' ? 'Preview' : 'Editor'}</span>
               </button>
             </div>
           }
