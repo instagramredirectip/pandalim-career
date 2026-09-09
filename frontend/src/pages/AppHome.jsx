@@ -1,12 +1,13 @@
-import React from 'react';
-import { Link } from 'react-router-dom';
-import { motion } from 'framer-motion';
+import React, { useRef, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { motion, useMotionValue, useTransform } from 'framer-motion';
 import { 
   ScanSearch, 
   Layers, 
   ArrowRight, 
   CheckCircle2,
-  Sparkles
+  Sparkles,
+  ChevronsRight
 } from 'lucide-react';
 import SEOHead from '../components/SEOHead';
 import AppLayout from '../components/AppNavigation';
@@ -28,6 +29,87 @@ const itemVariants = {
 const floatAnimation = {
   y: [-2, 2, -2],
   transition: { duration: 3.5, repeat: Infinity, ease: 'easeInOut' }
+};
+
+// Premium Swipe-to-Proceed Component
+const SwipeButton = ({ to, text, colorTheme }) => {
+  const navigate = useNavigate();
+  const containerRef = useRef(null);
+  const [unlocked, setUnlocked] = useState(false);
+  
+  // Framer Motion values for synchronized animations
+  const x = useMotionValue(0);
+  const textOpacity = useTransform(x, [0, 150], [1, 0]);
+  const textTranslate = useTransform(x, [0, 150], [0, 20]);
+
+  const themes = {
+    lime: {
+      track: 'bg-lime-950/30 border-lime-500/20',
+      thumb: 'bg-lime-500 shadow-[0_0_20px_rgba(132,204,22,0.4)]',
+      text: 'text-lime-400',
+      icon: 'text-lime-950'
+    },
+    cyan: {
+      track: 'bg-cyan-950/30 border-cyan-500/20',
+      thumb: 'bg-cyan-500 shadow-[0_0_20px_rgba(6,182,212,0.4)]',
+      text: 'text-cyan-400',
+      icon: 'text-cyan-950'
+    }
+  };
+  
+  const theme = themes[colorTheme];
+
+  const handleDragEnd = (event, info) => {
+    const containerWidth = containerRef.current?.offsetWidth || 0;
+    const thumbWidth = 56;
+    const threshold = containerWidth - thumbWidth - 20;
+
+    if (info.offset.x >= threshold * 0.75) {
+      setUnlocked(true);
+      // Programmatic navigation after a brief success delay
+      setTimeout(() => navigate(to), 300);
+    }
+  };
+
+  return (
+    <div 
+      ref={containerRef}
+      className={`relative w-full h-16 rounded-2xl flex items-center p-1.5 overflow-hidden border ${theme.track} backdrop-blur-md select-none`}
+    >
+      {/* Animated helper text */}
+      <motion.div 
+        style={{ opacity: textOpacity, x: textTranslate }} 
+        className="absolute inset-0 flex items-center justify-center pointer-events-none"
+      >
+        <motion.div 
+          animate={{ opacity: [0.5, 1, 0.5] }}
+          transition={{ duration: 2, repeat: Infinity, ease: 'easeInOut' }}
+          className={`flex items-center gap-2 font-bold text-sm uppercase tracking-widest ${theme.text}`}
+        >
+          <span>{text}</span>
+          <ChevronsRight className="w-4 h-4" />
+        </motion.div>
+      </motion.div>
+
+      {/* Draggable Thumb */}
+      <motion.div
+        drag={unlocked ? false : 'x'}
+        dragConstraints={containerRef}
+        dragElastic={0.05}
+        dragSnapToOrigin={!unlocked}
+        onDragEnd={handleDragEnd}
+        style={{ x }}
+        whileHover={{ scale: 1.05 }}
+        whileTap={{ scale: 0.95 }}
+        className={`h-full aspect-square rounded-xl flex items-center justify-center cursor-grab active:cursor-grabbing z-10 ${theme.thumb}`}
+      >
+        <ArrowRight className={`w-6 h-6 ${theme.icon} ${unlocked ? 'opacity-0' : 'opacity-100'} transition-opacity`} />
+        {unlocked && (
+           <CheckCircle2 className={`w-6 h-6 absolute ${theme.icon}`} />
+        )}
+      </motion.div>
+    </div>
+  );
 };
 
 export default function AppHome() {
@@ -71,11 +153,8 @@ export default function AppHome() {
         {/* Feature 1: ATS Resume Scanner */}
         <motion.div 
           variants={itemVariants}
-          whileHover={{ scale: 1.01, y: -2 }}
-          whileTap={{ scale: 0.98 }}
           className="relative bg-gray-900/70 backdrop-blur-xl border border-gray-800/80 hover:border-lime-500/40 rounded-3xl p-5 sm:p-6 shadow-2xl transition-colors duration-200 group overflow-hidden"
         >
-          {/* Subtle gradient highlight on hover */}
           <div className="absolute inset-0 bg-gradient-to-br from-lime-500/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none" />
 
           <div className="flex items-center gap-3.5 mb-3.5 relative z-10">
@@ -97,7 +176,7 @@ export default function AppHome() {
             Upload your resume PDF and match it against any job description to discover missing keywords and improve your hiring score instantly.
           </p>
 
-          <div className="space-y-2 mb-4 relative z-10">
+          <div className="space-y-2 mb-6 relative z-10">
             {[
               "Instant 0–100 ATS match score",
               "Missing hard & soft skills analysis",
@@ -112,23 +191,16 @@ export default function AppHome() {
             ))}
           </div>
 
-          <Link
-            to="/app/scanner"
-            className="relative w-full py-3 px-4 bg-lime-500 hover:bg-lime-400 active:scale-95 text-gray-950 font-black text-xs sm:text-sm rounded-2xl shadow-lg shadow-lime-500/20 flex items-center justify-center gap-2 transition-all cursor-pointer z-10"
-          >
-            <span>Open Resume Scanner</span>
-            <ArrowRight className="w-4 h-4" />
-          </Link>
+          <div className="relative z-10 mt-2">
+            <SwipeButton to="/app/scanner" text="Slide to Scan" colorTheme="lime" />
+          </div>
         </motion.div>
 
         {/* Feature 2: Portfolio Builder */}
         <motion.div 
           variants={itemVariants}
-          whileHover={{ scale: 1.01, y: -2 }}
-          whileTap={{ scale: 0.98 }}
           className="relative bg-gray-900/70 backdrop-blur-xl border border-gray-800/80 hover:border-cyan-500/40 rounded-3xl p-5 sm:p-6 shadow-2xl transition-colors duration-200 group overflow-hidden"
         >
-          {/* Subtle gradient highlight on hover */}
           <div className="absolute inset-0 bg-gradient-to-br from-cyan-500/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none" />
 
           <div className="flex items-center gap-3.5 mb-3.5 relative z-10">
@@ -150,7 +222,7 @@ export default function AppHome() {
             Turn your skills, projects, and work experience into a beautifully published personal website in seconds.
           </p>
 
-          <div className="space-y-2 mb-4 relative z-10">
+          <div className="space-y-2 mb-6 relative z-10">
             {[
               "Custom live public link",
               "Interactive project showcase with demo links",
@@ -165,13 +237,9 @@ export default function AppHome() {
             ))}
           </div>
 
-          <Link
-            to="/app/portfolio"
-            className="relative w-full py-3 px-4 bg-cyan-500 hover:bg-cyan-400 active:scale-95 text-gray-950 font-black text-xs sm:text-sm rounded-2xl shadow-lg shadow-cyan-500/20 flex items-center justify-center gap-2 transition-all cursor-pointer z-10"
-          >
-            <span>Open Portfolio Builder</span>
-            <ArrowRight className="w-4 h-4" />
-          </Link>
+          <div className="relative z-10 mt-2">
+            <SwipeButton to="/app/portfolio" text="Slide to Build" colorTheme="cyan" />
+          </div>
         </motion.div>
 
       </motion.div>
