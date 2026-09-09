@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import { 
@@ -27,7 +27,8 @@ import {
   Twitter,
   MapPin,
   CheckCircle2,
-  AlertCircle
+  AlertCircle,
+  FileText
 } from 'lucide-react';
 import SEOHead from '../components/SEOHead';
 import { THEMES, ACCENT_COLORS, PRESET_AVATARS, ROLE_PRESETS } from '../data/portfolioTemplates';
@@ -72,6 +73,7 @@ export default function PortfolioBuilder({ isAppMode: propAppMode = false }) {
   const [mobileView, setMobileView] = useState('editor'); 
   const [aiPrompt, setAiPrompt] = useState('');
   const [isGeneratingAi, setIsGeneratingAi] = useState(false);
+  const [isParsingPdf, setIsParsingPdf] = useState(false);
   const [isPolishingBio, setIsPolishingBio] = useState(false);
   const [publishModalOpen, setPublishModalOpen] = useState(false);
   const [isPublishing, setIsPublishing] = useState(false);
@@ -79,6 +81,8 @@ export default function PortfolioBuilder({ isAppMode: propAppMode = false }) {
   const [statusMessage, setStatusMessage] = useState('');
   const [slugStatus, setSlugStatus] = useState({ state: 'idle', message: '', isOwner: false });
   const [slugErrorAlert, setSlugErrorAlert] = useState('');
+
+  const pdfInputRef = useRef(null);
 
   useEffect(() => {
     try {
@@ -254,6 +258,83 @@ export default function PortfolioBuilder({ isAppMode: propAppMode = false }) {
     const updated = { ...portfolioData.skills };
     delete updated[category];
     setPortfolioData(prev => ({ ...prev, skills: updated }));
+  };
+
+  const handleResumePdfUpload = async (e) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    if (file.type !== 'application/pdf' && !file.name.toLowerCase().endsWith('.pdf')) {
+      haptics.warning();
+      setStatusMessage('⚠️ Please select a valid PDF resume.');
+      setTimeout(() => setStatusMessage(''), 4000);
+      return;
+    }
+
+    if (file.size > 10 * 1024 * 1024) {
+      haptics.warning();
+      setStatusMessage('⚠️ PDF is too large (max 10MB).');
+      setTimeout(() => setStatusMessage(''), 4000);
+      return;
+    }
+
+    haptics.heavy();
+    setIsParsingPdf(true);
+    setStatusMessage('📄 Extracting career & skills from resume PDF...');
+
+    try {
+      const formData = new FormData();
+      formData.append('resume', file);
+
+      const response = await apiRequest('/api/tools/portfolio-from-resume', {
+        method: 'POST',
+        body: formData
+      });
+
+      if (response && response.ok) {
+        const result = await response.json();
+        if (result.portfolio) {
+          haptics.success();
+          setPortfolioData(prev => {
+            const incoming = result.portfolio;
+            const isPresetSlug = !prev.slug || ROLE_PRESETS.some(p => p.slug === prev.slug || p.id === prev.slug);
+            const derivedSlug = isPresetSlug && incoming.fullName
+              ? incoming.fullName.toLowerCase().trim().replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '')
+              : (prev.slug || incoming.slug);
+
+            return {
+              ...prev,
+              ...incoming,
+              slug: derivedSlug || prev.slug || 'my-portfolio',
+              socialLinks: {
+                ...prev.socialLinks,
+                ...(incoming.socialLinks || {})
+              },
+              skills: incoming.skills && Object.keys(incoming.skills).length > 0 ? incoming.skills : prev.skills,
+              projects: incoming.projects && incoming.projects.length > 0 ? incoming.projects : prev.projects,
+              experience: incoming.experience && incoming.experience.length > 0 ? incoming.experience : prev.experience
+            };
+          });
+          setStatusMessage('✨ Auto-filled 100% of portfolio from resume PDF!');
+          setActiveTab('profile');
+        } else {
+          haptics.warning();
+          setStatusMessage(result.error || 'Could not parse resume details.');
+        }
+      } else {
+        const errData = await response.json().catch(() => ({}));
+        haptics.warning();
+        setStatusMessage(errData.error || 'Failed to parse resume PDF.');
+      }
+    } catch (err) {
+      console.error('PDF parsing error:', err);
+      haptics.warning();
+      setStatusMessage('Failed to upload/parse resume PDF.');
+    } finally {
+      setIsParsingPdf(false);
+      if (e.target) e.target.value = '';
+      setTimeout(() => setStatusMessage(''), 5000);
+    }
   };
 
   const handleGenerateFromAi = async () => {
@@ -542,6 +623,20 @@ export default function PortfolioBuilder({ isAppMode: propAppMode = false }) {
               </div>
 
               <div className="hidden sm:flex items-center gap-2">
+                <button
+                  type="button"
+                  onClick={() => {
+                    haptics.selection();
+                    pdfInputRef.current?.click();
+                  }}
+                  disabled={isParsingPdf}
+                  className="flex items-center justify-center px-2.5 py-1.5 rounded-xl border border-lime-500/30 bg-lime-500/10 hover:bg-lime-500/20 text-lime-400 text-xs font-bold transition-all gap-1.5 cursor-pointer"
+                  title="Auto-Fill from Resume PDF"
+                >
+                  {isParsingPdf ? <RefreshCw className="w-3.5 h-3.5 animate-spin" /> : <FileText className="w-3.5 h-3.5" />}
+                  <span className="hidden md:inline">{isParsingPdf ? 'Extracting...' : 'Resume PDF'}</span>
+                </button>
+
                 <label className="cursor-pointer flex items-center justify-center w-9 h-9 rounded-xl border border-white/5 bg-gray-900/50 hover:bg-gray-800 text-gray-400 hover:text-white transition-colors" title="Import JSON">
                   <Upload className="w-4 h-4" />
                   <input type="file" accept=".json" onChange={handleImportJson} className="hidden" />
@@ -564,6 +659,33 @@ export default function PortfolioBuilder({ isAppMode: propAppMode = false }) {
           </div>
         </header>
       )}
+
+      {/* Hidden PDF file input for programmatic uploads */}
+      <input 
+        type="file" 
+        ref={pdfInputRef} 
+        accept=".pdf,application/pdf" 
+        onChange={handleResumePdfUpload} 
+        className="hidden" 
+      />
+
+      {/* Floating Indicator when PDF Parsing is active */}
+      <AnimatePresence>
+        {isParsingPdf && (
+          <motion.div
+            initial={{ opacity: 0, y: -20 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -20 }}
+            className="fixed top-16 left-1/2 -translate-x-1/2 z-50 bg-gray-900/95 border border-lime-500/50 backdrop-blur-xl px-5 py-3 rounded-2xl shadow-2xl shadow-lime-500/20 flex items-center gap-3"
+          >
+            <RefreshCw className="w-4 h-4 text-lime-400 animate-spin shrink-0" />
+            <div className="text-xs">
+              <p className="font-bold text-white">Extracting Resume with AI...</p>
+              <p className="text-[11px] text-gray-400">Parsing bio, tech stack, quantified metrics & projects</p>
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
 
       {/* --- AI PROMPT BANNER --- */}
       <section className="relative z-10 bg-gray-900/40 border-b border-white/5 py-4 px-4 backdrop-blur-md">
@@ -593,6 +715,21 @@ export default function PortfolioBuilder({ isAppMode: propAppMode = false }) {
           </div>
 
           <div className="w-full md:w-auto flex items-center gap-2 overflow-x-auto no-scrollbar pb-1 md:pb-0">
+            {/* Direct Resume PDF 1-Click Upload Button */}
+            <button
+              type="button"
+              onClick={() => {
+                haptics.selection();
+                pdfInputRef.current?.click();
+              }}
+              disabled={isParsingPdf}
+              className="px-3.5 py-1.5 bg-gradient-to-r from-lime-500/20 to-emerald-500/10 hover:from-lime-500/30 hover:to-emerald-500/20 border border-lime-500/40 text-lime-400 hover:text-lime-300 font-bold text-xs rounded-xl flex items-center gap-1.5 transition-all shadow-sm active:scale-95 cursor-pointer whitespace-nowrap shrink-0"
+              title="Upload your resume PDF to instantly auto-fill all profile fields"
+            >
+              {isParsingPdf ? <RefreshCw className="w-3.5 h-3.5 animate-spin text-lime-400" /> : <FileText className="w-3.5 h-3.5" />}
+              <span>{isParsingPdf ? 'Extracting Resume...' : '📄 Auto-Fill from PDF'}</span>
+            </button>
+
             {ROLE_PRESETS.map(preset => (
               <button
                 key={preset.id} onClick={() => loadPreset(preset.id)}
@@ -713,6 +850,34 @@ export default function PortfolioBuilder({ isAppMode: propAppMode = false }) {
                 {/* 2. PROFILE */}
                 {activeTab === 'profile' && (
                   <div className="space-y-5">
+                    {/* Resume PDF Quick Fill Card */}
+                    <div className="bg-gradient-to-br from-lime-500/10 via-gray-950/80 to-gray-900/60 border border-lime-500/30 rounded-2xl p-4 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 shadow-lg">
+                      <div className="flex items-center gap-3">
+                        <div className="w-10 h-10 rounded-xl bg-lime-500/20 border border-lime-500/30 flex items-center justify-center text-lime-400 shrink-0">
+                          <FileText className="w-5 h-5" />
+                        </div>
+                        <div>
+                          <div className="flex items-center gap-2">
+                            <h4 className="text-xs font-bold text-white">Auto-Fill from Resume PDF</h4>
+                            <span className="text-[9px] font-black uppercase px-1.5 py-0.5 rounded bg-lime-400 text-gray-950">AI Magic</span>
+                          </div>
+                          <p className="text-[11px] text-gray-400">Upload your PDF resume to auto-populate bio, skills, projects & career history.</p>
+                        </div>
+                      </div>
+                      <button
+                        type="button"
+                        onClick={() => {
+                          haptics.selection();
+                          pdfInputRef.current?.click();
+                        }}
+                        disabled={isParsingPdf}
+                        className="w-full sm:w-auto px-4 py-2 bg-lime-500 hover:bg-lime-400 disabled:opacity-50 text-gray-950 font-bold text-xs rounded-xl flex items-center justify-center gap-1.5 transition-all shadow-md shadow-lime-500/20 active:scale-95 cursor-pointer shrink-0"
+                      >
+                        {isParsingPdf ? <RefreshCw className="w-3.5 h-3.5 animate-spin" /> : <Upload className="w-3.5 h-3.5" />}
+                        <span>{isParsingPdf ? 'Extracting...' : 'Upload PDF'}</span>
+                      </button>
+                    </div>
+
                     <div className="space-y-1.5">
                       <label className="text-[10px] font-bold uppercase tracking-wider text-gray-400">Full Name</label>
                       <input type="text" value={portfolioData.fullName || ''} onChange={(e) => handleInputChange('fullName', e.target.value)} className="w-full bg-gray-950/80 border border-white/5 focus:border-lime-500/50 focus:ring-1 focus:ring-lime-500/30 rounded-xl px-4 py-3 text-sm text-white focus:outline-none shadow-inner transition-all" />

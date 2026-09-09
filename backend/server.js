@@ -799,6 +799,100 @@ Return ONLY a raw JSON object with this exact schema:
     }
 });
 
+// Auto-Generate Structured Portfolio directly from uploaded Resume PDF
+app.post('/api/tools/portfolio-from-resume', aiScanRateLimiter, upload.single('resume'), async (req, res) => {
+    try {
+        let resumeText = '';
+
+        if (req.file && req.file.buffer) {
+            // PDF Magic-Byte Validation (%PDF-)
+            const magicBytes = req.file.buffer.slice(0, 5).toString('ascii');
+            if (!magicBytes.startsWith('%PDF-')) {
+                return res.status(400).json({ error: 'Invalid document structure. Please upload a genuine PDF resume.' });
+            }
+
+            const parser = new PDFParse({ data: req.file.buffer, CanvasFactory });
+            const pdfData = await parser.getText();
+            resumeText = sanitizeInputText(pdfData.text, 35000);
+        } else if (req.body.resumeText) {
+            resumeText = sanitizeInputText(req.body.resumeText, 35000);
+        }
+
+        if (!resumeText || resumeText.length < 20) {
+            return res.status(400).json({ error: 'Unable to extract text from resume PDF. Please ensure your PDF contains selectable text.' });
+        }
+
+        const systemPrompt = `You are an elite portfolio architect and developer career specialist.
+Analyze the following resume text and extract/transform ALL candidate details into a complete, high-converting personal developer portfolio profile JSON.
+
+Resume Text:
+"""
+${resumeText}
+"""
+
+Return ONLY a raw JSON object matching this exact schema:
+{
+  "fullName": "Full Name extracted from resume (fallback to 'Alex Vance' if missing)",
+  "title": "Professional Title (e.g. Senior Full-Stack Engineer, Cloud Architect, Cyber Analyst)",
+  "tagline": "3-part punchy pillar tagline (e.g. 🛡️ Offensive Security • AWS Cloud • Penetration Testing)",
+  "bio": "High-impact 70-100 word executive summary highlighting their primary domain, top technologies, and quantified accomplishments.",
+  "theme": "cyber",
+  "accentColor": "lime",
+  "location": "Location from resume or 'Bengaluru, India / Remote'",
+  "availabilityStatus": "🟢 Open to Opportunities",
+  "slug": "kebab-case-full-name-slug",
+  "socialLinks": {
+    "github": "",
+    "linkedin": "",
+    "twitter": "",
+    "tryhackme": "",
+    "website": ""
+  },
+  "metrics": [
+    { "label": "Years Experience", "value": "3+" },
+    { "label": "Projects Completed", "value": "10+" },
+    { "label": "Core Impact", "value": "99.9%" },
+    { "label": "Key Highlight", "value": "Top 1%" }
+  ],
+  "skills": {
+    "Languages & Frameworks": ["Skill 1", "Skill 2", "Skill 3"],
+    "Cloud & Infrastructure": ["Skill 4", "Skill 5"],
+    "Tools & Databases": ["Skill 6", "Skill 7"]
+  },
+  "projects": [
+    {
+      "title": "Project Title",
+      "description": "2-sentence description of the problem solved and architecture.",
+      "metric": "⚡ Quantified achievement metric",
+      "tags": ["Tech1", "Tech2"],
+      "demoUrl": "",
+      "githubUrl": ""
+    }
+  ],
+  "experience": [
+    {
+      "role": "Job Title",
+      "company": "Company Name",
+      "period": "Start - End Date",
+      "location": "Location",
+      "bullets": [
+        "Quantified STAR accomplishment bullet point 1",
+        "Quantified STAR accomplishment bullet point 2"
+      ]
+    }
+  ]
+}`;
+
+        const aiResp = await generateAIResponseWithFallback(systemPrompt);
+        const cleanedJson = (aiResp || '').replace(/^```json\s*/i, '').replace(/\s*```$/i, '').trim();
+        const parsed = JSON.parse(cleanedJson);
+        return res.json({ success: true, portfolio: parsed });
+    } catch (error) {
+        console.error('Portfolio from Resume Error:', error);
+        res.status(500).json({ error: 'Failed to extract portfolio from resume PDF' });
+    }
+});
+
 // --- COMMUNITY ROAST WALL ROUTES (Protected by Rate Limiter & Sanitization) ---
 app.get('/api/roasts', async (req, res) => {
     try {
