@@ -19,3 +19,4 @@ export const haptics = {
   warning: () => triggerHaptic([30, 50, 30]),
   selection: () => triggerHaptic(8)
 };
+
