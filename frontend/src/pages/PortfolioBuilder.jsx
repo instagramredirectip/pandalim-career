@@ -33,6 +33,7 @@ import SEOHead from '../components/SEOHead';
 import { THEMES, ACCENT_COLORS, PRESET_AVATARS, ROLE_PRESETS } from '../data/portfolioTemplates';
 import { apiRequest } from '../config/api';
 import { AppHeader, AppBottomNav } from '../components/AppNavigation';
+import { haptics } from '../utils/haptics';
 
 // Framer Motion Variants for smooth UI transitions
 const fadeUp = {
@@ -138,6 +139,7 @@ export default function PortfolioBuilder({ isAppMode: propAppMode = false }) {
   }, [portfolioData.slug]);
 
   const loadPreset = (presetId) => {
+    haptics.selection();
     const found = ROLE_PRESETS.find(p => p.id === presetId);
     if (found) {
       setPortfolioData(JSON.parse(JSON.stringify(found)));
@@ -173,6 +175,7 @@ export default function PortfolioBuilder({ isAppMode: propAppMode = false }) {
   };
 
   const addProject = () => {
+    haptics.medium();
     const newProj = {
       title: 'New Project',
       description: 'Describe your technical contribution and architecture here.',
@@ -184,6 +187,7 @@ export default function PortfolioBuilder({ isAppMode: propAppMode = false }) {
   };
 
   const removeProject = (index) => {
+    haptics.warning();
     setPortfolioData(prev => ({ ...prev, projects: prev.projects.filter((_, i) => i !== index) }));
   };
 
@@ -202,6 +206,7 @@ export default function PortfolioBuilder({ isAppMode: propAppMode = false }) {
   };
 
   const addExperienceBullet = (expIndex) => {
+    haptics.light();
     const updated = [...(portfolioData.experience || [])];
     if (!updated[expIndex].bullets) updated[expIndex].bullets = [];
     updated[expIndex].bullets.push('Accomplished [X] quantified by [Y] using [Z].');
@@ -209,12 +214,14 @@ export default function PortfolioBuilder({ isAppMode: propAppMode = false }) {
   };
 
   const removeExperienceBullet = (expIndex, bulletIndex) => {
+    haptics.warning();
     const updated = [...(portfolioData.experience || [])];
     updated[expIndex].bullets = updated[expIndex].bullets.filter((_, i) => i !== bulletIndex);
     setPortfolioData(prev => ({ ...prev, experience: updated }));
   };
 
   const addExperience = () => {
+    haptics.medium();
     const newExp = {
       role: 'Software Engineer', company: 'Company Name', period: '2023 - Present', location: 'Remote',
       bullets: ['Spearheaded core feature architecture and optimized performance by 40%.']
@@ -223,6 +230,7 @@ export default function PortfolioBuilder({ isAppMode: propAppMode = false }) {
   };
 
   const removeExperience = (index) => {
+    haptics.warning();
     setPortfolioData(prev => ({ ...prev, experience: prev.experience.filter((_, i) => i !== index) }));
   };
 
@@ -232,6 +240,7 @@ export default function PortfolioBuilder({ isAppMode: propAppMode = false }) {
   };
 
   const addSkillCategory = () => {
+    haptics.medium();
     const categoryName = prompt('Enter new skill category name (e.g. Cloud & DevOps, Languages, Tools):');
     if (categoryName && categoryName.trim()) {
       setPortfolioData(prev => ({
@@ -241,6 +250,7 @@ export default function PortfolioBuilder({ isAppMode: propAppMode = false }) {
   };
 
   const removeSkillCategory = (category) => {
+    haptics.warning();
     const updated = { ...portfolioData.skills };
     delete updated[category];
     setPortfolioData(prev => ({ ...prev, skills: updated }));
@@ -248,6 +258,7 @@ export default function PortfolioBuilder({ isAppMode: propAppMode = false }) {
 
   const handleGenerateFromAi = async () => {
     if (!aiPrompt.trim()) return;
+    haptics.heavy();
     setIsGeneratingAi(true);
     setStatusMessage('Crafting customized portfolio with AI...');
     try {
@@ -258,6 +269,7 @@ export default function PortfolioBuilder({ isAppMode: propAppMode = false }) {
       if (response && response.ok) {
         const result = await response.json();
         if (result.portfolio) {
+          haptics.success();
           setPortfolioData(prev => ({ ...prev, ...result.portfolio, slug: prev.slug || result.portfolio.slug }));
           setStatusMessage('✨ Generated successfully!');
         }
@@ -282,6 +294,7 @@ export default function PortfolioBuilder({ isAppMode: propAppMode = false }) {
     else if (lower.includes('design') || lower.includes('ui')) matchedPreset = ROLE_PRESETS.find(p => p.id === 'designer');
     else matchedPreset = ROLE_PRESETS.find(p => p.id === 'fullstack');
 
+    haptics.success();
     setPortfolioData(prev => ({ 
       ...JSON.parse(JSON.stringify(matchedPreset)), 
       tagline: `⚡ ${promptText.slice(0, 70)}...`, 
@@ -292,6 +305,7 @@ export default function PortfolioBuilder({ isAppMode: propAppMode = false }) {
 
   const handlePolishBio = async () => {
     if (!portfolioData.bio) return;
+    haptics.medium();
     setIsPolishingBio(true);
     setStatusMessage('Polishing bio...');
     try {
@@ -302,6 +316,7 @@ export default function PortfolioBuilder({ isAppMode: propAppMode = false }) {
       if (response && response.ok) {
         const result = await response.json();
         if (result.polishedBio) {
+          haptics.success();
           handleInputChange('bio', result.polishedBio);
           setStatusMessage('✨ Bio polished!');
         }
@@ -315,13 +330,16 @@ export default function PortfolioBuilder({ isAppMode: propAppMode = false }) {
   };
 
   const handlePublish = async () => {
+    haptics.heavy();
     const slug = (portfolioData.slug || 'my-portfolio').toLowerCase().trim().replace(/[^a-z0-9_-]/g, '-');
     if (!slug || slug.length < 2) {
+      haptics.warning();
       setSlugErrorAlert('Enter a valid vanity URL (at least 2 characters).');
       setActiveTab('theme');
       return;
     }
     if (ROLE_PRESETS.some(p => p.slug === slug || p.id === slug)) {
+      haptics.warning();
       setSlugErrorAlert(`"${slug}" is reserved. Use your own name.`);
       setActiveTab('theme');
       return;
@@ -339,6 +357,7 @@ export default function PortfolioBuilder({ isAppMode: propAppMode = false }) {
         body: JSON.stringify(payload)
       });
       if (res && res.status === 409) {
+        haptics.warning();
         const errData = await res.json();
         setSlugErrorAlert(errData.error || `⚠️ URL taken.`);
         setActiveTab('theme');
@@ -351,9 +370,11 @@ export default function PortfolioBuilder({ isAppMode: propAppMode = false }) {
       }
       localStorage.setItem(`pandalime_portfolio_${slug}`, JSON.stringify(payload));
       localStorage.setItem('pandalime_portfolio_draft', JSON.stringify(payload));
+      haptics.success();
       setPublishModalOpen(true);
     } catch {
       localStorage.setItem(`pandalime_portfolio_${slug}`, JSON.stringify({ ...portfolioData, slug }));
+      haptics.success();
       setPublishModalOpen(true);
     } finally {
       setIsPublishing(false);
@@ -362,6 +383,7 @@ export default function PortfolioBuilder({ isAppMode: propAppMode = false }) {
   };
 
   const handleExportJson = () => {
+    haptics.light();
     const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(portfolioData, null, 2));
     const downloadAnchor = document.createElement('a');
     downloadAnchor.setAttribute("href", dataStr);
@@ -374,16 +396,19 @@ export default function PortfolioBuilder({ isAppMode: propAppMode = false }) {
   const handleImportJson = (e) => {
     const file = e.target.files?.[0];
     if (!file) return;
+    haptics.light();
     const reader = new FileReader();
     reader.onload = (event) => {
       try {
         const parsed = JSON.parse(event.target.result);
         if (parsed.fullName) {
+          haptics.success();
           setPortfolioData(parsed);
           setStatusMessage('✓ Imported successfully!');
           setTimeout(() => setStatusMessage(''), 3000);
         }
       } catch { 
+        haptics.warning();
         alert('Invalid JSON format.'); 
       }
     };
@@ -392,6 +417,7 @@ export default function PortfolioBuilder({ isAppMode: propAppMode = false }) {
 
   const publicUrl = `https://www.pandalime.com/p/${portfolioData.slug || 'my-portfolio'}`;
   const copyShareLink = () => {
+    haptics.success();
     navigator.clipboard.writeText(publicUrl);
     setCopiedLink(true);
     setTimeout(() => setCopiedLink(false), 3000);
@@ -429,12 +455,27 @@ export default function PortfolioBuilder({ isAppMode: propAppMode = false }) {
             title="Portfolio Builder" 
             showBack={true} 
             rightAction={
-              <button
-                onClick={() => setMobileView(mobileView === 'editor' ? 'preview' : 'editor')}
-                className="text-[11px] font-bold text-lime-400 bg-lime-950/80 border border-lime-500/30 px-2.5 py-1 rounded-lg flex items-center gap-1 active:scale-95 transition-all"
-              >
-                <span>{mobileView === 'editor' ? 'Preview' : 'Editor'}</span>
-              </button>
+              <div className="flex items-center gap-2">
+                <button
+                  onClick={() => {
+                    haptics.selection();
+                    setMobileView(mobileView === 'editor' ? 'preview' : 'editor');
+                  }}
+                  className="text-[11px] font-bold text-gray-300 bg-gray-900 border border-gray-700 px-2.5 py-1.5 rounded-lg flex items-center gap-1 active:scale-95 transition-all cursor-pointer"
+                >
+                  <Eye className="w-3.5 h-3.5 text-cyan-400" />
+                  <span>{mobileView === 'editor' ? 'Preview' : 'Editor'}</span>
+                </button>
+
+                <button
+                  onClick={handlePublish}
+                  disabled={isPublishing}
+                  className="px-3 py-1.5 bg-gradient-to-r from-lime-500 to-lime-400 text-gray-950 font-black text-[11px] rounded-lg shadow-md shadow-lime-500/20 flex items-center gap-1.5 transition-all active:scale-95 cursor-pointer shrink-0"
+                >
+                  {isPublishing ? <RefreshCw className="w-3 h-3 animate-spin" /> : <Globe className="w-3 h-3" />}
+                  <span>Publish</span>
+                </button>
+              </div>
             }
           />
         </div>
@@ -442,7 +483,11 @@ export default function PortfolioBuilder({ isAppMode: propAppMode = false }) {
         <header className="bg-[#0a0a0a]/70 border-b border-white/5 sticky top-0 z-40 backdrop-blur-2xl px-4 py-3">
           <div className="max-w-7xl mx-auto flex items-center justify-between gap-4">
             <div className="flex items-center gap-3">
-              <Link to="/" className="flex items-center gap-2 font-black text-white text-lg tracking-tight hover:opacity-80 transition-opacity">
+              <Link 
+                to="/" 
+                onClick={() => haptics.light()}
+                className="flex items-center gap-2 font-black text-white text-lg tracking-tight hover:opacity-80 transition-opacity"
+              >
                 <div className="w-8 h-8 bg-gradient-to-br from-lime-400 to-lime-600 rounded-lg flex items-center justify-center text-gray-900 shadow-[0_0_15px_rgba(163,230,53,0.3)]">
                   <Sparkles className="w-4 h-4" />
                 </div>
@@ -469,7 +514,11 @@ export default function PortfolioBuilder({ isAppMode: propAppMode = false }) {
               <div className="lg:hidden flex bg-gray-900/80 rounded-xl p-1 border border-white/5 text-xs font-bold shadow-inner">
                 {['editor', 'preview'].map(view => (
                   <button
-                    key={view} onClick={() => setMobileView(view)}
+                    key={view} 
+                    onClick={() => {
+                      haptics.selection();
+                      setMobileView(view);
+                    }}
                     className={`px-3 py-1.5 rounded-lg transition-all capitalize ${mobileView === view ? 'bg-white/10 text-white shadow-sm' : 'text-gray-500 hover:text-gray-300'}`}
                   >
                     {view}
@@ -480,7 +529,11 @@ export default function PortfolioBuilder({ isAppMode: propAppMode = false }) {
               <div className="hidden lg:flex items-center bg-gray-900/80 rounded-xl p-1 border border-white/5 shadow-inner">
                 {[{id:'desktop', icon: Monitor}, {id:'mobile', icon: Smartphone}].map(mode => (
                   <button
-                    key={mode.id} onClick={() => setPreviewMode(mode.id)}
+                    key={mode.id} 
+                    onClick={() => {
+                      haptics.selection();
+                      setPreviewMode(mode.id);
+                    }}
                     className={`p-2 rounded-lg transition-all ${previewMode === mode.id ? 'bg-white/10 text-lime-400 shadow-sm' : 'text-gray-500 hover:text-gray-300'}`}
                   >
                     <mode.icon className="w-4 h-4" />
@@ -498,10 +551,11 @@ export default function PortfolioBuilder({ isAppMode: propAppMode = false }) {
                 </button>
               </div>
 
+              {/* Prominent Header Publish Button */}
               <motion.button
-                whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }}
+                whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.96 }}
                 onClick={handlePublish} disabled={isPublishing}
-                className="px-4 py-2 bg-gradient-to-r from-lime-500 to-lime-400 text-gray-950 font-bold text-xs sm:text-sm rounded-xl shadow-[0_0_20px_rgba(163,230,53,0.2)] flex items-center gap-2 transition-all cursor-pointer"
+                className="px-4 py-2 bg-gradient-to-r from-lime-500 to-lime-400 text-gray-950 font-black text-xs sm:text-sm rounded-xl shadow-[0_0_20px_rgba(163,230,53,0.2)] flex items-center gap-2 transition-all cursor-pointer shrink-0"
               >
                 {isPublishing ? <RefreshCw className="w-4 h-4 animate-spin" /> : <Globe className="w-4 h-4" />}
                 <span>Publish</span>
@@ -557,16 +611,20 @@ export default function PortfolioBuilder({ isAppMode: propAppMode = false }) {
       </section>
 
       {/* --- STUDIO MAIN CONTENT --- */}
-      <div className="flex-1 max-w-7xl w-full mx-auto p-4 grid grid-cols-1 lg:grid-cols-12 gap-6 relative z-10">
+      <div className="flex-1 max-w-7xl w-full mx-auto p-4 grid grid-cols-1 lg:grid-cols-12 gap-6 relative z-10 pb-20">
         
         {/* === LEFT EDITOR === */}
-        <div className={`lg:col-span-5 flex flex-col h-[calc(100vh-180px)] ${mobileView === 'preview' ? 'hidden lg:flex' : 'flex'}`}>
+        <div className={`lg:col-span-5 flex flex-col h-[calc(100vh-190px)] ${mobileView === 'preview' ? 'hidden lg:flex' : 'flex'}`}>
           
           {/* Modern Sliding Tabs */}
           <div className="flex overflow-x-auto no-scrollbar bg-gray-900/60 backdrop-blur-xl p-1.5 rounded-2xl border border-white/5 mb-4 gap-1 shrink-0">
             {TABS.map(tab => (
               <button
-                key={tab.id} onClick={() => setActiveTab(tab.id)}
+                key={tab.id} 
+                onClick={() => {
+                  haptics.selection();
+                  setActiveTab(tab.id);
+                }}
                 className={`relative px-4 py-2.5 rounded-xl text-xs font-bold flex items-center gap-2 transition-colors shrink-0 cursor-pointer ${activeTab === tab.id ? 'text-gray-950' : 'text-gray-400 hover:text-white'}`}
               >
                 {activeTab === tab.id && (
@@ -579,12 +637,12 @@ export default function PortfolioBuilder({ isAppMode: propAppMode = false }) {
           </div>
 
           {/* Form Scroll Area */}
-          <div className="flex-1 bg-gray-900/60 backdrop-blur-xl rounded-3xl p-6 border border-white/5 overflow-y-auto shadow-2xl custom-scrollbar relative">
+          <div className="flex-1 bg-gray-900/60 backdrop-blur-xl rounded-3xl p-5 sm:p-6 border border-white/5 overflow-y-auto shadow-2xl custom-scrollbar relative flex flex-col justify-between">
             <AnimatePresence mode="wait">
               <motion.div
                 key={activeTab}
                 initial={{ opacity: 0, x: -10 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: 10 }} transition={{ duration: 0.2 }}
-                className="space-y-6"
+                className="space-y-6 pb-4"
               >
                 
                 {/* 1. THEME */}
@@ -595,7 +653,11 @@ export default function PortfolioBuilder({ isAppMode: propAppMode = false }) {
                       <div className="space-y-3">
                         {THEMES.map(theme => (
                           <div
-                            key={theme.id} onClick={() => handleInputChange('theme', theme.id)}
+                            key={theme.id} 
+                            onClick={() => {
+                              haptics.light();
+                              handleInputChange('theme', theme.id);
+                            }}
                             className={`p-4 rounded-2xl border cursor-pointer transition-all ${portfolioData.theme === theme.id ? 'border-lime-500 bg-lime-500/5 shadow-[0_0_15px_rgba(163,230,53,0.1)]' : 'border-white/5 bg-gray-950/50 hover:border-white/20'}`}
                           >
                             <div className="flex items-center justify-between mb-1.5">
@@ -612,7 +674,11 @@ export default function PortfolioBuilder({ isAppMode: propAppMode = false }) {
                       <div className="flex flex-wrap gap-3">
                         {ACCENT_COLORS.map(color => (
                           <button
-                            key={color.id} onClick={() => handleInputChange('accentColor', color.id)}
+                            key={color.id} 
+                            onClick={() => {
+                              haptics.light();
+                              handleInputChange('accentColor', color.id);
+                            }}
                             className={`w-12 h-12 rounded-2xl flex items-center justify-center transition-all cursor-pointer ${portfolioData.accentColor === color.id ? 'bg-white/10 ring-2 ring-white scale-110' : 'bg-gray-950 border border-white/5 hover:border-white/20'}`}
                           >
                             <span className="w-6 h-6 rounded-full shadow-inner" style={{ backgroundColor: color.hex }} />
@@ -667,7 +733,14 @@ export default function PortfolioBuilder({ isAppMode: propAppMode = false }) {
                       <label className="text-[10px] font-bold uppercase tracking-wider text-gray-400">Avatar</label>
                       <div className="flex gap-3 overflow-x-auto pb-2 no-scrollbar">
                         {PRESET_AVATARS.map(avatar => (
-                          <img key={avatar.id} src={avatar.url} alt={avatar.label} onClick={() => handleInputChange('avatarUrl', avatar.url)} className={`w-12 h-12 rounded-2xl object-cover cursor-pointer transition-all shrink-0 ${portfolioData.avatarUrl === avatar.url ? 'ring-2 ring-lime-400 scale-105' : 'opacity-50 hover:opacity-100'}`} />
+                          <img 
+                            key={avatar.id} src={avatar.url} alt={avatar.label} 
+                            onClick={() => {
+                              haptics.light();
+                              handleInputChange('avatarUrl', avatar.url);
+                            }} 
+                            className={`w-12 h-12 rounded-2xl object-cover cursor-pointer transition-all shrink-0 ${portfolioData.avatarUrl === avatar.url ? 'ring-2 ring-lime-400 scale-105' : 'opacity-50 hover:opacity-100'}`} 
+                          />
                         ))}
                       </div>
                       <input type="text" value={portfolioData.avatarUrl || ''} onChange={(e) => handleInputChange('avatarUrl', e.target.value)} placeholder="Custom Image URL..." className="w-full bg-gray-950/80 border border-white/5 focus:border-lime-500/50 rounded-xl px-4 py-2.5 text-xs text-white focus:outline-none font-mono shadow-inner" />
@@ -800,17 +873,61 @@ export default function PortfolioBuilder({ isAppMode: propAppMode = false }) {
                 )}
               </motion.div>
             </AnimatePresence>
+
+            {/* Mobile & Desktop Dedicated Action Bar inside Editor */}
+            <div className="pt-4 mt-4 border-t border-white/10 flex flex-col sm:flex-row gap-2.5 shrink-0">
+              <button
+                onClick={() => {
+                  haptics.selection();
+                  setMobileView('preview');
+                }}
+                className="lg:hidden w-full py-3 bg-gray-800 hover:bg-gray-700 text-gray-200 font-bold text-xs rounded-xl flex items-center justify-center gap-2 transition-all border border-gray-700 cursor-pointer active:scale-95"
+              >
+                <Eye className="w-4 h-4 text-cyan-400" />
+                <span>Switch to Live Preview</span>
+              </button>
+
+              <button
+                onClick={handlePublish}
+                disabled={isPublishing}
+                className="w-full py-3 bg-gradient-to-r from-lime-500 to-lime-400 hover:from-lime-400 hover:to-lime-300 active:scale-95 text-gray-950 font-black text-xs sm:text-sm rounded-xl shadow-lg shadow-lime-500/20 flex items-center justify-center gap-2 transition-all cursor-pointer"
+              >
+                {isPublishing ? <RefreshCw className="w-4 h-4 animate-spin" /> : <Globe className="w-4 h-4" />}
+                <span>Publish Portfolio Website</span>
+              </button>
+            </div>
           </div>
         </div>
 
         {/* === RIGHT LIVE PREVIEW === */}
-        <div className={`lg:col-span-7 flex flex-col items-center h-[calc(100vh-180px)] ${mobileView === 'editor' ? 'hidden lg:flex' : 'flex'}`}>
+        <div className={`lg:col-span-7 flex flex-col items-center h-[calc(100vh-190px)] ${mobileView === 'editor' ? 'hidden lg:flex' : 'flex'}`}>
           <div className="w-full flex items-center justify-between mb-3 px-2">
-            <span className="text-xs font-bold uppercase tracking-wider text-gray-400 flex items-center gap-1.5">
-              <Eye className="w-4 h-4 text-lime-400" /> Live Interactive Preview
-            </span>
             <div className="flex items-center gap-2">
-              <span className="text-[11px] font-semibold text-gray-400">Theme: <span className="text-lime-400 font-bold">{selectedTheme.name}</span></span>
+              <span className="text-xs font-bold uppercase tracking-wider text-gray-400 flex items-center gap-1.5">
+                <Eye className="w-4 h-4 text-lime-400" /> Live Interactive Preview
+              </span>
+            </div>
+            
+            {/* Mobile Top Preview Actions */}
+            <div className="flex items-center gap-2">
+              <button
+                onClick={() => {
+                  haptics.selection();
+                  setMobileView('editor');
+                }}
+                className="lg:hidden text-[11px] font-bold text-gray-300 bg-gray-900 border border-gray-700 px-2.5 py-1 rounded-lg flex items-center gap-1 active:scale-95 transition-all cursor-pointer"
+              >
+                <span>Edit Content</span>
+              </button>
+              
+              <button
+                onClick={handlePublish}
+                disabled={isPublishing}
+                className="text-[11px] font-black text-gray-950 bg-lime-500 hover:bg-lime-400 px-3 py-1 rounded-lg flex items-center gap-1 shadow-md shadow-lime-500/20 active:scale-95 transition-all cursor-pointer"
+              >
+                {isPublishing ? <RefreshCw className="w-3 h-3 animate-spin" /> : <Globe className="w-3 h-3" />}
+                <span>Publish</span>
+              </button>
             </div>
           </div>
 
@@ -974,7 +1091,13 @@ export default function PortfolioBuilder({ isAppMode: propAppMode = false }) {
                 <a href={publicUrl} target="_blank" rel="noreferrer" className="w-full py-3 bg-lime-500 hover:bg-lime-400 text-gray-950 font-bold rounded-xl text-sm flex items-center justify-center gap-2 transition-all shadow-lg shadow-lime-500/20">
                   <span>Open Live Portfolio</span> <ExternalLink className="w-4 h-4" />
                 </a>
-                <button onClick={() => setPublishModalOpen(false)} className="w-full py-2.5 bg-transparent hover:bg-white/5 text-gray-400 font-bold rounded-xl text-xs transition-colors cursor-pointer">
+                <button 
+                  onClick={() => {
+                    haptics.light();
+                    setPublishModalOpen(false);
+                  }} 
+                  className="w-full py-2.5 bg-transparent hover:bg-white/5 text-gray-400 font-bold rounded-xl text-xs transition-colors cursor-pointer"
+                >
                   Back to Editor
                 </button>
               </div>

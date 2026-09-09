@@ -3,10 +3,10 @@ import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { 
   Home, 
   ScanSearch, 
-  Sparkles, 
   ChevronLeft, 
   Layers
 } from 'lucide-react';
+import { haptics } from '../utils/haptics';
 
 /**
  * Top App Header Bar for Android WebView
@@ -22,7 +22,10 @@ export function AppHeader({ title = "Career Tools", showBack = false, rightActio
         <div className="flex items-center gap-2.5">
           {showBack ? (
             <button
-              onClick={() => navigate('/app')}
+              onClick={() => {
+                haptics.light();
+                navigate('/app');
+              }}
               className="w-8 h-8 rounded-xl bg-gray-900 border border-gray-800 flex items-center justify-center text-gray-300 hover:text-white active:scale-90 transition-all cursor-pointer"
               aria-label="Back to Home"
             >
@@ -31,6 +34,7 @@ export function AppHeader({ title = "Career Tools", showBack = false, rightActio
           ) : (
             <Link 
               to="/app" 
+              onClick={() => haptics.selection()}
               className="flex items-center gap-2 text-white font-bold text-base tracking-tight active:scale-95 transition-transform"
             >
               <div className="w-7 h-7 bg-lime-500/20 border border-lime-500/30 rounded-lg flex items-center justify-center text-lime-400">
@@ -76,6 +80,7 @@ export function AppBottomNav() {
         {/* Tab 1: Home */}
         <Link
           to="/app"
+          onClick={() => haptics.selection()}
           className={`flex flex-col items-center justify-center py-1.5 px-2 rounded-xl transition-all active:scale-95 ${
             isHome 
               ? 'bg-lime-500/15 text-lime-400 font-extrabold' 
@@ -89,6 +94,7 @@ export function AppBottomNav() {
         {/* Tab 2: ATS Scanner */}
         <Link
           to="/app/scanner"
+          onClick={() => haptics.selection()}
           className={`flex flex-col items-center justify-center py-1.5 px-2 rounded-xl transition-all active:scale-95 ${
             isScanner 
               ? 'bg-lime-500/15 text-lime-400 font-extrabold' 
@@ -102,6 +108,7 @@ export function AppBottomNav() {
         {/* Tab 3: Portfolio */}
         <Link
           to="/app/portfolio"
+          onClick={() => haptics.selection()}
           className={`flex flex-col items-center justify-center py-1.5 px-2 rounded-xl transition-all active:scale-95 ${
             isPortfolio 
               ? 'bg-cyan-500/15 text-cyan-400 font-extrabold' 

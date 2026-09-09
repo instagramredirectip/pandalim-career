@@ -11,6 +11,7 @@ import {
 } from 'lucide-react';
 import SEOHead from '../components/SEOHead';
 import AppLayout from '../components/AppNavigation';
+import { haptics } from '../utils/haptics';
 
 // Animation variants for staggered entrance
 const containerVariants = {
@@ -65,9 +66,12 @@ const SwipeButton = ({ to, text, colorTheme }) => {
     const threshold = containerWidth - thumbWidth - 20;
 
     if (info.offset.x >= threshold * 0.75) {
+      haptics.success();
       setUnlocked(true);
       // Programmatic navigation after a brief success delay
       setTimeout(() => navigate(to), 300);
+    } else {
+      haptics.light();
     }
   };
 
