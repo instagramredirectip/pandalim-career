@@ -850,7 +850,19 @@ writeStaticFile('/dashboard', dashboardHtml);
 addSitemapUrl('/dashboard', '0.6', 'weekly');
 console.log('✓ Pre-rendered: /dashboard');
 
-// 9. Pre-render ALL Programmatic SEO Pages
+// 9. Android App Edition
+const appHtml = generatePageHtml({
+  title: 'PandaLime Mobile App — ATS Scanner & AI Portfolio',
+  description: 'Mobile edition of PandaLime Career Suite for Android WebView. Scan your resume with AI and build your personal portfolio website in seconds.',
+  canonicalPath: '/app'
+});
+writeStaticFile('/app', appHtml);
+writeStaticFile('/app/home', appHtml);
+writeStaticFile('/app/scanner', dashboardHtml);
+writeStaticFile('/app/portfolio', templateHtml);
+console.log('✓ Pre-rendered: /app & /app/scanner & /app/portfolio');
+
+// 10. Pre-render ALL Programmatic SEO Pages
 const allSlugs = getAllPseoSlugs();
 let pseoCount = 0;
 

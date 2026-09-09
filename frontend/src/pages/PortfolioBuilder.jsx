@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import { 
   Sparkles, 
   Eye, 
@@ -40,8 +40,11 @@ import SEOHead from '../components/SEOHead';
 import { THEMES, ACCENT_COLORS, PRESET_AVATARS, ROLE_PRESETS } from '../data/portfolioTemplates';
 import { apiRequest } from '../config/api';
 import { sanitizeUrl, sanitizeText } from '../utils/sanitize';
+import { AppHeader, AppBottomNav } from '../components/AppNavigation';
 
-export default function PortfolioBuilder() {
+export default function PortfolioBuilder({ isAppMode: propAppMode = false }) {
+  const location = useLocation();
+  const isAppMode = propAppMode || location.pathname.startsWith('/app') || location.search.includes('app=true');
   // Active Preset as base
   const defaultPreset = ROLE_PRESETS[0];
 
@@ -539,47 +542,63 @@ export default function PortfolioBuilder() {
       />
 
       {/* --- TOP APP HEADER --- */}
-      <header className="bg-gray-900/90 border-b border-gray-800 sticky top-0 z-40 backdrop-blur-md px-4 py-3">
-        <div className="max-w-7xl mx-auto flex items-center justify-between gap-4">
-          
-          <div className="flex items-center gap-3">
-            <Link to="/" className="flex items-center gap-2 font-black text-white text-lg tracking-tight hover:text-lime-400 transition-colors">
-              <div className="w-8 h-8 bg-lime-500 rounded-lg flex items-center justify-center text-gray-900">
-                <Sparkles className="w-4 h-4" />
-              </div>
-              <span className="hidden sm:inline">PandaLime</span>
-            </Link>
-            <span className="text-gray-600 hidden sm:inline">/</span>
-            <div className="flex items-center gap-2">
-              <span className="text-xs font-bold uppercase tracking-wider text-lime-400 bg-lime-950/80 border border-lime-500/30 px-2 py-0.5 rounded-md">
-                Portfolio Studio
-              </span>
-              {statusMessage && (
-                <span className="text-xs font-semibold text-lime-400 animate-pulse hidden md:inline">
-                  {statusMessage}
-                </span>
-              )}
+      {isAppMode ? (
+        <AppHeader 
+          title="AI Portfolio Builder" 
+          showBack={true} 
+          rightAction={
+            <div className="flex items-center gap-1.5">
+              <button
+                onClick={() => setMobileView(mobileView === 'editor' ? 'preview' : 'editor')}
+                className="text-[11px] font-bold text-lime-400 bg-lime-950/80 border border-lime-500/30 px-2.5 py-1 rounded-lg flex items-center gap-1 active:scale-95 transition-all"
+              >
+                <span>{mobileView === 'editor' ? 'Live Preview 👁️' : 'Editor ✏️'}</span>
+              </button>
             </div>
-          </div>
-
-          {/* Desktop/Mobile Toggle & Actions */}
-          <div className="flex items-center gap-2 sm:gap-3">
+          }
+        />
+      ) : (
+        <header className="bg-gray-900/90 border-b border-gray-800 sticky top-0 z-40 backdrop-blur-md px-4 py-3">
+          <div className="max-w-7xl mx-auto flex items-center justify-between gap-4">
             
-            {/* Mobile View Switcher */}
-            <div className="lg:hidden flex bg-gray-800 rounded-lg p-0.5 border border-gray-700 text-xs font-bold">
-              <button
-                onClick={() => setMobileView('editor')}
-                className={`px-3 py-1 rounded-md transition-all ${mobileView === 'editor' ? 'bg-lime-500 text-gray-900 shadow' : 'text-gray-400'}`}
-              >
-                Editor
-              </button>
-              <button
-                onClick={() => setMobileView('preview')}
-                className={`px-3 py-1 rounded-md transition-all ${mobileView === 'preview' ? 'bg-lime-500 text-gray-900 shadow' : 'text-gray-400'}`}
-              >
-                Live Preview
-              </button>
+            <div className="flex items-center gap-3">
+              <Link to="/" className="flex items-center gap-2 font-black text-white text-lg tracking-tight hover:text-lime-400 transition-colors">
+                <div className="w-8 h-8 bg-lime-500 rounded-lg flex items-center justify-center text-gray-900">
+                  <Sparkles className="w-4 h-4" />
+                </div>
+                <span className="hidden sm:inline">PandaLime</span>
+              </Link>
+              <span className="text-gray-600 hidden sm:inline">/</span>
+              <div className="flex items-center gap-2">
+                <span className="text-xs font-bold uppercase tracking-wider text-lime-400 bg-lime-950/80 border border-lime-500/30 px-2 py-0.5 rounded-md">
+                  Portfolio Studio
+                </span>
+                {statusMessage && (
+                  <span className="text-xs font-semibold text-lime-400 animate-pulse hidden md:inline">
+                    {statusMessage}
+                  </span>
+                )}
+              </div>
             </div>
+
+            {/* Desktop/Mobile Toggle & Actions */}
+            <div className="flex items-center gap-2 sm:gap-3">
+              
+              {/* Mobile View Switcher */}
+              <div className="lg:hidden flex bg-gray-800 rounded-lg p-0.5 border border-gray-700 text-xs font-bold">
+                <button
+                  onClick={() => setMobileView('editor')}
+                  className={`px-3 py-1 rounded-md transition-all ${mobileView === 'editor' ? 'bg-lime-500 text-gray-900 shadow' : 'text-gray-400'}`}
+                >
+                  Editor
+                </button>
+                <button
+                  onClick={() => setMobileView('preview')}
+                  className={`px-3 py-1 rounded-md transition-all ${mobileView === 'preview' ? 'bg-lime-500 text-gray-900 shadow' : 'text-gray-400'}`}
+                >
+                  Live Preview
+                </button>
+              </div>
 
             {/* Desktop Device Switcher */}
             <div className="hidden lg:flex items-center bg-gray-800 rounded-lg p-0.5 border border-gray-700">
@@ -632,6 +651,7 @@ export default function PortfolioBuilder() {
           </div>
         </div>
       </header>
+      )}
 
       {/* --- CREATIVE PROMPT GENERATOR BANNER --- */}
       <section className="bg-gradient-to-r from-gray-900 via-gray-850 to-gray-900 border-b border-gray-800 py-4 px-4">
@@ -1554,6 +1574,9 @@ export default function PortfolioBuilder() {
           </div>
         </div>
       )}
+
+      {/* App Mode Bottom Navigation Bar */}
+      {isAppMode && <AppBottomNav />}
 
     </div>
   );

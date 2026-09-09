@@ -1,11 +1,14 @@
 import React, { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import { Cookie, ShieldCheck, X } from 'lucide-react';
 
 export default function CookieConsent() {
   const [isVisible, setIsVisible] = useState(false);
+  const location = useLocation();
+  const isAppMode = location.pathname.startsWith('/app') || location.search.includes('app=true');
 
   useEffect(() => {
+    if (isAppMode) return;
     // Check if user has already set their preference
     const consent = localStorage.getItem('pandalime_cookie_consent');
     if (!consent) {
@@ -15,7 +18,7 @@ export default function CookieConsent() {
       }, 700);
       return () => clearTimeout(timer);
     }
-  }, []);
+  }, [isAppMode]);
 
   const updateGoogleConsent = (granted) => {
     if (typeof window !== 'undefined' && typeof window.gtag === 'function') {
@@ -40,7 +43,7 @@ export default function CookieConsent() {
     setIsVisible(false);
   };
 
-  if (!isVisible) return null;
+  if (isAppMode || !isVisible) return null;
 
   return (
     <aside 

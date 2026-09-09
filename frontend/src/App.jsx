@@ -25,6 +25,11 @@ const PortfolioView = lazy(() => import('./pages/PortfolioView'));
 const BlogIndex = lazy(() => import('./pages/BlogIndex'));
 const BlogPost = lazy(() => import('./pages/BlogPost'));
 
+// Dedicated Android App Mode Routes (Isolated from main website)
+const AppHome = lazy(() => import('./pages/AppHome'));
+const AppScanner = lazy(() => import('./pages/AppScanner'));
+const AppPortfolio = lazy(() => import('./pages/AppPortfolio'));
+
 // Minimalist zero-CLS route loading fallback indicator
 function RouteFallback() {
   return (
@@ -44,7 +49,14 @@ function App() {
       <BrowserRouter>
         <Suspense fallback={<RouteFallback />}>
           <Routes>
-            {/* Core App Routes */}
+            {/* Dedicated Android WebView App Edition Routes (Sandboxed) */}
+            <Route path="/app" element={<AppHome />} />
+            <Route path="/app/home" element={<AppHome />} />
+            <Route path="/app/scanner" element={<AppScanner />} />
+            <Route path="/app/portfolio" element={<AppPortfolio />} />
+            <Route path="/app/portfolio-builder" element={<AppPortfolio />} />
+
+            {/* Core Website Routes */}
             <Route path="/" element={<Home />} />
             <Route path="/dashboard" element={<Dashboard />} /> 
             <Route path="/login" element={<Login />} />

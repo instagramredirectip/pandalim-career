@@ -16,6 +16,7 @@ import {
 } from 'lucide-react';
 import SEOHead from '../components/SEOHead';
 import SmartCaptchaModal from '../components/SmartCaptchaModal';
+import { AppHeader, AppBottomNav } from '../components/AppNavigation';
 
 const loadRazorpayScript = () => {
     return new Promise((resolve) => {
@@ -27,7 +28,7 @@ const loadRazorpayScript = () => {
     });
 };
 
-export default function Dashboard() {
+export default function Dashboard({ isAppMode: propAppMode = false }) {
   const [jobDescription, setJobDescription] = useState('');
   const [resumeFile, setResumeFile] = useState(null);
   const [result, setResult] = useState(null);
@@ -41,6 +42,7 @@ export default function Dashboard() {
 
   const navigate = useNavigate();
   const location = useLocation();
+  const isAppMode = propAppMode || location.pathname.startsWith('/app') || location.search.includes('app=true');
 
   useEffect(() => {
     const passedJd = location.state?.jobDescription || sessionStorage.getItem('prefill_job_description');
@@ -245,24 +247,40 @@ console.log("======================");
       />
       
       {/* Navigation Header */}
-      <nav className="print:hidden bg-white/95 backdrop-blur-md border-b border-gray-200 sticky top-0 z-40">
-        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-3 sm:py-3.5 flex justify-between items-center gap-2">
-          <Link to="/" className="flex items-center gap-2 text-gray-900 font-black text-xl sm:text-2xl tracking-tight shrink-0">
-            <div className="w-8 h-8 sm:w-9 sm:h-9 bg-lime-500 rounded-xl flex items-center justify-center text-gray-950 shadow-md shadow-lime-500/20 shrink-0">
-              <Sparkles className="w-4 h-4 sm:w-5 sm:h-5" />
+      {isAppMode ? (
+        <AppHeader 
+          title="ATS Resume Scanner" 
+          showBack={true} 
+          rightAction={
+            <Link 
+              to="/app/portfolio" 
+              className="text-[11px] font-bold text-cyan-400 bg-cyan-950/80 border border-cyan-500/30 px-2.5 py-1 rounded-lg flex items-center gap-1 active:scale-95 transition-all"
+            >
+              <span>AI Portfolio</span>
+              <span>→</span>
+            </Link>
+          }
+        />
+      ) : (
+        <nav className="print:hidden bg-white/95 backdrop-blur-md border-b border-gray-200 sticky top-0 z-40">
+          <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-3 sm:py-3.5 flex justify-between items-center gap-2">
+            <Link to="/" className="flex items-center gap-2 text-gray-900 font-black text-xl sm:text-2xl tracking-tight shrink-0">
+              <div className="w-8 h-8 sm:w-9 sm:h-9 bg-lime-500 rounded-xl flex items-center justify-center text-gray-950 shadow-md shadow-lime-500/20 shrink-0">
+                <Sparkles className="w-4 h-4 sm:w-5 sm:h-5" />
+              </div>
+              <span>PandaLime</span>
+            </Link>
+            <div className="flex items-center gap-3 text-xs sm:text-sm font-semibold shrink-0">
+              <Link to="/" className="text-gray-600 hover:text-lime-600 transition-colors hidden sm:block">
+                ← Home
+              </Link>
+              <Link to="/roast-wall" className="text-gray-600 hover:text-lime-600 transition-colors">
+                Community Wall →
+              </Link>
             </div>
-            <span>PandaLime</span>
-          </Link>
-          <div className="flex items-center gap-3 text-xs sm:text-sm font-semibold shrink-0">
-            <Link to="/" className="text-gray-600 hover:text-lime-600 transition-colors hidden sm:block">
-              ← Home
-            </Link>
-            <Link to="/roast-wall" className="text-gray-600 hover:text-lime-600 transition-colors">
-              Community Wall →
-            </Link>
           </div>
-        </div>
-      </nav>
+        </nav>
+      )}
 
       {/* Required Inline Styles for the Scanner Animation */}
       <style>
@@ -538,6 +556,9 @@ console.log("======================");
         onVerify={handleExecuteScan}
         title="Verify AI Resume Scan"
       />
+
+      {/* App Mode Bottom Navigation Bar */}
+      {isAppMode && <AppBottomNav />}
     </div>
   );
 }

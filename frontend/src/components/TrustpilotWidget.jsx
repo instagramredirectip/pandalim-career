@@ -70,9 +70,10 @@ export default function TrustpilotWidget() {
   const location = useLocation();
 
   const isPortfolioPage = location.pathname.startsWith('/p/') || location.pathname.startsWith('/portfolio/');
+  const isAppMode = location.pathname.startsWith('/app') || location.search.includes('app=true');
 
   useEffect(() => {
-    if (isPortfolioPage) return;
+    if (isPortfolioPage || isAppMode) return;
 
     // Check 7-day dismissal status
     try {
@@ -90,7 +91,7 @@ export default function TrustpilotWidget() {
     }, 2800);
 
     return () => clearTimeout(timer);
-  }, [isPortfolioPage]);
+  }, [isPortfolioPage, isAppMode]);
 
   const handleDismiss = () => {
     setIsVisible(false);
@@ -105,7 +106,7 @@ export default function TrustpilotWidget() {
     window.open(TRUSTPILOT_REVIEW_URL, '_blank', 'noopener,noreferrer');
   };
 
-  if (isPortfolioPage || !isVisible) return null;
+  if (isPortfolioPage || isAppMode || !isVisible) return null;
 
   return (
     <aside
