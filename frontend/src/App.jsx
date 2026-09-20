@@ -30,11 +30,13 @@ const AppHome = lazy(() => import('./pages/AppHome'));
 const AppScanner = lazy(() => import('./pages/AppScanner'));
 const AppPortfolio = lazy(() => import('./pages/AppPortfolio'));
 
-// Minimalist zero-CLS route loading fallback indicator
+import NavigationProgressBar from './components/NavigationProgressBar';
+
+// Minimalist zero-CLS route loading fallback indicator with sharp radar telemetry
 function RouteFallback() {
   return (
-    <div className="fixed top-0 left-0 right-0 h-0.5 bg-transparent z-50 overflow-hidden pointer-events-none" aria-hidden="true">
-      <div className="h-full bg-lime-500 w-full animate-pulse opacity-80" />
+    <div className="fixed top-0 left-0 right-0 h-[2.5px] bg-transparent z-[9999] overflow-hidden pointer-events-none" aria-hidden="true">
+      <div className="h-full bg-gradient-to-r from-[#D2FF00] via-[#FF5722] to-[#D2FF00] w-full animate-pulse opacity-90 shadow-[0_0_8px_rgba(210,255,0,0.8)]" />
     </div>
   );
 }
@@ -47,6 +49,7 @@ function App() {
   return (
     <HelmetProvider>
       <BrowserRouter>
+        <NavigationProgressBar />
         <Suspense fallback={<RouteFallback />}>
           <Routes>
             {/* Dedicated Android WebView App Edition Routes (Sandboxed) */}

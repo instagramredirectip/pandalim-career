@@ -29,6 +29,7 @@ export default function Footer() {
   ];
 
   const topGuides = [
+    { title: "Model Context Protocol (MCP) AI Guide", slug: "model-context-protocol-mcp-ai-workflows-guide" },
     { title: "How to Beat ATS Bots in 2026", slug: "how-to-beat-applicant-tracking-systems-2026-guide" },
     { title: "Google X-Y-Z Resume Bullet Formula", slug: "google-xyz-formula-resume-bullet-points-examples" },
     { title: "Top ATS-Friendly Resume Formats", slug: "top-ats-friendly-resume-formats-templates" },
@@ -37,35 +38,35 @@ export default function Footer() {
   ];
 
   return (
-    <footer className="bg-gray-950 text-gray-300 border-t border-gray-800 pt-16 pb-12 font-sans" aria-label="Site Footer">
+    <footer className="bg-[#08090C] text-[#9BA3AF] border-t border-[#1F242D] pt-14 pb-10 font-sans" aria-label="Site Footer">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         
         {/* Main Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-10 pb-12 border-b border-gray-800">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-8 pb-10 border-b border-[#1F242D]">
           
           {/* Col 1: Brand & Mission */}
           <div className="lg:col-span-2 space-y-4">
             <Link 
               to="/" 
-              className="flex items-center gap-2.5 text-white font-black text-2xl tracking-tight"
+              className="flex items-center gap-2.5 text-[#F5F7FA] font-black text-2xl tracking-tight"
             >
-              <div className="w-9 h-9 bg-lime-500 rounded-xl flex items-center justify-center text-gray-950 shadow-md shadow-lime-500/20">
-                <Sparkles className="w-5 h-5" />
+              <div className="w-8 h-8 bg-[#D2FF00] rounded-[2px] flex items-center justify-center text-[#08090C] shadow-[0_0_10px_rgba(210,255,0,0.3)]">
+                <Sparkles className="w-4 h-4 text-[#08090C]" />
               </div>
               <span>PandaLime</span>
             </Link>
             
-            <p className="text-sm text-gray-400 leading-relaxed max-w-sm">
+            <p className="text-xs sm:text-sm text-[#9BA3AF] leading-relaxed max-w-sm">
               Empowering engineers, job seekers, and career changers worldwide with AI-powered ATS resume optimization, automated keyword gap analysis, and developer portfolio websites.
             </p>
 
-            <div className="flex flex-wrap items-center gap-3 pt-2 text-xs text-gray-400">
-              <span className="flex items-center gap-1.5 bg-gray-900 border border-gray-800 px-3 py-1.5 rounded-lg">
-                <ShieldCheck className="w-4 h-4 text-lime-400" />
+            <div className="flex flex-wrap items-center gap-2 pt-2 text-xs font-mono text-[#9BA3AF]">
+              <span className="flex items-center gap-1.5 bg-[#0E1116] border border-[#1F242D] px-2.5 py-1 rounded-[2px]">
+                <ShieldCheck className="w-3.5 h-3.5 text-[#D2FF00]" />
                 <span>Zero-Data Resale Guarantee</span>
               </span>
-              <span className="flex items-center gap-1.5 bg-gray-900 border border-gray-800 px-3 py-1.5 rounded-lg">
-                <Lock className="w-4 h-4 text-emerald-400" />
+              <span className="flex items-center gap-1.5 bg-[#0E1116] border border-[#1F242D] px-2.5 py-1 rounded-[2px]">
+                <Lock className="w-3.5 h-3.5 text-[#FF5722]" />
                 <span>256-Bit SSL Encrypted</span>
               </span>
             </div>
@@ -73,17 +74,17 @@ export default function Footer() {
 
           {/* Col 2: Core AI Tools */}
           <div className="space-y-3">
-            <h3 className="text-xs font-extrabold uppercase tracking-widest text-white flex items-center gap-1.5">
-              <Wrench className="w-3.5 h-3.5 text-lime-400" /> AI Career Tools
+            <h3 className="font-mono text-[11px] font-bold uppercase tracking-widest text-[#F5F7FA] flex items-center gap-1.5">
+              <Wrench className="w-3.5 h-3.5 text-[#D2FF00]" /> AI Tools Suite
             </h3>
-            <ul className="space-y-2 text-sm">
+            <ul className="space-y-2 font-mono text-xs">
               <li>
                 <Link 
                   to="/dashboard" 
                   onMouseEnter={() => prefetchRoute('/dashboard')}
-                  className="text-gray-400 hover:text-white transition-colors flex items-center gap-1.5"
+                  className="text-[#9BA3AF] hover:text-[#D2FF00] transition-colors flex items-center gap-1.5"
                 >
-                  <ScanLine className="w-3.5 h-3.5 text-lime-500" />
+                  <ScanLine className="w-3.5 h-3.5 text-[#D2FF00]" />
                   <span>ATS Resume Scanner</span>
                 </Link>
               </li>
@@ -91,9 +92,9 @@ export default function Footer() {
                 <Link 
                   to="/portfolio-builder" 
                   onMouseEnter={() => prefetchRoute('/portfolio-builder')}
-                  className="text-gray-400 hover:text-white transition-colors flex items-center gap-1.5"
+                  className="text-[#9BA3AF] hover:text-[#FF5722] transition-colors flex items-center gap-1.5"
                 >
-                  <Globe className="w-3.5 h-3.5 text-emerald-400" />
+                  <Globe className="w-3.5 h-3.5 text-[#FF5722]" />
                   <span>AI Portfolio Studio</span>
                 </Link>
               </li>
@@ -101,7 +102,7 @@ export default function Footer() {
                 <Link 
                   to="/tools/star-bullet-generator" 
                   onMouseEnter={() => prefetchRoute('/tools/star-bullet-generator')}
-                  className="text-gray-400 hover:text-white transition-colors"
+                  className="text-[#9BA3AF] hover:text-[#F5F7FA] transition-colors"
                 >
                   STAR Bullet Generator
                 </Link>
@@ -110,7 +111,7 @@ export default function Footer() {
                 <Link 
                   to="/tools/job-description-keyword-extractor" 
                   onMouseEnter={() => prefetchRoute('/tools/job-description-keyword-extractor')}
-                  className="text-gray-400 hover:text-white transition-colors"
+                  className="text-[#9BA3AF] hover:text-[#F5F7FA] transition-colors"
                 >
                   JD Keyword Extractor
                 </Link>
@@ -119,7 +120,7 @@ export default function Footer() {
                 <Link 
                   to="/tools/ats-action-verbs" 
                   onMouseEnter={() => prefetchRoute('/tools/ats-action-verbs')}
-                  className="text-gray-400 hover:text-white transition-colors"
+                  className="text-[#9BA3AF] hover:text-[#F5F7FA] transition-colors"
                 >
                   250+ ATS Action Verbs
                 </Link>
@@ -128,9 +129,9 @@ export default function Footer() {
                 <Link 
                   to="/roast-wall" 
                   onMouseEnter={() => prefetchRoute('/roast-wall')}
-                  className="text-gray-400 hover:text-white transition-colors flex items-center gap-1.5"
+                  className="text-[#9BA3AF] hover:text-[#FF5722] transition-colors flex items-center gap-1.5"
                 >
-                  <Flame className="w-3.5 h-3.5 text-rose-400" />
+                  <Flame className="w-3.5 h-3.5 text-[#FF5722]" />
                   <span>Community Roast Wall</span>
                 </Link>
               </li>
@@ -139,16 +140,16 @@ export default function Footer() {
 
           {/* Col 3: Editorial Guides & Blog */}
           <div className="space-y-3">
-            <h3 className="text-xs font-extrabold uppercase tracking-widest text-white flex items-center gap-1.5">
-              <BookOpen className="w-3.5 h-3.5 text-cyan-400" /> Career Guides & Blog
+            <h3 className="font-mono text-[11px] font-bold uppercase tracking-widest text-[#F5F7FA] flex items-center gap-1.5">
+              <BookOpen className="w-3.5 h-3.5 text-[#D2FF00]" /> Career Guides
             </h3>
-            <ul className="space-y-2 text-sm">
+            <ul className="space-y-2 font-mono text-xs">
               {topGuides.map(guide => (
                 <li key={guide.slug}>
                   <Link 
                     to={`/blog/${guide.slug}`} 
                     onMouseEnter={() => prefetchRoute(`/blog/${guide.slug}`)}
-                    className="text-gray-400 hover:text-white transition-colors line-clamp-1"
+                    className="text-[#9BA3AF] hover:text-[#F5F7FA] transition-colors line-clamp-1"
                   >
                     {guide.title}
                   </Link>
@@ -158,9 +159,9 @@ export default function Footer() {
                 <Link 
                   to="/blog" 
                   onMouseEnter={() => prefetchRoute('/blog')}
-                  className="text-lime-400 hover:text-lime-300 font-bold text-xs flex items-center gap-1"
+                  className="text-[#D2FF00] hover:underline font-bold text-xs flex items-center gap-1"
                 >
-                  <span>Explore All 12 Guides</span>
+                  <span>Explore All Guides</span>
                   <span>→</span>
                 </Link>
               </li>
@@ -169,25 +170,25 @@ export default function Footer() {
 
           {/* Col 4: Company & Legal */}
           <div className="space-y-3">
-            <h3 className="text-xs font-extrabold uppercase tracking-widest text-white">
-              Company & Legal
+            <h3 className="font-mono text-[11px] font-bold uppercase tracking-widest text-[#F5F7FA]">
+              Company &amp; Legal
             </h3>
-            <ul className="space-y-2 text-sm">
+            <ul className="space-y-2 font-mono text-xs">
               <li>
                 <Link 
                   to="/contact" 
                   onMouseEnter={() => prefetchRoute('/contact')}
-                  className="text-gray-400 hover:text-white transition-colors flex items-center gap-1.5"
+                  className="text-[#9BA3AF] hover:text-[#F5F7FA] transition-colors flex items-center gap-1.5"
                 >
-                  <Mail className="w-3.5 h-3.5 text-gray-500" />
-                  <span>Contact & Support</span>
+                  <Mail className="w-3.5 h-3.5 text-[#505763]" />
+                  <span>Contact &amp; Support</span>
                 </Link>
               </li>
               <li>
                 <Link 
                   to="/privacy-policy" 
                   onMouseEnter={() => prefetchRoute('/privacy-policy')}
-                  className="text-gray-400 hover:text-white transition-colors"
+                  className="text-[#9BA3AF] hover:text-[#F5F7FA] transition-colors"
                 >
                   Privacy Policy
                 </Link>
@@ -196,7 +197,7 @@ export default function Footer() {
                 <Link 
                   to="/terms" 
                   onMouseEnter={() => prefetchRoute('/terms')}
-                  className="text-gray-400 hover:text-white transition-colors"
+                  className="text-[#9BA3AF] hover:text-[#F5F7FA] transition-colors"
                 >
                   Terms of Service
                 </Link>
@@ -205,10 +206,10 @@ export default function Footer() {
                 <Link 
                   to="/sitemap" 
                   onMouseEnter={() => prefetchRoute('/sitemap')}
-                  className="text-gray-400 hover:text-white transition-colors flex items-center gap-1.5"
+                  className="text-[#9BA3AF] hover:text-[#F5F7FA] transition-colors flex items-center gap-1.5"
                 >
-                  <MapPin className="w-3.5 h-3.5 text-gray-500" />
-                  <span>HTML Sitemap & Directory</span>
+                  <MapPin className="w-3.5 h-3.5 text-[#505763]" />
+                  <span>HTML Sitemap &amp; Directory</span>
                 </Link>
               </li>
               <li>
@@ -216,7 +217,7 @@ export default function Footer() {
                   href="https://www.trustpilot.com/review/pandalime.com" 
                   target="_blank" 
                   rel="noopener noreferrer"
-                  className="text-emerald-400 hover:text-emerald-300 font-medium transition-colors flex items-center gap-1"
+                  className="text-[#D2FF00] hover:underline font-medium transition-colors flex items-center gap-1"
                 >
                   <span>Trustpilot Reviews</span>
                   <ExternalLink className="w-3 h-3" />
@@ -228,10 +229,10 @@ export default function Footer() {
         </div>
 
         {/* Regional Languages Bar */}
-        <div className="py-6 border-b border-gray-800 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
-          <div className="flex items-center gap-2 text-xs font-bold text-gray-400">
-            <Languages className="w-4 h-4 text-lime-400" />
-            <span>PandaLime in Regional Languages:</span>
+        <div className="py-5 border-b border-[#1F242D] flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+          <div className="flex items-center gap-2 font-mono text-xs font-bold text-[#9BA3AF]">
+            <Languages className="w-4 h-4 text-[#D2FF00]" />
+            <span>PandaLime Regional Portals:</span>
           </div>
           <div className="flex flex-wrap items-center gap-2">
             {regionalLanguages.map(lang => (
@@ -239,7 +240,7 @@ export default function Footer() {
                 key={lang.code}
                 to={`/${lang.code}`}
                 onMouseEnter={() => prefetchRoute(`/${lang.code}`)}
-                className="px-2.5 py-1 bg-gray-900 hover:bg-gray-800 text-gray-300 hover:text-white rounded-lg text-xs border border-gray-800 hover:border-gray-700 transition-colors"
+                className="px-2.5 py-1 bg-[#0E1116] hover:bg-[#151921] text-[#9BA3AF] hover:text-[#F5F7FA] rounded-[2px] font-mono text-xs border border-[#1F242D] hover:border-[#D2FF00] transition-colors"
               >
                 {lang.label}
               </Link>
@@ -248,12 +249,12 @@ export default function Footer() {
         </div>
 
         {/* Bottom Bar */}
-        <div className="pt-6 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-gray-400 text-center sm:text-left">
+        <div className="pt-6 flex flex-col sm:flex-row items-center justify-between gap-4 font-mono text-xs text-[#505763] text-center sm:text-left">
           <p>© {currentYear} PandaLime Career Services. All rights reserved.</p>
           <p className="flex items-center justify-center gap-4">
-            <span>ATS Calibration & Verification Engine v3.2</span>
+            <span>ATS Core Engine v4.8</span>
             <span>•</span>
-            <Link to="/contact" className="hover:text-gray-300">Support: microapkdeveolper@gmail.com</Link>
+            <Link to="/contact" className="hover:text-[#9BA3AF]">Support: microapkdeveolper@gmail.com</Link>
           </p>
         </div>
 
@@ -261,4 +262,3 @@ export default function Footer() {
     </footer>
   );
 }
-

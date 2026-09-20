@@ -154,7 +154,7 @@ export default function AtsActionVerbs() {
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
               placeholder="Search verbs, meanings, or skills (e.g. 'architected', 'scaled', 'python')..."
-              className="w-full pl-12 pr-10 py-3.5 rounded-xl border border-gray-200 focus:border-purple-500 focus:ring-4 focus:ring-purple-500/10 outline-none text-sm text-gray-800 shadow-sm"
+              className="w-full pl-12 pr-10 py-3.5 rounded-[2px] border border-gray-200 focus:border-purple-500 focus:ring-2 focus:ring-purple-500/10 outline-none text-sm text-gray-800 shadow-sm font-mono text-xs"
             />
             {searchQuery && (
               <button 
@@ -173,7 +173,7 @@ export default function AtsActionVerbs() {
         <div className="max-w-6xl mx-auto px-4 flex items-center gap-2 overflow-x-auto no-scrollbar text-xs">
           <button
             onClick={() => setSelectedCategory('all')}
-            className={`px-4 py-2 rounded-xl font-bold whitespace-nowrap transition-all shrink-0 ${
+            className={`px-4 py-2 rounded-[2px] font-bold whitespace-nowrap transition-all shrink-0 font-mono text-xs ${
               selectedCategory === 'all'
                 ? 'bg-gray-900 text-white shadow-sm'
                 : 'bg-white text-gray-700 hover:bg-gray-200 border border-gray-200'
@@ -185,7 +185,7 @@ export default function AtsActionVerbs() {
             <button
               key={cat.id}
               onClick={() => setSelectedCategory(cat.id)}
-              className={`px-4 py-2 rounded-xl font-bold whitespace-nowrap transition-all shrink-0 ${
+              className={`px-4 py-2 rounded-[2px] font-bold whitespace-nowrap transition-all shrink-0 font-mono text-xs ${
                 selectedCategory === cat.id
                   ? 'bg-purple-600 text-white shadow-sm'
                   : 'bg-white text-gray-700 hover:bg-purple-50 hover:text-purple-800 border border-gray-200'
@@ -200,12 +200,12 @@ export default function AtsActionVerbs() {
       {/* --- VERBS DIRECTORY LIST --- */}
       <main className="max-w-6xl mx-auto px-4 py-12 space-y-12">
         {filteredCategories.length === 0 ? (
-          <div className="py-16 text-center text-gray-500 space-y-3 bg-white rounded-2xl border border-gray-200 p-8">
+          <div className="py-16 text-center text-gray-500 space-y-3 bg-white rounded-[2px] border border-gray-200 p-8">
             <p className="font-bold text-lg">No action verbs matched "{searchQuery}"</p>
             <p className="text-xs text-gray-400">Try searching for a different keyword or resetting your category filter.</p>
             <button
               onClick={() => { setSearchQuery(''); setSelectedCategory('all'); }}
-              className="px-4 py-2 bg-gray-900 text-white rounded-xl text-xs font-bold"
+              className="px-4 py-2 bg-gray-900 text-white rounded-[2px] text-xs font-bold font-mono"
             >
               Clear Filters
             </button>
@@ -218,7 +218,7 @@ export default function AtsActionVerbs() {
                 <div>
                   <h2 className="text-2xl font-bold text-gray-900 flex items-center gap-2">
                     <span>{category.name}</span>
-                    <span className="text-xs px-2.5 py-0.5 rounded-md bg-purple-100 text-purple-800 font-extrabold uppercase">
+                    <span className="text-xs px-2.5 py-0.5 rounded-[2px] bg-purple-100 text-purple-800 font-extrabold uppercase font-mono">
                       {category.verbs.length} Verbs
                     </span>
                   </h2>
@@ -230,14 +230,14 @@ export default function AtsActionVerbs() {
                 {category.verbs.map((item, vIdx) => (
                   <div 
                     key={vIdx}
-                    className="bg-white rounded-xl border border-gray-200 p-5 shadow-sm hover:shadow-md hover:border-purple-300 transition-all flex flex-col justify-between group space-y-4"
+                    className="bg-white rounded-[2px] border border-gray-200 p-5 shadow-sm hover:shadow-md hover:border-purple-300 transition-all flex flex-col justify-between group space-y-4"
                   >
                     <div>
                       <div className="flex items-center justify-between mb-1.5">
                         <h3 className="text-lg font-black text-gray-900 group-hover:text-purple-700 transition-colors">
                           {item.verb}
                         </h3>
-                        <span className="text-[10px] text-gray-400 uppercase font-semibold">
+                        <span className="text-[10px] text-gray-400 uppercase font-semibold font-mono">
                           {category.badge}
                         </span>
                       </div>
@@ -246,7 +246,7 @@ export default function AtsActionVerbs() {
                         {item.meaning}
                       </p>
 
-                      <div className="bg-gray-50 p-3 rounded-xl border border-gray-100 text-xs text-gray-700 leading-relaxed font-mono">
+                      <div className="bg-gray-50 p-3 rounded-[2px] border border-gray-100 text-xs text-gray-700 leading-relaxed font-mono">
                         <p className="font-sans text-[11px] font-bold text-purple-700 mb-1">Example Bullet:</p>
                         "{item.example}"
                       </div>
@@ -254,7 +254,7 @@ export default function AtsActionVerbs() {
 
                     <button
                       onClick={() => handleCopyExample(item.example, item.verb)}
-                      className="w-full py-2 bg-gray-50 hover:bg-purple-50 group-hover:border-purple-200 border border-gray-200 text-gray-700 hover:text-purple-800 rounded-lg text-xs font-bold flex items-center justify-center gap-1.5 transition-colors"
+                      className="w-full py-2 bg-gray-50 hover:bg-purple-50 group-hover:border-purple-200 border border-gray-200 text-gray-700 hover:text-purple-800 rounded-[2px] text-xs font-bold flex items-center justify-center gap-1.5 transition-colors cursor-pointer"
                     >
                       {copiedVerb === item.verb ? (
                         <>

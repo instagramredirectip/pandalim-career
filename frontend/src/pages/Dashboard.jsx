@@ -256,7 +256,7 @@ console.log("======================");
         <nav className="print:hidden bg-white/95 backdrop-blur-md border-b border-gray-200 sticky top-0 z-40">
           <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-3 sm:py-3.5 flex justify-between items-center gap-2">
             <Link to="/" className="flex items-center gap-2 text-gray-900 font-black text-xl sm:text-2xl tracking-tight shrink-0">
-              <div className="w-8 h-8 sm:w-9 sm:h-9 bg-lime-500 rounded-xl flex items-center justify-center text-gray-950 shadow-md shadow-lime-500/20 shrink-0">
+              <div className="w-8 h-8 sm:w-9 sm:h-9 bg-lime-500 rounded-[2px] flex items-center justify-center text-gray-950 shadow-md shadow-lime-500/20 shrink-0">
                 <Sparkles className="w-4 h-4 sm:w-5 sm:h-5" />
               </div>
               <span>PandaLime</span>
@@ -297,18 +297,18 @@ console.log("======================");
         {/* STATE 1: LOADING / SCANNING ANIMATION */}
         {loading && !result ? (
           <div className="flex flex-col items-center justify-center py-16 sm:py-20 animate-in fade-in duration-500">
-            <div className="relative w-64 h-80 bg-white border border-gray-200 rounded-2xl shadow-xl overflow-hidden flex flex-col items-center pt-8">
+            <div className="relative w-64 h-80 bg-white border border-gray-200 rounded-[2px] shadow-xl overflow-hidden flex flex-col items-center pt-8">
               {/* Fake PDF Content */}
-              <div className="w-14 h-14 bg-lime-100 rounded-xl flex items-center justify-center mb-6 text-lime-600">
+              <div className="w-14 h-14 bg-lime-100 rounded-[2px] flex items-center justify-center mb-6 text-lime-600">
                  <FileText size={28} />
               </div>
-              <div className="w-3/4 h-2 bg-gray-100 rounded-md mb-8"></div>
+              <div className="w-3/4 h-2 bg-gray-100 rounded-none mb-8"></div>
               <div className="w-5/6 space-y-3">
-                <div className="h-2 bg-gray-100 rounded-md w-full"></div>
-                <div className="h-2 bg-gray-100 rounded-md w-5/6"></div>
-                <div className="h-2 bg-gray-100 rounded-md w-4/6"></div>
-                <div className="h-2 bg-gray-100 rounded-md w-full mt-6"></div>
-                <div className="h-2 bg-gray-100 rounded-md w-3/4"></div>
+                <div className="h-2 bg-gray-100 rounded-none w-full"></div>
+                <div className="h-2 bg-gray-100 rounded-none w-5/6"></div>
+                <div className="h-2 bg-gray-100 rounded-none w-4/6"></div>
+                <div className="h-2 bg-gray-100 rounded-none w-full mt-6"></div>
+                <div className="h-2 bg-gray-100 rounded-none w-3/4"></div>
               </div>
 
               {/* Grid Overlay */}
@@ -330,16 +330,16 @@ console.log("======================");
         !result ? (
           <div className="animate-in fade-in slide-in-from-bottom-4 duration-500">
             <div className="text-center mb-10">
-              <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-md bg-lime-100 text-lime-900 border border-lime-300 font-bold text-xs sm:text-sm mb-5 shadow-xs">
+              <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-[2px] bg-lime-100 text-lime-900 border border-lime-300 font-bold text-xs sm:text-sm mb-5 shadow-xs">
                 <Sparkles size={16} className="text-lime-600" /> Advanced AI Scanner
               </div>
               <h1 className="text-3xl sm:text-4xl md:text-5xl font-black text-gray-900 mb-4 tracking-tight">Beat the Corporate AI Filter</h1>
               <p className="text-gray-600 text-base sm:text-lg max-w-xl mx-auto font-medium">Upload your resume to see exactly how a recruiter's Applicant Tracking System scores your profile.</p>
             </div>
 
-            <div className="bg-white rounded-2xl shadow-xl shadow-gray-200/60 border border-gray-200 p-6 sm:p-8 md:p-10">
+            <div className="bg-white rounded-[2px] shadow-xl shadow-gray-200/60 border border-gray-200 p-6 sm:p-8 md:p-10">
               {prefilledFromTools && (
-                <div className="mb-6 p-4 bg-lime-50 border border-lime-300 rounded-xl flex items-center gap-3 text-xs text-lime-900 font-bold animate-in fade-in">
+                <div className="mb-6 p-4 bg-lime-50 border border-lime-300 rounded-[2px] flex items-center gap-3 text-xs text-lime-900 font-bold animate-in fade-in">
                   <CheckCircle className="w-4 h-4 text-lime-600 shrink-0" />
                   <span>Target Job Description loaded from Keyword Extractor! Upload your resume PDF below to run the ATS scan.</span>
                 </div>
@@ -354,7 +354,7 @@ console.log("======================");
                     rows={5} 
                     value={jobDescription} 
                     onChange={(e) => setJobDescription(e.target.value)} 
-                    className="w-full px-5 py-4 rounded-xl border border-gray-200 bg-gray-50/50 text-gray-900 placeholder:text-gray-400 focus:bg-white focus:ring-4 focus:ring-lime-500/20 focus:border-lime-500 outline-none resize-none transition-all shadow-xs text-sm sm:text-base" 
+                    className="w-full px-5 py-4 rounded-[2px] border border-gray-200 bg-gray-50/50 text-gray-900 placeholder:text-gray-400 focus:bg-white focus:ring-2 focus:ring-lime-500/20 focus:border-lime-500 outline-none resize-none transition-all shadow-xs text-sm sm:text-base font-mono" 
                     placeholder="Paste the requirements from the job posting here..." 
                   />
                 </div>
@@ -363,10 +363,10 @@ console.log("======================");
                   <label className="flex items-center gap-2 text-sm font-bold text-gray-900 mb-3">
                     <FileText size={18} className="text-lime-600" /> Your Resume (PDF only)
                   </label>
-                  <div className={`relative border-2 border-dashed rounded-xl p-8 sm:p-10 text-center transition-all cursor-pointer group ${resumeFile ? 'border-lime-500 bg-lime-50/50' : 'border-gray-300 bg-gray-50/50 hover:border-lime-500 hover:bg-lime-50/20'}`}>
+                  <div className={`relative border-2 border-dashed rounded-[2px] p-8 sm:p-10 text-center transition-all cursor-pointer group ${resumeFile ? 'border-lime-500 bg-lime-50/50' : 'border-gray-300 bg-gray-50/50 hover:border-lime-500 hover:bg-lime-50/20'}`}>
                     <input type="file" accept="application/pdf" required onChange={handleFileChange} className="absolute inset-0 w-full h-full opacity-0 cursor-pointer z-10" />
                     <div className="flex flex-col items-center gap-3">
-                      <div className={`w-14 h-14 rounded-xl flex items-center justify-center transition-transform group-hover:scale-105 shadow-sm ${resumeFile ? 'bg-lime-500 text-gray-950 shadow-lime-500/30 font-bold' : 'bg-white text-lime-600 border border-gray-200'}`}>
+                      <div className={`w-14 h-14 rounded-[2px] flex items-center justify-center transition-transform group-hover:scale-105 shadow-sm ${resumeFile ? 'bg-lime-500 text-gray-950 shadow-lime-500/30 font-bold' : 'bg-white text-lime-600 border border-gray-200'}`}>
                         {resumeFile ? <CheckCircle size={26} /> : <UploadCloud size={26} />}
                       </div>
                       {resumeFile ? (
@@ -387,7 +387,7 @@ console.log("======================");
                 <button 
                   type="submit" 
                   disabled={!jobDescription || !resumeFile} 
-                  className="w-full flex items-center justify-center gap-2 bg-gray-900 hover:bg-lime-500 hover:text-gray-950 text-white py-4 rounded-xl font-bold text-base sm:text-lg transition-all disabled:opacity-40 disabled:hover:bg-gray-900 disabled:hover:text-white disabled:cursor-not-allowed shadow-xl shadow-gray-900/10 active:scale-[0.98] cursor-pointer"
+                  className="w-full flex items-center justify-center gap-2 bg-gray-900 hover:bg-lime-500 hover:text-gray-950 text-white py-4 rounded-[2px] font-bold text-base sm:text-lg transition-all disabled:opacity-40 disabled:hover:bg-gray-900 disabled:hover:text-white disabled:cursor-not-allowed shadow-xl shadow-gray-900/10 active:scale-[0.98] cursor-pointer"
                 >
                   <Zap size={20} />
                   <span>Scan My Resume Now</span>
@@ -400,7 +400,7 @@ console.log("======================");
         /* STATE 3: RESULTS VIEW */
         (
           <div className="space-y-6 animate-in fade-in slide-in-from-bottom-4 duration-500">
-             <div id="premium-report-content" className="bg-white rounded-2xl shadow-xl shadow-gray-200/50 border border-gray-200 overflow-hidden print:shadow-none print:border-0 relative">
+             <div id="premium-report-content" className="bg-white rounded-[2px] shadow-xl shadow-gray-200/50 border border-gray-200 overflow-hidden print:shadow-none print:border-0 relative">
                  
                  <div className="p-8 md:p-12 text-center border-b border-gray-200 bg-gradient-to-b from-gray-50/80 to-white">
                     <h2 className="text-xs sm:text-sm font-bold text-gray-500 uppercase tracking-widest mb-4">Your ATS Match Score</h2>
@@ -417,7 +417,7 @@ console.log("======================");
                   <button
                     onClick={handleShareToWall}
                     disabled={isSharedToWall}
-                    className={`px-5 py-2.5 rounded-lg font-bold text-sm transition-all duration-300 shadow-xs flex items-center gap-2 ${
+                    className={`px-5 py-2.5 rounded-[2px] font-bold text-sm transition-all duration-300 shadow-xs flex items-center gap-2 ${
                       isSharedToWall 
                         ? 'bg-gray-100 text-gray-500 cursor-not-allowed border border-gray-200'
                         : 'bg-indigo-50 text-indigo-700 hover:bg-indigo-100 hover:shadow-md border border-indigo-200 cursor-pointer'
@@ -444,7 +444,7 @@ console.log("======================");
                       </h3>
                       <div className="flex flex-wrap gap-2 sm:gap-2.5">
                           {result.missing_keywords?.map((word, index) => (
-                              <span key={index} className="px-3.5 py-1.5 bg-amber-50 border border-amber-200 rounded-lg text-sm font-bold text-amber-900 shadow-xs">{word}</span>
+                              <span key={index} className="px-3.5 py-1.5 bg-amber-50 border border-amber-200 rounded-[2px] text-sm font-bold text-amber-900 shadow-xs font-mono">{word}</span>
                           ))}
                       </div>
                     </div>
@@ -453,7 +453,7 @@ console.log("======================");
                       <h3 className="text-xl font-extrabold mb-4 text-gray-900 flex items-center gap-2">
                         <ScanSearch className="text-blue-500" /> AI Resume Critique
                       </h3>
-                      <div className="bg-blue-50/70 p-6 rounded-xl border border-blue-200/80">
+                      <div className="bg-blue-50/70 p-6 rounded-[2px] border border-blue-200/80">
                         <p className="text-gray-800 leading-relaxed text-base sm:text-lg font-medium">{result.resume_critique}</p>
                       </div>
                     </div>
@@ -465,7 +465,7 @@ console.log("======================");
                         </h3>
                         <div className="space-y-4 mb-12">
                             {result.rewritten_bullets?.map((bullet, i) => (
-                                <div key={i} className="p-5 sm:p-6 bg-lime-50/70 rounded-xl border border-lime-200 flex gap-4 items-start shadow-xs">
+                                <div key={i} className="p-5 sm:p-6 bg-lime-50/70 rounded-[2px] border border-lime-200 flex gap-4 items-start shadow-xs">
                                     <CheckCircle className="text-lime-600 shrink-0 mt-1" size={24} />
                                     <p className="text-gray-900 font-medium leading-relaxed text-base sm:text-lg">{bullet}</p>
                                 </div>
@@ -475,7 +475,7 @@ console.log("======================");
                         <h3 className="text-xl font-extrabold mb-6 text-gray-900 flex items-center gap-2">
                           <FileText className="text-purple-600" /> Tailored Cover Letter
                         </h3>
-                        <div className="p-6 sm:p-8 bg-gray-50 rounded-xl border border-gray-200 text-gray-900 whitespace-pre-wrap font-serif leading-loose text-base sm:text-lg shadow-inner">
+                        <div className="p-6 sm:p-8 bg-gray-50 rounded-[2px] border border-gray-200 text-gray-900 whitespace-pre-wrap font-serif leading-loose text-base sm:text-lg shadow-inner">
                             {result.cover_letter}
                         </div>
                     </div>
@@ -485,7 +485,7 @@ console.log("======================");
              {/* Bottom Action Bars */}
              {!isUnlocked ? (
                  <div className="fixed bottom-0 left-0 right-0 z-50 flex flex-col items-center justify-center bg-white/95 backdrop-blur-xl border-t border-gray-200 p-4 sm:p-6 text-center shadow-[0_-20px_40px_rgba(0,0,0,0.08)] print:hidden">
-                    <div className="w-10 h-1 bg-gray-300 rounded-full mb-4 sm:hidden"></div>
+                    <div className="w-10 h-1 bg-gray-300 rounded-none mb-4 sm:hidden"></div>
                     <h2 className="text-xl sm:text-2xl font-black text-gray-900 mb-2 flex items-center justify-center gap-2">
                       <Lock size={22} className="text-lime-600"/> Unlock Your Full Report
                     </h2>
@@ -498,12 +498,12 @@ console.log("======================");
                             <button 
                                 type="button"
                                 onClick={handleShare} 
-                                className="flex-1 bg-[#25D366] hover:bg-[#20bd5a] text-white px-5 py-3.5 rounded-xl font-bold text-base sm:text-lg transition-all flex items-center justify-center gap-2 shadow-xl shadow-[#25D366]/20 active:scale-95 cursor-pointer"
+                                className="flex-1 bg-[#25D366] hover:bg-[#20bd5a] text-white px-5 py-3.5 rounded-[2px] font-bold text-base sm:text-lg transition-all flex items-center justify-center gap-2 shadow-xl shadow-[#25D366]/20 active:scale-95 cursor-pointer"
                             >
                                 <MessageCircle size={22} /> Share for 50% Off
                             </button>
                         ) : (
-                            <div className="flex-1 bg-green-50 border-2 border-green-200 text-green-800 px-5 py-3.5 rounded-xl font-bold text-base sm:text-lg flex items-center justify-center gap-2">
+                            <div className="flex-1 bg-green-50 border-2 border-green-200 text-green-800 px-5 py-3.5 rounded-[2px] font-bold text-base sm:text-lg flex items-center justify-center gap-2">
                                 <CheckCircle size={22} className="text-green-600" /> 50% Discount Applied!
                             </div>
                         )}
@@ -512,7 +512,7 @@ console.log("======================");
                             type="button"
                             onClick={handleUnlock} 
                             disabled={loading}
-                            className="flex-1 bg-gray-900 hover:bg-black text-white px-5 py-3.5 rounded-xl font-bold text-base sm:text-lg shadow-xl shadow-gray-900/20 transition-all flex items-center justify-center gap-2 disabled:opacity-70 active:scale-95 cursor-pointer"
+                            className="flex-1 bg-gray-900 hover:bg-black text-white px-5 py-3.5 rounded-[2px] font-bold text-base sm:text-lg shadow-xl shadow-gray-900/20 transition-all flex items-center justify-center gap-2 disabled:opacity-70 active:scale-95 cursor-pointer"
                         >
                             {loading ? <Loader2 className="animate-spin" size={24} /> : (isDiscounted ? 'Unlock for ₹49' : 'Unlock for ₹99')}
                         </button>
@@ -523,14 +523,14 @@ console.log("======================");
                     <button 
                         type="button"
                         onClick={downloadPDF} 
-                        className="flex-1 flex items-center justify-center gap-2 bg-lime-500 hover:bg-lime-600 text-gray-950 py-3.5 rounded-xl font-bold text-base sm:text-lg transition-all shadow-xl shadow-lime-500/20 active:scale-95 cursor-pointer"
+                        className="flex-1 flex items-center justify-center gap-2 bg-lime-500 hover:bg-lime-600 text-gray-950 py-3.5 rounded-[2px] font-bold text-base sm:text-lg transition-all shadow-xl shadow-lime-500/20 active:scale-95 cursor-pointer"
                     >
                         <Download size={22} /> Download PDF Report
                     </button>
                     <button 
                         type="button"
                         onClick={() => { setResult(null); setIsUnlocked(false); setIsDiscounted(false); setScanText('Initializing AI...'); }} 
-                        className="flex-1 flex items-center justify-center gap-2 bg-white hover:bg-gray-50 text-gray-900 border-2 border-gray-200 py-3.5 rounded-xl font-bold text-base sm:text-lg transition-all active:scale-95 cursor-pointer"
+                        className="flex-1 flex items-center justify-center gap-2 bg-white hover:bg-gray-50 text-gray-900 border-2 border-gray-200 py-3.5 rounded-[2px] font-bold text-base sm:text-lg transition-all active:scale-95 cursor-pointer"
                     >
                         Scan Another Resume
                     </button>

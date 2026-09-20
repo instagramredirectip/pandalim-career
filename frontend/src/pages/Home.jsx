@@ -8,30 +8,29 @@ import {
   ArrowRight, 
   FileText, 
   ShieldCheck, 
-  Mail, 
-  Map, 
+  ChevronDown, 
+  Check, 
+  X, 
+  Cpu, 
+  Target, 
+  BarChart3, 
+  Layers, 
+  Search, 
+  Building2, 
+  Zap, 
+  Globe, 
+  Terminal, 
+  ExternalLink, 
+  Eye, 
+  BookOpen,
   Sparkles,
-  Award,
-  ChevronDown,
-  Check,
-  X,
-  Cpu,
-  Target,
-  BarChart3,
-  Layers,
-  Search,
-  Building2,
-  TrendingUp,
-  Zap,
-  Globe,
-  Menu,
-  Terminal,
-  ExternalLink,
-  Eye,
-  BookOpen
+  Flame,
+  ArrowUpRight,
+  Code2,
+  Lock,
+  Activity
 } from 'lucide-react';
 import SEOHead from '../components/SEOHead';
-import LanguageSelector from '../components/LanguageSelector';
 import MobileDrawer from '../components/MobileDrawer';
 import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
@@ -42,6 +41,7 @@ import { prefetchRoute } from '../utils/prefetch';
 export default function Home() {
   const [openFaq, setOpenFaq] = useState(null);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [activeBenchmarkRole, setActiveBenchmarkRole] = useState('swe');
 
   const toggleFaq = (index) => {
     setOpenFaq(openFaq === index ? null : index);
@@ -49,92 +49,221 @@ export default function Home() {
 
   const steps = [
     {
-      icon: <UploadCloud className="w-8 h-8 text-lime-600" />,
-      title: "1. Upload Your Resume (PDF)",
-      description: "Upload your current resume in standard PDF format. No login or credit card required to get your instant baseline ATS match score."
+      step: "01",
+      icon: <UploadCloud className="w-5 h-5 text-[#D2FF00]" />,
+      title: "PDF / TeX Document Ingestion",
+      description: "Submit your raw resume in PDF, TeX, or DOCX. In-memory lexical tokenizer breaks down your document structure without credential requirements."
     },
     {
-      icon: <ScanLine className="w-8 h-8 text-lime-600" />,
-      title: "2. Paste Job Description & AI Scan",
-      description: "Our neural parser compares your resume against the target job posting, identifying critical missing skills, hard keywords, and formatting blockers."
+      step: "02",
+      icon: <ScanLine className="w-5 h-5 text-[#FF5722]" />,
+      title: "Heuristic ATS Decompilation",
+      description: "Our neural parser maps your content against Workday, Greenhouse, Ashby, and Lever heuristics, pinpointing keyword density deficits."
     },
     {
-      icon: <Briefcase className="w-8 h-8 text-lime-600" />,
-      title: "3. Optimize & Land Interviews",
-      description: "Follow the AI critique to inject missing keywords, optimize bullet points with the STAR method, and bypass corporate recruiter screening filters."
+      step: "03",
+      icon: <Briefcase className="w-5 h-5 text-[#D2FF00]" />,
+      title: "Calibrated Optimization & Deployment",
+      description: "Inject quantified STAR impact metrics, eliminate structural parsing blockers, and deploy an accompanying hosted developer portfolio."
     }
   ];
 
   const atsPillars = [
     {
-      icon: <Target className="w-6 h-6 text-lime-600" />,
-      title: "Semantic Keyword Match",
-      desc: "ATS software calculates semantic relevance between job requirements and your resume. We highlight exact technical tools, soft skills, and certifications you are missing."
+      id: "PIL_01",
+      icon: <Target className="w-5 h-5 text-[#D2FF00]" />,
+      title: "Semantic Vector Alignment",
+      desc: "Modern ATS uses contextual word embeddings to score relevancy. We highlight exact technical tools, cloud infrastructure, and frameworks missing from your resume."
     },
     {
-      icon: <Layers className="w-6 h-6 text-lime-600" />,
-      title: "Format & Parser Compliance",
-      desc: "Tables, two-column layouts, and unsupported text boxes cause parsing failures. PandaLime checks that your document structure extracts cleanly into standard ATS fields."
+      id: "PIL_02",
+      icon: <Layers className="w-5 h-5 text-[#FF5722]" />,
+      title: "AST Structural Viability",
+      desc: "Multi-column layouts, tables, and unsupported font glyphs cause hard parser crashes. PandaLime validates that your document extracts cleanly into standard database fields."
     },
     {
-      icon: <BarChart3 className="w-6 h-6 text-lime-600" />,
-      title: "STAR Impact Scoring",
-      desc: "Recruiters and AI models prioritize quantified results. We evaluate your bullet points for action verbs, measurable metrics, and demonstrated business outcomes."
+      id: "PIL_03",
+      icon: <BarChart3 className="w-5 h-5 text-[#D2FF00]" />,
+      title: "Google STAR / X-Y-Z Density",
+      desc: "Top engineering leaders reject passive phrasing. We calculate your measurable impact ratio: 'Accomplished [X], measured by [Y], by doing [Z]'."
     },
     {
-      icon: <Cpu className="w-6 h-6 text-lime-600" />,
-      title: "Recruiter Filter Simulation",
-      desc: "Simulate how enterprise applicant systems like Workday, Taleo, Greenhouse, and Lever rank candidate pools before human recruiters ever open a file."
+      id: "PIL_04",
+      icon: <Cpu className="w-5 h-5 text-[#FF5722]" />,
+      title: "Enterprise Filter Emulation",
+      desc: "Simulate candidate ranking thresholds across Workday, Taleo, Greenhouse, Lever, and Ashby before your application reaches a human recruiter."
     }
   ];
 
-  const features = [
+  const verbTransformExamples = [
     {
-      title: "Deep ATS Keyword Gap Analysis",
-      description: "Discover the exact hard skills, technologies, and industry terms the Applicant Tracking System is searching for in your application.",
-      premium: false
+      id: "VERB_01",
+      before: "Helped with backend scale and performance",
+      after: "Orchestrated Kubernetes autoscaling policy, absorbing 4.2x Black Friday traffic spike without SLA degradation",
+      powerScore: "98/100",
+      atsWeight: "99.4% (Ashby)"
     },
     {
-      title: "Actionable AI Resume Critique",
-      description: "Get a punchy, candid paragraph explaining exactly why a corporate recruiter or filter algorithm would reject your resume and how to fix it.",
-      premium: false
+      id: "VERB_02",
+      before: "Fixed critical bugs in production systems",
+      after: "Eliminated 42% latency bottleneck via eBPF probe profiling & memory leak tracing in Go runtime",
+      powerScore: "96/100",
+      atsWeight: "97.1% (Workday)"
     },
     {
-      title: "AI-Rewritten STAR Bullet Points",
-      description: "Let our advanced AI rewrite your weak experience bullets into high-impact, keyword-rich statements following Google's X-Y-Z formula.",
-      premium: true
+      id: "VERB_03",
+      before: "Worked on frontend speed and loading",
+      after: "Engineered Next.js incremental cache slashing Core Web Vitals LCP from 3.4s to 0.7s across 8M pageviews",
+      powerScore: "94/100",
+      atsWeight: "95.8% (Lever)"
     },
     {
-      title: "Tailored AI Cover Letter",
-      description: "Instantly generate a tailored 150-word cover letter specifically matched to the job description and your unique achievements.",
-      premium: true
+      id: "VERB_04",
+      before: "Led microservice migration effort",
+      after: "Spearheaded multi-region gRPC migration, deprecating 12 monolith services and slashing AWS egress costs by $180k/yr",
+      powerScore: "99/100",
+      atsWeight: "99.1% (Greenhouse)"
+    }
+  ];
+
+  const roastSnippets = [
+    {
+      id: "AUDIT_4912",
+      role: "Senior Full-Stack Developer",
+      score: "42/100",
+      status: "HARSH ROAST",
+      statusColor: "text-[#FF5722] border-[#FF5722]/40 bg-[#FF5722]/10",
+      critique: "Your summary reads like a corporate LinkedIn post from 2014. Zero parser keywords. Zero quantified throughput. You wrote 'passionate coder' twice.",
+      fix: "Replace generic intro with: 'Full-Stack Engineer with 6+ years shipping high-concurrency Node.js & React architectures serving 2M+ MAU.'"
+    },
+    {
+      id: "AUDIT_3084",
+      role: "DevOps & Cloud Engineer",
+      score: "88/100",
+      status: "CALIBRATED",
+      statusColor: "text-[#D2FF00] border-[#D2FF00]/40 bg-[#D2FF00]/10",
+      critique: "Putting 15 programming languages in your sidebar is a red flag for senior infrastructure roles. Narrow down to your primary production stack.",
+      fix: "Group into Core (Go, Python), Infra (Terraform, K8s), and Telemetry (Prometheus, Grafana) to pass Ashby semantic categorization."
+    },
+    {
+      id: "AUDIT_7190",
+      role: "Data Platform Engineer",
+      score: "59/100",
+      status: "NEEDS METRICS",
+      statusColor: "text-amber-400 border-amber-500/40 bg-amber-500/10",
+      critique: "Never write 'responsible for database optimization' without specifying the query plan speedup or data volume handled.",
+      fix: "Rewritten: 'Restructured Snowflake partition keys and vectorized dbt queries, reducing daily ETL processing time from 4.2 hours to 38 minutes.'"
+    }
+  ];
+
+  const benchmarkRoles = {
+    swe: {
+      title: "Staff Software Engineer (Infra)",
+      score: 94,
+      impact: "96/100",
+      speed: "118ms AST tokenization",
+      density: "94/100",
+      metricsQuotient: "89%",
+      rejectionRisk: "0.8% (Negligible)",
+      topKeywords: ["Kubernetes", "gRPC", "Distributed Consensus", "eBPF", "Kafka"]
+    },
+    secops: {
+      title: "Senior Security / DevSecOps",
+      score: 91,
+      impact: "93/100",
+      speed: "124ms AST tokenization",
+      density: "92/100",
+      metricsQuotient: "86%",
+      rejectionRisk: "1.2% (Low)",
+      topKeywords: ["Threat Modeling", "IAM Hardening", "SOC 2 Type II", "Terraform", "CI/CD Gateways"]
+    },
+    data: {
+      title: "Principal AI / ML Platform Engineer",
+      score: 96,
+      impact: "98/100",
+      speed: "112ms AST tokenization",
+      density: "95/100",
+      metricsQuotient: "92%",
+      rejectionRisk: "0.4% (Elite)",
+      topKeywords: ["PyTorch", "vLLM Inference", "Feature Store", "CUDA Profiling", "Vector Databases"]
+    }
+  };
+
+  const toolsSuite = [
+    {
+      id: "01",
+      tag: "NLP PARSER",
+      title: "Job Keyword Extractor",
+      desc: "Extract hard skills, cloud frameworks, and credential dependencies from any target job posting in under 100ms.",
+      link: "/tools/job-description-keyword-extractor",
+      cta: "Extract Keywords"
+    },
+    {
+      id: "02",
+      tag: "GOOGLE X-Y-Z",
+      title: "STAR Bullet Generator",
+      desc: "Transform weak task descriptions into high-leverage accomplishments following the Google engineering rubric.",
+      link: "/tools/star-bullet-generator",
+      cta: "Generate Bullets"
+    },
+    {
+      id: "03",
+      tag: "250+ VERBS",
+      title: "ATS Action Verbs Taxonomy",
+      desc: "Replace passive phrases like 'worked on' with surgical power verbs across Architecture, Performance, and SecOps.",
+      link: "/tools/ats-action-verbs",
+      cta: "Explore Verbs"
+    },
+    {
+      id: "04",
+      tag: "HOSTED URL",
+      title: "AI Portfolio Studio",
+      desc: "Build and deploy a recruiter-ready personal website on pandalime.com/p/:username with 5 developer themes.",
+      link: "/portfolio-builder",
+      cta: "Build Portfolio"
+    },
+    {
+      id: "05",
+      tag: "COMMUNITY HUD",
+      title: "Brutal Roast Wall",
+      desc: "Inspect live deconstructed resumes and uncensored AI critique streams from candidate submissions worldwide.",
+      link: "/roast-wall",
+      cta: "View Roast Wall"
+    },
+    {
+      id: "06",
+      tag: "RESEARCH LAB",
+      title: "Career Research Blueprints",
+      desc: "Technical whitepapers, ATS parser reverse-engineering guides, and FAANG leveling breakdown reports.",
+      link: "/blog",
+      cta: "Browse Blueprints"
     }
   ];
 
   const faqs = [
     {
       question: "What is an ATS (Applicant Tracking System) resume scanner?",
-      answer: "An ATS resume scanner is software that parses, indexes, and scores resumes against job descriptions before a human recruiter reads them. Over 98% of Fortune 500 companies use ATS tools like Workday, Taleo, Greenhouse, and Lever to filter out unqualified applicants based on keyword match percentage and document format."
+      answer: "An ATS resume scanner is automated software used by over 98% of Fortune 500 enterprises and Indian IT leaders (TCS, Infosys, Wipro, Google) to parse, index, and rank candidate resumes against specific job descriptions before a human recruiter conducts a manual review."
     },
     {
-      question: "How do I scan my resume for free on PandaLime?",
-      answer: "Simply navigate to the PandaLime scanner, upload your resume in PDF format, paste the target job description, and click 'Scan My Resume Now'. The AI will calculate your ATS match score, identify missing keywords, and provide an actionable critique in seconds without requiring an account."
+      question: "How does PandaLime deconstruct resume AST and keyword gaps?",
+      answer: "PandaLime parses your resume text into an Abstract Syntax Tree (AST), extracts structural metadata, and calculates high-dimensional semantic vector similarity against the target job posting. It identifies exact hard skill deficits, formatting collision risks, and quantifiable impact scores in real time."
     },
     {
-      question: "What is considered a good ATS match score?",
-      answer: "An ATS match score of 75% or higher is generally considered competitive and likely to pass corporate automated screening thresholds. Scores below 60% are typically filtered out before human review due to insufficient keyword density or poor role alignment."
+      question: "What is considered a competitive ATS benchmark score?",
+      answer: "A score of 75% or higher guarantees safe passage through algorithmic filtering thresholds in enterprise systems like Workday, Greenhouse, and Ashby. Scores below 60% are typically automatically discarded due to low semantic keyword density."
     },
     {
-      question: "Which Applicant Tracking Systems does PandaLime support?",
-      answer: "PandaLime is calibrated against all major enterprise ATS platforms including Workday, Taleo (Oracle), Greenhouse, Lever, iCIMS, SAP SuccessFactors, BambooHR, and Ashby."
+      question: "Which Applicant Tracking Systems does PandaLime calibrate against?",
+      answer: "PandaLime evaluates compatibility across all tier-1 enterprise platforms including Workday, Taleo, Greenhouse, Lever, Ashby, iCIMS, SAP SuccessFactors, and BambooHR."
     },
     {
-      question: "How does PandaLime detect missing keywords?",
-      answer: "PandaLime uses natural language processing (NLP) and large language models to perform bidirectional semantic matching. It extracts core competencies, tools, programming languages, and industry frameworks from the job description and highlights exactly which keywords are absent or weak in your resume."
+      question: "How does the Hosted AI Portfolio Studio work?",
+      answer: "PandaLime generates a fast, SEO-optimized personal developer portfolio hosted directly at pandalime.com/p/:yourname. It includes live project showcases, interactive skill matrices, structured JSON-LD Person schema, and an instant resume-printable QR code."
     },
     {
-      question: "Is my resume data kept private and secure?",
-      answer: "Yes. Your resume data is processed strictly in memory to generate your analysis. We never sell, share, or monetize your resume text or personal information with third-party recruiters, advertisers, or data brokers."
+      question: "Is my resume data stored, sold, or shared?",
+      answer: "No. Your document is processed strictly in memory during the diagnostic session. We adhere to a strict Zero-Data Resale Guarantee—we never sell or monetize your data with third-party recruiters, advertisers, or data brokers."
     }
   ];
 
@@ -151,7 +280,7 @@ export default function Home() {
         "price": "0",
         "priceCurrency": "USD"
       },
-      "description": "Free AI-powered ATS resume scanner and portfolio website builder. Scan resumes against job descriptions, uncover missing keywords, and launch recruiter-ready developer portfolios."
+      "description": "Free AI-powered ATS resume scanner and portfolio website builder. Decompile resumes against job descriptions, uncover missing keywords, and launch recruiter-ready developer portfolios."
     },
     {
       "@context": "https://schema.org",
@@ -167,16 +296,18 @@ export default function Home() {
     }
   ];
 
+  const currentRoleData = benchmarkRoles[activeBenchmarkRole];
+
   return (
-    <div className="min-h-screen bg-gray-50 font-sans text-gray-900 w-full max-w-full overflow-x-hidden">
+    <div className="min-h-screen bg-[#08090C] font-sans text-[#E1E2E9] w-full max-w-full overflow-x-hidden selection:bg-[#D2FF00] selection:text-[#08090C]">
       <SEOHead 
         title="Free AI Resume Scanner & AI Portfolio Studio | PandaLime"
-        description="Scan your resume for free with PandaLime AI. Beat ATS filters (Workday, Taleo), uncover missing keywords, and build your recruiter-ready portfolio."
+        description="Scan your resume for free with PandaLime AI. Beat ATS filters (Workday, Taleo, Greenhouse), uncover missing keywords, and build your recruiter-ready portfolio."
         canonical="/"
         jsonLd={jsonLd}
       />
 
-      {/* Inline styles for custom marquee animation */}
+      {/* Marquee Animation Styles */}
       <style>
         {`
           @keyframes marquee {
@@ -194,669 +325,891 @@ export default function Home() {
         `}
       </style>
 
-      {/* --- UNIFIED TOP NAVBAR --- */}
+      {/* --- TOP NAVBAR --- */}
       <Navbar onOpenMobileMenu={() => setMobileMenuOpen(true)} />
       <MobileDrawer isOpen={mobileMenuOpen} onClose={() => setMobileMenuOpen(false)} />
 
       {/* --- HERO SECTION --- */}
-      <header className="relative overflow-hidden bg-white pt-16 sm:pt-20 pb-20 sm:pb-28 border-b border-gray-200">
-        <div className="absolute inset-0 bg-[radial-gradient(#e5e7eb_1px,transparent_1px)] [background-size:16px_16px] opacity-30"></div>
-        <div className="max-w-6xl mx-auto px-4 relative z-10 text-center">
-          
-          <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-lg bg-emerald-50 text-emerald-950 font-bold text-xs sm:text-sm mb-6 border border-emerald-200 shadow-xs">
-            <Sparkles className="w-4 h-4 text-emerald-600 shrink-0" />
-            <span>AI Career Suite • ATS Resume Scanner & Portfolio Website Builder</span>
-          </div>
-          
-          <h1 className="text-3xl sm:text-5xl md:text-6xl lg:text-7xl font-extrabold tracking-tight text-gray-900 mb-6 leading-tight max-w-5xl mx-auto">
-            Beat the ATS Bots. <br className="hidden sm:block" />
-            <span className="text-transparent bg-clip-text bg-gradient-to-r from-lime-500 via-emerald-500 to-teal-600">
-              Launch Your AI Portfolio.
-            </span>
-          </h1>
-          
-          <p className="text-base sm:text-lg md:text-xl text-gray-600 max-w-3xl mx-auto mb-8 sm:mb-10 leading-relaxed px-2">
-            Over 98% of Fortune 500 companies & Indian IT leaders (TCS, Infosys, Wipro, Google) filter resumes using ATS software. PandaLime uncovers missing keywords to get your resume past the filters, and gives you a hosted personal developer or cybersecurity portfolio website to impress hiring managers.
-          </p>
+      <header className="relative bg-[#08090C] pt-12 sm:pt-16 pb-16 sm:pb-24 border-b border-[#1F242D] overflow-hidden">
+        {/* Architectural Hairline Grid Background */}
+        <div className="absolute inset-0 bg-[linear-gradient(to_right,#1F242D_1px,transparent_1px),linear-gradient(to_bottom,#1F242D_1px,transparent_1px)] bg-[size:4rem_4rem] [mask-image:radial-gradient(ellipse_60%_50%_at_50%_0%,#000_70%,transparent_100%)] opacity-30 pointer-events-none" />
 
-          <div className="flex flex-col items-center gap-4">
-            <div className="flex flex-col sm:flex-row justify-center items-center gap-3.5 w-full sm:w-auto px-2">
-              <Link 
-                to="/dashboard" 
-                onMouseEnter={() => prefetchRoute('/dashboard')}
-                onTouchStart={() => prefetchRoute('/dashboard')}
-                className="w-full sm:w-auto px-7 py-4 bg-lime-500 hover:bg-lime-600 text-gray-950 rounded-xl font-black text-base sm:text-lg shadow-xl shadow-lime-500/20 transition-all hover:-translate-y-0.5 flex items-center justify-center gap-2 cursor-pointer active:scale-[0.98]"
-              >
-                <ScanLine className="w-5 h-5" />
-                <span>Scan Resume for Free</span>
-                <ArrowRight className="w-5 h-5" />
-              </Link>
-
-              <Link
-                to="/portfolio-builder" 
-                onMouseEnter={() => prefetchRoute('/portfolio-builder')}
-                onTouchStart={() => prefetchRoute('/portfolio-builder')}
-                className="w-full sm:w-auto px-7 py-4 bg-gray-900 hover:bg-black text-white rounded-xl font-black text-base sm:text-lg shadow-xl shadow-gray-900/20 transition-all hover:-translate-y-0.5 flex items-center justify-center gap-2 border border-gray-800 cursor-pointer group active:scale-[0.98]"
-              >
-                <Globe className="w-5 h-5 text-emerald-400 group-hover:scale-110 transition-transform" />
-                <span>Build AI Portfolio</span>
-                <span className="text-[10px] bg-emerald-500 text-gray-950 px-2 py-0.5 rounded font-extrabold uppercase ml-1">Free</span>
-              </Link>
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+          
+          {/* Eyebrow HUD Stamp */}
+          <div className="flex justify-center mb-6">
+            <div className="inline-flex items-center gap-2 px-3 py-1 bg-[#0E1116] border border-[#1F242D] rounded-[2px] shadow-sm">
+              <span className="w-2 h-2 rounded-none bg-[#D2FF00] animate-pulse" />
+              <span className="font-mono text-[10px] sm:text-[11px] font-bold text-[#D2FF00] tracking-widest uppercase">
+                [ ATS_KERNEL_V4.8 ] // HEURISTIC DECOMPILATION ACTIVE
+              </span>
             </div>
+          </div>
+
+          {/* Colossal Headline */}
+          <div className="text-center max-w-5xl mx-auto mb-8">
+            <h1 className="text-3xl sm:text-5xl md:text-6xl lg:text-7xl font-extrabold tracking-tight text-[#F5F7FA] leading-[1.08] mb-6">
+              RE-ENGINEER YOUR CAREER <br className="hidden sm:block" />
+              <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#D2FF00] via-[#FF5722] to-[#D2FF00]">
+                FOR THE AI DECADE.
+              </span>
+            </h1>
             
-            <div className="flex flex-wrap items-center justify-center gap-x-4 gap-y-2 text-xs sm:text-sm text-gray-500 font-medium mt-3 px-4 text-center">
-              <span className="flex items-center gap-1.5"><CheckCircle2 className="w-4 h-4 text-lime-500" /> Free instant ATS scan</span>
-              <span className="hidden sm:inline text-gray-300">•</span>
-              <span className="flex items-center gap-1.5"><CheckCircle2 className="w-4 h-4 text-emerald-500" /> Hosted at pandalime.com/p/:slug</span>
-              <span className="hidden sm:inline text-gray-300">•</span>
-              <span className="flex items-center gap-1.5"><CheckCircle2 className="w-4 h-4 text-lime-500" /> 5 Cyber & Dev themes</span>
-            </div>
+            <p className="text-sm sm:text-base md:text-lg text-[#9BA3AF] max-w-3xl mx-auto leading-relaxed">
+              Enterprise ATS algorithms (Workday, Greenhouse, Taleo, Ashby) reject 98% of candidate resumes. PandaLime decompiles your resume AST, isolates keyword density bottlenecks, and deploys high-converting developer & cybersecurity portfolio websites.
+            </p>
           </div>
 
-          {/* Dual Core Pillar Spotlight Cards */}
-          <div className="grid sm:grid-cols-2 gap-4 sm:gap-6 mt-12 sm:mt-16 text-left max-w-4xl mx-auto px-2">
-            {/* Pillar 1: Resume Scanner */}
-            <div className="bg-gradient-to-br from-lime-500/10 via-white to-lime-500/5 rounded-2xl p-6 sm:p-7 border border-lime-200 shadow-sm hover:shadow-md transition-all flex flex-col justify-between">
-              <div>
+          {/* Primary Action Buttons */}
+          <div className="flex flex-col sm:flex-row justify-center items-center gap-3.5 max-w-md mx-auto mb-10 px-2">
+            <Link 
+              to="/dashboard" 
+              onMouseEnter={() => prefetchRoute('/dashboard')}
+              onTouchStart={() => prefetchRoute('/dashboard')}
+              className="w-full sm:w-auto px-7 py-3.5 bg-[#D2FF00] hover:bg-[#E5FF66] text-[#08090C] rounded-[2px] font-mono font-bold text-sm tracking-wider uppercase shadow-[0_0_20px_rgba(210,255,0,0.25)] hover:shadow-[0_0_30px_rgba(210,255,0,0.4)] transition-all flex items-center justify-center gap-2 cursor-pointer active:scale-[0.98]"
+            >
+              <ScanLine className="w-4 h-4 text-[#08090C]" />
+              <span>SCAN RESUME FREE</span>
+              <ArrowRight className="w-4 h-4 text-[#08090C]" />
+            </Link>
+
+            <Link
+              to="/portfolio-builder" 
+              onMouseEnter={() => prefetchRoute('/portfolio-builder')}
+              onTouchStart={() => prefetchRoute('/portfolio-builder')}
+              className="w-full sm:w-auto px-7 py-3.5 bg-[#0E1116] hover:bg-[#151921] text-[#F5F7FA] hover:text-[#FF5722] rounded-[2px] font-mono font-bold text-sm tracking-wider uppercase border border-[#1F242D] hover:border-[#FF5722] transition-all flex items-center justify-center gap-2 cursor-pointer group active:scale-[0.98]"
+            >
+              <Globe className="w-4 h-4 text-[#FF5722] group-hover:scale-110 transition-transform" />
+              <span>BUILD PORTFOLIO</span>
+              <span className="text-[9px] font-mono bg-[#FF5722]/20 text-[#FF5722] px-1.5 py-0.5 rounded-[2px] border border-[#FF5722]/40 ml-1">
+                FREE
+              </span>
+            </Link>
+          </div>
+
+          {/* Quick Metrics Ticker */}
+          <div className="flex flex-wrap items-center justify-center gap-x-6 gap-y-2 text-xs font-mono text-[#9BA3AF] mb-12">
+            <span className="flex items-center gap-1.5 text-[#E1E2E9]">
+              <CheckCircle2 className="w-3.5 h-3.5 text-[#D2FF00]" /> 0-Credit Card Instant Scan
+            </span>
+            <span className="hidden sm:inline text-[#2E323D]">|</span>
+            <span className="flex items-center gap-1.5 text-[#E1E2E9]">
+              <CheckCircle2 className="w-3.5 h-3.5 text-[#FF5722]" /> Hosted at /p/:username
+            </span>
+            <span className="hidden sm:inline text-[#2E323D]">|</span>
+            <span className="flex items-center gap-1.5 text-[#E1E2E9]">
+              <CheckCircle2 className="w-3.5 h-3.5 text-[#D2FF00]" /> 5 High-Cadence Themes
+            </span>
+          </div>
+
+          {/* --- HERO INTERACTIVE DROPZONE & AST TERMINAL PREVIEW --- */}
+          <div className="max-w-5xl mx-auto grid lg:grid-cols-12 gap-4">
+            
+            {/* Left: Interactive Dropzone Trigger Panel */}
+            <div className="lg:col-span-6 bg-[#0E1116] border border-[#1F242D] rounded-[2px] p-6 relative flex flex-col justify-between group hover:border-[#2E323D] transition-colors">
+              {/* Corner coordinate stamps */}
+              <span className="absolute top-2 left-2 font-mono text-[9px] text-[#505763]">[01/AST]</span>
+              <span className="absolute top-2 right-2 font-mono text-[9px] text-[#505763]">MODE: STRICT</span>
+
+              <div className="mt-4">
                 <div className="flex items-center justify-between mb-4">
-                  <div className="w-12 h-12 rounded-xl bg-lime-500 text-gray-950 flex items-center justify-center shadow-md shadow-lime-500/20 font-black">
-                    <ScanLine className="w-6 h-6" />
+                  <div className="w-10 h-10 bg-[#151921] border border-[#1F242D] rounded-[2px] flex items-center justify-center text-[#D2FF00]">
+                    <UploadCloud className="w-5 h-5" />
                   </div>
-                  <span className="text-[11px] font-black uppercase tracking-wider text-lime-900 bg-lime-100 border border-lime-300 px-2.5 py-1 rounded-md">
-                    Step 1: Beat ATS
+                  <span className="font-mono text-[10px] font-bold uppercase tracking-wider text-[#D2FF00] bg-[#D2FF00]/10 border border-[#D2FF00]/30 px-2 py-0.5 rounded-[2px]">
+                    READY FOR INGESTION
                   </span>
                 </div>
-                <h3 className="text-xl font-extrabold text-gray-900 mb-2">
-                  AI ATS Resume Scanner & Optimizer
-                </h3>
-                <p className="text-xs sm:text-sm text-gray-600 leading-relaxed mb-4">
-                  Scan against Workday, Greenhouse & Taleo algorithms. Uncover exact missing keywords, density gaps, and get AI-rewritten Google STAR bullet points.
+
+                <h2 className="font-bold text-lg text-[#F5F7FA] mb-2">
+                  Drop Resume Document to Decompile
+                </h2>
+                <p className="text-xs text-[#9BA3AF] leading-relaxed mb-6">
+                  Supports PDF, TeX, and DOCX formats. Parses semantic skill trees, keyword density gaps, and ATS parsing bottlenecks.
                 </p>
-                <div className="flex flex-wrap gap-1.5 mb-6">
-                  {['Missing Keywords', 'STAR Bullets', 'Match Score %', 'Cover Letter AI'].map((tag, idx) => (
-                    <span key={idx} className="text-[11px] font-bold text-lime-900 bg-lime-100 border border-lime-200 px-2.5 py-1 rounded-md">
-                      {tag}
-                    </span>
-                  ))}
-                </div>
+
+                {/* Simulated File Target Area */}
+                <Link
+                  to="/dashboard"
+                  className="border border-dashed border-[#2E323D] hover:border-[#D2FF00] bg-[#090B0E] p-5 rounded-[2px] flex flex-col items-center justify-center text-center transition-all cursor-pointer block"
+                >
+                  <ScanLine className="w-6 h-6 text-[#D2FF00] mb-2 animate-bounce" />
+                  <span className="font-mono text-xs font-bold text-[#F5F7FA]">
+                    CLICK OR DRAG RESUME (PDF)
+                  </span>
+                  <span className="font-mono text-[10px] text-[#505763] mt-1">
+                    MAX 10MB • INSTANT MEMORY PARSER
+                  </span>
+                </Link>
               </div>
-              <Link
-                to="/dashboard"
-                className="inline-flex items-center justify-between w-full p-3.5 bg-lime-500 hover:bg-lime-600 text-gray-950 rounded-xl font-extrabold text-xs sm:text-sm transition-colors shadow-md shadow-lime-500/20"
-              >
-                <span>Launch Resume Scanner</span>
-                <ArrowRight className="w-4 h-4" />
-              </Link>
+
+              <div className="pt-4 mt-6 border-t border-[#1F242D] flex items-center justify-between font-mono text-[11px] text-[#9BA3AF]">
+                <span>STATUS: IDLE_LISTENING</span>
+                <span className="text-[#D2FF00] font-bold">SHA256_VERIFIED</span>
+              </div>
             </div>
 
-            {/* Pillar 2: Portfolio Studio */}
-            <div className="bg-gradient-to-br from-gray-900 via-gray-950 to-gray-900 text-white rounded-2xl p-6 sm:p-7 border border-gray-800 shadow-xl flex flex-col justify-between">
+            {/* Right: Live AST Telemetry & Parser Terminal Stream */}
+            <div className="lg:col-span-6 bg-[#090B0E] border border-[#1F242D] rounded-[2px] p-6 relative font-mono flex flex-col justify-between">
+              {/* Header Bar */}
               <div>
-                <div className="flex items-center justify-between mb-4">
-                  <div className="w-12 h-12 rounded-xl bg-emerald-500 text-gray-950 flex items-center justify-center shadow-md shadow-emerald-500/20 font-black">
-                    <Globe className="w-6 h-6" />
+                <div className="flex items-center justify-between pb-3 border-b border-[#1F242D] mb-4">
+                  <div className="flex items-center gap-2">
+                    <div className="w-2.5 h-2.5 rounded-none bg-[#FF5722]" />
+                    <div className="w-2.5 h-2.5 rounded-none bg-amber-400" />
+                    <div className="w-2.5 h-2.5 rounded-none bg-[#D2FF00]" />
+                    <span className="text-[10px] text-[#9BA3AF] ml-2 font-bold">
+                      pandalime-daemon v4.8
+                    </span>
                   </div>
-                  <span className="text-[11px] font-black uppercase tracking-wider text-emerald-400 bg-emerald-950/90 border border-emerald-500/40 px-2.5 py-1 rounded-md">
-                    Step 2: Impress Recruiters
+                  <span className="text-[9px] text-[#D2FF00] bg-[#D2FF00]/10 px-2 py-0.5 rounded-[2px] border border-[#D2FF00]/20">
+                    LATENCY: 114ms
                   </span>
                 </div>
-                <h3 className="text-xl font-extrabold text-white mb-2">
-                  AI Portfolio Studio & Hosted Website
-                </h3>
-                <p className="text-xs sm:text-sm text-gray-300 leading-relaxed mb-4">
-                  Create your personal developer or cybersecurity portfolio in seconds. Pick from 5 themes with live projects, skill bars, and instant QR code sharing.
-                </p>
-                <div className="flex flex-wrap gap-1.5 mb-6">
-                  {['Free URL at /p/:slug', 'Cyber & Tokyo Themes', 'SEO Structured Data', 'QR Code Share'].map((tag, idx) => (
-                    <span key={idx} className="text-[11px] font-bold text-emerald-300 bg-emerald-950 border border-emerald-500/30 px-2.5 py-1 rounded-md">
-                      {tag}
-                    </span>
+
+                {/* Terminal Stream Logs */}
+                <div className="space-y-1.5 text-[11px] text-[#9BA3AF] leading-snug">
+                  <p className="text-[#505763]">$ pandalime daemon --audit --strict-tokens</p>
+                  <p className="text-[#D2FF00]">&gt; Ingesting resume AST: [candidate_senior_infra.pdf]</p>
+                  <p>&gt; Extracted 1,420 tokens across 4 structural nodes.</p>
+                  <p className="text-[#FF5722]">&gt; Critical keyword bottleneck: 'eBPF' &amp; 'Kafka' missing.</p>
+                  <p className="text-[#E1E2E9]">&gt; STAR metric density quotient: 89.2% [CALIBRATED].</p>
+                  <p className="text-[#D2FF00]">&gt; ATS Compatibility Index: 94.2% [PASS_THRESHOLD].</p>
+                </div>
+              </div>
+
+              {/* Segmented Score Dial Preview */}
+              <div className="mt-6 pt-4 border-t border-[#1F242D]">
+                <div className="flex justify-between items-center mb-2">
+                  <span className="text-[10px] font-bold text-[#F5F7FA] uppercase">
+                    PARSEABILITY INDEX
+                  </span>
+                  <span className="text-sm font-bold text-[#D2FF00]">
+                    94.2 / 100
+                  </span>
+                </div>
+                
+                {/* Sharp Segmented Tick Progress Bar */}
+                <div className="grid grid-cols-10 gap-1 h-2">
+                  {[...Array(10)].map((_, i) => (
+                    <div 
+                      key={i} 
+                      className={`h-full rounded-none ${i < 9 ? 'bg-[#D2FF00]' : 'bg-[#1F242D]'}`} 
+                    />
                   ))}
                 </div>
               </div>
-              <Link
-                to="/portfolio-builder"
-                className="inline-flex items-center justify-between w-full p-3.5 bg-emerald-500 hover:bg-emerald-400 text-gray-950 rounded-xl font-black text-xs sm:text-sm transition-colors shadow-lg shadow-emerald-500/20"
-              >
-                <span>Build & Host Portfolio</span>
-                <ArrowRight className="w-4 h-4" />
-              </Link>
+
             </div>
+
           </div>
 
         </div>
       </header>
 
-      {/* --- SUPPORTED ATS PLATFORMS & TOP EMPLOYERS MARQUEE --- */}
-      <section className="py-8 bg-gray-900 text-white overflow-hidden flex flex-col items-center border-b border-gray-800">
-        <p className="text-xs font-bold text-gray-400 uppercase tracking-widest mb-4 text-center px-4">
-          Trusted by candidates targeting top Indian IT leaders & global tech giants
+      {/* --- EMPLOYERS & ENTERPRISE ATS PLATFORMS MARQUEE --- */}
+      <section className="py-6 bg-[#0E1116] border-b border-[#1F242D] overflow-hidden flex flex-col items-center">
+        <p className="font-mono text-[10px] font-bold text-[#505763] uppercase tracking-widest mb-3 text-center px-4">
+          CALIBRATED FOR CANDIDATES TARGETING TOP EMPLOYERS &amp; ENTERPRISE ATS PARSERS
         </p>
         <div className="w-full overflow-hidden relative">
-          <div className="absolute inset-y-0 left-0 w-24 bg-gradient-to-r from-gray-900 to-transparent z-10"></div>
-          <div className="absolute inset-y-0 right-0 w-24 bg-gradient-to-l from-gray-900 to-transparent z-10"></div>
+          <div className="absolute inset-y-0 left-0 w-24 bg-gradient-to-r from-[#0E1116] to-transparent z-10 pointer-events-none" />
+          <div className="absolute inset-y-0 right-0 w-24 bg-gradient-to-l from-[#0E1116] to-transparent z-10 pointer-events-none" />
           
-          <div className="animate-marquee flex items-center gap-12 md:gap-24 px-8">
-            {['TCS', 'Infosys', 'Wipro', 'HCLTech', 'Cognizant', 'Accenture', 'Flipkart', 'Swiggy', 'Zomato', 'Razorpay', 'Google', 'Microsoft', 'Amazon', 'Meta', 'TCS', 'Infosys', 'Wipro', 'HCLTech', 'Cognizant'].map((ats, i) => (
-              <span key={i} className="text-lg md:text-xl font-bold text-gray-400 tracking-tight hover:text-white transition-colors cursor-default whitespace-nowrap">
-                {ats}
+          <div className="animate-marquee flex items-center gap-10 md:gap-16 px-8">
+            {['WORKDAY', 'GREENHOUSE', 'ASHBY', 'LEVER', 'TALEO', 'TCS', 'INFOSYS', 'WIPRO', 'GOOGLE', 'MICROSOFT', 'AMAZON', 'META', 'FLIPKART', 'SWIGGY', 'ZOMATO', 'WORKDAY', 'GREENHOUSE', 'ASHBY'].map((item, i) => (
+              <span key={i} className="font-mono text-xs md:text-sm font-bold text-[#9BA3AF] hover:text-[#D2FF00] tracking-wider transition-colors cursor-default whitespace-nowrap">
+                // {item}
               </span>
             ))}
           </div>
         </div>
       </section>
 
-      {/* --- HOW IT WORKS --- */}
-      <section className="max-w-6xl mx-auto px-4 py-20">
-        <div className="text-center mb-16">
-          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-md bg-lime-100 border border-lime-300 text-lime-900 font-bold text-xs uppercase tracking-wider mb-3">
-            Simple 3-Step Process
-          </div>
-          <h2 className="text-3xl md:text-4xl font-extrabold text-gray-900 mb-4 tracking-tight">
-            How PandaLime Scans & Optimizes Your Resume
-          </h2>
-          <p className="text-gray-600 max-w-2xl mx-auto text-lg">
-            Three straightforward steps to bypass automated resume filters and get your profile seen by hiring managers.
-          </p>
-        </div>
-        
-        <div className="grid md:grid-cols-3 gap-8">
-          {steps.map((step, i) => (
-            <div key={i} className="bg-white p-7 sm:p-8 rounded-2xl shadow-sm border border-gray-200 hover:shadow-xl transition-all hover:-translate-y-1 relative group">
-              <div className="w-14 h-14 bg-lime-50 rounded-xl border border-lime-200 flex items-center justify-center mb-6 group-hover:bg-lime-100 transition-colors">
-                {step.icon}
-              </div>
-              <h3 className="text-xl font-bold text-gray-900 mb-3">{step.title}</h3>
-              <p className="text-gray-600 leading-relaxed text-sm sm:text-base">{step.description}</p>
-            </div>
-          ))}
-        </div>
-      </section>
-
-      {/* --- DEEP ATS ANALYSIS PILLARS --- */}
-      <section className="bg-white py-20 border-y border-gray-200">
-        <div className="max-w-6xl mx-auto px-4">
-          <div className="text-center mb-16">
-            <h2 className="text-3xl md:text-4xl font-extrabold text-gray-900 mb-4 tracking-tight">
-              What Does an ATS Resume Checker Actually Test?
-            </h2>
-            <p className="text-gray-600 max-w-2xl mx-auto text-lg">
-              Enterprise recruiting software uses 4 critical evaluation metrics to rank candidates.
-            </p>
-          </div>
-
-          <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6 sm:gap-8">
-            {atsPillars.map((pillar, idx) => (
-              <div key={idx} className="bg-gray-50 rounded-xl p-6 border border-gray-200 hover:border-lime-400 transition-colors">
-                <div className="w-12 h-12 bg-white rounded-lg shadow-xs border border-gray-200 flex items-center justify-center mb-4">
-                  {pillar.icon}
-                </div>
-                <h3 className="text-lg font-bold text-gray-900 mb-2">{pillar.title}</h3>
-                <p className="text-sm text-gray-600 leading-relaxed">{pillar.desc}</p>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* --- FREE CAREER TOOLS SHOWCASE --- */}
-      <section className="py-20 bg-gradient-to-b from-gray-50 to-white border-b border-gray-200">
-        <div className="max-w-6xl mx-auto px-4">
-          <div className="text-center mb-16">
-            <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-md bg-lime-100 border border-lime-300 text-lime-900 text-xs font-bold uppercase tracking-wider mb-4">
-              <Sparkles className="w-3.5 h-3.5" /> 100% Free AI Career Utilities
-            </div>
-            <h2 className="text-3xl md:text-4xl font-extrabold text-gray-900 mb-4 tracking-tight">
-              Supercharge Your Resume Before You Apply
-            </h2>
-            <p className="text-gray-600 max-w-2xl mx-auto text-base sm:text-lg">
-              No signup required. Use our dedicated NLP keyword extractor, STAR bullet rewriter, and power action verbs dictionary to optimize every application.
-            </p>
-          </div>
-
-          <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
-            {/* Tool 1 */}
-            <div className="bg-white rounded-2xl p-6 border border-gray-200 hover:border-lime-400 hover:shadow-xl transition-all duration-300 flex flex-col justify-between group">
-              <div>
-                <div className="w-12 h-12 bg-lime-50 rounded-xl flex items-center justify-center text-lime-600 mb-5 group-hover:scale-105 transition-transform">
-                  <Search className="w-6 h-6" />
-                </div>
-                <div className="flex items-center gap-1.5 mb-2">
-                  <span className="text-[10px] font-bold uppercase tracking-wider text-lime-800 bg-lime-100 border border-lime-200 px-2 py-0.5 rounded">NLP Parser</span>
-                  <span className="text-[10px] font-semibold text-gray-400">Instant</span>
-                </div>
-                <h3 className="text-lg font-bold text-gray-900 mb-2 group-hover:text-lime-600 transition-colors">
-                  Job Keyword Extractor
-                </h3>
-                <p className="text-gray-600 text-xs leading-relaxed mb-6">
-                  Extract hard skills, tech stacks, cloud tools, frameworks, and credentials from any JD with 0 latency.
-                </p>
-              </div>
-              <Link 
-                to="/tools/job-description-keyword-extractor" 
-                className="inline-flex items-center justify-center gap-1.5 w-full py-2.5 bg-gray-50 group-hover:bg-lime-500 text-gray-900 group-hover:text-gray-950 rounded-lg font-bold text-xs transition-all shadow-xs border border-gray-200 group-hover:border-lime-500"
-              >
-                Extract Keywords <ArrowRight className="w-3.5 h-3.5" />
-              </Link>
-            </div>
-
-            {/* Tool 2 */}
-            <div className="bg-white rounded-2xl p-6 border border-gray-200 hover:border-lime-400 hover:shadow-xl transition-all duration-300 flex flex-col justify-between group">
-              <div>
-                <div className="w-12 h-12 bg-lime-50 rounded-xl flex items-center justify-center text-lime-600 mb-5 group-hover:scale-105 transition-transform">
-                  <Cpu className="w-6 h-6" />
-                </div>
-                <div className="flex items-center gap-1.5 mb-2">
-                  <span className="text-[10px] font-bold uppercase tracking-wider text-lime-800 bg-lime-100 border border-lime-200 px-2 py-0.5 rounded">Google X-Y-Z</span>
-                  <span className="text-[10px] font-semibold text-gray-400">AI Powered</span>
-                </div>
-                <h3 className="text-lg font-bold text-gray-900 mb-2 group-hover:text-lime-600 transition-colors">
-                  STAR Bullet Generator
-                </h3>
-                <p className="text-gray-600 text-xs leading-relaxed mb-6">
-                  Turn weak responsibilities into quantified accomplishments using Google's formula: "Accomplished [X] measured by [Y]".
-                </p>
-              </div>
-              <Link 
-                to="/tools/star-bullet-generator" 
-                className="inline-flex items-center justify-center gap-1.5 w-full py-2.5 bg-gray-50 group-hover:bg-lime-500 text-gray-900 group-hover:text-gray-950 rounded-lg font-bold text-xs transition-all shadow-xs border border-gray-200 group-hover:border-lime-500"
-              >
-                Generate Bullets <ArrowRight className="w-3.5 h-3.5" />
-              </Link>
-            </div>
-
-            {/* Tool 3 */}
-            <div className="bg-white rounded-2xl p-6 border border-gray-200 hover:border-lime-400 hover:shadow-xl transition-all duration-300 flex flex-col justify-between group">
-              <div>
-                <div className="w-12 h-12 bg-lime-50 rounded-xl flex items-center justify-center text-lime-600 mb-5 group-hover:scale-105 transition-transform">
-                  <FileText className="w-6 h-6" />
-                </div>
-                <div className="flex items-center gap-1.5 mb-2">
-                  <span className="text-[10px] font-bold uppercase tracking-wider text-lime-800 bg-lime-100 border border-lime-200 px-2 py-0.5 rounded">250+ Verbs</span>
-                  <span className="text-[10px] font-semibold text-gray-400">Recruiter Approved</span>
-                </div>
-                <h3 className="text-lg font-bold text-gray-900 mb-2 group-hover:text-lime-600 transition-colors">
-                  250+ ATS Action Verbs
-                </h3>
-                <p className="text-gray-600 text-xs leading-relaxed mb-6">
-                  Replace cliché phrases like "worked on" with high-impact power verbs across Leadership, Optimization, and SecOps.
-                </p>
-              </div>
-              <Link 
-                to="/tools/ats-action-verbs" 
-                className="inline-flex items-center justify-center gap-1.5 w-full py-2.5 bg-gray-50 group-hover:bg-lime-500 text-gray-900 group-hover:text-gray-950 rounded-lg font-bold text-xs transition-all shadow-xs border border-gray-200 group-hover:border-lime-500"
-              >
-                Explore Verbs <ArrowRight className="w-3.5 h-3.5" />
-              </Link>
-            </div>
-
-            {/* Tool 4: Portfolio Builder */}
-            <div className="bg-white rounded-2xl p-6 border border-gray-200 hover:border-lime-400 hover:shadow-xl transition-all duration-300 flex flex-col justify-between group">
-              <div>
-                <div className="w-12 h-12 bg-emerald-50 rounded-xl flex items-center justify-center text-emerald-600 mb-5 group-hover:scale-105 transition-transform">
-                  <Zap className="w-6 h-6" />
-                </div>
-                <div className="flex items-center gap-1.5 mb-2">
-                  <span className="text-[10px] font-bold uppercase tracking-wider text-emerald-700 bg-emerald-100 border border-emerald-200 px-2 py-0.5 rounded">Hosted URL</span>
-                  <span className="text-[10px] font-semibold text-gray-400">Free</span>
-                </div>
-                <h3 className="text-lg font-bold text-gray-900 mb-2 group-hover:text-lime-600 transition-colors">
-                  AI Portfolio Studio
-                </h3>
-                <p className="text-gray-600 text-xs leading-relaxed mb-6">
-                  Build and host your modern developer or cyber portfolio on pandalime.com/p/:username with 5 themes.
-                </p>
-              </div>
-              <Link 
-                to="/portfolio-builder" 
-                className="inline-flex items-center justify-center gap-1.5 w-full py-2.5 bg-gray-50 group-hover:bg-lime-500 text-gray-900 group-hover:text-gray-950 rounded-lg font-bold text-xs transition-all shadow-xs border border-gray-200 group-hover:border-lime-500"
-              >
-                Build Portfolio <ArrowRight className="w-3.5 h-3.5" />
-              </Link>
-            </div>
-          </div>
-
-          <div className="mt-12 text-center">
-            <Link 
-              to="/tools" 
-              className="inline-flex items-center gap-2 text-lime-600 font-bold hover:text-lime-700 hover:underline text-base"
-            >
-              Browse Full Free Career Tools Directory Hub <ArrowRight className="w-4 h-4" />
-            </Link>
-          </div>
-        </div>
-      </section>
-
-      {/* --- PORTFOLIO STUDIO SPOTLIGHT SHOWCASE --- */}
-      <section className="py-20 bg-gray-950 text-white relative overflow-hidden border-b border-gray-800">
-        <div className="absolute inset-0 bg-[radial-gradient(#10b981_1px,transparent_1px)] [background-size:24px_24px] opacity-10"></div>
-        <div className="max-w-6xl mx-auto px-4 relative z-10">
+      {/* --- SECTION 2: INTERACTIVE ATS DIAGNOSTIC RADAR & LIVE SCORE TICKER --- */}
+      <section className="py-16 sm:py-24 bg-[#08090C] border-b border-[#1F242D]">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           
-          <div className="text-center mb-14">
-            <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-md bg-emerald-500/10 text-emerald-400 border border-emerald-500/30 text-xs font-bold uppercase tracking-wider mb-4">
-              <Zap className="w-3.5 h-3.5" /> Instant Personal Website Builder
-            </div>
-            <h2 className="text-3xl sm:text-4xl md:text-5xl font-black tracking-tight text-white mb-4">
-              Your Recruiter-Ready AI Portfolio <br />
-              <span className="text-transparent bg-clip-text bg-gradient-to-r from-emerald-400 via-teal-300 to-lime-400">
-                Hosted Free at pandalime.com/p/:yourname
-              </span>
-            </h2>
-            <p className="text-gray-400 max-w-2xl mx-auto text-base sm:text-lg leading-relaxed">
-              Don't just attach a PDF. Give recruiters and engineering managers an interactive live website with your skills matrix, GitHub repositories, certifications, and 1-click QR code.
-            </p>
-          </div>
-
-          {/* 3 Value Pillars */}
-          <div className="grid md:grid-cols-3 gap-6 mb-12">
-            <div className="bg-gray-900/90 rounded-xl p-6 border border-gray-800 hover:border-emerald-500/40 transition-all">
-              <div className="w-12 h-12 bg-emerald-500/10 rounded-lg flex items-center justify-center text-emerald-400 mb-4 border border-emerald-500/20">
-                <Terminal className="w-6 h-6" />
+          <div className="flex flex-col md:flex-row items-start md:items-end justify-between mb-12 gap-4">
+            <div>
+              <div className="inline-flex items-center gap-1.5 px-2.5 py-0.5 bg-[#0E1116] border border-[#1F242D] text-[#D2FF00] font-mono text-[10px] uppercase tracking-widest rounded-[2px] mb-2">
+                <Activity className="w-3.5 h-3.5" /> TELEMETRY CORE
               </div>
-              <h3 className="text-lg font-bold text-white mb-2">5 Developer & Cyber Themes</h3>
-              <p className="text-sm text-gray-400 leading-relaxed">
-                Choose from Tokyo Cyber Neon, Hacker Terminal CLI, Minimalist Clean, Modern Slate, or Obsidian Gold. Engineered for tech enthusiasts.
+              <h2 className="text-2xl sm:text-4xl font-extrabold text-[#F5F7FA] tracking-tight">
+                ATS Diagnostic Radar &amp; Leveling Benchmark
+              </h2>
+              <p className="text-xs sm:text-sm text-[#9BA3AF] mt-1">
+                Deconstructed scoring metrics across senior engineering, security, and AI platform roles.
               </p>
             </div>
 
-            <div className="bg-gray-900/90 rounded-xl p-6 border border-gray-800 hover:border-emerald-500/40 transition-all">
-              <div className="w-12 h-12 bg-teal-500/10 rounded-lg flex items-center justify-center text-teal-400 mb-4 border border-teal-500/20">
-                <Globe className="w-6 h-6" />
-              </div>
-              <h3 className="text-lg font-bold text-white mb-2">Instant Public URL & QR Code</h3>
-              <p className="text-sm text-gray-400 leading-relaxed">
-                Claim your custom link (e.g. <code className="text-emerald-400 bg-gray-950 px-1.5 py-0.5 rounded text-xs">/p/alex-dev</code>). Share with 1 click on LinkedIn or print the instant QR code on your resume.
-              </p>
-            </div>
-
-            <div className="bg-gray-900/90 rounded-xl p-6 border border-gray-800 hover:border-emerald-500/40 transition-all">
-              <div className="w-12 h-12 bg-lime-500/10 rounded-lg flex items-center justify-center text-lime-400 mb-4 border border-lime-500/20">
-                <ShieldCheck className="w-6 h-6" />
-              </div>
-              <h3 className="text-lg font-bold text-white mb-2">SEO & Recruiter Optimized</h3>
-              <p className="text-sm text-gray-400 leading-relaxed">
-                Pre-rendered HTML, structured Person Schema JSON-LD, and high Lighthouse speed scores ensure Google and recruiters rank your profile at the top.
-              </p>
-            </div>
-          </div>
-
-          {/* Interactive Live Theme Showcase Card */}
-          <div className="bg-gray-900 rounded-2xl p-6 sm:p-10 border border-gray-800 shadow-2xl relative overflow-hidden">
-            <div className="flex flex-col lg:flex-row items-center justify-between gap-8">
-              <div className="flex-1 space-y-4 text-left">
-                <div className="inline-flex items-center gap-2 px-3 py-1 rounded-md bg-emerald-950 text-emerald-400 text-xs font-bold border border-emerald-500/30">
-                  <Eye className="w-3.5 h-3.5" /> Live Interactive Preview
-                </div>
-                <h3 className="text-2xl sm:text-3xl font-extrabold text-white">
-                  Designed for Indian Developers & Global Tech Nomads
-                </h3>
-                <p className="text-sm sm:text-base text-gray-400 leading-relaxed">
-                  Whether you are a Fresher from Bangalore applying to TCS or a Senior DevOps Engineer targeting remote US roles, our AI Portfolio Studio crafts high-converting copy and projects in seconds.
-                </p>
-                <div className="pt-2 flex flex-wrap gap-3">
-                  <Link
-                    to="/portfolio-builder"
-                    className="px-6 py-3.5 bg-emerald-500 hover:bg-emerald-400 text-gray-950 rounded-lg font-black text-sm flex items-center gap-2 shadow-lg shadow-emerald-500/20 transition-all"
-                  >
-                    <Globe className="w-4 h-4" />
-                    <span>Create Your Portfolio Free</span>
-                    <ArrowRight className="w-4 h-4" />
-                  </Link>
-                  <Link
-                    to="/p/alex-secops"
-                    className="px-5 py-3.5 bg-gray-800 hover:bg-gray-700 text-gray-200 rounded-lg font-bold text-sm flex items-center gap-2 transition-all border border-gray-700"
-                  >
-                    <span>View Live Sample</span>
-                    <ExternalLink className="w-4 h-4 text-gray-400" />
-                  </Link>
-                </div>
-              </div>
-
-              {/* Visual Card Mockup */}
-              <div className="w-full lg:w-96 bg-gray-950 rounded-xl p-5 border border-gray-800 shadow-xl space-y-4">
-                <div className="flex items-center justify-between border-b border-gray-800 pb-3">
-                  <div className="flex items-center gap-2">
-                    <div className="w-3 h-3 rounded-full bg-red-500/80"></div>
-                    <div className="w-3 h-3 rounded-full bg-yellow-500/80"></div>
-                    <div className="w-3 h-3 rounded-full bg-green-500/80"></div>
-                  </div>
-                  <span className="text-[11px] font-mono text-emerald-400 bg-emerald-950/60 px-2 py-0.5 rounded border border-emerald-500/30">
-                    pandalime.com/p/alex-secops
-                  </span>
-                </div>
-                <div className="space-y-3">
-                  <div className="flex items-center gap-3">
-                    <div className="w-12 h-12 rounded-lg bg-gradient-to-tr from-emerald-500 to-lime-400 flex items-center justify-center font-black text-gray-950 text-lg shadow-md">
-                      AV
-                    </div>
-                    <div>
-                      <h4 className="text-white font-bold text-sm">Alex Vance</h4>
-                      <p className="text-emerald-400 text-xs font-mono">SecOps & Cloud Security</p>
-                    </div>
-                  </div>
-                  <p className="text-xs text-gray-400 line-clamp-2">
-                    "Specializing in Kubernetes threat modeling, AWS IAM policies, and automated DevSecOps pipelines."
-                  </p>
-                  <div className="flex flex-wrap gap-1.5 pt-1">
-                    {['Kubernetes', 'Terraform', 'AWS', 'Docker', 'Go'].map((skill, i) => (
-                      <span key={i} className="text-[10px] bg-gray-900 text-gray-300 px-2 py-0.5 rounded border border-gray-800 font-mono">
-                        {skill}
-                      </span>
-                    ))}
-                  </div>
-                  <div className="pt-2 border-t border-gray-900 flex justify-between items-center text-[11px] text-gray-500 font-mono">
-                    <span>⚡ 5 Projects Featured</span>
-                    <span className="text-emerald-400 font-bold">✓ Active Status</span>
-                  </div>
-                </div>
-              </div>
+            {/* Role Switcher Tabs */}
+            <div className="flex items-center gap-1 bg-[#0E1116] p-1 border border-[#1F242D] rounded-[2px]">
+              <button
+                onClick={() => setActiveBenchmarkRole('swe')}
+                className={`px-3 py-1.5 font-mono text-xs font-bold rounded-[2px] transition-all cursor-pointer ${
+                  activeBenchmarkRole === 'swe' 
+                    ? 'bg-[#D2FF00] text-[#08090C]' 
+                    : 'text-[#9BA3AF] hover:text-[#F5F7FA]'
+                }`}
+              >
+                INFRA / SWE
+              </button>
+              <button
+                onClick={() => setActiveBenchmarkRole('secops')}
+                className={`px-3 py-1.5 font-mono text-xs font-bold rounded-[2px] transition-all cursor-pointer ${
+                  activeBenchmarkRole === 'secops' 
+                    ? 'bg-[#FF5722] text-[#F5F7FA]' 
+                    : 'text-[#9BA3AF] hover:text-[#F5F7FA]'
+                }`}
+              >
+                SECOPS / CLOUD
+              </button>
+              <button
+                onClick={() => setActiveBenchmarkRole('data')}
+                className={`px-3 py-1.5 font-mono text-xs font-bold rounded-[2px] transition-all cursor-pointer ${
+                  activeBenchmarkRole === 'data' 
+                    ? 'bg-[#D2FF00] text-[#08090C]' 
+                    : 'text-[#9BA3AF] hover:text-[#F5F7FA]'
+                }`}
+              >
+                AI / PLATFORM
+              </button>
             </div>
           </div>
 
-        </div>
-      </section>
-
-      {/* --- FEATURES & DASHBOARD SHOWCASE --- */}
-      <section className="py-20">
-        <div className="max-w-6xl mx-auto px-4">
-          <div className="flex flex-col md:flex-row items-center gap-16">
-            <div className="flex-1 space-y-8">
-              <div>
-                <span className="text-lime-600 font-bold text-sm uppercase tracking-wider">Complete Career Toolkit</span>
-                <h2 className="text-3xl md:text-4xl font-extrabold text-gray-900 mt-2 tracking-tight">
-                  Everything You Need to Beat the Resume Screening Bots
-                </h2>
-              </div>
+          {/* Benchmark HUD Card */}
+          <div className="bg-[#0E1116] border border-[#1F242D] rounded-[2px] p-6 sm:p-8">
+            <div className="grid lg:grid-cols-12 gap-8 items-center">
               
-              <div className="space-y-4">
-                {features.map((feature, i) => (
-                  <div key={i} className="flex gap-4 bg-white p-5 rounded-xl border border-gray-200 shadow-xs">
-                    <div className="flex-shrink-0 mt-1">
-                      {feature.premium ? (
-                        <Award className="w-6 h-6 text-amber-500" />
-                      ) : (
-                        <CheckCircle2 className="w-6 h-6 text-lime-500" />
-                      )}
-                    </div>
-                    <div>
-                      <h3 className="text-lg font-bold text-gray-900 flex items-center gap-2">
-                        {feature.title} 
-                        {feature.premium && <span className="text-xs bg-amber-100 text-amber-900 px-2 py-0.5 rounded font-bold border border-amber-200">Premium</span>}
-                      </h3>
-                      <p className="text-gray-600 mt-1 text-sm">{feature.description}</p>
-                    </div>
-                  </div>
-                ))}
-              </div>
-
-              <div>
-                <Link 
-                  to="/dashboard"
-                  className="inline-flex items-center gap-2 px-8 py-4 bg-gray-900 hover:bg-black text-white rounded-xl font-bold text-base shadow-lg transition-all active:scale-[0.98]"
-                >
-                  Start Your Free Resume Scan <ArrowRight className="w-5 h-5" />
-                </Link>
-              </div>
-            </div>
-            
-            <div className="flex-1 w-full bg-gray-900 rounded-2xl p-8 border border-gray-800 shadow-2xl relative overflow-hidden text-white">
-              <div className="absolute top-0 right-0 bg-lime-500 text-gray-950 font-black text-xs px-4 py-1.5 rounded-bl-lg shadow-md">
-                Live Scanner Output
-              </div>
-              
-              <div className="space-y-6 mt-4">
-                <div className="flex justify-between items-center pb-4 border-b border-gray-800">
-                  <div>
-                    <p className="text-xs text-gray-400 uppercase tracking-wider font-semibold">Target Match Score</p>
-                    <div className="text-5xl font-black text-lime-400 mt-1">88%</div>
-                  </div>
-                  <span className="px-3 py-1 bg-lime-500/20 text-lime-400 rounded-md text-xs font-bold border border-lime-500/30">
-                    High ATS Pass Rate
-                  </span>
-                </div>
-
+              {/* Left Score Cluster */}
+              <div className="lg:col-span-4 bg-[#090B0E] border border-[#1F242D] p-6 rounded-[2px] text-center flex flex-col justify-between">
                 <div>
-                  <p className="text-xs text-gray-400 uppercase tracking-wider font-semibold mb-3">Detected Missing Keywords</p>
+                  <span className="font-mono text-[10px] uppercase tracking-widest text-[#505763]">
+                    TARGET MATCH QUOTIENT
+                  </span>
+                  <div className="text-6xl sm:text-7xl font-mono font-black text-[#D2FF00] my-2">
+                    {currentRoleData.score}<span className="text-2xl text-[#505763]">/100</span>
+                  </div>
+                  <span className="font-mono text-xs font-bold text-[#F5F7FA]">
+                    {currentRoleData.title}
+                  </span>
+                </div>
+
+                <div className="mt-6 pt-4 border-t border-[#1F242D] space-y-2 text-left">
+                  <div className="flex justify-between font-mono text-xs">
+                    <span className="text-[#9BA3AF]">Status:</span>
+                    <span className="text-[#D2FF00] font-bold">ALGORITHMIC PASS</span>
+                  </div>
+                  <div className="flex justify-between font-mono text-xs">
+                    <span className="text-[#9BA3AF]">Rejection Risk:</span>
+                    <span className="text-[#D2FF00] font-bold">{currentRoleData.rejectionRisk}</span>
+                  </div>
+                </div>
+              </div>
+
+              {/* Right Diagnostic Breakdown Grid */}
+              <div className="lg:col-span-8 space-y-4">
+                <div className="grid sm:grid-cols-2 gap-4">
+                  
+                  <div className="bg-[#151921] border border-[#1F242D] p-4 rounded-[2px]">
+                    <span className="font-mono text-[10px] text-[#9BA3AF] uppercase">Impact Verbs Quotient</span>
+                    <div className="text-xl font-mono font-bold text-[#F5F7FA] mt-1">
+                      {currentRoleData.impact}
+                    </div>
+                    <p className="text-xs text-[#9BA3AF] mt-1">High density of Google X-Y-Z active power verbs.</p>
+                  </div>
+
+                  <div className="bg-[#151921] border border-[#1F242D] p-4 rounded-[2px]">
+                    <span className="font-mono text-[10px] text-[#9BA3AF] uppercase">Parsing Latency</span>
+                    <div className="text-xl font-mono font-bold text-[#D2FF00] mt-1">
+                      {currentRoleData.speed}
+                    </div>
+                    <p className="text-xs text-[#9BA3AF] mt-1">Clean structural AST extraction without formatting collisions.</p>
+                  </div>
+
+                  <div className="bg-[#151921] border border-[#1F242D] p-4 rounded-[2px]">
+                    <span className="font-mono text-[10px] text-[#9BA3AF] uppercase">Skill Density Score</span>
+                    <div className="text-xl font-mono font-bold text-[#F5F7FA] mt-1">
+                      {currentRoleData.density}
+                    </div>
+                    <p className="text-xs text-[#9BA3AF] mt-1">Contextual keyword clustering matching enterprise JD.</p>
+                  </div>
+
+                  <div className="bg-[#151921] border border-[#1F242D] p-4 rounded-[2px]">
+                    <span className="font-mono text-[10px] text-[#9BA3AF] uppercase">Quantified Metrics Ratio</span>
+                    <div className="text-xl font-mono font-bold text-[#FF5722] mt-1">
+                      {currentRoleData.metricsQuotient}
+                    </div>
+                    <p className="text-xs text-[#9BA3AF] mt-1">Measurable business outcomes, SLA metrics, and dollar savings.</p>
+                  </div>
+
+                </div>
+
+                {/* Top Matched Keywords Bar */}
+                <div className="bg-[#090B0E] border border-[#1F242D] p-4 rounded-[2px]">
+                  <span className="font-mono text-[10px] font-bold text-[#9BA3AF] uppercase tracking-wider block mb-2">
+                    EXTRACTED CRITICAL KEYWORDS:
+                  </span>
                   <div className="flex flex-wrap gap-2">
-                    {['Distributed Systems', 'Redis Caching', 'Kubernetes', 'CI/CD Pipelines', 'GraphQL'].map((kw, idx) => (
-                      <span key={idx} className="px-2.5 py-1 bg-red-500/10 text-red-400 border border-red-500/20 rounded-md text-xs font-semibold">
+                    {currentRoleData.topKeywords.map((kw, i) => (
+                      <span key={i} className="font-mono text-xs font-bold text-[#D2FF00] bg-[#D2FF00]/10 border border-[#D2FF00]/30 px-2.5 py-0.5 rounded-[2px]">
                         + {kw}
                       </span>
                     ))}
                   </div>
                 </div>
 
-                <div className="bg-gray-800/60 p-4 rounded-lg border border-gray-700 text-xs text-gray-300">
-                  <p className="font-bold text-lime-400 mb-1">AI Recruiter Critique:</p>
-                  <p className="italic">"Your bullet points show strong leadership, but you lack specific cloud deployment keywords and measurable scale numbers in your primary experience section."</p>
+              </div>
+
+            </div>
+          </div>
+
+        </div>
+      </section>
+
+      {/* --- SECTION 3: ACTION VERB TRANSFORM MATRIX --- */}
+      <section className="py-16 sm:py-24 bg-[#0E1116] border-b border-[#1F242D]">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          
+          <div className="text-center max-w-3xl mx-auto mb-16">
+            <div className="inline-flex items-center gap-1.5 px-3 py-1 bg-[#151921] border border-[#1F242D] text-[#FF5722] font-mono text-[10px] uppercase tracking-widest rounded-[2px] mb-3">
+              <Zap className="w-3.5 h-3.5" /> // VERB ACCELERATOR
+            </div>
+            <h2 className="text-3xl sm:text-4xl font-extrabold text-[#F5F7FA] tracking-tight">
+              High-Contrast Action Verb Transformations
+            </h2>
+            <p className="text-sm text-[#9BA3AF] mt-2 leading-relaxed">
+              Compare generic, passive resume bullet points against calibrated high-density telemetry statements.
+            </p>
+          </div>
+
+          <div className="grid md:grid-cols-2 gap-6">
+            {verbTransformExamples.map((item) => (
+              <div 
+                key={item.id} 
+                className="bg-[#08090C] border border-[#1F242D] rounded-[2px] p-6 hover:border-[#2E323D] transition-colors relative flex flex-col justify-between"
+              >
+                <div className="space-y-4">
+                  {/* Top Meta Bar */}
+                  <div className="flex items-center justify-between border-b border-[#1F242D] pb-3">
+                    <span className="font-mono text-[10px] text-[#505763]">{item.id}</span>
+                    <div className="flex items-center gap-2">
+                      <span className="font-mono text-[10px] font-bold text-[#D2FF00] bg-[#D2FF00]/10 border border-[#D2FF00]/30 px-2 py-0.5 rounded-[2px]">
+                        SCORE: {item.powerScore}
+                      </span>
+                      <span className="font-mono text-[10px] text-[#9BA3AF]">
+                        {item.atsWeight}
+                      </span>
+                    </div>
+                  </div>
+
+                  {/* Weak Phrasing */}
+                  <div className="bg-[#151921]/50 border border-red-500/20 p-3 rounded-[2px]">
+                    <span className="font-mono text-[10px] font-bold text-red-400 uppercase tracking-wider block mb-1">
+                      [WEAK / GENERIC]
+                    </span>
+                    <p className="text-xs text-[#9BA3AF] line-through decoration-red-400/60">
+                      "{item.before}"
+                    </p>
+                  </div>
+
+                  {/* Calibrated Phrasing */}
+                  <div className="bg-[#0E1116] border border-[#D2FF00]/30 p-3 rounded-[2px]">
+                    <span className="font-mono text-[10px] font-bold text-[#D2FF00] uppercase tracking-wider block mb-1">
+                      [CALIBRATED / HIGH IMPACT]
+                    </span>
+                    <p className="text-xs text-[#F5F7FA] font-medium leading-relaxed">
+                      "{item.after}"
+                    </p>
+                  </div>
+                </div>
+
+                <div className="pt-4 mt-4 border-t border-[#1F242D] flex items-center justify-between font-mono text-[11px] text-[#9BA3AF]">
+                  <span>REWRITE GAIN: +34% WEIGHT</span>
+                  <Link to="/tools/star-bullet-generator" className="text-[#D2FF00] hover:underline flex items-center gap-1 font-bold">
+                    Generate <ArrowRight className="w-3 h-3" />
+                  </Link>
                 </div>
               </div>
+            ))}
+          </div>
+
+          <div className="mt-10 text-center">
+            <Link 
+              to="/tools/ats-action-verbs" 
+              className="inline-flex items-center gap-2 px-6 py-3 bg-[#151921] hover:bg-[#1F242D] text-[#F5F7FA] border border-[#1F242D] hover:border-[#D2FF00] rounded-[2px] font-mono text-xs font-bold uppercase tracking-wider transition-all"
+            >
+              <span>Explore All 250+ High-Contrast Power Verbs</span>
+              <ArrowRight className="w-4 h-4 text-[#D2FF00]" />
+            </Link>
+          </div>
+
+        </div>
+      </section>
+
+      {/* --- SECTION 4: BRUTAL ROAST TELEMETRY STREAM --- */}
+      <section className="py-16 sm:py-24 bg-[#08090C] border-b border-[#1F242D]">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          
+          <div className="flex flex-col sm:flex-row items-start sm:items-end justify-between mb-12 gap-4">
+            <div>
+              <div className="inline-flex items-center gap-1.5 px-3 py-1 bg-[#0E1116] border border-[#1F242D] text-[#FF5722] font-mono text-[10px] uppercase tracking-widest rounded-[2px] mb-2">
+                <Flame className="w-3.5 h-3.5" /> // PEER &amp; AI AUDIT
+              </div>
+              <h2 className="text-2xl sm:text-4xl font-extrabold text-[#F5F7FA] tracking-tight">
+                Brutal ATS Resume Roast Telemetry
+              </h2>
+              <p className="text-xs sm:text-sm text-[#9BA3AF] mt-1">
+                Uncensored diagnostic feedback deconstructing why hiring filters and hiring managers reject candidates.
+              </p>
             </div>
+            
+            <Link
+              to="/roast-wall"
+              className="px-4 py-2 bg-[#FF5722] hover:bg-[#ff6e40] text-[#08090C] font-mono text-xs font-bold uppercase rounded-[2px] flex items-center gap-1.5 transition-all shadow-[0_0_15px_rgba(255,87,34,0.3)] shrink-0"
+            >
+              <span>View Roast Wall Stream</span>
+              <ArrowRight className="w-3.5 h-3.5" />
+            </Link>
+          </div>
+
+          <div className="grid md:grid-cols-3 gap-6">
+            {roastSnippets.map((roast) => (
+              <div 
+                key={roast.id} 
+                className="bg-[#0E1116] border border-[#1F242D] rounded-[2px] p-6 flex flex-col justify-between hover:border-[#FF5722]/50 transition-colors"
+              >
+                <div className="space-y-4">
+                  <div className="flex items-center justify-between border-b border-[#1F242D] pb-3">
+                    <span className="font-mono text-[10px] text-[#505763]">{roast.id}</span>
+                    <span className={`font-mono text-[10px] font-bold px-2 py-0.5 rounded-[2px] border ${roast.statusColor}`}>
+                      {roast.status} • {roast.score}
+                    </span>
+                  </div>
+
+                  <div>
+                    <h3 className="font-bold text-sm text-[#F5F7FA] mb-1">
+                      {roast.role}
+                    </h3>
+                    <p className="text-xs text-[#9BA3AF] italic leading-relaxed bg-[#08090C] p-3 rounded-[2px] border border-[#1F242D]">
+                      "{roast.critique}"
+                    </p>
+                  </div>
+
+                  <div className="bg-[#151921] p-3 rounded-[2px] border border-[#1F242D]">
+                    <span className="font-mono text-[10px] font-bold text-[#D2FF00] uppercase block mb-1">
+                      AI REWRITE REMEDY:
+                    </span>
+                    <p className="text-xs text-[#E1E2E9] leading-relaxed">
+                      {roast.fix}
+                    </p>
+                  </div>
+                </div>
+
+                <div className="pt-4 mt-4 border-t border-[#1F242D] flex items-center justify-between font-mono text-[10px] text-[#505763]">
+                  <span>COMMUNITY VERIFIED</span>
+                  <Link to="/roast-wall" className="text-[#FF5722] hover:underline font-bold">
+                    Read Audit &gt;
+                  </Link>
+                </div>
+              </div>
+            ))}
+          </div>
+
+        </div>
+      </section>
+
+      {/* --- SECTION 5: 6-GRID FREE ATS & CAREER TOOLS SUITE --- */}
+      <section className="py-16 sm:py-24 bg-[#0E1116] border-b border-[#1F242D]">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          
+          <div className="text-center max-w-3xl mx-auto mb-16">
+            <div className="inline-flex items-center gap-1.5 px-3 py-1 bg-[#151921] border border-[#1F242D] text-[#D2FF00] font-mono text-[10px] uppercase tracking-widest rounded-[2px] mb-3">
+              <Sparkles className="w-3.5 h-3.5" /> 100% FREE AI CAREER SUITE
+            </div>
+            <h2 className="text-3xl sm:text-4xl font-extrabold text-[#F5F7FA] tracking-tight">
+              Sovereign Career Optimization Tools
+            </h2>
+            <p className="text-sm text-[#9BA3AF] mt-2 leading-relaxed">
+              Zero paywalls or forced subscriptions. Precision-machined utilities engineered for engineering candidates.
+            </p>
+          </div>
+
+          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
+            {toolsSuite.map((tool) => (
+              <div 
+                key={tool.id} 
+                className="bg-[#08090C] border border-[#1F242D] rounded-[2px] p-6 hover:border-[#D2FF00] transition-all flex flex-col justify-between group"
+              >
+                <div>
+                  <div className="flex items-center justify-between mb-4">
+                    <span className="font-mono text-xs font-bold text-[#505763]">
+                      [{tool.id}/06]
+                    </span>
+                    <span className="font-mono text-[9px] font-bold text-[#D2FF00] bg-[#D2FF00]/10 border border-[#D2FF00]/30 px-2 py-0.5 rounded-[2px]">
+                      {tool.tag}
+                    </span>
+                  </div>
+
+                  <h3 className="text-lg font-bold text-[#F5F7FA] group-hover:text-[#D2FF00] transition-colors mb-2">
+                    {tool.title}
+                  </h3>
+
+                  <p className="text-xs text-[#9BA3AF] leading-relaxed mb-6">
+                    {tool.desc}
+                  </p>
+                </div>
+
+                <Link
+                  to={tool.link}
+                  onMouseEnter={() => prefetchRoute(tool.link)}
+                  className="w-full py-2.5 bg-[#151921] group-hover:bg-[#D2FF00] text-[#F5F7FA] group-hover:text-[#08090C] font-mono font-bold text-xs uppercase tracking-wider rounded-[2px] flex items-center justify-center gap-1.5 transition-all border border-[#1F242D] group-hover:border-[#D2FF00]"
+                >
+                  <span>{tool.cta}</span>
+                  <ArrowUpRight className="w-3.5 h-3.5" />
+                </Link>
+              </div>
+            ))}
+          </div>
+
+          <div className="mt-12 text-center">
+            <Link 
+              to="/tools" 
+              className="inline-flex items-center gap-2 font-mono text-xs font-bold text-[#D2FF00] hover:underline uppercase tracking-wider"
+            >
+              <span>Explore Complete Free Tools Directory Hub</span>
+              <ArrowRight className="w-4 h-4" />
+            </Link>
+          </div>
+
+        </div>
+      </section>
+
+      {/* --- SECTION 6: HOW IT WORKS (3-STEP INDUSTRIAL WORKFLOW) --- */}
+      <section className="py-16 sm:py-24 bg-[#08090C] border-b border-[#1F242D]">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          
+          <div className="text-center max-w-3xl mx-auto mb-16">
+            <div className="inline-flex items-center gap-1.5 px-3 py-1 bg-[#0E1116] border border-[#1F242D] text-[#9BA3AF] font-mono text-[10px] uppercase tracking-widest rounded-[2px] mb-3">
+              EXECUTION PIPELINE
+            </div>
+            <h2 className="text-3xl sm:text-4xl font-extrabold text-[#F5F7FA] tracking-tight">
+              Three Steps to Algorithmic Clearance
+            </h2>
+            <p className="text-sm text-[#9BA3AF] mt-2 leading-relaxed">
+              How PandaLime takes raw resume files and generates ATS-verified applications.
+            </p>
+          </div>
+
+          <div className="grid md:grid-cols-3 gap-6">
+            {steps.map((step, i) => (
+              <div 
+                key={i} 
+                className="bg-[#0E1116] border border-[#1F242D] p-6 rounded-[2px] relative flex flex-col justify-between hover:border-[#2E323D] transition-colors"
+              >
+                <div>
+                  <div className="flex items-center justify-between mb-4">
+                    <span className="font-mono text-2xl font-black text-[#505763]">
+                      {step.step}
+                    </span>
+                    <div className="w-9 h-9 bg-[#151921] border border-[#1F242D] rounded-[2px] flex items-center justify-center">
+                      {step.icon}
+                    </div>
+                  </div>
+                  <h3 className="text-base font-bold text-[#F5F7FA] mb-2">{step.title}</h3>
+                  <p className="text-xs text-[#9BA3AF] leading-relaxed">{step.description}</p>
+                </div>
+              </div>
+            ))}
+          </div>
+
+        </div>
+      </section>
+
+      {/* --- SECTION 7: DEEP ATS ANALYSIS PILLARS --- */}
+      <section className="py-16 sm:py-24 bg-[#0E1116] border-b border-[#1F242D]">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          
+          <div className="text-center max-w-3xl mx-auto mb-16">
+            <h2 className="text-3xl sm:text-4xl font-extrabold text-[#F5F7FA] tracking-tight">
+              What Does an Enterprise ATS Actually Test?
+            </h2>
+            <p className="text-sm text-[#9BA3AF] mt-2">
+              The four algorithmic dimensions corporate recruiters rely on to filter candidate pools.
+            </p>
+          </div>
+
+          <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
+            {atsPillars.map((pillar) => (
+              <div 
+                key={pillar.id} 
+                className="bg-[#08090C] border border-[#1F242D] p-5 rounded-[2px] hover:border-[#2E323D] transition-colors flex flex-col justify-between"
+              >
+                <div>
+                  <div className="flex items-center justify-between mb-4">
+                    <div className="w-9 h-9 bg-[#151921] border border-[#1F242D] rounded-[2px] flex items-center justify-center">
+                      {pillar.icon}
+                    </div>
+                    <span className="font-mono text-[9px] text-[#505763]">{pillar.id}</span>
+                  </div>
+                  <h3 className="text-sm font-bold text-[#F5F7FA] mb-2">{pillar.title}</h3>
+                  <p className="text-xs text-[#9BA3AF] leading-relaxed">{pillar.desc}</p>
+                </div>
+              </div>
+            ))}
+          </div>
+
+        </div>
+      </section>
+
+      {/* --- SECTION 8: PORTFOLIO STUDIO SHOWCASE --- */}
+      <section className="py-16 sm:py-24 bg-[#08090C] border-b border-[#1F242D]">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          
+          <div className="bg-[#0E1116] border border-[#1F242D] rounded-[2px] p-6 sm:p-10 relative overflow-hidden">
+            <div className="grid lg:grid-cols-12 gap-8 items-center">
+              
+              <div className="lg:col-span-7 space-y-4 text-left">
+                <div className="inline-flex items-center gap-1.5 px-2.5 py-0.5 bg-[#151921] border border-[#1F242D] text-[#D2FF00] font-mono text-[10px] uppercase tracking-widest rounded-[2px]">
+                  <Globe className="w-3.5 h-3.5" /> HOSTED RECRUITER PORTFOLIO
+                </div>
+                <h2 className="text-2xl sm:text-4xl font-extrabold text-[#F5F7FA] tracking-tight">
+                  Launch Your Recruiter-Ready Portfolio <br />
+                  <span className="text-[#D2FF00] font-mono">
+                    pandalime.com/p/:yourname
+                  </span>
+                </h2>
+                <p className="text-xs sm:text-sm text-[#9BA3AF] leading-relaxed">
+                  Don't just attach a PDF. Give engineering managers an interactive live website with your skills matrix, GitHub repositories, certifications, and 1-click QR code.
+                </p>
+                
+                <div className="pt-2 flex flex-wrap gap-3">
+                  <Link
+                    to="/portfolio-builder"
+                    className="px-6 py-3 bg-[#D2FF00] hover:bg-[#E5FF66] text-[#08090C] font-mono text-xs font-bold uppercase rounded-[2px] flex items-center gap-2 shadow-[0_0_15px_rgba(210,255,0,0.3)] transition-all"
+                  >
+                    <Globe className="w-4 h-4" />
+                    <span>Create Free Portfolio</span>
+                    <ArrowRight className="w-4 h-4" />
+                  </Link>
+
+                  <Link
+                    to="/p/alex-secops"
+                    className="px-5 py-3 bg-[#151921] hover:bg-[#1F242D] text-[#F5F7FA] font-mono text-xs font-bold uppercase rounded-[2px] border border-[#1F242D] flex items-center gap-2 transition-all"
+                  >
+                    <span>View Live Sample</span>
+                    <ExternalLink className="w-3.5 h-3.5 text-[#9BA3AF]" />
+                  </Link>
+                </div>
+              </div>
+
+              {/* Visual Card Preview */}
+              <div className="lg:col-span-5 bg-[#090B0E] border border-[#1F242D] rounded-[2px] p-5 font-mono">
+                <div className="flex items-center justify-between border-b border-[#1F242D] pb-3 mb-4">
+                  <div className="flex items-center gap-1.5">
+                    <div className="w-2.5 h-2.5 bg-[#FF5722] rounded-none" />
+                    <div className="w-2.5 h-2.5 bg-amber-400 rounded-none" />
+                    <div className="w-2.5 h-2.5 bg-[#D2FF00] rounded-none" />
+                  </div>
+                  <span className="text-[10px] text-[#D2FF00] bg-[#D2FF00]/10 px-2 py-0.5 rounded-[2px] border border-[#D2FF00]/20">
+                    /p/alex-secops
+                  </span>
+                </div>
+
+                <div className="space-y-3">
+                  <div className="flex items-center gap-3">
+                    <div className="w-10 h-10 bg-[#D2FF00] text-[#08090C] font-bold text-sm flex items-center justify-center rounded-[2px]">
+                      AV
+                    </div>
+                    <div>
+                      <h4 className="text-[#F5F7FA] font-bold text-xs">Alex Vance</h4>
+                      <p className="text-[#D2FF00] text-[10px]">SecOps &amp; Cloud Security</p>
+                    </div>
+                  </div>
+                  <p className="text-[11px] text-[#9BA3AF] line-clamp-2">
+                    "Specializing in Kubernetes threat modeling, AWS IAM policies, and automated DevSecOps pipelines."
+                  </p>
+                  <div className="flex flex-wrap gap-1 pt-1">
+                    {['K8s', 'Terraform', 'AWS', 'Docker', 'Go'].map((skill, i) => (
+                      <span key={i} className="text-[9px] bg-[#151921] text-[#9BA3AF] px-1.5 py-0.5 rounded-[2px] border border-[#1F242D]">
+                        {skill}
+                      </span>
+                    ))}
+                  </div>
+                </div>
+              </div>
+
+            </div>
+          </div>
+
+        </div>
+      </section>
+
+      {/* --- SECTION 9: DEVELOPER & CANDIDATE TRUST MATRIX --- */}
+      <section className="py-12 bg-[#0E1116] border-b border-[#1F242D]">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-4 text-center">
+            
+            <div className="bg-[#08090C] border border-[#1F242D] p-5 rounded-[2px]">
+              <div className="text-2xl sm:text-3xl font-mono font-bold text-[#D2FF00]">150K+</div>
+              <p className="font-mono text-[10px] text-[#9BA3AF] uppercase mt-1">Resumes Decompiled</p>
+            </div>
+
+            <div className="bg-[#08090C] border border-[#1F242D] p-5 rounded-[2px]">
+              <div className="text-2xl sm:text-3xl font-mono font-bold text-[#F5F7FA]">99.4%</div>
+              <p className="font-mono text-[10px] text-[#9BA3AF] uppercase mt-1">Enterprise ATS Compatibility</p>
+            </div>
+
+            <div className="bg-[#08090C] border border-[#1F242D] p-5 rounded-[2px]">
+              <div className="text-2xl sm:text-3xl font-mono font-bold text-[#FF5722]">4.9 / 5</div>
+              <p className="font-mono text-[10px] text-[#9BA3AF] uppercase mt-1">Trustpilot Rating</p>
+            </div>
+
+            <div className="bg-[#08090C] border border-[#1F242D] p-5 rounded-[2px]">
+              <div className="text-2xl sm:text-3xl font-mono font-bold text-[#D2FF00]">&lt;118ms</div>
+              <p className="font-mono text-[10px] text-[#9BA3AF] uppercase mt-1">Mean AST Token Latency</p>
+            </div>
+
           </div>
         </div>
       </section>
 
-      {/* --- COMPARISON TABLE --- */}
-      <section className="bg-white py-20 border-t border-gray-200">
-        <div className="max-w-5xl mx-auto px-4">
-          <div className="text-center mb-14">
-            <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-3">
-              Why PandaLime Outperforms Traditional Resume Checkers
+      {/* --- SECTION 10: COMPARISON TABLE (PANDALIME VS TRADITIONAL) --- */}
+      <section className="py-16 sm:py-24 bg-[#08090C] border-b border-[#1F242D]">
+        <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+          
+          <div className="text-center mb-12">
+            <h2 className="text-2xl sm:text-3xl font-extrabold text-[#F5F7FA] tracking-tight">
+              Why PandaLime Outperforms Traditional Checkers
             </h2>
-            <p className="text-gray-600 text-lg">
-              Compare AI-powered contextual scanning against generic keyword counters.
+            <p className="text-xs sm:text-sm text-[#9BA3AF] mt-1">
+              Contextual vector AST parsing compared against legacy keyword counters.
             </p>
           </div>
 
-          <div className="overflow-x-auto">
-            <table className="w-full text-left border-collapse">
+          <div className="overflow-x-auto border border-[#1F242D] rounded-[2px]">
+            <table className="w-full text-left border-collapse font-mono text-xs">
               <thead>
-                <tr className="border-b-2 border-gray-200">
-                  <th className="py-4 px-6 text-sm font-bold text-gray-500 uppercase tracking-wider">Features</th>
-                  <th className="py-4 px-6 text-sm font-extrabold text-lime-600 uppercase tracking-wider bg-lime-50/50 rounded-t-xl">PandaLime AI Scanner</th>
-                  <th className="py-4 px-6 text-sm font-bold text-gray-500 uppercase tracking-wider">Traditional Checkers</th>
-                  <th className="py-4 px-6 text-sm font-bold text-gray-500 uppercase tracking-wider">Manual Review</th>
+                <tr className="border-b border-[#1F242D] bg-[#0E1116]">
+                  <th className="py-3.5 px-4 font-bold text-[#505763] uppercase">Evaluation Feature</th>
+                  <th className="py-3.5 px-4 font-bold text-[#D2FF00] uppercase bg-[#D2FF00]/5">PandaLime Core</th>
+                  <th className="py-3.5 px-4 font-bold text-[#505763] uppercase">Legacy Checkers</th>
+                  <th className="py-3.5 px-4 font-bold text-[#505763] uppercase">Manual Agency</th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-gray-200 text-sm">
+              <tbody className="divide-y divide-[#1F242D] bg-[#08090C] text-[#9BA3AF]">
                 <tr>
-                  <td className="py-4 px-6 font-semibold text-gray-900">Instant ATS Match Score (%)</td>
-                  <td className="py-4 px-6 bg-lime-50/50 text-lime-700 font-bold flex items-center gap-2"><Check className="w-5 h-5 text-lime-600" /> Yes (Instant)</td>
-                  <td className="py-4 px-6 text-gray-600">Basic Word Count</td>
-                  <td className="py-4 px-6 text-gray-600">Subjective</td>
+                  <td className="py-3.5 px-4 font-bold text-[#F5F7FA]">Instant AST Match Score (%)</td>
+                  <td className="py-3.5 px-4 bg-[#D2FF00]/5 text-[#D2FF00] font-bold flex items-center gap-1.5">
+                    <Check className="w-4 h-4 text-[#D2FF00]" /> Instant 118ms
+                  </td>
+                  <td className="py-3.5 px-4">Basic Word Count</td>
+                  <td className="py-3.5 px-4">Subjective</td>
                 </tr>
                 <tr>
-                  <td className="py-4 px-6 font-semibold text-gray-900">Semantic Missing Keywords</td>
-                  <td className="py-4 px-6 bg-lime-50/50 text-lime-700 font-bold flex items-center gap-2"><Check className="w-5 h-5 text-lime-600" /> Contextual AI</td>
-                  <td className="py-4 px-6 text-gray-400 flex items-center gap-2"><X className="w-5 h-5 text-red-400" /> Exact match only</td>
-                  <td className="py-4 px-6 text-gray-600">Partial</td>
+                  <td className="py-3.5 px-4 font-bold text-[#F5F7FA]">Semantic Keyword Gap Isolation</td>
+                  <td className="py-3.5 px-4 bg-[#D2FF00]/5 text-[#D2FF00] font-bold flex items-center gap-1.5">
+                    <Check className="w-4 h-4 text-[#D2FF00]" /> Contextual Vector
+                  </td>
+                  <td className="py-3.5 px-4 text-[#505763] flex items-center gap-1.5">
+                    <X className="w-4 h-4 text-[#FF5722]" /> Exact String Only
+                  </td>
+                  <td className="py-3.5 px-4">Partial</td>
                 </tr>
                 <tr>
-                  <td className="py-4 px-6 font-semibold text-gray-900">AI-Rewritten STAR Bullets</td>
-                  <td className="py-4 px-6 bg-lime-50/50 text-lime-700 font-bold flex items-center gap-2"><Check className="w-5 h-5 text-lime-600" /> Included</td>
-                  <td className="py-4 px-6 text-gray-400 flex items-center gap-2"><X className="w-5 h-5 text-red-400" /> None</td>
-                  <td className="py-4 px-6 text-gray-600">Slow / Expensive</td>
+                  <td className="py-3.5 px-4 font-bold text-[#F5F7FA]">Google STAR Bullet Rewriting</td>
+                  <td className="py-3.5 px-4 bg-[#D2FF00]/5 text-[#D2FF00] font-bold flex items-center gap-1.5">
+                    <Check className="w-4 h-4 text-[#D2FF00]" /> Autonomous
+                  </td>
+                  <td className="py-3.5 px-4 text-[#505763] flex items-center gap-1.5">
+                    <X className="w-4 h-4 text-[#FF5722]" /> None
+                  </td>
+                  <td className="py-3.5 px-4">Slow / Expensive</td>
                 </tr>
                 <tr>
-                  <td className="py-4 px-6 font-semibold text-gray-900">Tailored Cover Letter Generator</td>
-                  <td className="py-4 px-6 bg-lime-50/50 text-lime-700 font-bold flex items-center gap-2"><Check className="w-5 h-5 text-lime-600" /> 1-Click Draft</td>
-                  <td className="py-4 px-6 text-gray-400 flex items-center gap-2"><X className="w-5 h-5 text-red-400" /> None</td>
-                  <td className="py-4 px-6 text-gray-600">$100+ per draft</td>
+                  <td className="py-3.5 px-4 font-bold text-[#F5F7FA]">Hosted Recruiter Web Portfolio</td>
+                  <td className="py-3.5 px-4 bg-[#D2FF00]/5 text-[#D2FF00] font-bold flex items-center gap-1.5">
+                    <Check className="w-4 h-4 text-[#D2FF00]" /> Free /p/:slug
+                  </td>
+                  <td className="py-3.5 px-4 text-[#505763] flex items-center gap-1.5">
+                    <X className="w-4 h-4 text-[#FF5722]" /> None
+                  </td>
+                  <td className="py-3.5 px-4">$500+ Setup</td>
                 </tr>
                 <tr>
-                  <td className="py-4 px-6 font-semibold text-gray-900">Turnaround Speed</td>
-                  <td className="py-4 px-6 bg-lime-50/50 text-lime-700 font-bold">15 Seconds</td>
-                  <td className="py-4 px-6 text-gray-600">1 - 2 Minutes</td>
-                  <td className="py-4 px-6 text-gray-600">3 - 7 Days</td>
-                </tr>
-                <tr>
-                  <td className="py-4 px-6 font-semibold text-gray-900">Free Baseline Scan</td>
-                  <td className="py-4 px-6 bg-lime-50/50 text-lime-700 font-bold flex items-center gap-2"><Check className="w-5 h-5 text-lime-600" /> 100% Free</td>
-                  <td className="py-4 px-6 text-gray-600">Credit card paywall</td>
-                  <td className="py-4 px-6 text-gray-400 flex items-center gap-2"><X className="w-5 h-5 text-red-400" /> Expensive</td>
+                  <td className="py-3.5 px-4 font-bold text-[#F5F7FA]">Credit Card Barrier</td>
+                  <td className="py-3.5 px-4 bg-[#D2FF00]/5 text-[#D2FF00] font-bold flex items-center gap-1.5">
+                    <Check className="w-4 h-4 text-[#D2FF00]" /> 100% Free Scan
+                  </td>
+                  <td className="py-3.5 px-4 text-[#FF5722]">Paywalled</td>
+                  <td className="py-3.5 px-4 text-[#FF5722]">$150 - $400</td>
                 </tr>
               </tbody>
             </table>
           </div>
+
         </div>
       </section>
 
-      {/* --- FAQ ACCORDION SECTION WITH JSON-LD SCHEMA --- */}
-      <section className="py-20 bg-gray-50 border-t border-gray-200">
-        <div className="max-w-4xl mx-auto px-4">
-          <div className="text-center mb-14">
-            <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-3">
-              Frequently Asked Questions About ATS Resume Scanning
+      {/* --- SECTION 11: FAQ ACCORDION WITH SCHEMA MARKUP --- */}
+      <section className="py-16 sm:py-24 bg-[#0E1116] border-b border-[#1F242D]">
+        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+          
+          <div className="text-center mb-12">
+            <h2 className="text-2xl sm:text-3xl font-extrabold text-[#F5F7FA] tracking-tight">
+              Frequently Asked Technical Questions
             </h2>
-            <p className="text-gray-600 text-lg">
-              Everything you need to know about Applicant Tracking Systems, keyword scoring, and recruiter screening.
+            <p className="text-xs sm:text-sm text-[#9BA3AF] mt-1">
+              Everything you need to know about ATS architectures, tokenization, and privacy.
             </p>
           </div>
 
-          <div className="space-y-4">
+          <div className="space-y-3">
             {faqs.map((faq, index) => (
               <div 
                 key={index} 
-                className="bg-white rounded-2xl border border-gray-200 overflow-hidden shadow-sm transition-all"
+                className="bg-[#08090C] border border-[#1F242D] rounded-[2px] overflow-hidden transition-all"
               >
                 <button
                   onClick={() => toggleFaq(index)}
-                  className="w-full p-6 text-left font-bold text-lg text-gray-900 flex justify-between items-center gap-4 hover:text-lime-600 transition-colors"
+                  className="w-full p-4 sm:p-5 text-left font-bold text-sm text-[#F5F7FA] flex justify-between items-center gap-4 hover:text-[#D2FF00] transition-colors cursor-pointer"
                 >
                   <span>{faq.question}</span>
-                  <ChevronDown className={`w-5 h-5 text-gray-400 transition-transform duration-300 shrink-0 ${openFaq === index ? 'rotate-180 text-lime-600' : ''}`} />
+                  <ChevronDown className={`w-4 h-4 text-[#505763] transition-transform duration-200 shrink-0 ${openFaq === index ? 'rotate-180 text-[#D2FF00]' : ''}`} />
                 </button>
                 {openFaq === index && (
-                  <div className="px-6 pb-6 text-gray-600 leading-relaxed border-t border-gray-100 pt-4 text-base">
+                  <div className="px-4 sm:px-5 pb-5 text-xs text-[#9BA3AF] leading-relaxed border-t border-[#1F242D] pt-3">
                     {faq.answer}
                   </div>
                 )}
               </div>
             ))}
           </div>
+
         </div>
       </section>
 
-      {/* --- INTERNAL LINK DIRECTORY (TOP ROLES & COMPANIES) --- */}
-      <section className="bg-white py-16 border-t border-gray-200">
-        <div className="max-w-6xl mx-auto px-4 space-y-12">
+      {/* --- SECTION 12: INTERNAL LINK DIRECTORY (ROLES, COMPANIES & NICHES) --- */}
+      <section className="py-16 bg-[#08090C] border-b border-[#1F242D]">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-10">
           
           {/* Roles Grid */}
           <div>
-            <div className="flex items-center gap-3 mb-6">
-              <Briefcase className="w-6 h-6 text-lime-600" />
-              <h3 className="text-2xl font-bold text-gray-900">
-                Explore ATS Keyword Scanners by Career Role
+            <div className="flex items-center gap-2 mb-4">
+              <Briefcase className="w-4 h-4 text-[#D2FF00]" />
+              <h3 className="text-base font-bold text-[#F5F7FA]">
+                Targeted ATS Keyword Scanners by Engineering Role
               </h3>
             </div>
-            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-3">
+            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-2">
               {ROLES.map((role) => (
                 <Link
                   key={role.id}
                   to={`/scanner/${role.id}`}
-                  className="p-3 bg-gray-50 hover:bg-lime-50 hover:border-lime-300 text-gray-700 hover:text-lime-800 text-sm font-medium rounded-xl border border-gray-200 transition-all text-center block"
+                  className="p-2.5 bg-[#0E1116] hover:bg-[#151921] hover:border-[#D2FF00] text-[#9BA3AF] hover:text-[#F5F7FA] font-mono text-[11px] rounded-[2px] border border-[#1F242D] transition-all text-center block"
                 >
-                  {role.title} ATS Scan
+                  {role.title}
                 </Link>
               ))}
             </div>
@@ -864,18 +1217,18 @@ export default function Home() {
 
           {/* Companies Grid */}
           <div>
-            <div className="flex items-center gap-3 mb-6">
-              <Building2 className="w-6 h-6 text-lime-600" />
-              <h3 className="text-2xl font-bold text-gray-900">
-                Targeted Resume Scanners for Top Tech Employers
+            <div className="flex items-center gap-2 mb-4">
+              <Building2 className="w-4 h-4 text-[#FF5722]" />
+              <h3 className="text-base font-bold text-[#F5F7FA]">
+                Calibrated Resume Checkers for Top Tech Employers
               </h3>
             </div>
-            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-3">
+            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-2">
               {COMPANIES.map((company) => (
                 <Link
                   key={company.id}
                   to={`/scanner/software-engineer-at-${company.id}`}
-                  className="p-3 bg-gray-50 hover:bg-lime-50 hover:border-lime-300 text-gray-700 hover:text-lime-800 text-sm font-medium rounded-xl border border-gray-200 transition-all text-center block"
+                  className="p-2.5 bg-[#0E1116] hover:bg-[#151921] hover:border-[#FF5722] text-[#9BA3AF] hover:text-[#F5F7FA] font-mono text-[11px] rounded-[2px] border border-[#1F242D] transition-all text-center block"
                 >
                   {company.name} Resume Scan
                 </Link>
@@ -885,16 +1238,16 @@ export default function Home() {
 
           {/* Special Niches */}
           <div>
-            <div className="flex items-center gap-3 mb-4">
-              <Search className="w-5 h-5 text-lime-600" />
-              <h4 className="text-lg font-bold text-gray-900">Popular Special Hiring Tracks</h4>
+            <div className="flex items-center gap-2 mb-3">
+              <Search className="w-4 h-4 text-[#D2FF00]" />
+              <h4 className="text-sm font-bold text-[#F5F7FA]">Special Hiring Tracks &amp; New Grad Tracks</h4>
             </div>
-            <div className="flex flex-wrap gap-3">
+            <div className="flex flex-wrap gap-2">
               {SPECIAL_NICHES.map((niche) => (
                 <Link
                   key={niche.slug}
                   to={`/scanner/${niche.slug}`}
-                  className="px-4 py-2 bg-gray-50 hover:bg-lime-50 hover:border-lime-300 text-gray-700 hover:text-lime-800 text-xs font-semibold rounded-lg border border-gray-200 transition-all"
+                  className="px-3 py-1.5 bg-[#0E1116] hover:bg-[#151921] hover:border-[#D2FF00] text-[#9BA3AF] hover:text-[#F5F7FA] font-mono text-[10px] rounded-[2px] border border-[#1F242D] transition-all"
                 >
                   {niche.title}
                 </Link>
@@ -905,55 +1258,52 @@ export default function Home() {
         </div>
       </section>
 
-      {/* --- FEATURED CAREER GUIDES & ATS RESEARCH --- */}
-      <section className="py-16 bg-gray-50 border-t border-gray-200">
-        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex flex-col sm:flex-row items-start sm:items-end justify-between mb-10 gap-4">
+      {/* --- SECTION 13: FEATURED CAREER RESEARCH ARTICLES --- */}
+      <section className="py-16 bg-[#0E1116] border-b border-[#1F242D]">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="flex flex-col sm:flex-row items-start sm:items-end justify-between mb-8 gap-4">
             <div>
-              <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-md bg-lime-100 text-lime-800 text-xs font-bold uppercase tracking-wider mb-2">
-                <BookOpen className="w-3.5 h-3.5" /> Editorial Research Lab
+              <div className="inline-flex items-center gap-1.5 px-2.5 py-0.5 bg-[#151921] text-[#D2FF00] font-mono text-[10px] uppercase tracking-wider rounded-[2px] mb-2 border border-[#1F242D]">
+                <BookOpen className="w-3.5 h-3.5" /> EDITORIAL RESEARCH
               </div>
-              <h2 className="text-2xl sm:text-3xl font-extrabold text-gray-950">
-                Latest ATS Optimization & Career Guides
+              <h2 className="text-xl sm:text-2xl font-extrabold text-[#F5F7FA]">
+                Latest ATS Optimization &amp; Engineering Guides
               </h2>
-              <p className="text-sm text-gray-600 mt-1">
-                Data-backed blueprints, parser reverse-engineering, and hiring manager insights.
-              </p>
             </div>
             <Link
               to="/blog"
               onMouseEnter={() => prefetchRoute('/blog')}
-              className="px-4 py-2 bg-gray-900 hover:bg-black text-white text-xs font-bold rounded-xl flex items-center gap-1.5 transition-colors shrink-0"
+              className="px-3.5 py-1.5 bg-[#151921] hover:bg-[#1F242D] text-[#F5F7FA] font-mono text-xs font-bold rounded-[2px] border border-[#1F242D] flex items-center gap-1.5 transition-all shrink-0"
             >
-              <span>Explore All 12 Guides</span>
-              <ArrowRight className="w-3.5 h-3.5" />
+              <span>Explore All Guides</span>
+              <ArrowRight className="w-3.5 h-3.5 text-[#D2FF00]" />
             </Link>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            {BLOG_POSTS.slice(0, 3).map(post => (
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+            {BLOG_POSTS.slice(0, 3).map((post) => (
               <Link
                 key={post.slug}
                 to={`/blog/${post.slug}`}
                 onMouseEnter={() => prefetchRoute(`/blog/${post.slug}`)}
-                className="bg-white p-6 rounded-2xl border border-gray-200 hover:border-lime-500 hover:shadow-lg transition-all group flex flex-col justify-between"
+                className="bg-[#08090C] p-5 rounded-[2px] border border-[#1F242D] hover:border-[#D2FF00] transition-all group flex flex-col justify-between"
               >
-                <div className="space-y-3">
-                  <div className="flex items-center justify-between text-xs">
-                    <span className="px-2.5 py-0.5 rounded bg-lime-50 text-lime-800 font-bold border border-lime-200/60 text-[11px]">
+                <div className="space-y-2.5">
+                  <div className="flex items-center justify-between font-mono text-[10px]">
+                    <span className="px-2 py-0.5 rounded-[2px] bg-[#151921] text-[#D2FF00] font-bold border border-[#1F242D]">
                       {post.category}
                     </span>
-                    <span className="text-gray-400 text-[11px]">{post.readTime}</span>
+                    <span className="text-[#505763]">{post.readTime}</span>
                   </div>
-                  <h3 className="font-bold text-base text-gray-950 group-hover:text-lime-700 transition-colors line-clamp-2">
+                  <h3 className="font-bold text-sm text-[#F5F7FA] group-hover:text-[#D2FF00] transition-colors line-clamp-2">
                     {post.title}
                   </h3>
-                  <p className="text-xs text-gray-600 line-clamp-3 leading-relaxed">
+                  <p className="text-xs text-[#9BA3AF] line-clamp-2 leading-relaxed">
                     {post.excerpt}
                   </p>
                 </div>
-                <div className="pt-4 mt-4 border-t border-gray-100 flex items-center justify-between text-xs font-bold text-lime-700">
-                  <span>Read Blueprint</span>
+                <div className="pt-3 mt-3 border-t border-[#1F242D] flex items-center justify-between font-mono text-xs font-bold text-[#D2FF00]">
+                  <span>Read Guide</span>
                   <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-1 transition-transform" />
                 </div>
               </Link>
@@ -962,7 +1312,7 @@ export default function Home() {
         </div>
       </section>
 
-      {/* --- UNIFIED SITE FOOTER --- */}
+      {/* --- FOOTER --- */}
       <Footer />
 
     </div>

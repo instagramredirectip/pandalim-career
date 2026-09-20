@@ -3,22 +3,15 @@ import { Link } from 'react-router-dom';
 import { 
   Sparkles, 
   Search, 
-  Layers, 
   Zap, 
-  FileText, 
   ArrowRight, 
   CheckCircle2, 
   Cpu, 
-  ShieldCheck, 
   HelpCircle, 
-  ChevronRight,
-  TrendingUp,
-  ScanLine,
-  Menu,
-  Globe
+  TrendingUp, 
+  ArrowUpRight 
 } from 'lucide-react';
 import SEOHead from '../components/SEOHead';
-import LanguageSelector from '../components/LanguageSelector';
 import MobileDrawer from '../components/MobileDrawer';
 import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
@@ -30,8 +23,8 @@ export default function ToolsHub() {
       id: "job-description-keyword-extractor",
       title: "Job Description Keyword Extractor",
       badge: "Instant ATS Parser",
-      badgeColor: "bg-lime-100 text-lime-800",
-      icon: <Search className="w-6 h-6 text-lime-600" />,
+      badgeColor: "bg-[#D2FF00]/10 text-[#D2FF00] border border-[#D2FF00]/30",
+      icon: <Search className="w-5 h-5 text-[#D2FF00]" />,
       description: "Paste any job posting from LinkedIn, Indeed, or Naukri to instantly extract top hard skills, programming languages, cloud tools, and required certifications.",
       features: [
         "Automatic categorization (Languages, Frameworks, Cloud, Soft Skills)",
@@ -45,8 +38,8 @@ export default function ToolsHub() {
       id: "star-bullet-generator",
       title: "AI STAR Method Bullet Point Generator",
       badge: "Google X-Y-Z Formula",
-      badgeColor: "bg-blue-100 text-blue-800",
-      icon: <Sparkles className="w-6 h-6 text-blue-600" />,
+      badgeColor: "bg-[#FF5722]/10 text-[#FF5722] border border-[#FF5722]/30",
+      icon: <Sparkles className="w-5 h-5 text-[#FF5722]" />,
       description: "Transform weak, passive job duties into high-impact, quantified STAR resume bullet points tailored to bypass recruiter filters and score high on ATS algorithms.",
       features: [
         "Follows Google's 'Accomplished [X] by doing [Z]' standard",
@@ -60,8 +53,8 @@ export default function ToolsHub() {
       id: "ats-action-verbs",
       title: "250+ ATS Action Verbs & Power Words",
       badge: "Recruiter Approved",
-      badgeColor: "bg-purple-100 text-purple-800",
-      icon: <TrendingUp className="w-6 h-6 text-purple-600" />,
+      badgeColor: "bg-purple-500/10 text-purple-400 border border-purple-500/30",
+      icon: <TrendingUp className="w-5 h-5 text-purple-400" />,
       description: "Search and filter 250+ powerful action verbs categorized by Engineering, Leadership, Performance, Optimization, and Problem Solving with real bullet examples.",
       features: [
         "Categorized by technical competency & job domain",
@@ -75,8 +68,8 @@ export default function ToolsHub() {
       id: "portfolio-builder",
       title: "AI Developer & Cyber Portfolio Studio",
       badge: "Free Hosted Portfolio",
-      badgeColor: "bg-emerald-100 text-emerald-800",
-      icon: <Cpu className="w-6 h-6 text-emerald-600" />,
+      badgeColor: "bg-[#D2FF00]/10 text-[#D2FF00] border border-[#D2FF00]/30",
+      icon: <Cpu className="w-5 h-5 text-[#D2FF00]" />,
       description: "Build, customize, and host your own modern portfolio on pandalime.com/p/:username. Featuring Hacker Terminal, Minimalist, AI Matrix, and Executive themes with QR Code & Resume links.",
       features: [
         "5 Industry Themes (Cyber Hacker, Minimal, AI Matrix, Executive)",
@@ -135,7 +128,7 @@ export default function ToolsHub() {
   ];
 
   return (
-    <div className="min-h-screen bg-gray-50 font-sans text-gray-900">
+    <div className="min-h-screen bg-[#08090C] font-sans text-[#E1E2E9] selection:bg-[#D2FF00] selection:text-[#08090C]">
       <SEOHead 
         title="Free AI ATS & Career Tools Suite | PandaLime"
         description="Free AI career tools: Job Description Keyword Extractor, STAR Bullet Generator, and 250+ ATS Power Action Verbs. 100% free with instant access."
@@ -148,65 +141,65 @@ export default function ToolsHub() {
       <MobileDrawer isOpen={mobileMenuOpen} onClose={() => setMobileMenuOpen(false)} />
 
       {/* --- BREADCRUMBS --- */}
-      <div className="bg-gray-100 border-b border-gray-200 py-2.5">
-        <div className="max-w-6xl mx-auto px-4 text-xs text-gray-500 flex items-center gap-2">
-          <Link to="/" className="hover:text-lime-600 transition-colors">Home</Link>
+      <div className="bg-[#0E1116] border-b border-[#1F242D] py-2">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 font-mono text-xs text-[#505763] flex items-center gap-2">
+          <Link to="/" className="hover:text-[#D2FF00] transition-colors">HOME</Link>
           <span>/</span>
-          <span className="text-gray-800 font-semibold">Free Career Tools Suite</span>
+          <span className="text-[#9BA3AF]">FREE_CAREER_TOOLS_SUITE</span>
         </div>
       </div>
 
       {/* --- HERO SECTION --- */}
-      <header className="bg-white py-16 sm:py-20 border-b border-gray-200 text-center">
+      <header className="bg-[#08090C] py-16 sm:py-20 border-b border-[#1F242D] text-center">
         <div className="max-w-4xl mx-auto px-4">
-          <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-md bg-lime-100 border border-lime-300 text-lime-800 font-bold text-xs uppercase tracking-wider mb-6">
+          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-[2px] bg-[#0E1116] border border-[#1F242D] text-[#D2FF00] font-mono text-xs uppercase tracking-wider mb-6">
             <Zap className="w-3.5 h-3.5" />
-            <span>100% Free AI Career Optimization Suite</span>
+            <span>// 100% FREE AI CAREER SUITE</span>
           </div>
 
-          <h1 className="text-4xl sm:text-5xl md:text-6xl font-extrabold text-gray-900 tracking-tight mb-6 leading-tight">
-            Free ATS Resume & <br />
-            <span className="text-transparent bg-clip-text bg-gradient-to-r from-lime-600 to-green-600">
-              Career Optimization Tools
+          <h1 className="text-3xl sm:text-5xl md:text-6xl font-extrabold text-[#F5F7FA] tracking-tight mb-6 leading-tight">
+            Sovereign ATS Resume &amp; <br />
+            <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#D2FF00] via-[#FF5722] to-[#D2FF00]">
+              Career Optimization Suite
             </span>
           </h1>
 
-          <p className="text-lg sm:text-xl text-gray-600 leading-relaxed max-w-3xl mx-auto">
-            Everything you need to beat corporate applicant tracking filters (Workday, Taleo, Greenhouse, TCS iON), craft high-impact STAR bullet points, and land interviews at top tech employers.
+          <p className="text-sm sm:text-base md:text-lg text-[#9BA3AF] leading-relaxed max-w-3xl mx-auto">
+            Everything you need to beat enterprise applicant tracking systems (Workday, Taleo, Greenhouse, Ashby), craft high-impact STAR bullet points, and land interviews at top tech employers.
           </p>
         </div>
       </header>
 
       {/* --- TOOLS GRID --- */}
-      <section className="max-w-6xl mx-auto px-4 py-16">
-        <div className="grid sm:grid-cols-2 gap-8">
+      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
+        <div className="grid sm:grid-cols-2 gap-6">
           {tools.map((tool) => (
             <div 
               key={tool.id} 
-              className="bg-white rounded-2xl border border-gray-200 p-8 shadow-sm hover:shadow-xl transition-all duration-300 flex flex-col justify-between group hover:border-lime-400"
+              className="bg-[#0E1116] rounded-[2px] border border-[#1F242D] p-6 sm:p-8 hover:border-[#D2FF00] transition-all flex flex-col justify-between group"
             >
               <div>
                 <div className="flex items-center justify-between mb-6">
-                  <div className="w-12 h-12 rounded-xl bg-gray-50 group-hover:bg-lime-50 flex items-center justify-center transition-colors border border-gray-100">
+                  <div className="w-10 h-10 rounded-[2px] bg-[#151921] border border-[#1F242D] flex items-center justify-center">
                     {tool.icon}
                   </div>
-                  <span className={`text-[11px] font-extrabold px-3 py-1 rounded-md uppercase tracking-wider ${tool.badgeColor}`}>
+                  <span className={`text-[10px] font-mono font-bold px-2.5 py-0.5 rounded-[2px] uppercase tracking-wider ${tool.badgeColor}`}>
                     {tool.badge}
                   </span>
                 </div>
 
-                <h2 className="text-xl font-bold text-gray-900 mb-3 group-hover:text-lime-700 transition-colors">
+                <h2 className="text-xl font-bold text-[#F5F7FA] mb-3 group-hover:text-[#D2FF00] transition-colors">
                   {tool.title}
                 </h2>
 
-                <p className="text-sm text-gray-600 leading-relaxed mb-6">
+                <p className="text-xs sm:text-sm text-[#9BA3AF] leading-relaxed mb-6">
                   {tool.description}
                 </p>
 
-                <div className="space-y-2.5 mb-8 pb-6 border-b border-gray-100">
+                <div className="space-y-2 mb-8 pb-6 border-b border-[#1F242D]">
                   {tool.features.map((feat, idx) => (
-                    <div key={idx} className="flex items-start gap-2.5 text-xs text-gray-700">
-                      <CheckCircle2 className="w-4 h-4 text-lime-600 shrink-0 mt-0.5" />
+                    <div key={idx} className="flex items-start gap-2 text-xs text-[#9BA3AF]">
+                      <CheckCircle2 className="w-3.5 h-3.5 text-[#D2FF00] shrink-0 mt-0.5" />
                       <span>{feat}</span>
                     </div>
                   ))}
@@ -215,10 +208,10 @@ export default function ToolsHub() {
 
               <Link 
                 to={tool.path}
-                className="w-full py-3.5 bg-gray-900 group-hover:bg-lime-500 text-white group-hover:text-white rounded-xl font-bold text-sm text-center flex items-center justify-center gap-2 transition-all shadow-md group-hover:shadow-lime-500/25"
+                className="w-full py-3 bg-[#151921] group-hover:bg-[#D2FF00] text-[#F5F7FA] group-hover:text-[#08090C] font-mono font-bold text-xs uppercase tracking-wider rounded-[2px] flex items-center justify-center gap-2 transition-all border border-[#1F242D] group-hover:border-[#D2FF00]"
               >
                 <span>{tool.cta}</span>
-                <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+                <ArrowUpRight className="w-4 h-4" />
               </Link>
             </div>
           ))}
@@ -226,49 +219,49 @@ export default function ToolsHub() {
       </section>
 
       {/* --- BANNER: CORE SCANNER PROMO --- */}
-      <section className="max-w-6xl mx-auto px-4 pb-16">
-        <div className="bg-gradient-to-r from-gray-900 to-gray-800 rounded-2xl p-8 sm:p-12 text-white shadow-xl relative overflow-hidden flex flex-col md:flex-row items-center justify-between gap-8">
-          <div className="max-w-xl space-y-4">
-            <div className="inline-flex items-center gap-2 px-3 py-1 bg-lime-500/20 text-lime-400 rounded-md text-xs font-bold border border-lime-500/30">
-              <Sparkles className="w-3.5 h-3.5" /> Core AI Technology
+      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-16">
+        <div className="bg-[#0E1116] border border-[#1F242D] rounded-[2px] p-8 sm:p-10 text-[#F5F7FA] relative overflow-hidden flex flex-col md:flex-row items-center justify-between gap-8">
+          <div className="max-w-xl space-y-3">
+            <div className="inline-flex items-center gap-1.5 px-2.5 py-0.5 bg-[#151921] text-[#D2FF00] rounded-[2px] font-mono text-[10px] font-bold border border-[#1F242D]">
+              <Sparkles className="w-3.5 h-3.5" /> FLAGSHIP PARSER
             </div>
             <h3 className="text-2xl sm:text-3xl font-extrabold tracking-tight">
               Ready to Test Your Complete Resume?
             </h3>
-            <p className="text-sm sm:text-base text-gray-300 leading-relaxed">
+            <p className="text-xs sm:text-sm text-[#9BA3AF] leading-relaxed">
               Upload your PDF resume alongside any job description to get an instant 0-100% ATS match score, full missing keyword breakdown, and recruiter critique.
             </p>
           </div>
           <Link 
             to="/dashboard"
-            className="px-8 py-4 bg-lime-500 hover:bg-lime-400 text-gray-950 rounded-xl font-black text-base shadow-lg shadow-lime-500/30 transition-all hover:-translate-y-1 shrink-0 flex items-center gap-2"
+            className="px-6 py-3.5 bg-[#D2FF00] hover:bg-[#E5FF66] text-[#08090C] font-mono font-bold text-xs uppercase tracking-wider rounded-[2px] shadow-[0_0_15px_rgba(210,255,0,0.3)] transition-all shrink-0 flex items-center gap-2"
           >
             <span>Scan Resume Free Now</span>
-            <ArrowRight className="w-5 h-5" />
+            <ArrowRight className="w-4 h-4" />
           </Link>
         </div>
       </section>
 
       {/* --- FAQ SECTION --- */}
-      <section className="bg-white py-16 border-t border-gray-200">
-        <div className="max-w-4xl mx-auto px-4">
+      <section className="bg-[#08090C] py-16 border-t border-[#1F242D]">
+        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-12">
-            <h3 className="text-3xl font-bold text-gray-900 mb-3">
+            <h3 className="text-2xl sm:text-3xl font-bold text-[#F5F7FA] mb-2">
               Frequently Asked Questions
             </h3>
-            <p className="text-gray-600 text-base">
+            <p className="text-xs sm:text-sm text-[#9BA3AF]">
               Learn how to utilize our free career tools to maximize your interview conversion rates.
             </p>
           </div>
 
-          <div className="space-y-4">
+          <div className="space-y-3">
             {faqs.map((faq, i) => (
-              <div key={i} className="bg-gray-50 rounded-xl p-6 border border-gray-200">
-                <h4 className="font-bold text-gray-900 text-base mb-2 flex items-start gap-2">
-                  <HelpCircle className="w-5 h-5 text-lime-600 shrink-0 mt-0.5" />
+              <div key={i} className="bg-[#0E1116] rounded-[2px] p-5 border border-[#1F242D]">
+                <h4 className="font-bold text-[#F5F7FA] text-sm mb-2 flex items-start gap-2">
+                  <HelpCircle className="w-4 h-4 text-[#D2FF00] shrink-0 mt-0.5" />
                   <span>{faq.q}</span>
                 </h4>
-                <p className="text-sm text-gray-600 leading-relaxed pl-7">
+                <p className="text-xs text-[#9BA3AF] leading-relaxed pl-6">
                   {faq.a}
                 </p>
               </div>
@@ -283,4 +276,3 @@ export default function ToolsHub() {
     </div>
   );
 }
-

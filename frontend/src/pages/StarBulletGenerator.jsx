@@ -207,7 +207,7 @@ export default function StarBulletGenerator() {
           
           {/* LEFT: Inputs */}
           <div className="lg:col-span-6 space-y-6">
-            <div className="bg-white rounded-2xl border border-gray-200 shadow-sm p-6 sm:p-8 space-y-5">
+            <div className="bg-white rounded-[2px] border border-gray-200 shadow-sm p-6 sm:p-8 space-y-5">
               
               <div className="flex items-center justify-between pb-2 border-b border-gray-100">
                 <h2 className="text-lg font-bold text-gray-900 flex items-center gap-2">
@@ -237,7 +237,7 @@ export default function StarBulletGenerator() {
                       key={i}
                       type="button"
                       onClick={() => loadScenario(sc)}
-                      className="px-3 py-1.5 bg-gray-50 hover:bg-blue-50 hover:text-blue-800 hover:border-blue-300 text-gray-700 text-xs font-semibold rounded-lg border border-gray-200 transition-all text-left"
+                      className="px-3 py-1.5 bg-gray-50 hover:bg-blue-50 hover:text-blue-800 hover:border-blue-300 text-gray-700 text-xs font-semibold rounded-[2px] border border-gray-200 transition-all text-left"
                     >
                       + {sc.role}
                     </button>
@@ -255,7 +255,7 @@ export default function StarBulletGenerator() {
                   value={role}
                   onChange={(e) => setRole(e.target.value)}
                   placeholder="e.g. Software Engineer, Product Manager, Data Analyst"
-                  className="w-full p-3.5 rounded-xl border border-gray-200 focus:border-blue-500 focus:ring-4 focus:ring-blue-500/10 outline-none text-sm text-gray-800 font-medium"
+                  className="w-full p-3.5 rounded-[2px] border border-gray-200 focus:border-blue-500 focus:ring-2 focus:ring-blue-500/10 outline-none text-sm text-gray-800 font-medium"
                 />
               </div>
 
@@ -269,7 +269,7 @@ export default function StarBulletGenerator() {
                   value={task}
                   onChange={(e) => setTask(e.target.value)}
                   placeholder="e.g. Built the checkout page and fixed payment gateway latency bugs"
-                  className="w-full p-3.5 rounded-xl border border-gray-200 focus:border-blue-500 focus:ring-4 focus:ring-blue-500/10 outline-none text-sm text-gray-800"
+                  className="w-full p-3.5 rounded-[2px] border border-gray-200 focus:border-blue-500 focus:ring-2 focus:ring-blue-500/10 outline-none text-sm text-gray-800 font-mono text-xs"
                 />
               </div>
 
@@ -283,7 +283,7 @@ export default function StarBulletGenerator() {
                   value={tools}
                   onChange={(e) => setTools(e.target.value)}
                   placeholder="e.g. React, Node.js, Redis, Docker"
-                  className="w-full p-3.5 rounded-xl border border-gray-200 focus:border-blue-500 focus:ring-4 focus:ring-blue-500/10 outline-none text-sm text-gray-800"
+                  className="w-full p-3.5 rounded-[2px] border border-gray-200 focus:border-blue-500 focus:ring-2 focus:ring-blue-500/10 outline-none text-sm text-gray-800 font-mono text-xs"
                 />
               </div>
 
@@ -297,7 +297,7 @@ export default function StarBulletGenerator() {
                   value={metric}
                   onChange={(e) => setMetric(e.target.value)}
                   placeholder="e.g. 35% faster page load, 50,000+ users, saved 4 hours/week"
-                  className="w-full p-3.5 rounded-xl border border-gray-200 focus:border-blue-500 focus:ring-4 focus:ring-blue-500/10 outline-none text-sm text-gray-800"
+                  className="w-full p-3.5 rounded-[2px] border border-gray-200 focus:border-blue-500 focus:ring-2 focus:ring-blue-500/10 outline-none text-sm text-gray-800 font-mono text-xs"
                 />
               </div>
 
@@ -306,7 +306,7 @@ export default function StarBulletGenerator() {
                 type="button"
                 onClick={handleGenerateAI}
                 disabled={loading || !task.trim()}
-                className="w-full py-3.5 bg-gray-900 hover:bg-black disabled:bg-gray-400 text-white rounded-xl font-bold text-sm flex items-center justify-center gap-2 transition-all shadow-md"
+                className="w-full py-3.5 bg-gray-900 hover:bg-black disabled:bg-gray-400 text-white rounded-[2px] font-bold text-sm flex items-center justify-center gap-2 transition-all shadow-md cursor-pointer"
               >
                 {loading ? <Loader2 className="w-4 h-4 animate-spin" /> : <Sparkles className="w-4 h-4 text-lime-400" />}
                 <span>{loading ? 'Generating with AI...' : 'Generate New AI STAR Variations'}</span>
@@ -317,7 +317,7 @@ export default function StarBulletGenerator() {
 
           {/* RIGHT: Generated STAR Bullets */}
           <div className="lg:col-span-6 space-y-6">
-            <div className="bg-white rounded-2xl border border-gray-200 shadow-sm p-6 sm:p-8 space-y-6">
+            <div className="bg-white rounded-[2px] border border-gray-200 shadow-sm p-6 sm:p-8 space-y-6">
               
               <div className="flex items-center justify-between pb-3 border-b border-gray-100">
                 <div>
@@ -334,15 +334,15 @@ export default function StarBulletGenerator() {
                 {displayedBullets.map((bullet, idx) => (
                   <div 
                     key={idx}
-                    className="p-5 rounded-xl bg-gray-50 border border-gray-200 hover:border-blue-300 hover:bg-blue-50/40 transition-all space-y-3 group"
+                    className="p-5 rounded-[2px] bg-gray-50 border border-gray-200 hover:border-blue-300 hover:bg-blue-50/40 transition-all space-y-3 group"
                   >
                     <div className="flex items-center justify-between">
-                      <span className="text-[10px] font-extrabold uppercase tracking-wider px-2.5 py-0.5 rounded-md bg-blue-100 text-blue-800">
+                      <span className="text-[10px] font-extrabold uppercase tracking-wider px-2.5 py-0.5 rounded-[2px] bg-blue-100 text-blue-800 font-mono">
                         STAR Option #{idx + 1}
                       </span>
                       <button
                         onClick={() => handleCopy(bullet, idx)}
-                        className="px-3 py-1 bg-white hover:bg-gray-100 border border-gray-200 text-gray-700 rounded-lg text-xs font-bold flex items-center gap-1.5 transition-colors shadow-sm"
+                        className="px-3 py-1 bg-white hover:bg-gray-100 border border-gray-200 text-gray-700 rounded-[2px] text-xs font-bold flex items-center gap-1.5 transition-colors shadow-sm cursor-pointer"
                       >
                         {copiedIndex === idx ? <Check className="w-3.5 h-3.5 text-green-600" /> : <Copy className="w-3.5 h-3.5" />}
                         <span>{copiedIndex === idx ? 'Copied!' : 'Copy'}</span>
@@ -353,10 +353,10 @@ export default function StarBulletGenerator() {
                       • {bullet}
                     </p>
 
-                    <div className="flex flex-wrap gap-1.5 pt-1 text-[11px] text-gray-500">
-                      <span className="px-2 py-0.5 bg-white border border-gray-200 rounded-md font-semibold text-emerald-700">✓ Action Verb</span>
-                      <span className="px-2 py-0.5 bg-white border border-gray-200 rounded-md font-semibold text-blue-700">✓ Context & Tech</span>
-                      <span className="px-2 py-0.5 bg-white border border-gray-200 rounded-md font-semibold text-purple-700">✓ Quantified Metric</span>
+                    <div className="flex flex-wrap gap-1.5 pt-1 text-[11px] text-gray-500 font-mono">
+                      <span className="px-2 py-0.5 bg-white border border-gray-200 rounded-[2px] font-semibold text-emerald-700">✓ Action Verb</span>
+                      <span className="px-2 py-0.5 bg-white border border-gray-200 rounded-[2px] font-semibold text-blue-700">✓ Context & Tech</span>
+                      <span className="px-2 py-0.5 bg-white border border-gray-200 rounded-[2px] font-semibold text-purple-700">✓ Quantified Metric</span>
                     </div>
                   </div>
                 ))}
@@ -366,12 +366,12 @@ export default function StarBulletGenerator() {
               <div className="pt-4 border-t border-gray-100 space-y-3">
                 <Link
                   to="/dashboard"
-                  className="w-full py-3.5 bg-lime-500 hover:bg-lime-600 text-white rounded-xl font-black text-sm sm:text-base flex items-center justify-center gap-2 shadow-lg shadow-lime-500/25 transition-all hover:-translate-y-0.5"
+                  className="w-full py-3.5 bg-lime-500 hover:bg-lime-600 text-gray-950 rounded-[2px] font-black text-sm sm:text-base flex items-center justify-center gap-2 shadow-lg shadow-lime-500/25 transition-all hover:-translate-y-0.5"
                 >
                   <ScanLine className="w-5 h-5" />
                   <span>Test Your Complete Resume Score Free</span>
                 </Link>
-                <p className="text-[11px] text-gray-400 text-center">
+                <p className="text-[11px] text-gray-400 text-center font-mono">
                   Upload your updated PDF resume to see your instant 0-100% ATS score.
                 </p>
               </div>
@@ -394,20 +394,20 @@ export default function StarBulletGenerator() {
             </p>
           </div>
 
-          <div className="bg-gradient-to-r from-blue-50 to-lime-50 p-8 rounded-2xl border border-blue-200 text-gray-800 space-y-4">
+          <div className="bg-gradient-to-r from-blue-50 to-lime-50 p-8 rounded-[2px] border border-blue-200 text-gray-800 space-y-4">
             <p className="text-lg font-bold text-gray-900 text-center">
               "Accomplished <span className="text-blue-700">[X]</span> as measured by <span className="text-purple-700">[Y]</span>, by doing <span className="text-emerald-700">[Z]</span>"
             </p>
-            <div className="grid sm:grid-cols-3 gap-4 pt-4 text-xs">
-              <div className="bg-white p-4 rounded-xl border border-blue-100 shadow-sm">
+            <div className="grid sm:grid-cols-3 gap-4 pt-4 text-xs font-mono">
+              <div className="bg-white p-4 rounded-[2px] border border-blue-100 shadow-sm">
                 <p className="font-bold text-blue-700 mb-1">[X] The Outcome</p>
-                <p className="text-gray-600">What specific business or engineering milestone did you hit?</p>
+                <p className="text-gray-600 font-sans">What specific business or engineering milestone did you hit?</p>
               </div>
-              <div className="bg-white p-4 rounded-xl border border-purple-100 shadow-sm">
+              <div className="bg-white p-4 rounded-[2px] border border-purple-100 shadow-sm">
                 <p className="font-bold text-purple-700 mb-1">[Y] The Metric</p>
-                <p className="text-gray-600">How is success measured (%, $, latency, users, uptime)?</p>
+                <p className="text-gray-600 font-sans">How is success measured (%, $, latency, users, uptime)?</p>
               </div>
-              <div className="bg-white p-4 rounded-xl border border-emerald-100 shadow-sm">
+              <div className="bg-white p-4 rounded-[2px] border border-emerald-100 shadow-sm">
                 <p className="font-bold text-emerald-700 mb-1">[Z] The Method</p>
                 <p className="text-gray-600">What tools, architecture, or skills did you implement?</p>
               </div>

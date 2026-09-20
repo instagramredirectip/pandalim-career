@@ -6,9 +6,6 @@ import {
   Clock, 
   ArrowRight, 
   Sparkles, 
-  Tag, 
-  CheckCircle2, 
-  TrendingUp,
   FileText
 } from 'lucide-react';
 import SEOHead from '../components/SEOHead';
@@ -85,7 +82,7 @@ export default function BlogIndex() {
   ];
 
   return (
-    <div className="min-h-screen bg-gray-50 text-gray-900 font-sans flex flex-col justify-between">
+    <div className="min-h-screen bg-[#08090C] text-[#E1E2E9] font-sans flex flex-col justify-between selection:bg-[#D2FF00] selection:text-[#08090C]">
       <SEOHead 
         title="Career Guides, ATS Resume Optimization & Portfolio Blueprints | PandaLime"
         description="Comprehensive guides on beating ATS filters, Google X-Y-Z resume formulas, high-converting developer portfolios, and technical interview preparation."
@@ -100,43 +97,43 @@ export default function BlogIndex() {
       <main className="flex-1">
         
         {/* Header Hero */}
-        <section className="bg-white border-b border-gray-200 py-12 sm:py-16">
+        <section className="bg-[#08090C] border-b border-[#1F242D] py-14 sm:py-18">
           <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-            <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-lg bg-lime-50 text-lime-900 font-bold text-xs sm:text-sm mb-4 border border-lime-200">
-              <BookOpen className="w-4 h-4 text-lime-600" />
-              <span>PandaLime Editorial & ATS Research Lab</span>
+            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-[2px] bg-[#0E1116] border border-[#1F242D] text-[#D2FF00] font-mono text-xs uppercase tracking-wider mb-5">
+              <BookOpen className="w-3.5 h-3.5" />
+              <span>// EDITORIAL &amp; ATS RESEARCH LAB</span>
             </div>
             
-            <h1 className="text-3xl sm:text-5xl font-extrabold text-gray-950 tracking-tight mb-4">
-              Career Guides & ATS Optimization Blueprints
+            <h1 className="text-3xl sm:text-5xl font-extrabold text-[#F5F7FA] tracking-tight mb-4">
+              Career Guides &amp; ATS Blueprints
             </h1>
             
-            <p className="text-base sm:text-lg text-gray-600 max-w-2xl mx-auto mb-8 leading-relaxed">
+            <p className="text-sm sm:text-base text-[#9BA3AF] max-w-2xl mx-auto mb-8 leading-relaxed">
               In-depth research, parser reverse-engineering, and proven frameworks to help you bypass corporate screening bots and land high-paying tech offers.
             </p>
 
             {/* Search Bar */}
-            <div className="max-w-xl mx-auto relative">
-              <Search className="w-5 h-5 text-gray-400 absolute left-4 top-1/2 -translate-y-1/2" />
+            <div className="max-w-xl mx-auto relative font-mono text-xs">
+              <Search className="w-4 h-4 text-[#505763] absolute left-4 top-1/2 -translate-y-1/2" />
               <input
                 type="text"
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
                 placeholder="Search guides by keyword, role, or ATS platform..."
-                className="w-full pl-12 pr-4 py-3.5 bg-gray-50 border border-gray-300 rounded-xl text-sm focus:border-lime-500 focus:bg-white focus:ring-2 focus:ring-lime-500/20 outline-none transition-all"
+                className="w-full pl-11 pr-4 py-3 bg-[#0E1116] border border-[#1F242D] rounded-[2px] text-xs text-[#F5F7FA] focus:border-[#D2FF00] outline-none transition-all placeholder:text-[#505763]"
               />
             </div>
 
             {/* Category Filter Pills */}
-            <div className="flex flex-wrap items-center justify-center gap-2 mt-6">
+            <div className="flex flex-wrap items-center justify-center gap-1.5 mt-6 font-mono text-xs">
               {categories.map(cat => (
                 <button
                   key={cat}
                   onClick={() => setSelectedCategory(cat)}
-                  className={`px-3.5 py-1.5 rounded-lg text-xs font-bold transition-all cursor-pointer ${
+                  className={`px-3 py-1.5 rounded-[2px] text-xs font-bold transition-all cursor-pointer border ${
                     selectedCategory === cat
-                      ? 'bg-gray-900 text-white shadow-sm'
-                      : 'bg-gray-100 hover:bg-gray-200 text-gray-700'
+                      ? 'bg-[#D2FF00] text-[#08090C] border-[#D2FF00]'
+                      : 'bg-[#0E1116] hover:bg-[#151921] text-[#9BA3AF] hover:text-[#F5F7FA] border-[#1F242D]'
                   }`}
                 >
                   {cat}
@@ -149,31 +146,29 @@ export default function BlogIndex() {
         {/* Featured Hero Guide */}
         {selectedCategory === 'All' && searchQuery === '' && (
           <section className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 -mt-6">
-            <div className="bg-gradient-to-br from-gray-950 via-gray-900 to-gray-950 text-white rounded-2xl p-6 sm:p-10 border border-gray-800 shadow-xl relative overflow-hidden">
-              <div className="absolute top-0 right-0 w-96 h-96 bg-lime-500 rounded-full blur-3xl opacity-10 -translate-y-1/2 translate-x-1/2" />
-              
+            <div className="bg-[#0E1116] text-[#F5F7FA] rounded-[2px] p-6 sm:p-10 border border-[#1F242D] shadow-xl relative overflow-hidden">
               <div className="relative z-10 max-w-3xl space-y-4">
-                <div className="flex items-center gap-2 text-xs font-extrabold text-lime-400 uppercase tracking-widest">
-                  <Sparkles className="w-4 h-4" /> Featured Flagship Guide
+                <div className="flex items-center gap-2 text-[10px] font-mono font-bold text-[#D2FF00] uppercase tracking-widest">
+                  <Sparkles className="w-3.5 h-3.5" /> FEATURED FLAGSHIP BLUEPRINT
                 </div>
                 
-                <h2 className="text-2xl sm:text-4xl font-extrabold text-white leading-tight">
+                <h2 className="text-2xl sm:text-3xl font-extrabold text-[#F5F7FA] leading-tight">
                   <Link 
                     to={`/blog/${featuredPost.slug}`}
                     onMouseEnter={() => prefetchRoute(`/blog/${featuredPost.slug}`)}
-                    className="hover:text-lime-400 transition-colors"
+                    className="hover:text-[#D2FF00] transition-colors"
                   >
                     {featuredPost.title}
                   </Link>
                 </h2>
                 
-                <p className="text-sm sm:text-base text-gray-300 leading-relaxed">
+                <p className="text-xs sm:text-sm text-[#9BA3AF] leading-relaxed">
                   {featuredPost.excerpt}
                 </p>
 
-                <div className="flex flex-wrap items-center gap-4 pt-2 text-xs text-gray-400">
-                  <span className="flex items-center gap-1">
-                    <Clock className="w-3.5 h-3.5 text-lime-400" /> {featuredPost.readTime}
+                <div className="flex flex-wrap items-center gap-4 pt-2 font-mono text-xs text-[#505763]">
+                  <span className="flex items-center gap-1 text-[#D2FF00]">
+                    <Clock className="w-3 h-3" /> {featuredPost.readTime}
                   </span>
                   <span>•</span>
                   <span>{featuredPost.wordCount} words</span>
@@ -185,9 +180,9 @@ export default function BlogIndex() {
                   <Link
                     to={`/blog/${featuredPost.slug}`}
                     onMouseEnter={() => prefetchRoute(`/blog/${featuredPost.slug}`)}
-                    className="inline-flex items-center gap-2 px-5 py-2.5 bg-lime-500 hover:bg-lime-400 text-gray-950 font-black rounded-xl text-xs sm:text-sm shadow-md transition-all cursor-pointer"
+                    className="inline-flex items-center gap-2 px-5 py-2.5 bg-[#D2FF00] hover:bg-[#E5FF66] text-[#08090C] font-mono font-bold rounded-[2px] text-xs uppercase tracking-wider shadow-md transition-all cursor-pointer"
                   >
-                    Read Definitive Guide <ArrowRight className="w-4 h-4" />
+                    Read Definitive Guide <ArrowRight className="w-3.5 h-3.5" />
                   </Link>
                 </div>
               </div>
@@ -197,38 +192,38 @@ export default function BlogIndex() {
 
         {/* Guides Grid */}
         <section className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-12 sm:py-16">
-          <div className="flex items-center justify-between mb-8 pb-3 border-b border-gray-200">
-            <h2 className="text-xl sm:text-2xl font-bold text-gray-950 flex items-center gap-2">
-              <FileText className="w-5 h-5 text-lime-600" />
-              <span>{selectedCategory === 'All' ? 'All Published Guides' : `${selectedCategory} Guides`}</span>
-              <span className="text-xs bg-gray-200 text-gray-700 px-2 py-0.5 rounded-full font-bold ml-1">
+          <div className="flex items-center justify-between mb-8 pb-3 border-b border-[#1F242D]">
+            <h2 className="text-lg sm:text-xl font-bold text-[#F5F7FA] flex items-center gap-2 font-mono">
+              <FileText className="w-4 h-4 text-[#D2FF00]" />
+              <span>{selectedCategory === 'All' ? '// ALL RESEARCH GUIDES' : `// ${selectedCategory.toUpperCase()}`}</span>
+              <span className="text-xs bg-[#151921] text-[#D2FF00] px-2 py-0.5 rounded-[2px] border border-[#1F242D] font-bold ml-1">
                 {filteredPosts.length}
               </span>
             </h2>
           </div>
 
           {filteredPosts.length === 0 ? (
-            <div className="text-center py-16 bg-white rounded-2xl border border-gray-200 p-8">
-              <p className="text-gray-500 font-medium">No guides matched your search. Try different keywords.</p>
+            <div className="text-center py-16 bg-[#0E1116] rounded-[2px] border border-[#1F242D] p-8">
+              <p className="text-[#9BA3AF] font-mono text-xs">No guides matched your search query.</p>
             </div>
           ) : (
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
               {filteredPosts.map(post => (
                 <article 
                   key={post.slug}
-                  className="bg-white rounded-2xl border border-gray-200 hover:border-lime-500/50 p-6 flex flex-col justify-between shadow-xs hover:shadow-lg transition-all group"
+                  className="bg-[#0E1116] rounded-[2px] border border-[#1F242D] hover:border-[#D2FF00] p-5 sm:p-6 flex flex-col justify-between transition-all group"
                 >
                   <div className="space-y-3">
-                    <div className="flex items-center justify-between gap-2 text-xs">
-                      <span className="px-2.5 py-1 bg-lime-50 text-lime-800 font-bold rounded-md border border-lime-200/60">
+                    <div className="flex items-center justify-between gap-2 font-mono text-[10px]">
+                      <span className="px-2 py-0.5 bg-[#151921] text-[#D2FF00] font-bold rounded-[2px] border border-[#1F242D]">
                         {post.category}
                       </span>
-                      <span className="text-gray-400 text-[11px] flex items-center gap-1">
+                      <span className="text-[#505763] flex items-center gap-1">
                         <Clock className="w-3 h-3" /> {post.readTime}
                       </span>
                     </div>
 
-                    <h3 className="text-lg font-bold text-gray-950 group-hover:text-lime-700 transition-colors leading-snug line-clamp-2">
+                    <h3 className="text-base font-bold text-[#F5F7FA] group-hover:text-[#D2FF00] transition-colors leading-snug line-clamp-2">
                       <Link 
                         to={`/blog/${post.slug}`}
                         onMouseEnter={() => prefetchRoute(`/blog/${post.slug}`)}
@@ -237,22 +232,22 @@ export default function BlogIndex() {
                       </Link>
                     </h3>
 
-                    <p className="text-xs text-gray-600 leading-relaxed line-clamp-3">
+                    <p className="text-xs text-[#9BA3AF] leading-relaxed line-clamp-3">
                       {post.excerpt}
                     </p>
                   </div>
 
-                  <div className="pt-5 mt-5 border-t border-gray-100 flex items-center justify-between text-xs">
-                    <div className="text-gray-400 text-[11px]">
+                  <div className="pt-4 mt-4 border-t border-[#1F242D] flex items-center justify-between font-mono text-xs">
+                    <div className="text-[#505763] text-[10px]">
                       <span>{post.publishedDate}</span>
                     </div>
 
                     <Link
                       to={`/blog/${post.slug}`}
                       onMouseEnter={() => prefetchRoute(`/blog/${post.slug}`)}
-                      className="font-bold text-lime-700 hover:text-lime-800 flex items-center gap-1 group-hover:translate-x-1 transition-transform"
+                      className="font-bold text-[#D2FF00] hover:underline flex items-center gap-1 group-hover:translate-x-1 transition-transform"
                     >
-                      <span>Read Guide</span>
+                      <span>Read Blueprint</span>
                       <ArrowRight className="w-3.5 h-3.5" />
                     </Link>
                   </div>
@@ -269,4 +264,3 @@ export default function BlogIndex() {
     </div>
   );
 }
-
