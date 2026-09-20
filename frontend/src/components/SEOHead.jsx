@@ -47,6 +47,8 @@ export default function SEOHead({
       <meta name="description" content={description} />
       <meta name="referrer" content="strict-origin-when-cross-origin" />
       <meta name="trustpilot-one-time-domain-verification-id" content="94427953-efd2-453e-81b0-a22137a77a5b" />
+      <meta name="theme-color" content="#08090C" />
+      <meta name="color-scheme" content="dark" />
       <link rel="canonical" href={fullCanonicalUrl} />
 
       {/* International SEO: Hreflang Tags */}

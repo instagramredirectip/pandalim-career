@@ -1,17 +1,22 @@
 @import "tailwindcss";
 
-/* Ultra-Fast Silk-Touch & Rendering Performance Optimizations */
+:root {
+  color-scheme: dark;
+}
+
 html {
   scroll-behavior: smooth;
   -webkit-text-size-adjust: 100%;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  color-scheme: dark;
 }
 
 html, body {
-  background-color: #f9fafb;
-  color: #111827;
+  background-color: #08090c;
+  color: #f0f4fc;
+  color-scheme: dark;
   overflow-x: hidden;
   max-width: 100vw;
   margin: 0;

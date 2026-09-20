@@ -1,0 +1,18 @@
+{
+  "name": "PandaLime Career",
+  "short_name": "PandaLime",
+  "description": "Free AI Resume Scanner, ATS Checker & Developer Portfolio Studio",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#08090C",
+  "theme_color": "#08090C",
+  "orientation": "portrait-primary",
+  "icons": [
+    {
+      "src": "/favicon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}
