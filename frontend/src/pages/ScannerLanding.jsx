@@ -18,13 +18,17 @@ import {
   Mail,
   Zap,
   Check,
-  ScanLine
+  ScanLine,
+  Terminal,
+  ExternalLink
 } from 'lucide-react';
 import SEOHead from '../components/SEOHead';
 import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
 import MobileDrawer from '../components/MobileDrawer';
 import { getPseoData, ROLES, COMPANIES } from '../data/pseoData';
+import { haptics } from '../utils/haptics';
+import { asmrAudio } from '../utils/asmrAudio';
 
 export default function ScannerLanding() {
   const { slug } = useParams();
@@ -34,10 +38,10 @@ export default function ScannerLanding() {
 
   if (!pageData) {
     return (
-      <div className="min-h-screen bg-gray-50 flex flex-col items-center justify-center p-6 text-center">
-        <h1 className="text-3xl font-bold text-gray-900 mb-4">Scanner Page Not Found</h1>
-        <p className="text-gray-600 mb-6">The requested career scanner could not be located.</p>
-        <Link to="/" className="px-6 py-3 bg-lime-500 text-white rounded-xl font-bold">
+      <div className="min-h-screen bg-[#08090C] text-[#F0F4FC] flex flex-col items-center justify-center p-6 text-center font-mono">
+        <h1 className="text-2xl sm:text-3xl font-bold text-white mb-3 uppercase">Scanner Blueprint Not Found</h1>
+        <p className="text-gray-400 text-xs sm:text-sm mb-6">The requested career scanner could not be located in our AST index.</p>
+        <Link to="/" className="px-5 py-2.5 bg-[#D2FF00] text-[#08090C] rounded-[2px] font-black text-xs uppercase shadow-[0_0_12px_rgba(210,255,0,0.3)]">
           Return to Home
         </Link>
       </div>
@@ -45,6 +49,8 @@ export default function ScannerLanding() {
   }
 
   const toggleFaq = (index) => {
+    haptics.selection();
+    asmrAudio.playSwitch();
     setOpenFaq(openFaq === index ? null : index);
   };
 
@@ -125,7 +131,7 @@ export default function ScannerLanding() {
   const relatedCompanies = COMPANIES.filter(c => c.id !== pageData.companyId).slice(0, 6);
 
   return (
-    <div className="min-h-screen bg-gray-50 font-sans text-gray-900">
+    <div className="min-h-screen bg-[#08090C] font-sans text-[#F0F4FC] selection:bg-[#D2FF00]/30 selection:text-black antialiased">
       <SEOHead 
         title={`${pageData.title} | PandaLime`}
         description={pageData.description}
@@ -138,75 +144,82 @@ export default function ScannerLanding() {
       <MobileDrawer isOpen={mobileMenuOpen} onClose={() => setMobileMenuOpen(false)} />
 
       {/* Breadcrumb Bar */}
-      <div className="bg-gray-100 border-b border-gray-200 py-2.5">
-        <div className="max-w-6xl mx-auto px-4 text-xs text-gray-500 flex items-center gap-2 overflow-x-auto">
-          <Link to="/" className="hover:text-lime-600 transition-colors">Home</Link>
+      <div className="bg-[#0E1116] border-b border-[#1F242D] py-2.5 font-mono text-xs text-gray-400">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex items-center gap-2 overflow-x-auto">
+          <Link to="/" className="hover:text-[#D2FF00] transition-colors">Home</Link>
           <span>/</span>
-          <Link to="/sitemap" className="hover:text-lime-600 transition-colors">ATS Scanners</Link>
+          <Link to="/sitemap" className="hover:text-[#D2FF00] transition-colors">ATS Scanners</Link>
           <span>/</span>
-          <span className="text-gray-800 font-semibold truncate">{pageData.roleName} ({pageData.companyName})</span>
+          <span className="text-white font-bold truncate">{pageData.roleName} ({pageData.companyName})</span>
         </div>
       </div>
 
       {/* Hero Section */}
-      <header className="relative bg-white pt-16 pb-20 border-b border-gray-200 overflow-hidden">
-        <div className="max-w-6xl mx-auto px-4 text-center relative z-10">
+      <header className="relative bg-[#08090C] pt-12 sm:pt-16 pb-16 sm:pb-20 border-b border-[#1F242D] overflow-hidden">
+        {/* Hairline Grid Background */}
+        <div className="absolute inset-0 bg-[linear-gradient(to_right,#1F242D_1px,transparent_1px),linear-gradient(to_bottom,#1F242D_1px,transparent_1px)] bg-[size:4rem_4rem] [mask-image:radial-gradient(ellipse_60%_50%_at_50%_0%,#000_70%,transparent_100%)] opacity-30 pointer-events-none" />
+
+        <div className="max-w-6xl mx-auto px-4 text-center relative z-10 space-y-6">
           
-          <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-md bg-lime-100 border border-lime-300 text-lime-800 font-bold text-xs uppercase tracking-wider mb-6">
+          <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-[2px] bg-[#0E1116] border border-[#1F242D] text-[#D2FF00] font-mono font-bold text-xs uppercase tracking-wider">
             <Sparkles className="w-3.5 h-3.5" />
             <span>Targeted ATS Keyword Optimization</span>
           </div>
 
-          <h1 className="text-4xl sm:text-5xl md:text-6xl font-extrabold text-gray-900 tracking-tight mb-6 max-w-4xl mx-auto leading-tight">
+          <h1 className="text-3xl sm:text-5xl md:text-6xl font-black text-white tracking-tight max-w-4xl mx-auto leading-tight font-sans">
             Free AI ATS Resume Scanner for <br />
-            <span className="text-transparent bg-clip-text bg-gradient-to-r from-lime-600 to-green-600">
+            <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#D2FF00] via-[#FF5722] to-[#D2FF00]">
               {pageData.roleName}s at {pageData.companyName}
             </span>
           </h1>
 
-          <p className="text-lg md:text-xl text-gray-600 max-w-3xl mx-auto mb-10 leading-relaxed">
+          <p className="text-sm sm:text-base md:text-lg text-gray-300 max-w-3xl mx-auto leading-relaxed font-sans">
             {pageData.description}
           </p>
 
           {/* Quick Metrics Bar */}
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-4 max-w-4xl mx-auto mb-10 text-left">
-            <div className="bg-gray-50 p-4 rounded-xl border border-gray-200">
-              <div className="flex items-center gap-2 text-gray-500 text-xs font-semibold mb-1">
-                <Building2 className="w-4 h-4 text-lime-600" /> Employer
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-3 max-w-4xl mx-auto text-left font-mono">
+            <div className="bg-[#0E1116] p-3.5 rounded-[2px] border border-[#1F242D]">
+              <div className="flex items-center gap-1.5 text-gray-400 text-[11px] mb-1">
+                <Building2 className="w-3.5 h-3.5 text-[#D2FF00]" /> Employer
               </div>
-              <p className="text-base font-bold text-gray-900">{pageData.companyName}</p>
+              <p className="text-sm font-bold text-white truncate">{pageData.companyName}</p>
             </div>
-            <div className="bg-gray-50 p-4 rounded-xl border border-gray-200">
-              <div className="flex items-center gap-2 text-gray-500 text-xs font-semibold mb-1">
-                <Cpu className="w-4 h-4 text-lime-600" /> Filter Engine
+            <div className="bg-[#0E1116] p-3.5 rounded-[2px] border border-[#1F242D]">
+              <div className="flex items-center gap-1.5 text-gray-400 text-[11px] mb-1">
+                <Cpu className="w-3.5 h-3.5 text-[#D2FF00]" /> Filter Engine
               </div>
-              <p className="text-base font-bold text-gray-900 truncate">{pageData.atsType.split('/')[0]}</p>
+              <p className="text-sm font-bold text-white truncate">{pageData.atsType.split('/')[0]}</p>
             </div>
-            <div className="bg-gray-50 p-4 rounded-xl border border-gray-200">
-              <div className="flex items-center gap-2 text-gray-500 text-xs font-semibold mb-1">
-                <Target className="w-4 h-4 text-lime-600" /> Target Match
+            <div className="bg-[#0E1116] p-3.5 rounded-[2px] border border-[#1F242D]">
+              <div className="flex items-center gap-1.5 text-gray-400 text-[11px] mb-1">
+                <Target className="w-3.5 h-3.5 text-[#D2FF00]" /> Target Match
               </div>
-              <p className="text-base font-bold text-lime-600">75% - 90%+</p>
+              <p className="text-sm font-bold text-[#D2FF00]">75% - 90%+</p>
             </div>
-            <div className="bg-gray-50 p-4 rounded-xl border border-gray-200">
-              <div className="flex items-center gap-2 text-gray-500 text-xs font-semibold mb-1">
-                <DollarSign className="w-4 h-4 text-lime-600" /> Compensation
+            <div className="bg-[#0E1116] p-3.5 rounded-[2px] border border-[#1F242D]">
+              <div className="flex items-center gap-1.5 text-gray-400 text-[11px] mb-1">
+                <DollarSign className="w-3.5 h-3.5 text-[#D2FF00]" /> Compensation
               </div>
-              <p className="text-base font-bold text-gray-900 truncate" title={pageData.salaryIndia ? `${pageData.salaryIndia} (India) / ${pageData.avgSalary} (Global)` : pageData.avgSalary}>
+              <p className="text-sm font-bold text-white truncate" title={pageData.salaryIndia ? `${pageData.salaryIndia} (India) / ${pageData.avgSalary} (Global)` : pageData.avgSalary}>
                 {pageData.salaryIndia ? `${pageData.salaryIndia} | ${pageData.avgSalary}` : (pageData.avgSalary || 'Competitive')}
               </p>
             </div>
           </div>
 
           {/* Main Call to Action Button */}
-          <div>
+          <div className="pt-2">
             <Link 
               to="/dashboard" 
-              className="inline-flex items-center justify-center gap-2 px-10 py-4 bg-lime-500 hover:bg-lime-600 text-white font-extrabold text-base sm:text-lg rounded-xl shadow-xl shadow-lime-500/30 transition-all hover:-translate-y-1 cursor-pointer"
+              onClick={() => {
+                haptics.heavy();
+                asmrAudio.playClick();
+              }}
+              className="inline-flex items-center justify-center gap-2 px-8 py-3.5 bg-[#D2FF00] hover:bg-[#b8e000] text-[#08090C] font-mono font-black text-xs sm:text-sm rounded-[2px] shadow-[0_0_20px_rgba(210,255,0,0.3)] transition-all active:scale-95 cursor-pointer uppercase tracking-wider"
             >
-              Scan Resume For {pageData.roleName} Now <ArrowRight className="w-5 h-5" />
+              <span>Scan Resume For {pageData.roleName} Now</span> <ArrowRight className="w-4 h-4" />
             </Link>
-            <p className="text-xs text-gray-500 font-medium mt-3">
+            <p className="text-[11px] text-gray-500 font-mono mt-2">
               100% Free • PDF Upload • Instant AI Keyword Gap Analysis
             </p>
           </div>
@@ -215,32 +228,32 @@ export default function ScannerLanding() {
       </header>
 
       {/* Role Overview & ATS Insights */}
-      <section className="max-w-6xl mx-auto px-4 py-16">
-        <div className="grid md:grid-cols-2 gap-12 items-start">
+      <section className="max-w-6xl mx-auto px-4 py-12 sm:py-16">
+        <div className="grid md:grid-cols-2 gap-8 sm:gap-12 items-start">
           
-          <div className="space-y-6">
-            <h2 className="text-3xl font-bold text-gray-900">
+          <div className="space-y-5">
+            <h2 className="text-2xl sm:text-3xl font-black text-white tracking-tight uppercase font-sans">
               How ATS Filters Score {pageData.roleName} Resumes
             </h2>
-            <p className="text-gray-600 leading-relaxed text-base">
+            <p className="text-gray-300 leading-relaxed text-xs sm:text-sm">
               {pageData.overview}
             </p>
 
-            <div className="bg-lime-50/70 p-6 rounded-xl border border-lime-200 space-y-3">
-              <h3 className="font-bold text-lime-900 text-lg flex items-center gap-2">
-                <ShieldCheck className="w-5 h-5 text-lime-600" /> {pageData.companyName} Screening Priorities
+            <div className="bg-[#0E1116] p-5 rounded-[2px] border border-[#1F242D] space-y-2">
+              <h3 className="font-mono font-bold text-white text-sm flex items-center gap-2">
+                <ShieldCheck className="w-4 h-4 text-[#D2FF00]" /> {pageData.companyName} Screening Priorities
               </h3>
-              <p className="text-sm text-lime-800 leading-relaxed">
+              <p className="text-xs text-gray-400 leading-relaxed">
                 {pageData.hiringFocus}
               </p>
             </div>
 
-            <div className="space-y-3">
-              <h4 className="font-bold text-gray-900">Key ATS Optimization Tips for this Role:</h4>
-              <ul className="space-y-2.5">
+            <div className="space-y-2.5">
+              <h4 className="font-mono font-bold text-xs uppercase tracking-wider text-gray-300">Key ATS Optimization Tips for this Role:</h4>
+              <ul className="space-y-2">
                 {pageData.atsTips.map((tip, i) => (
-                  <li key={i} className="flex items-start gap-3 text-sm text-gray-700">
-                    <Check className="w-5 h-5 text-lime-600 shrink-0 mt-0.5" />
+                  <li key={i} className="flex items-start gap-2.5 text-xs text-gray-300">
+                    <Check className="w-4 h-4 text-[#D2FF00] shrink-0 mt-0.5" />
                     <span>{tip}</span>
                   </li>
                 ))}
@@ -248,38 +261,41 @@ export default function ScannerLanding() {
             </div>
           </div>
 
-          {/* Essential Keywords Box */}
-          <div className="bg-white p-8 rounded-2xl border border-gray-200 shadow-sm space-y-6">
-            <div className="flex items-center justify-between pb-4 border-b border-gray-100">
-              <h3 className="text-xl font-bold text-gray-900 flex items-center gap-2">
-                <Zap className="w-5 h-5 text-amber-500" /> Must-Have Keywords for {pageData.roleName}
+          {/* Essential Keywords Matrix */}
+          <div className="bg-[#0E1116] p-6 rounded-[2px] border border-[#1F242D] space-y-5 shadow-2xl">
+            <div className="flex items-center justify-between border-b border-[#1F242D] pb-3">
+              <h3 className="font-mono font-bold text-sm text-white flex items-center gap-2 uppercase tracking-wider">
+                <Zap className="w-4 h-4 text-[#FF5722]" /> Essential Keywords ({pageData.topKeywords.length})
               </h3>
-              <span className="text-xs bg-lime-100 text-lime-800 font-bold px-2.5 py-1 rounded-md">
-                High Weight
-              </span>
+              <span className="text-[10px] font-mono text-gray-500 uppercase">ATS WEIGHT: HIGH</span>
             </div>
 
-            <p className="text-xs text-gray-500">
-              Applicant Tracking Systems search for these core technical tools, languages, and competencies. Make sure they appear naturally in your experience bullet points:
+            <p className="text-xs text-gray-400 leading-relaxed">
+              Resumes for {pageData.roleName} at {pageData.companyName} must explicitly contain these verified technical proficiencies to avoid automated threshold disqualification.
             </p>
 
-            <div className="flex flex-wrap gap-2.5">
+            <div className="flex flex-wrap gap-2">
               {pageData.topKeywords.map((kw, i) => (
                 <span 
                   key={i} 
-                  className="px-3 py-1.5 bg-gray-50 hover:bg-lime-50 hover:text-lime-800 text-gray-700 text-xs font-semibold rounded-lg border border-gray-200 transition-colors"
+                  className="px-3 py-1 bg-[#151921] border border-[#1F242D] text-xs font-mono text-gray-200 rounded-[2px]"
                 >
-                  ✓ {kw}
+                  {kw}
                 </span>
               ))}
             </div>
 
-            <div className="pt-6 border-t border-gray-100">
+            <div className="pt-3 border-t border-[#1F242D]">
               <Link 
-                to="/dashboard" 
-                className="w-full py-3.5 bg-gray-900 hover:bg-black text-white text-center font-bold text-sm rounded-xl flex items-center justify-center gap-2 transition-all shadow-md"
+                to="/dashboard"
+                onClick={() => {
+                  haptics.medium();
+                  asmrAudio.playClick();
+                }}
+                className="w-full py-3 bg-[#D2FF00] hover:bg-[#b8e000] text-[#08090C] font-mono font-black text-xs rounded-[2px] flex items-center justify-center gap-1.5 shadow-md uppercase tracking-wider transition-all"
               >
-                Check My Resume Against These Keywords <ArrowRight className="w-4 h-4" />
+                <span>Audit My Resume Against These Keywords</span>
+                <ArrowRight className="w-3.5 h-3.5" />
               </Link>
             </div>
           </div>
@@ -287,112 +303,82 @@ export default function ScannerLanding() {
         </div>
       </section>
 
-      {/* 3 Step Workflow */}
-      <section className="bg-white py-16 border-y border-gray-200">
-        <div className="max-w-6xl mx-auto px-4">
-          <div className="text-center mb-12">
-            <h2 className="text-3xl font-bold text-gray-900 mb-3">
-              3 Steps to Optimize Your {pageData.roleName} Resume
+      {/* FAQ Section */}
+      <section className="border-t border-[#1F242D] bg-[#0E1116] py-12 sm:py-16">
+        <div className="max-w-4xl mx-auto px-4 space-y-6">
+          <div className="text-center space-y-2">
+            <h2 className="text-xl sm:text-2xl font-black text-white uppercase font-sans">
+              Frequently Asked Questions
             </h2>
-            <p className="text-gray-600">Ensure your application beats the automated recruiter cutoffs.</p>
+            <p className="text-xs font-mono text-gray-400">
+              ATS screening rules and resume scoring for {pageData.roleName}s at {pageData.companyName}
+            </p>
           </div>
 
-          <div className="grid md:grid-cols-3 gap-8">
-            <div className="p-6 bg-gray-50 rounded-xl border border-gray-200">
-              <div className="w-10 h-10 bg-lime-500 text-white rounded-lg font-black flex items-center justify-center mb-4">1</div>
-              <h3 className="font-bold text-gray-900 text-lg mb-2">Upload & Compare</h3>
-              <p className="text-sm text-gray-600">Upload your PDF resume and the target {pageData.companyName} {pageData.roleName} job description.</p>
-            </div>
-            <div className="p-6 bg-gray-50 rounded-xl border border-gray-200">
-              <div className="w-10 h-10 bg-lime-500 text-white rounded-lg font-black flex items-center justify-center mb-4">2</div>
-              <h3 className="font-bold text-gray-900 text-lg mb-2">Identify Keyword Gaps</h3>
-              <p className="text-sm text-gray-600">Our neural parser flags missing skills like {pageData.topKeywords.slice(0, 2).join(' and ')}.</p>
-            </div>
-            <div className="p-6 bg-gray-50 rounded-xl border border-gray-200">
-              <div className="w-10 h-10 bg-lime-500 text-white rounded-lg font-black flex items-center justify-center mb-4">3</div>
-              <h3 className="font-bold text-gray-900 text-lg mb-2">STAR Bullet Optimization</h3>
-              <p className="text-sm text-gray-600">Generate recruiter-ready bullet points with quantified business metrics to pass human review.</p>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* Role & Company Specific FAQs */}
-      <section className="max-w-4xl mx-auto px-4 py-16">
-        <div className="text-center mb-12">
-          <h2 className="text-3xl font-bold text-gray-900 mb-3">
-            {pageData.roleName} ATS Screening FAQs
-          </h2>
-          <p className="text-gray-600">Common questions about ATS optimization for {pageData.companyName} applications.</p>
-        </div>
-
-        <div className="space-y-4">
-          {roleFaqs.map((faq, index) => (
-            <div key={index} className="bg-white rounded-xl border border-gray-200 overflow-hidden shadow-sm">
-              <button
-                onClick={() => toggleFaq(index)}
-                className="w-full p-6 text-left font-bold text-base text-gray-900 flex justify-between items-center gap-4 hover:text-lime-600 transition-colors"
+          <div className="space-y-3">
+            {roleFaqs.map((faq, idx) => (
+              <div 
+                key={idx} 
+                className="bg-[#08090C] border border-[#1F242D] rounded-[2px] overflow-hidden"
               >
-                <span>{faq.question}</span>
-                <ChevronDown className={`w-5 h-5 text-gray-400 transition-transform duration-300 shrink-0 ${openFaq === index ? 'rotate-180 text-lime-600' : ''}`} />
-              </button>
-              {openFaq === index && (
-                <div className="px-6 pb-6 text-gray-600 text-sm leading-relaxed border-t border-gray-100 pt-4">
-                  {faq.answer}
-                </div>
-              )}
-            </div>
-          ))}
+                <button
+                  onClick={() => toggleFaq(idx)}
+                  className="w-full p-4 text-left flex items-center justify-between gap-3 text-xs sm:text-sm font-mono font-bold text-white hover:text-[#D2FF00] transition-colors cursor-pointer"
+                >
+                  <span>{faq.question}</span>
+                  <ChevronDown className={`w-4 h-4 text-gray-400 transition-transform ${openFaq === idx ? 'rotate-180 text-[#D2FF00]' : ''}`} />
+                </button>
+                {openFaq === idx && (
+                  <div className="px-4 pb-4 text-xs text-gray-300 leading-relaxed font-sans border-t border-[#1F242D] pt-3">
+                    {faq.answer}
+                  </div>
+                )}
+              </div>
+            ))}
+          </div>
         </div>
       </section>
 
-      {/* Internal Linking Mesh: Related Roles & Companies */}
-      <section className="bg-white py-16 border-t border-gray-200">
-        <div className="max-w-6xl mx-auto px-4 space-y-10">
-          
-          <div>
-            <h3 className="text-xl font-bold text-gray-900 mb-4 flex items-center gap-2">
-              <Building2 className="w-5 h-5 text-lime-600" /> Other Top Employer Scanners for {pageData.roleName}
+      {/* Internal Linking Matrix */}
+      <section className="border-t border-[#1F242D] py-12 px-4 bg-[#08090C]">
+        <div className="max-w-6xl mx-auto space-y-8">
+          <div className="space-y-3">
+            <h3 className="text-xs font-mono font-bold uppercase tracking-wider text-gray-400">
+              Explore More ATS Role Scanners
             </h3>
-            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-6 gap-3">
-              {relatedCompanies.map(c => {
-                const targetSlug = pageData.roleId ? `${pageData.roleId}-at-${c.id}` : `software-engineer-at-${c.id}`;
-                return (
-                  <Link
-                    key={c.id}
-                    to={`/scanner/${targetSlug}`}
-                    className="p-3 bg-gray-50 hover:bg-lime-50 text-gray-700 hover:text-lime-800 text-xs font-semibold rounded-xl border border-gray-200 text-center transition-all block"
-                  >
-                    {pageData.roleName} at {c.name}
-                  </Link>
-                );
-              })}
-            </div>
-          </div>
-
-          <div>
-            <h3 className="text-xl font-bold text-gray-900 mb-4 flex items-center gap-2">
-              <Briefcase className="w-5 h-5 text-lime-600" /> Explore Other Career ATS Scanners
-            </h3>
-            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-6 gap-3">
+            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-6 gap-2 text-xs font-mono">
               {relatedRoles.map(r => (
-                <Link
+                <Link 
                   key={r.id}
-                  to={`/scanner/${r.id}`}
-                  className="p-3 bg-gray-50 hover:bg-lime-50 text-gray-700 hover:text-lime-800 text-xs font-semibold rounded-xl border border-gray-200 text-center transition-all block"
+                  to={`/scanner/${r.id}-at-${pageData.companyId}`}
+                  className="p-2.5 bg-[#0E1116] hover:bg-[#151921] border border-[#1F242D] hover:border-[#D2FF00]/40 rounded-[2px] text-gray-300 hover:text-white transition-all truncate"
                 >
-                  {r.title} ATS Scan
+                  {r.title}
                 </Link>
               ))}
             </div>
           </div>
 
+          <div className="space-y-3">
+            <h3 className="text-xs font-mono font-bold uppercase tracking-wider text-gray-400">
+              ATS Scanners for Top Tech Companies
+            </h3>
+            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-6 gap-2 text-xs font-mono">
+              {relatedCompanies.map(c => (
+                <Link 
+                  key={c.id}
+                  to={`/scanner/${pageData.roleId}-at-${c.id}`}
+                  className="p-2.5 bg-[#0E1116] hover:bg-[#151921] border border-[#1F242D] hover:border-[#D2FF00]/40 rounded-[2px] text-gray-300 hover:text-white transition-all truncate"
+                >
+                  {c.name}
+                </Link>
+              ))}
+            </div>
+          </div>
         </div>
       </section>
 
-      {/* Footer */}
       <Footer />
-
     </div>
   );
 }
