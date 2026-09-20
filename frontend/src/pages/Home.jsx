@@ -336,15 +336,7 @@ export default function Home() {
 
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
           
-          {/* Eyebrow HUD Stamp */}
-          <div className="flex justify-center mb-6">
-            <div className="inline-flex items-center gap-2 px-3 py-1 bg-[#0E1116] border border-[#1F242D] rounded-[2px] shadow-sm">
-              <span className="w-2 h-2 rounded-none bg-[#D2FF00] animate-pulse" />
-              <span className="font-mono text-[10px] sm:text-[11px] font-bold text-[#D2FF00] tracking-widest uppercase">
-                [ ATS_KERNEL_V4.8 ] // HEURISTIC DECOMPILATION ACTIVE
-              </span>
-            </div>
-          </div>
+
 
           {/* Colossal Headline */}
           <div className="text-center max-w-5xl mx-auto mb-8">
