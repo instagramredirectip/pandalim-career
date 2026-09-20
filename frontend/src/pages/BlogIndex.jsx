@@ -25,6 +25,7 @@ export default function BlogIndex() {
 
   const categories = [
     'All',
+    'AI & Workflows',
     'ATS Optimization',
     'Resume Writing',
     'Developer Portfolios',

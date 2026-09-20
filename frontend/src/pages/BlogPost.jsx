@@ -14,7 +14,11 @@ import {
   BookOpen, 
   ListTree,
   ShieldCheck,
-  Zap
+  Zap,
+  Copy,
+  Check,
+  HelpCircle,
+  ChevronDown
 } from 'lucide-react';
 import SEOHead from '../components/SEOHead';
 import Navbar from '../components/Navbar';
@@ -22,6 +26,108 @@ import Footer from '../components/Footer';
 import MobileDrawer from '../components/MobileDrawer';
 import { getBlogPostBySlug, BLOG_POSTS } from '../data/blogPosts';
 import { prefetchRoute } from '../utils/prefetch';
+
+function CodeSnippetBlock({ language, code }) {
+  const [copied, setCopied] = useState(false);
+
+  const handleCopy = () => {
+    navigator.clipboard.writeText(code);
+    setCopied(true);
+    setTimeout(() => setCopied(false), 2000);
+  };
+
+  return (
+    <div className="my-6 rounded-2xl overflow-hidden border border-zinc-800 bg-zinc-950 shadow-xl not-prose">
+      <div className="flex items-center justify-between px-4 py-2.5 bg-zinc-900 border-b border-zinc-800 text-xs text-zinc-400">
+        <div className="flex items-center gap-2">
+          <div className="flex items-center gap-1.5">
+            <span className="w-2.5 h-2.5 rounded-full bg-red-500/80 inline-block"></span>
+            <span className="w-2.5 h-2.5 rounded-full bg-yellow-500/80 inline-block"></span>
+            <span className="w-2.5 h-2.5 rounded-full bg-green-500/80 inline-block"></span>
+          </div>
+          <span className="ml-2 font-mono uppercase font-bold text-lime-400 text-[11px] tracking-wider">
+            {language}
+          </span>
+        </div>
+        <button
+          type="button"
+          onClick={handleCopy}
+          className="flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-zinc-800 hover:bg-zinc-700 text-zinc-200 font-bold text-xs transition-colors cursor-pointer"
+        >
+          {copied ? (
+            <>
+              <Check className="w-3.5 h-3.5 text-lime-400" />
+              <span className="text-lime-400">Copied</span>
+            </>
+          ) : (
+            <>
+              <Copy className="w-3.5 h-3.5" />
+              <span>Copy Code</span>
+            </>
+          )}
+        </button>
+      </div>
+      <pre className="p-4 sm:p-5 text-xs sm:text-sm font-mono text-emerald-400/95 overflow-x-auto leading-relaxed">
+        <code>{code}</code>
+      </pre>
+    </div>
+  );
+}
+
+function BlogPostFAQSection({ faqs, parseInlineMarkdown }) {
+  const [openIndex, setOpenIndex] = useState(0); // Open first by default for quick view
+
+  const toggleFAQ = (idx) => {
+    setOpenIndex(openIndex === idx ? null : idx);
+  };
+
+  if (!faqs || faqs.length === 0) return null;
+
+  return (
+    <section className="my-10 p-6 sm:p-8 bg-zinc-950 text-zinc-100 rounded-2xl border border-zinc-800 shadow-xl">
+      <div className="flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-lime-400 mb-2">
+        <HelpCircle className="w-4 h-4" /> Frequently Asked Questions
+      </div>
+      <h3 className="text-xl sm:text-2xl font-extrabold text-white mb-6">
+        Model Context Protocol (MCP) Expert FAQs
+      </h3>
+      <div className="space-y-4">
+        {faqs.map((faq, idx) => {
+          const isOpen = openIndex === idx;
+          return (
+            <div 
+              key={idx} 
+              className="border border-zinc-800/80 bg-zinc-900/60 rounded-xl overflow-hidden transition-all"
+              itemScope 
+              itemType="https://schema.org/Question"
+            >
+              <button
+                type="button"
+                onClick={() => toggleFAQ(idx)}
+                className="w-full flex items-center justify-between p-4 sm:p-5 text-left font-bold text-sm sm:text-base text-zinc-100 hover:text-lime-300 transition-colors cursor-pointer gap-4"
+              >
+                <span itemProp="name" className="flex-1">{faq.question}</span>
+                <ChevronDown className={`w-4 h-4 text-lime-400 shrink-0 transition-transform duration-200 ${isOpen ? 'rotate-180' : ''}`} />
+              </button>
+              {isOpen && (
+                <div 
+                  className="px-4 pb-5 sm:px-5 text-xs sm:text-sm text-zinc-300 leading-relaxed border-t border-zinc-800/50 pt-3"
+                  itemScope 
+                  itemProp="acceptedAnswer" 
+                  itemType="https://schema.org/Answer"
+                >
+                  <div itemProp="text">
+                    {parseInlineMarkdown(faq.answer)}
+                  </div>
+                </div>
+              )}
+            </div>
+          );
+        })}
+      </div>
+    </section>
+  );
+}
 
 export default function BlogPost() {
   const { slug } = useParams();
@@ -89,11 +195,95 @@ export default function BlogPost() {
     }
   ];
 
+  // Add FAQPage Schema if FAQs exist for Google Rich Snippets
+  if (post.faqs && post.faqs.length > 0) {
+    jsonLd.push({
+      "@context": "https://schema.org",
+      "@type": "FAQPage",
+      "mainEntity": post.faqs.map(faq => ({
+        "@type": "Question",
+        "name": faq.question,
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": faq.answer
+        }
+      }))
+    });
+  }
+
+  // Parse inline markdown: [links](url), **bold**, and `code`
+  const parseInlineMarkdown = (text) => {
+    if (typeof text !== 'string') return text;
+    const regex = /(\[.*?\]\(.*?\)|\*\*.*?\*\*|`.*?`)/g;
+    const parts = text.split(regex);
+
+    return parts.map((part, index) => {
+      if (!part) return null;
+
+      const linkMatch = part.match(/^\[(.*?)\]\((.*?)\)$/);
+      if (linkMatch) {
+        const [, label, url] = linkMatch;
+        if (url.startsWith('/')) {
+          return (
+            <Link 
+              key={index} 
+              to={url} 
+              className="text-lime-700 hover:text-lime-800 font-semibold underline underline-offset-2 decoration-lime-500/50 hover:decoration-lime-600 transition-colors"
+            >
+              {parseInlineMarkdown(label)}
+            </Link>
+          );
+        }
+        return (
+          <a 
+            key={index} 
+            href={url} 
+            target="_blank" 
+            rel="noopener noreferrer" 
+            className="text-lime-700 hover:text-lime-800 font-semibold underline underline-offset-2 decoration-lime-500/50 hover:decoration-lime-600 transition-colors"
+          >
+            {parseInlineMarkdown(label)}
+          </a>
+        );
+      }
+
+      const boldMatch = part.match(/^\*\*(.*?)\*\*$/);
+      if (boldMatch) {
+        return <strong key={index} className="font-bold text-gray-950">{parseInlineMarkdown(boldMatch[1])}</strong>;
+      }
+
+      const codeMatch = part.match(/^`(.*?)`$/);
+      if (codeMatch) {
+        return (
+          <code key={index} className="px-1.5 py-0.5 rounded bg-gray-100 text-gray-900 border border-gray-200 font-mono text-xs font-semibold">
+            {codeMatch[1]}
+          </code>
+        );
+      }
+
+      return part;
+    });
+  };
+
   // Helper to render markdown content with basic styling
   const renderFormattedContent = (contentStr) => {
     return contentStr.split('\n\n').map((block, idx) => {
       const trimmed = block.trim();
       if (!trimmed) return null;
+
+      // Fenced Code Blocks (```typescript, ```json, etc.)
+      if (trimmed.startsWith('```')) {
+        const lines = trimmed.split('\n');
+        const firstLine = lines[0].replace(/```/, '').trim();
+        const lang = firstLine || 'code';
+        const codeLines = lines.slice(1);
+        if (codeLines.length > 0 && codeLines[codeLines.length - 1].trim().startsWith('```')) {
+          codeLines.pop();
+        }
+        const codeContent = codeLines.join('\n');
+
+        return <CodeSnippetBlock key={idx} language={lang} code={codeContent} />;
+      }
 
       // H2 Headings with ID anchor
       if (trimmed.startsWith('## ')) {
@@ -102,7 +292,7 @@ export default function BlogPost() {
         const id = match && match[2] ? match[2] : '';
         return (
           <h2 key={idx} id={id} className="text-2xl sm:text-3xl font-extrabold text-gray-950 mt-10 mb-4 pt-4 border-t border-gray-100 scroll-mt-24">
-            {title}
+            {parseInlineMarkdown(title)}
           </h2>
         );
       }
@@ -111,7 +301,7 @@ export default function BlogPost() {
       if (trimmed.startsWith('### ')) {
         return (
           <h3 key={idx} className="text-lg sm:text-xl font-bold text-gray-900 mt-6 mb-3">
-            {trimmed.replace('### ', '')}
+            {parseInlineMarkdown(trimmed.replace('### ', ''))}
           </h3>
         );
       }
@@ -121,7 +311,7 @@ export default function BlogPost() {
         const cleanText = trimmed.replace(/^>\s+/gm, '');
         return (
           <div key={idx} className="my-6 p-5 bg-lime-50/80 border-l-4 border-lime-500 rounded-r-2xl text-gray-800 text-sm leading-relaxed shadow-xs">
-            {cleanText}
+            {parseInlineMarkdown(cleanText)}
           </div>
         );
       }
@@ -139,7 +329,7 @@ export default function BlogPost() {
               <thead className="bg-gray-900 text-white font-bold">
                 <tr>
                   {headers.map((h, hIdx) => (
-                    <th key={hIdx} className="px-4 py-3 font-semibold">{h}</th>
+                    <th key={hIdx} className="px-4 py-3 font-semibold">{parseInlineMarkdown(h)}</th>
                   ))}
                 </tr>
               </thead>
@@ -147,7 +337,7 @@ export default function BlogPost() {
                 {dataRows.map((row, rIdx) => (
                   <tr key={rIdx} className={rIdx % 2 === 0 ? 'bg-white' : 'bg-gray-50/70'}>
                     {row.map((cell, cIdx) => (
-                      <td key={cIdx} className="px-4 py-3 text-gray-700 font-medium">{cell}</td>
+                      <td key={cIdx} className="px-4 py-3 text-gray-700 font-medium">{parseInlineMarkdown(cell)}</td>
                     ))}
                   </tr>
                 ))}
@@ -163,7 +353,7 @@ export default function BlogPost() {
         return (
           <ul key={idx} className="my-4 space-y-2 pl-4 list-disc text-gray-700 text-sm sm:text-base leading-relaxed">
             {items.map((item, iIdx) => (
-              <li key={iIdx}>{item}</li>
+              <li key={iIdx}>{parseInlineMarkdown(item)}</li>
             ))}
           </ul>
         );
@@ -177,7 +367,7 @@ export default function BlogPost() {
             {items.map((item, iIdx) => (
               <div key={iIdx} className="flex items-start gap-2.5 text-xs sm:text-sm text-gray-800">
                 <CheckCircle2 className="w-4 h-4 text-lime-600 shrink-0 mt-0.5" />
-                <span>{item}</span>
+                <span>{parseInlineMarkdown(item)}</span>
               </div>
             ))}
           </div>
@@ -187,7 +377,7 @@ export default function BlogPost() {
       // Standard Paragraph
       return (
         <p key={idx} className="my-4 text-gray-700 text-sm sm:text-base leading-relaxed">
-          {trimmed}
+          {parseInlineMarkdown(trimmed)}
         </p>
       );
     });
@@ -298,6 +488,11 @@ export default function BlogPost() {
           <article className="bg-white rounded-2xl p-6 sm:p-10 border border-gray-200 shadow-xs my-8 prose-sm sm:prose max-w-none text-gray-800">
             {renderFormattedContent(post.content)}
           </article>
+
+          {/* Dedicated Technical FAQ Section (if provided) */}
+          {post.faqs && post.faqs.length > 0 && (
+            <BlogPostFAQSection faqs={post.faqs} parseInlineMarkdown={parseInlineMarkdown} />
+          )}
 
           {/* In-Article Action CTA Card */}
           <div className="bg-gradient-to-r from-gray-950 via-gray-900 to-gray-950 text-white rounded-2xl p-8 border border-gray-800 shadow-xl my-10 flex flex-col sm:flex-row items-center justify-between gap-6">

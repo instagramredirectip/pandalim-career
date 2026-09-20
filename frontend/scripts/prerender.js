@@ -754,16 +754,38 @@ BLOG_POSTS.forEach(post => {
       "headline": post.title,
       "description": post.excerpt,
       "datePublished": post.publishedDate,
+      "dateModified": post.publishedDate,
+      "mainEntityOfPage": `${BASE_URL}/blog/${post.slug}`,
       "author": {
         "@type": "Person",
-        "name": post.author.name
+        "name": post.author.name,
+        "jobTitle": post.author.role
       },
       "publisher": {
         "@type": "Organization",
-        "name": "PandaLime Career"
+        "name": "PandaLime Career",
+        "logo": {
+          "@type": "ImageObject",
+          "url": `${BASE_URL}/assets/hero.png`
+        }
       }
     }
   ];
+
+  if (post.faqs && post.faqs.length > 0) {
+    postJsonLd.push({
+      "@context": "https://schema.org",
+      "@type": "FAQPage",
+      "mainEntity": post.faqs.map(faq => ({
+        "@type": "Question",
+        "name": faq.question,
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": faq.answer
+        }
+      }))
+    });
+  }
 
   const postHtml = generatePageHtml({
     title: `${post.title} | PandaLime`,
@@ -775,7 +797,7 @@ BLOG_POSTS.forEach(post => {
         <nav aria-label="breadcrumb"><a href="/">Home</a> &gt; <a href="/blog">Blog</a> &gt; <span>${escapeHtml(post.title)}</span></nav>
         <article>
           <h1>${escapeHtml(post.title)}</h1>
-          <p><em>Published on ${post.publishedDate} by ${escapeHtml(post.author.name)} • ${post.readTime} • ${post.wordCount} words</em></p>
+          <p><em>Published on ${post.publishedDate} by ${escapeHtml(post.author.name)} (${escapeHtml(post.author.role)}) • ${post.readTime} • ${post.wordCount} words</em></p>
           <p><strong>${escapeHtml(post.excerpt)}</strong></p>
           <div>
             ${post.content.split('\n\n').map(b => {
@@ -783,10 +805,27 @@ BLOG_POSTS.forEach(post => {
               if (t.startsWith('## ')) return `<h2>${escapeHtml(t.replace('## ', ''))}</h2>`;
               if (t.startsWith('### ')) return `<h3>${escapeHtml(t.replace('### ', ''))}</h3>`;
               if (t.startsWith('> ')) return `<blockquote>${escapeHtml(t.replace('> ', ''))}</blockquote>`;
+              if (t.startsWith('```')) {
+                const lines = t.split('\n');
+                const lang = lines[0].replace('```', '').trim() || 'code';
+                const code = lines.slice(1, lines.length > 1 && lines[lines.length - 1].startsWith('```') ? -1 : undefined).join('\n');
+                return `<pre data-lang="${escapeHtml(lang)}" style="background:#18181b;color:#4ade80;padding:16px;border-radius:12px;overflow-x:auto;"><code>${escapeHtml(code)}</code></pre>`;
+              }
               return `<p>${escapeHtml(t)}</p>`;
             }).join('\n')}
           </div>
-          <p><a href="/dashboard">Scan Your Resume For Free on PandaLime</a></p>
+          ${post.faqs && post.faqs.length > 0 ? `
+            <section style="margin-top:40px;padding:24px;background:#f4f4f5;border-radius:16px;">
+              <h2>Frequently Asked Questions</h2>
+              ${post.faqs.map(f => `
+                <div style="margin-bottom:16px;">
+                  <h3>${escapeHtml(f.question)}</h3>
+                  <p>${escapeHtml(f.answer)}</p>
+                </div>
+              `).join('')}
+            </section>
+          ` : ''}
+          <p><a href="/dashboard">Scan Your Resume For Free on PandaLime</a> | <a href="/portfolio-builder">Build Developer Portfolio</a></p>
         </article>
       </main>
     `
