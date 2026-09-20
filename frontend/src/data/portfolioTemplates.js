@@ -50,6 +50,56 @@ export const THEMES = [
     bgClass: 'bg-[#0c101c] text-cyan-50',
     cardClass: 'bg-[#151d30]/70 border border-cyan-500/30 hover:border-cyan-400/60 shadow-[0_0_25px_rgba(6,182,212,0.12)] backdrop-blur-xl',
     accentColor: 'cyan'
+  },
+  {
+    id: 'light_ivory',
+    name: 'Minimalist Ivory Paper (Light Mode)',
+    tag: 'Clean Paper & Modernist',
+    desc: 'Crisp architectural light aesthetic with sharp hairline borders, pure slate typography, and high editorial readability.',
+    badge: 'Light Studio Mode',
+    bgClass: 'bg-[#f8fafc] text-slate-900',
+    cardClass: 'bg-white border border-slate-200/80 hover:border-slate-300 shadow-sm text-slate-900',
+    accentColor: 'slate'
+  },
+  {
+    id: 'brutalist',
+    name: 'Neo-Brutalist Pop (Casual & Punchy)',
+    tag: 'Bold & High-Contrast',
+    desc: 'Punchy vibrant contrast with jet black backdrops, electric sunflower accents, thick borders, and energetic card geometry.',
+    badge: 'Creative & Indie Devs',
+    bgClass: 'bg-[#0c0d12] text-amber-50',
+    cardClass: 'bg-[#161722] border-2 border-amber-400/40 hover:border-amber-400 shadow-[4px_4px_0px_rgba(251,191,36,0.3)]',
+    accentColor: 'neo_yellow'
+  },
+  {
+    id: 'minecraft',
+    name: 'Minecraft 8-Bit Blockcraft (Gaming / Pixel)',
+    tag: 'Pixel Art & Blockcraft',
+    desc: 'Bedrock deep stone textures, 8-bit green creeper accents, sharp pixel grid borders, and retro dungeon telemetry.',
+    badge: 'Gaming & Pixel Art',
+    bgClass: 'bg-[#111611] text-emerald-100 font-mono',
+    cardClass: 'bg-[#182118] border-2 border-green-500/40 hover:border-green-400 shadow-[4px_4px_0px_rgba(34,197,94,0.3)] font-mono',
+    accentColor: 'creeper_green'
+  },
+  {
+    id: 'sakura',
+    name: 'Sakura Blossom & Kyoto Spring (Sakura)',
+    tag: 'Japanese Zen & Aesthetic',
+    desc: 'Dark cherry plum twilight with blooming sakura pink highlights, serene hairline borders, and poetic minimalism.',
+    badge: 'Sakura Blossom',
+    bgClass: 'bg-[#181018] text-pink-50',
+    cardClass: 'bg-[#241724]/90 border border-pink-500/30 hover:border-pink-400/60 shadow-[0_0_25px_rgba(244,114,182,0.12)]',
+    accentColor: 'sakura_pink'
+  },
+  {
+    id: 'girly_y2k',
+    name: 'Rose Gold Velvet & Y2K (Girly / Pastel)',
+    tag: 'Pastel Glam & Y2K Vibe',
+    desc: 'Lush berry dusk with soft pastel rose gold, iridescent lilac glow, candy badge pills, and dreamy glass aesthetics.',
+    badge: 'Y2K & Pastel Chic',
+    bgClass: 'bg-[#1a0f1d] text-rose-50',
+    cardClass: 'bg-[#28162d]/90 border border-rose-400/40 hover:border-rose-400/80 shadow-[0_0_25px_rgba(251,113,133,0.15)]',
+    accentColor: 'sakura_pink'
   }
 ];
 
@@ -59,7 +109,11 @@ export const ACCENT_COLORS = [
   { id: 'purple', name: 'Electric Purple', hex: '#a855f7', ring: 'ring-purple-400', bg: 'bg-purple-500', text: 'text-purple-400', border: 'border-purple-400', glow: 'shadow-purple-500/20' },
   { id: 'emerald', name: 'Matrix Emerald', hex: '#10b981', ring: 'ring-emerald-400', bg: 'bg-emerald-500', text: 'text-emerald-400', border: 'border-emerald-400', glow: 'shadow-emerald-500/20' },
   { id: 'amber', name: 'Sunset Amber', hex: '#f59e0b', ring: 'ring-amber-400', bg: 'bg-amber-500', text: 'text-amber-400', border: 'border-amber-400', glow: 'shadow-amber-500/20' },
-  { id: 'rose', name: 'Ruby Crimson', hex: '#f43f5e', ring: 'ring-rose-400', bg: 'bg-rose-500', text: 'text-rose-400', border: 'border-rose-400', glow: 'shadow-rose-500/20' }
+  { id: 'rose', name: 'Ruby Crimson', hex: '#f43f5e', ring: 'ring-rose-400', bg: 'bg-rose-500', text: 'text-rose-400', border: 'border-rose-400', glow: 'shadow-rose-500/20' },
+  { id: 'sakura_pink', name: 'Sakura Blush', hex: '#f472b6', ring: 'ring-pink-400', bg: 'bg-pink-500', text: 'text-pink-400', border: 'border-pink-400', glow: 'shadow-pink-500/20' },
+  { id: 'creeper_green', name: 'Creeper Green', hex: '#22c55e', ring: 'ring-green-400', bg: 'bg-green-500', text: 'text-green-400', border: 'border-green-400', glow: 'shadow-green-500/20' },
+  { id: 'neo_yellow', name: 'Cyber Sunflower', hex: '#facc15', ring: 'ring-yellow-400', bg: 'bg-yellow-500', text: 'text-yellow-400', border: 'border-yellow-400', glow: 'shadow-yellow-500/20' },
+  { id: 'slate', name: 'Modern Slate', hex: '#64748b', ring: 'ring-slate-400', bg: 'bg-slate-500', text: 'text-slate-400', border: 'border-slate-400', glow: 'shadow-slate-500/20' }
 ];
 
 export const PRESET_AVATARS = [
