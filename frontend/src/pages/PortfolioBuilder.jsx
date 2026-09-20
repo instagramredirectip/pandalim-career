@@ -669,6 +669,21 @@ export default function PortfolioBuilder({ isAppMode: propAppMode = false }) {
         className="hidden" 
       />
 
+      {/* Universal Floating Toast for Actions & Feedback */}
+      <AnimatePresence>
+        {statusMessage && (
+          <motion.div
+            initial={{ opacity: 0, y: -20, scale: 0.95 }}
+            animate={{ opacity: 1, y: 0, scale: 1 }}
+            exit={{ opacity: 0, y: -20, scale: 0.95 }}
+            className="fixed top-4 sm:top-6 left-1/2 -translate-x-1/2 z-50 bg-gray-900/95 border border-lime-500/40 backdrop-blur-xl px-4 py-2.5 rounded-2xl shadow-2xl shadow-lime-500/10 flex items-center gap-2 max-w-[90vw] text-center pointer-events-none"
+          >
+            <Sparkles className="w-4 h-4 text-lime-400 shrink-0" />
+            <span className="text-xs font-bold text-white">{statusMessage}</span>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
       {/* Floating Indicator when PDF Parsing is active */}
       <AnimatePresence>
         {isParsingPdf && (
