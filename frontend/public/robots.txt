@@ -4,15 +4,25 @@
 User-agent: *
 Allow: /
 Allow: /scanner/
+Allow: /blog/
+Allow: /tools/
+Allow: /p/
+Allow: /portfolio-builder
 Allow: /roast-wall
 Allow: /sitemap
 Allow: /contact
 Allow: /privacy-policy
 Allow: /terms
+Allow: /hi
+Allow: /ta
+Allow: /te
+Allow: /kn
+Allow: /mr
+Allow: /bn
 
-# Disallow internal API endpoints & user dashboards without static content
+# Disallow internal API endpoints & app shell
 Disallow: /api/
+Disallow: /app/
 
 # XML Sitemap Location
 Sitemap: https://www.pandalime.com/sitemap.xml
-

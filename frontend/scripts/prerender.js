@@ -38,38 +38,28 @@ function generatePageHtml({ title, description, canonicalPath, lang = 'en', json
   // Set html lang attribute
   html = html.replace(/<html[^>]*>/i, `<html lang="${lang}">`);
 
-  // Replace Title
-  html = html.replace(/<title>[^<]*<\/title>/i, `<title>${safeTitle}</title>`);
+  // 1. Replace Title in place
+  if (html.includes('<title>')) {
+    html = html.replace(/<title>[^<]*<\/title>/i, `<title>${safeTitle}</title>`);
+  } else {
+    html = html.replace(/<\/head>/i, `  <title>${safeTitle}</title>\n</head>`);
+  }
   
-  // Replace or inject meta description
+  // 2. Replace meta description in place
   if (html.includes('name="description"')) {
     html = html.replace(/(<meta\s+name="description"\s+content=")[^"]*(")/i, `$1${safeDescription}$2`);
   } else {
     html = html.replace(/<\/head>/i, `  <meta name="description" content="${safeDescription}" />\n</head>`);
   }
 
-  // Replace or inject canonical
+  // 3. Replace canonical in place
   if (html.includes('rel="canonical"')) {
     html = html.replace(/(<link\s+rel="canonical"\s+href=")[^"]*(")/i, `$1${canonicalUrl}$2`);
   } else {
     html = html.replace(/<\/head>/i, `  <link rel="canonical" href="${canonicalUrl}" />\n</head>`);
   }
 
-  // Inject hreflang alternate links
-  const hreflangTags = `
-  <link rel="alternate" href="${BASE_URL}/" hreflang="x-default" />
-  <link rel="alternate" href="${BASE_URL}/" hreflang="en" />
-  <link rel="alternate" href="${BASE_URL}/" hreflang="en-IN" />
-  <link rel="alternate" href="${BASE_URL}/hi" hreflang="hi" />
-  <link rel="alternate" href="${BASE_URL}/ta" hreflang="ta" />
-  <link rel="alternate" href="${BASE_URL}/te" hreflang="te" />
-  <link rel="alternate" href="${BASE_URL}/kn" hreflang="kn" />
-  <link rel="alternate" href="${BASE_URL}/mr" hreflang="mr" />
-  <link rel="alternate" href="${BASE_URL}/bn" hreflang="bn" />`;
-
-  html = html.replace(/<\/head>/i, `${hreflangTags}\n</head>`);
-
-  // Replace OpenGraph & Twitter
+  // 4. Replace OpenGraph & Twitter in place
   html = html.replace(/(<meta\s+property="og:title"\s+content=")[^"]*(")/i, `$1${safeTitle}$2`);
   html = html.replace(/(<meta\s+property="og:description"\s+content=")[^"]*(")/i, `$1${safeDescription}$2`);
   html = html.replace(/(<meta\s+property="og:url"\s+content=")[^"]*(")/i, `$1${canonicalUrl}$2`);
@@ -77,7 +67,21 @@ function generatePageHtml({ title, description, canonicalPath, lang = 'en', json
   html = html.replace(/(<meta\s+name="twitter:description"\s+content=")[^"]*(")/i, `$1${safeDescription}$2`);
   html = html.replace(/(<meta\s+name="twitter:url"\s+content=")[^"]*(")/i, `$1${canonicalUrl}$2`);
 
-  // Inject JSON-LD Schema if present
+  // 5. Remove any previous hreflang tags if any, then inject
+  html = html.replace(/<link\s+rel="alternate"\s+href="[^"]*"\s+hreflang="[^"]*"\s*\/?>/gi, '');
+  const hreflangTags = `
+  <link rel="alternate" href="${BASE_URL}/" hreflang="x-default" />
+  <link rel="alternate" href="${BASE_URL}/" hreflang="en" />
+  <link rel="alternate" href="${BASE_URL}/en-IN" hreflang="en-IN" />
+  <link rel="alternate" href="${BASE_URL}/hi" hreflang="hi" />
+  <link rel="alternate" href="${BASE_URL}/ta" hreflang="ta" />
+  <link rel="alternate" href="${BASE_URL}/te" hreflang="te" />
+  <link rel="alternate" href="${BASE_URL}/kn" hreflang="kn" />
+  <link rel="alternate" href="${BASE_URL}/mr" hreflang="mr" />
+  <link rel="alternate" href="${BASE_URL}/bn" hreflang="bn" />`;
+  html = html.replace(/<\/head>/i, `${hreflangTags}\n</head>`);
+
+  // 6. Inject JSON-LD Schema if present
   if (jsonLd) {
     const schemas = Array.isArray(jsonLd) ? jsonLd : [jsonLd];
     const scriptTags = schemas
@@ -86,7 +90,7 @@ function generatePageHtml({ title, description, canonicalPath, lang = 'en', json
     html = html.replace(/<\/head>/i, `${scriptTags}\n</head>`);
   }
 
-  // Inject initial semantic HTML inside #root for instant crawler parsing
+  // 7. Inject initial semantic HTML inside #root for instant crawler parsing
   if (bodyContent) {
     html = html.replace('<div id="root"></div>', `<div id="root">${bodyContent}</div>`);
   }
@@ -98,16 +102,26 @@ function writeStaticFile(routePath, htmlContent) {
   let targetPath;
   if (routePath === '/' || routePath === '') {
     targetPath = path.join(distDir, 'index.html');
+    fs.writeFileSync(targetPath, htmlContent, 'utf8');
   } else {
-    const cleanRoute = routePath.replace(/^\/+/, '');
+    const cleanRoute = routePath.replace(/^\/+/, '').replace(/\/+$/, '');
+    
+    // 1. Write nested folder index.html (e.g. dist/scanner/product-manager/index.html)
     const pageDir = path.join(distDir, cleanRoute);
     if (!fs.existsSync(pageDir)) {
       fs.mkdirSync(pageDir, { recursive: true });
     }
     targetPath = path.join(pageDir, 'index.html');
-  }
+    fs.writeFileSync(targetPath, htmlContent, 'utf8');
 
-  fs.writeFileSync(targetPath, htmlContent, 'utf8');
+    // 2. Write flat .html file (e.g. dist/scanner/product-manager.html)
+    const flatFile = path.join(distDir, `${cleanRoute}.html`);
+    const flatDir = path.dirname(flatFile);
+    if (!fs.existsSync(flatDir)) {
+      fs.mkdirSync(flatDir, { recursive: true });
+    }
+    fs.writeFileSync(flatFile, htmlContent, 'utf8');
+  }
 }
 
 console.log('--- Starting Static Pre-Rendering (SSG) for PandaLime ---');
@@ -835,7 +849,14 @@ console.log('✓ Pre-rendered: /terms');
 const loginHtml = generatePageHtml({
   title: 'Sign In & Account Login | PandaLime Career',
   description: 'Log in to PandaLime Career to access your ATS resume analysis reports, saved job scans, and career insights.',
-  canonicalPath: '/login'
+  canonicalPath: '/login',
+  bodyContent: `
+    <main style="max-width:800px;margin:0 auto;padding:40px 20px;font-family:sans-serif;">
+      <h1>Sign In to PandaLime Career</h1>
+      <p>Log in with your email or one-time passcode to access your saved ATS resume match reports, interview blueprints, and custom developer portfolios.</p>
+      <p><a href="/">Return to Home</a> • <a href="/dashboard">Free Resume Scanner</a> • <a href="/tools">Free Career Tools</a></p>
+    </main>
+  `
 });
 writeStaticFile('/login', loginHtml);
 addSitemapUrl('/login', '0.5', 'monthly');
@@ -844,7 +865,20 @@ console.log('✓ Pre-rendered: /login');
 const dashboardHtml = generatePageHtml({
   title: 'Free AI Resume Scanner & Score Dashboard | PandaLime',
   description: 'Upload your resume PDF and target job description to get an instant ATS match score, critical missing keywords, and actionable AI feedback.',
-  canonicalPath: '/dashboard'
+  canonicalPath: '/dashboard',
+  bodyContent: `
+    <main style="max-width:1000px;margin:0 auto;padding:40px 20px;font-family:sans-serif;">
+      <h1>Free AI ATS Resume Scanner & Score Checker</h1>
+      <p>Upload your resume PDF and paste target job descriptions from Workday, Taleo, Greenhouse, or Lever to get instant ATS match scoring, section reviews, and missing keyword reports.</p>
+      <h2>Supported Career Tools</h2>
+      <ul>
+        <li><a href="/tools/job-description-keyword-extractor">Job Description Keyword Extractor</a></li>
+        <li><a href="/tools/star-bullet-generator">AI STAR Method Resume Bullet Generator</a></li>
+        <li><a href="/tools/ats-action-verbs">250+ ATS Power Action Verbs</a></li>
+        <li><a href="/portfolio-builder">AI Developer Portfolio Studio</a></li>
+      </ul>
+    </main>
+  `
 });
 writeStaticFile('/dashboard', dashboardHtml);
 addSitemapUrl('/dashboard', '0.6', 'weekly');
@@ -903,22 +937,64 @@ allSlugs.forEach(slug => {
     ]
   };
 
+  const relatedRoles = ROLES.filter(r => r.id !== pData.roleId).slice(0, 8);
+  const relatedCompanies = COMPANIES.filter(c => c.id !== pData.companyId).slice(0, 8);
+
   const pSEOContent = `
-    <main style="max-width:1000px;margin:0 auto;padding:40px 20px;font-family:sans-serif;">
-      <nav aria-label="breadcrumb">
-        <a href="/">Home</a> &gt; <a href="/sitemap">ATS Scanners</a> &gt; <span>${escapeHtml(pData.roleName)}</span>
+    <header style="max-width:1100px;margin:0 auto;padding:20px 20px 0;font-family:sans-serif;">
+      <nav aria-label="breadcrumb" style="font-size:14px;margin-bottom:16px;">
+        <a href="/">Home</a> &gt; <a href="/sitemap">ATS Scanners Directory</a> &gt; <a href="/tools">Career Tools</a> &gt; <span>${escapeHtml(pData.title)}</span>
       </nav>
+    </header>
+    <main style="max-width:1100px;margin:0 auto;padding:20px;font-family:sans-serif;line-height:1.6;">
       <h1>${escapeHtml(pData.title)}</h1>
-      <p>${escapeHtml(pData.description)}</p>
-      <h2>How ATS Filters Score ${escapeHtml(pData.roleName)} Resumes</h2>
-      <p>${escapeHtml(pData.overview)}</p>
-      <h3>${escapeHtml(pData.companyName)} Screening Priorities</h3>
-      <p>${escapeHtml(pData.hiringFocus)}</p>
-      <h3>Must-Have ATS Keywords for ${escapeHtml(pData.roleName)}</h3>
-      <ul>
-        ${pData.topKeywords.map(k => `<li>${escapeHtml(k)}</li>`).join('')}
-      </ul>
-      <p><a href="/dashboard">Scan Your ${escapeHtml(pData.roleName)} Resume for Free</a></p>
+      <p style="font-size:18px;">${escapeHtml(pData.description)}</p>
+      
+      <section style="margin:30px 0;">
+        <h2>ATS Screening Overview for ${escapeHtml(pData.roleName)} at ${escapeHtml(pData.companyName)}</h2>
+        <p>${escapeHtml(pData.overview)}</p>
+        <p><strong>Primary ATS Software Used:</strong> ${escapeHtml(pData.atsType)}</p>
+        <p><strong>Recruiting Focus:</strong> ${escapeHtml(pData.hiringFocus)}</p>
+      </section>
+
+      <section style="margin:30px 0;">
+        <h2>Essential ATS Keywords for ${escapeHtml(pData.roleName)}</h2>
+        <ul style="display:flex;flex-wrap:wrap;gap:10px;list-style:none;padding:0;">
+          ${pData.topKeywords.map(k => `<li style="background:#f3f4f6;padding:6px 12px;border-radius:6px;">${escapeHtml(k)}</li>`).join('')}
+        </ul>
+      </section>
+
+      <section style="margin:30px 0;padding:20px;background:#f7fee7;border:1px solid #d9f99d;border-radius:12px;">
+        <h2>Scan Your Resume Against ${escapeHtml(pData.companyName)} Criteria</h2>
+        <p>Get your free instant match score, missing skills breakdown, and AI bullet rewrites.</p>
+        <p><a href="/dashboard" style="display:inline-block;background:#84cc16;color:#000;font-weight:bold;padding:12px 24px;border-radius:8px;text-decoration:none;">Launch Free AI Resume Scanner</a></p>
+      </section>
+
+      <section style="margin:40px 0;">
+        <h2>Explore Related Career Role Scanners</h2>
+        <ul>
+          ${relatedRoles.map(r => `<li><a href="/scanner/${r.id}">${escapeHtml(r.title)} ATS Scanner</a></li>`).join('')}
+        </ul>
+      </section>
+
+      <section style="margin:40px 0;">
+        <h2>Explore Top Company ATS Scanners</h2>
+        <ul>
+          ${relatedCompanies.map(c => `<li><a href="/scanner/${pData.roleId}-at-${c.id}">${escapeHtml(c.name)} ${escapeHtml(pData.roleName)} ATS Scanner</a></li>`).join('')}
+        </ul>
+      </section>
+
+      <section style="margin:40px 0;">
+        <h2>Free Resume & Career Tools</h2>
+        <ul>
+          <li><a href="/tools/job-description-keyword-extractor">Job Description Keyword Extractor</a></li>
+          <li><a href="/tools/star-bullet-generator">AI STAR Method Resume Bullet Generator</a></li>
+          <li><a href="/tools/ats-action-verbs">250+ ATS Power Action Verbs Directory</a></li>
+          <li><a href="/portfolio-builder">AI Developer Portfolio Studio</a></li>
+          <li><a href="/roast-wall">Community Resume Roast Wall</a></li>
+          <li><a href="/blog">ATS Optimization Career Guides & Blog</a></li>
+        </ul>
+      </section>
     </main>
   `;
 
