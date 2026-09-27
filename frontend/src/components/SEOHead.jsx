@@ -1,5 +1,6 @@
 import React from 'react';
 import { Helmet } from 'react-helmet-async';
+import { useLocation } from 'react-router-dom';
 
 const BASE_URL = 'https://www.pandalime.com';
 const DEFAULT_IMAGE = `${BASE_URL}/og-image.png`;
@@ -14,16 +15,20 @@ export default function SEOHead({
   lang = 'en',
   jsonLd = null
 }) {
-  // Determine clean canonical path - ensure self-canonicalization
-  const getPath = () => {
-    if (canonical) return canonical.startsWith('/') ? canonical : `/${canonical}`;
+  let locationPath = '';
+  try {
+    const location = useLocation();
+    locationPath = location?.pathname || '';
+  } catch {
     if (typeof window !== 'undefined' && window.location?.pathname) {
-      return window.location.pathname;
+      locationPath = window.location.pathname;
     }
-    return '/';
-  };
+  }
 
-  const cleanPath = getPath();
+  // Determine clean canonical path - ensure exact self-canonicalization
+  const rawPath = canonical || locationPath || '/';
+  const normalizedPath = rawPath.startsWith('/') ? rawPath : `/${rawPath}`;
+  const cleanPath = normalizedPath === '/' ? '/' : normalizedPath.replace(/\/+$/, '');
   const fullCanonicalUrl = cleanPath === '/' ? `${BASE_URL}/` : `${BASE_URL}${cleanPath}`;
 
   // Only the homepage and its regional translations share hreflang alternates

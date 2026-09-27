@@ -52,9 +52,11 @@ function generatePageHtml({ title, description, canonicalPath, lang = 'en', json
     html = html.replace(/<\/head>/i, `  <meta name="description" content="${safeDescription}" />\n</head>`);
   }
 
-  // 3. Replace canonical in place
+  // 3. Replace/Inject Canonical tag
   if (html.includes('rel="canonical"')) {
     html = html.replace(/(<link\s+rel="canonical"\s+href=")[^"]*(")/i, `$1${canonicalUrl}$2`);
+  } else if (html.includes('name="robots"')) {
+    html = html.replace(/(<meta\s+name="robots"[^>]*>)/i, `$1\n    <link rel="canonical" href="${canonicalUrl}" />`);
   } else {
     html = html.replace(/<\/head>/i, `  <link rel="canonical" href="${canonicalUrl}" />\n</head>`);
   }
