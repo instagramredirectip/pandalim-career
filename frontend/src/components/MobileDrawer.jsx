@@ -41,33 +41,33 @@ export default function MobileDrawer({ isOpen, onClose }) {
   const coreTools = [
     {
       title: "ATS Resume Scanner",
-      desc: "Decompile & score resume against enterprise JDs",
+      desc: "Check and score your resume against target job requirements",
       path: "/dashboard",
       icon: <ScanLine className="w-4 h-4 text-[#D2FF00]" />,
-      badge: "FLAGSHIP"
+      badge: "FREE SCAN"
     },
     {
       title: "AI Portfolio Studio",
-      desc: "Build & host developer website at /p/:username",
+      desc: "Build and host your personal developer portfolio at /p/:username",
       path: "/portfolio-builder",
       icon: <Globe className="w-4 h-4 text-[#FF5722]" />,
       badge: "5 THEMES"
     },
     {
       title: "JD Keyword Extractor",
-      desc: "Instant NLP parser for missing tech stack tokens",
+      desc: "Extract required skills and keywords from any job description",
       path: "/tools/job-description-keyword-extractor",
       icon: <Search className="w-4 h-4 text-[#D2FF00]" />
     },
     {
       title: "STAR Bullet Generator",
-      desc: "Google X-Y-Z formula quantified accomplishments",
+      desc: "Write Google X-Y-Z formula bullet points with measurable impact",
       path: "/tools/star-bullet-generator",
       icon: <Sparkles className="w-4 h-4 text-amber-400" />
     },
     {
       title: "250+ ATS Action Verbs",
-      desc: "High-contrast action verb taxonomy",
+      desc: "Search recruiter-approved action verbs with bullet examples",
       path: "/tools/ats-action-verbs",
       icon: <FileText className="w-4 h-4 text-[#FF5722]" />
     }
@@ -127,12 +127,12 @@ export default function MobileDrawer({ isOpen, onClose }) {
         </div>
 
         {/* Scrollable Navigation Body */}
-        <div className="p-4 space-y-6 flex-1 font-mono">
+        <div className="p-4 space-y-6 flex-1">
           
           {/* Core Tools Section */}
           <div className="space-y-2">
-            <p className="text-[10px] font-bold uppercase tracking-widest text-[#505763] px-1">
-              // CORE DIAGNOSTIC TOOLS
+            <p className="text-[10px] font-bold uppercase tracking-widest text-[#505763] px-1 font-mono">
+              Resume & Career Tools
             </p>
             <div className="space-y-1.5">
               {coreTools.map((tool) => (
@@ -170,8 +170,8 @@ export default function MobileDrawer({ isOpen, onClose }) {
 
           {/* Community & Directory Section */}
           <div className="space-y-2">
-            <p className="text-[10px] font-bold uppercase tracking-widest text-[#505763] px-1">
-              // RESOURCES &amp; DIRECTORY
+            <p className="text-[10px] font-bold uppercase tracking-widest text-[#505763] px-1 font-mono">
+              Resources & Directory
             </p>
             <div className="space-y-1">
               {communityLinks.map((item) => (
@@ -197,7 +197,7 @@ export default function MobileDrawer({ isOpen, onClose }) {
           <div className="pt-2 border-t border-[#1F242D] space-y-2">
             <div className="flex items-center justify-between px-1">
               <span className="text-[10px] font-bold uppercase tracking-widest text-[#505763] flex items-center gap-1 font-mono">
-                <Languages className="w-3 h-3 text-[#D2FF00]" /> REGIONAL EDITIONS
+                <Languages className="w-3 h-3 text-[#D2FF00]" /> Regional Languages
               </span>
             </div>
             <div className="grid grid-cols-3 gap-1">
@@ -235,7 +235,7 @@ export default function MobileDrawer({ isOpen, onClose }) {
             className="w-full py-2.5 bg-[#D2FF00] hover:bg-[#E5FF66] text-[#08090C] font-mono font-bold text-xs uppercase tracking-wider rounded-[2px] flex items-center justify-center gap-2 shadow-[0_0_12px_rgba(210,255,0,0.3)] transition-all"
           >
             <ScanLine className="w-4 h-4" />
-            <span>DEPLOY RESUME SCAN</span>
+            <span>Scan Resume Free</span>
           </Link>
           
           <Link
@@ -246,7 +246,7 @@ export default function MobileDrawer({ isOpen, onClose }) {
             className="w-full py-2 bg-[#0E1116] hover:bg-[#151921] text-[#FF5722] border border-[#FF5722]/40 rounded-[2px] font-mono font-bold text-xs uppercase tracking-wider flex items-center justify-center gap-2 transition-all"
           >
             <Globe className="w-4 h-4" />
-            <span>BUILD PORTFOLIO</span>
+            <span>Build Free Portfolio</span>
           </Link>
         </div>
 

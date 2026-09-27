@@ -51,20 +51,20 @@ export default function Home() {
     {
       step: "01",
       icon: <UploadCloud className="w-5 h-5 text-[#D2FF00]" />,
-      title: "PDF / TeX Document Ingestion",
-      description: "Submit your raw resume in PDF, TeX, or DOCX. In-memory lexical tokenizer breaks down your document structure without credential requirements."
+      title: "Upload Your Resume",
+      description: "Upload your resume in PDF or DOCX format. Your document is processed securely in memory without saving your personal information."
     },
     {
       step: "02",
       icon: <ScanLine className="w-5 h-5 text-[#FF5722]" />,
-      title: "Heuristic ATS Decompilation",
-      description: "Our neural parser maps your content against Workday, Greenhouse, Ashby, and Lever heuristics, pinpointing keyword density deficits."
+      title: "Match Against Job Requirements",
+      description: "Our AI scans your resume against the target job description to find missing technical skills, keyword gaps, and formatting issues."
     },
     {
       step: "03",
       icon: <Briefcase className="w-5 h-5 text-[#D2FF00]" />,
-      title: "Calibrated Optimization & Deployment",
-      description: "Inject quantified STAR impact metrics, eliminate structural parsing blockers, and deploy an accompanying hosted developer portfolio."
+      title: "Get Bullet Rewrites & Recommendations",
+      description: "Receive practical recommendations, quantified bullet point improvements using Google's X-Y-Z formula, and build your free developer portfolio."
     }
   ];
 
@@ -72,26 +72,26 @@ export default function Home() {
     {
       id: "PIL_01",
       icon: <Target className="w-5 h-5 text-[#D2FF00]" />,
-      title: "Semantic Vector Alignment",
-      desc: "Modern ATS uses contextual word embeddings to score relevancy. We highlight exact technical tools, cloud infrastructure, and frameworks missing from your resume."
+      title: "Keyword & Skill Matching",
+      desc: "ATS filters check for specific frameworks, tools, and technical skills. We highlight the exact keywords missing from your work experience."
     },
     {
       id: "PIL_02",
       icon: <Layers className="w-5 h-5 text-[#FF5722]" />,
-      title: "AST Structural Viability",
-      desc: "Multi-column layouts, tables, and unsupported font glyphs cause hard parser crashes. PandaLime validates that your document extracts cleanly into standard database fields."
+      title: "ATS-Safe Formatting Check",
+      desc: "Multi-column tables, text boxes, and complex graphics can scramble text during automated scanning. We ensure your resume layout reads cleanly."
     },
     {
       id: "PIL_03",
       icon: <BarChart3 className="w-5 h-5 text-[#D2FF00]" />,
-      title: "Google STAR / X-Y-Z Density",
-      desc: "Top engineering leaders reject passive phrasing. We calculate your measurable impact ratio: 'Accomplished [X], measured by [Y], by doing [Z]'."
+      title: "Google X-Y-Z Bullet Point Formula",
+      desc: "Recruiters look for quantified achievements over passive duties. We help you format accomplishments as: 'Accomplished [X], measured by [Y], by doing [Z]'."
     },
     {
       id: "PIL_04",
       icon: <Cpu className="w-5 h-5 text-[#FF5722]" />,
-      title: "Enterprise Filter Emulation",
-      desc: "Simulate candidate ranking thresholds across Workday, Taleo, Greenhouse, Lever, and Ashby before your application reaches a human recruiter."
+      title: "Employer Screening Compatibility",
+      desc: "Check your resume against criteria used by Workday, Taleo, Greenhouse, Lever, and TCS iON to pass automated screening."
     }
   ];
 
@@ -158,43 +158,43 @@ export default function Home() {
 
   const benchmarkRoles = {
     swe: {
-      title: "Staff Software Engineer (Infra)",
+      title: "Senior Software Engineer",
       score: 94,
       impact: "96/100",
-      speed: "118ms AST tokenization",
+      speed: "Fast Scan",
       density: "94/100",
       metricsQuotient: "89%",
-      rejectionRisk: "0.8% (Negligible)",
-      topKeywords: ["Kubernetes", "gRPC", "Distributed Consensus", "eBPF", "Kafka"]
+      rejectionRisk: "Very Low",
+      topKeywords: ["Kubernetes", "gRPC", "Distributed Systems", "PostgreSQL", "Kafka"]
     },
     secops: {
-      title: "Senior Security / DevSecOps",
+      title: "DevSecOps & Security Engineer",
       score: 91,
       impact: "93/100",
-      speed: "124ms AST tokenization",
+      speed: "Fast Scan",
       density: "92/100",
       metricsQuotient: "86%",
-      rejectionRisk: "1.2% (Low)",
-      topKeywords: ["Threat Modeling", "IAM Hardening", "SOC 2 Type II", "Terraform", "CI/CD Gateways"]
+      rejectionRisk: "Low",
+      topKeywords: ["Threat Modeling", "IAM Policies", "SOC 2 Type II", "Terraform", "CI/CD Pipelines"]
     },
     data: {
-      title: "Principal AI / ML Platform Engineer",
+      title: "AI / Machine Learning Engineer",
       score: 96,
       impact: "98/100",
-      speed: "112ms AST tokenization",
+      speed: "Fast Scan",
       density: "95/100",
       metricsQuotient: "92%",
-      rejectionRisk: "0.4% (Elite)",
-      topKeywords: ["PyTorch", "vLLM Inference", "Feature Store", "CUDA Profiling", "Vector Databases"]
+      rejectionRisk: "Very Low",
+      topKeywords: ["PyTorch", "LLM Inference", "RAG Pipelines", "FastAPI", "Vector Databases"]
     }
   };
 
   const toolsSuite = [
     {
       id: "01",
-      tag: "NLP PARSER",
+      tag: "KEYWORD FINDER",
       title: "Job Keyword Extractor",
-      desc: "Extract hard skills, cloud frameworks, and credential dependencies from any target job posting in under 100ms.",
+      desc: "Extract hard skills, cloud frameworks, and required tools from any job posting instantly.",
       link: "/tools/job-description-keyword-extractor",
       cta: "Extract Keywords"
     },
@@ -202,68 +202,68 @@ export default function Home() {
       id: "02",
       tag: "GOOGLE X-Y-Z",
       title: "STAR Bullet Generator",
-      desc: "Transform weak task descriptions into high-leverage accomplishments following the Google engineering rubric.",
+      desc: "Transform passive job duties into metric-driven accomplishment bullets using Google's formula.",
       link: "/tools/star-bullet-generator",
       cta: "Generate Bullets"
     },
     {
       id: "03",
       tag: "250+ VERBS",
-      title: "ATS Action Verbs Taxonomy",
-      desc: "Replace passive phrases like 'worked on' with surgical power verbs across Architecture, Performance, and SecOps.",
+      title: "ATS Action Verbs Directory",
+      desc: "Replace weak phrases like 'responsible for' with high-impact power verbs across engineering and leadership.",
       link: "/tools/ats-action-verbs",
       cta: "Explore Verbs"
     },
     {
       id: "04",
-      tag: "HOSTED URL",
-      title: "AI Portfolio Studio",
-      desc: "Build and deploy a recruiter-ready personal website on pandalime.com/p/:username with 5 developer themes.",
+      tag: "FREE HOSTED PAGE",
+      title: "Developer Portfolio Studio",
+      desc: "Build and host your personal portfolio website at pandalime.com/p/:username in under a minute.",
       link: "/portfolio-builder",
       cta: "Build Portfolio"
     },
     {
       id: "05",
-      tag: "COMMUNITY HUD",
-      title: "Brutal Roast Wall",
-      desc: "Inspect live deconstructed resumes and uncensored AI critique streams from candidate submissions worldwide.",
+      tag: "COMMUNITY",
+      title: "Resume Roast Wall",
+      desc: "Browse real, anonymous resume critiques, ATS scores, and recruiter feedback to learn from common mistakes.",
       link: "/roast-wall",
       cta: "View Roast Wall"
     },
     {
       id: "06",
-      tag: "RESEARCH LAB",
-      title: "Career Research Blueprints",
-      desc: "Technical whitepapers, ATS parser reverse-engineering guides, and FAANG leveling breakdown reports.",
+      tag: "GUIDES",
+      title: "Career Guides & Blueprints",
+      desc: "In-depth guides on beating ATS systems, fresher campus placements, and interview preparation.",
       link: "/blog",
-      cta: "Browse Blueprints"
+      cta: "Read Guides"
     }
   ];
 
   const faqs = [
     {
       question: "What is an ATS (Applicant Tracking System) resume scanner?",
-      answer: "An ATS resume scanner is automated software used by over 98% of Fortune 500 enterprises and Indian IT leaders (TCS, Infosys, Wipro, Google) to parse, index, and rank candidate resumes against specific job descriptions before a human recruiter conducts a manual review."
+      answer: "An ATS resume scanner is automated software used by top employers (TCS, Infosys, Wipro, Google, Amazon) to filter, score, and rank incoming resumes against job descriptions before a human recruiter reviews them."
     },
     {
-      question: "How does PandaLime deconstruct resume AST and keyword gaps?",
-      answer: "PandaLime parses your resume text into an Abstract Syntax Tree (AST), extracts structural metadata, and calculates high-dimensional semantic vector similarity against the target job posting. It identifies exact hard skill deficits, formatting collision risks, and quantifiable impact scores in real time."
+      question: "How does PandaLime check for missing keywords?",
+      answer: "PandaLime compares your resume text directly against your target job description. It identifies exact technical skills and certifications missing from your experience, checks layout compatibility, and suggests bullet point improvements."
     },
     {
-      question: "What is considered a competitive ATS benchmark score?",
-      answer: "A score of 75% or higher guarantees safe passage through algorithmic filtering thresholds in enterprise systems like Workday, Greenhouse, and Ashby. Scores below 60% are typically automatically discarded due to low semantic keyword density."
+      question: "What is considered a good ATS match score?",
+      answer: "A match score of 75% or higher typically passes automated screening cutoffs in systems like Workday, Greenhouse, and Taleo. Scores below 60% often indicate that critical keywords from the job description are missing."
     },
     {
-      question: "Which Applicant Tracking Systems does PandaLime calibrate against?",
-      answer: "PandaLime evaluates compatibility across all tier-1 enterprise platforms including Workday, Taleo, Greenhouse, Lever, Ashby, iCIMS, SAP SuccessFactors, and BambooHR."
+      question: "Which Applicant Tracking Systems does PandaLime support?",
+      answer: "PandaLime optimizes for all major enterprise ATS platforms including Workday, Taleo, Greenhouse, Lever, Ashby, iCIMS, TCS iON, and SAP SuccessFactors."
     },
     {
-      question: "How does the Hosted AI Portfolio Studio work?",
-      answer: "PandaLime generates a fast, SEO-optimized personal developer portfolio hosted directly at pandalime.com/p/:yourname. It includes live project showcases, interactive skill matrices, structured JSON-LD Person schema, and an instant resume-printable QR code."
+      question: "How does the Hosted Portfolio Studio work?",
+      answer: "PandaLime creates a fast, mobile-friendly portfolio website hosted free at pandalime.com/p/:username. You can choose from multiple themes, showcase projects and skills, and share your link with recruiters."
     },
     {
-      question: "Is my resume data stored, sold, or shared?",
-      answer: "No. Your document is processed strictly in memory during the diagnostic session. We adhere to a strict Zero-Data Resale Guarantee—we never sell or monetize your data with third-party recruiters, advertisers, or data brokers."
+      question: "Is my resume data kept private?",
+      answer: "Yes. Your resume is processed strictly in memory during your scanning session. We do not sell, rent, or share your personal data with third-party recruiters or data brokers."
     }
   ];
 
@@ -338,17 +338,17 @@ export default function Home() {
           
 
 
-          {/* Colossal Headline */}
+          {/* Headline */}
           <div className="text-center max-w-5xl mx-auto mb-8">
             <h1 className="text-3xl sm:text-5xl md:text-6xl lg:text-7xl font-extrabold tracking-tight text-[#F5F7FA] leading-[1.08] mb-6">
-              RE-ENGINEER YOUR CAREER <br className="hidden sm:block" />
+              FREE AI RESUME SCANNER &amp; <br className="hidden sm:block" />
               <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#D2FF00] via-[#FF5722] to-[#D2FF00]">
-                FOR THE AI DECADE.
+                ATS KEYWORD CHECKER
               </span>
             </h1>
             
             <p className="text-sm sm:text-base md:text-lg text-[#9BA3AF] max-w-3xl mx-auto leading-relaxed">
-              Enterprise ATS algorithms (Workday, Greenhouse, Taleo, Ashby) reject 98% of candidate resumes. PandaLime decompiles your resume AST, isolates keyword density bottlenecks, and deploys high-converting developer & cybersecurity portfolio websites.
+              Over 90% of large employers filter resumes through Applicant Tracking Systems (Workday, Taleo, Greenhouse, TCS iON). PandaLime checks your resume for missing keywords, improves your bullet points, and helps you land interviews.
             </p>
           </div>
 
@@ -358,7 +358,7 @@ export default function Home() {
               to="/dashboard" 
               onMouseEnter={() => prefetchRoute('/dashboard')}
               onTouchStart={() => prefetchRoute('/dashboard')}
-              className="w-full sm:w-auto px-7 py-3.5 bg-[#D2FF00] hover:bg-[#E5FF66] text-[#08090C] rounded-[2px] font-mono font-bold text-sm tracking-wider uppercase shadow-[0_0_20px_rgba(210,255,0,0.25)] hover:shadow-[0_0_30px_rgba(210,255,0,0.4)] transition-all flex items-center justify-center gap-2 cursor-pointer active:scale-[0.98]"
+              className="w-full sm:w-auto px-7 py-3.5 bg-[#D2FF00] hover:bg-[#E5FF66] text-[#08090C] rounded-[2px] font-bold text-sm tracking-wider uppercase shadow-[0_0_20px_rgba(210,255,0,0.25)] hover:shadow-[0_0_30px_rgba(210,255,0,0.4)] transition-all flex items-center justify-center gap-2 cursor-pointer active:scale-[0.98]"
             >
               <ScanLine className="w-4 h-4 text-[#08090C]" />
               <span>SCAN RESUME FREE</span>
@@ -369,115 +369,110 @@ export default function Home() {
               to="/portfolio-builder" 
               onMouseEnter={() => prefetchRoute('/portfolio-builder')}
               onTouchStart={() => prefetchRoute('/portfolio-builder')}
-              className="w-full sm:w-auto px-7 py-3.5 bg-[#0E1116] hover:bg-[#151921] text-[#F5F7FA] hover:text-[#FF5722] rounded-[2px] font-mono font-bold text-sm tracking-wider uppercase border border-[#1F242D] hover:border-[#FF5722] transition-all flex items-center justify-center gap-2 cursor-pointer group active:scale-[0.98]"
+              className="w-full sm:w-auto px-7 py-3.5 bg-[#0E1116] hover:bg-[#151921] text-[#F5F7FA] hover:text-[#FF5722] rounded-[2px] font-bold text-sm tracking-wider uppercase border border-[#1F242D] hover:border-[#FF5722] transition-all flex items-center justify-center gap-2 cursor-pointer group active:scale-[0.98]"
             >
               <Globe className="w-4 h-4 text-[#FF5722] group-hover:scale-110 transition-transform" />
               <span>BUILD PORTFOLIO</span>
-              <span className="text-[9px] font-mono bg-[#FF5722]/20 text-[#FF5722] px-1.5 py-0.5 rounded-[2px] border border-[#FF5722]/40 ml-1">
+              <span className="text-[9px] bg-[#FF5722]/20 text-[#FF5722] px-1.5 py-0.5 rounded-[2px] border border-[#FF5722]/40 ml-1">
                 FREE
               </span>
             </Link>
           </div>
 
-          {/* Quick Metrics Ticker */}
-          <div className="flex flex-wrap items-center justify-center gap-x-6 gap-y-2 text-xs font-mono text-[#9BA3AF] mb-12">
+          {/* Quick Features Bar */}
+          <div className="flex flex-wrap items-center justify-center gap-x-6 gap-y-2 text-xs text-[#9BA3AF] mb-12">
             <span className="flex items-center gap-1.5 text-[#E1E2E9]">
-              <CheckCircle2 className="w-3.5 h-3.5 text-[#D2FF00]" /> 0-Credit Card Instant Scan
+              <CheckCircle2 className="w-3.5 h-3.5 text-[#D2FF00]" /> 100% Free Resume Scan
             </span>
             <span className="hidden sm:inline text-[#2E323D]">|</span>
             <span className="flex items-center gap-1.5 text-[#E1E2E9]">
-              <CheckCircle2 className="w-3.5 h-3.5 text-[#FF5722]" /> Hosted at /p/:username
+              <CheckCircle2 className="w-3.5 h-3.5 text-[#FF5722]" /> Free Hosted Portfolio at /p/:username
             </span>
             <span className="hidden sm:inline text-[#2E323D]">|</span>
             <span className="flex items-center gap-1.5 text-[#E1E2E9]">
-              <CheckCircle2 className="w-3.5 h-3.5 text-[#D2FF00]" /> 5 High-Cadence Themes
+              <CheckCircle2 className="w-3.5 h-3.5 text-[#D2FF00]" /> Google X-Y-Z Bullet Rewriter
             </span>
           </div>
 
-          {/* --- HERO INTERACTIVE DROPZONE & AST TERMINAL PREVIEW --- */}
+          {/* --- HERO INTERACTIVE DROPZONE & PREVIEW --- */}
           <div className="max-w-5xl mx-auto grid lg:grid-cols-12 gap-4">
             
-            {/* Left: Interactive Dropzone Trigger Panel */}
+            {/* Left: Dropzone Panel */}
             <div className="lg:col-span-6 bg-[#0E1116] border border-[#1F242D] rounded-[2px] p-6 relative flex flex-col justify-between group hover:border-[#2E323D] transition-colors">
-              {/* Corner coordinate stamps */}
-              <span className="absolute top-2 left-2 font-mono text-[9px] text-[#505763]">[01/AST]</span>
-              <span className="absolute top-2 right-2 font-mono text-[9px] text-[#505763]">MODE: STRICT</span>
-
-              <div className="mt-4">
+              <div className="mt-2">
                 <div className="flex items-center justify-between mb-4">
                   <div className="w-10 h-10 bg-[#151921] border border-[#1F242D] rounded-[2px] flex items-center justify-center text-[#D2FF00]">
                     <UploadCloud className="w-5 h-5" />
                   </div>
-                  <span className="font-mono text-[10px] font-bold uppercase tracking-wider text-[#D2FF00] bg-[#D2FF00]/10 border border-[#D2FF00]/30 px-2 py-0.5 rounded-[2px]">
-                    READY FOR INGESTION
+                  <span className="text-[10px] font-bold uppercase tracking-wider text-[#D2FF00] bg-[#D2FF00]/10 border border-[#D2FF00]/30 px-2 py-0.5 rounded-[2px]">
+                    READY TO SCAN
                   </span>
                 </div>
 
                 <h2 className="font-bold text-lg text-[#F5F7FA] mb-2">
-                  Drop Resume Document to Decompile
+                  Upload Resume to Check ATS Match
                 </h2>
                 <p className="text-xs text-[#9BA3AF] leading-relaxed mb-6">
-                  Supports PDF, TeX, and DOCX formats. Parses semantic skill trees, keyword density gaps, and ATS parsing bottlenecks.
+                  Supports standard PDF and DOCX formats up to 10MB. Identifies missing technical skills, keyword gaps, and formatting issues.
                 </p>
 
-                {/* Simulated File Target Area */}
+                {/* Target Drop Area */}
                 <Link
                   to="/dashboard"
                   className="border border-dashed border-[#2E323D] hover:border-[#D2FF00] bg-[#090B0E] p-5 rounded-[2px] flex flex-col items-center justify-center text-center transition-all cursor-pointer block"
                 >
                   <ScanLine className="w-6 h-6 text-[#D2FF00] mb-2 animate-bounce" />
-                  <span className="font-mono text-xs font-bold text-[#F5F7FA]">
+                  <span className="text-xs font-bold text-[#F5F7FA]">
                     CLICK OR DRAG RESUME (PDF)
                   </span>
-                  <span className="font-mono text-[10px] text-[#505763] mt-1">
-                    MAX 10MB • INSTANT MEMORY PARSER
+                  <span className="text-[10px] text-[#9BA3AF] mt-1">
+                    Free Instant Scan • No Signup Required
                   </span>
                 </Link>
               </div>
 
-              <div className="pt-4 mt-6 border-t border-[#1F242D] flex items-center justify-between font-mono text-[11px] text-[#9BA3AF]">
-                <span>STATUS: IDLE_LISTENING</span>
-                <span className="text-[#D2FF00] font-bold">SHA256_VERIFIED</span>
+              <div className="pt-4 mt-6 border-t border-[#1F242D] flex items-center justify-between text-xs text-[#9BA3AF]">
+                <span>Status: Ready to scan</span>
+                <span className="text-[#D2FF00] font-semibold">100% Private</span>
               </div>
             </div>
 
-            {/* Right: Live AST Telemetry & Parser Terminal Stream */}
-            <div className="lg:col-span-6 bg-[#090B0E] border border-[#1F242D] rounded-[2px] p-6 relative font-mono flex flex-col justify-between">
-              {/* Header Bar */}
+            {/* Right: Live Scan Preview */}
+            <div className="lg:col-span-6 bg-[#090B0E] border border-[#1F242D] rounded-[2px] p-6 relative flex flex-col justify-between">
               <div>
                 <div className="flex items-center justify-between pb-3 border-b border-[#1F242D] mb-4">
                   <div className="flex items-center gap-2">
-                    <div className="w-2.5 h-2.5 rounded-none bg-[#FF5722]" />
-                    <div className="w-2.5 h-2.5 rounded-none bg-amber-400" />
-                    <div className="w-2.5 h-2.5 rounded-none bg-[#D2FF00]" />
-                    <span className="text-[10px] text-[#9BA3AF] ml-2 font-bold">
-                      pandalime-daemon v4.8
+                    <div className="w-2.5 h-2.5 bg-[#FF5722]" />
+                    <div className="w-2.5 h-2.5 bg-amber-400" />
+                    <div className="w-2.5 h-2.5 bg-[#D2FF00]" />
+                    <span className="text-xs text-[#9BA3AF] ml-2 font-bold">
+                      Live Resume Scan Preview
                     </span>
                   </div>
-                  <span className="text-[9px] text-[#D2FF00] bg-[#D2FF00]/10 px-2 py-0.5 rounded-[2px] border border-[#D2FF00]/20">
-                    LATENCY: 114ms
+                  <span className="text-[10px] text-[#D2FF00] bg-[#D2FF00]/10 px-2 py-0.5 rounded-[2px] border border-[#D2FF00]/20 font-semibold">
+                    Instant Analysis
                   </span>
                 </div>
 
-                {/* Terminal Stream Logs */}
-                <div className="space-y-1.5 text-[11px] text-[#9BA3AF] leading-snug">
-                  <p className="text-[#505763]">$ pandalime daemon --audit --strict-tokens</p>
-                  <p className="text-[#D2FF00]">&gt; Ingesting resume AST: [candidate_senior_infra.pdf]</p>
-                  <p>&gt; Extracted 1,420 tokens across 4 structural nodes.</p>
-                  <p className="text-[#FF5722]">&gt; Critical keyword bottleneck: 'eBPF' &amp; 'Kafka' missing.</p>
-                  <p className="text-[#E1E2E9]">&gt; STAR metric density quotient: 89.2% [CALIBRATED].</p>
-                  <p className="text-[#D2FF00]">&gt; ATS Compatibility Index: 94.2% [PASS_THRESHOLD].</p>
+                {/* Simulated Logs */}
+                <div className="space-y-2 text-xs text-[#9BA3AF] leading-relaxed font-mono">
+                  <p className="text-[#D2FF00]">&gt; Uploaded: senior_software_engineer_resume.pdf</p>
+                  <p>&gt; Extracted 18 technical skills across work history.</p>
+                  <p className="text-emerald-400">&gt; Found: React, TypeScript, PostgreSQL, Docker, AWS.</p>
+                  <p className="text-[#FF5722]">&gt; Missing key skills: 'Kafka', 'Redis', 'CI/CD Pipelines'.</p>
+                  <p className="text-[#E1E2E9]">&gt; Quantified Accomplishment Score: 89% (Google X-Y-Z).</p>
+                  <p className="text-[#D2FF00]">&gt; Overall ATS Match Score: 94% (Strong Match).</p>
                 </div>
               </div>
 
-              {/* Segmented Score Dial Preview */}
+              {/* Score Dial Preview */}
               <div className="mt-6 pt-4 border-t border-[#1F242D]">
                 <div className="flex justify-between items-center mb-2">
-                  <span className="text-[10px] font-bold text-[#F5F7FA] uppercase">
-                    PARSEABILITY INDEX
+                  <span className="text-xs font-bold text-[#F5F7FA] uppercase tracking-wider">
+                    OVERALL ATS MATCH SCORE
                   </span>
                   <span className="text-sm font-bold text-[#D2FF00]">
-                    94.2 / 100
+                    94 / 100
                   </span>
                 </div>
                 
@@ -613,11 +608,11 @@ export default function Home() {
                   </div>
 
                   <div className="bg-[#151921] border border-[#1F242D] p-4 rounded-[2px]">
-                    <span className="font-mono text-[10px] text-[#9BA3AF] uppercase">Parsing Latency</span>
+                    <span className="font-mono text-[10px] text-[#9BA3AF] uppercase">Scan Speed</span>
                     <div className="text-xl font-mono font-bold text-[#D2FF00] mt-1">
                       {currentRoleData.speed}
                     </div>
-                    <p className="text-xs text-[#9BA3AF] mt-1">Clean structural AST extraction without formatting collisions.</p>
+                    <p className="text-xs text-[#9BA3AF] mt-1">Fast document processing with clean text extraction.</p>
                   </div>
 
                   <div className="bg-[#151921] border border-[#1F242D] p-4 rounded-[2px]">
@@ -1045,7 +1040,7 @@ export default function Home() {
             
             <div className="bg-[#08090C] border border-[#1F242D] p-5 rounded-[2px]">
               <div className="text-2xl sm:text-3xl font-mono font-bold text-[#D2FF00]">150K+</div>
-              <p className="font-mono text-[10px] text-[#9BA3AF] uppercase mt-1">Resumes Decompiled</p>
+              <p className="font-mono text-[10px] text-[#9BA3AF] uppercase mt-1">Resumes Analyzed</p>
             </div>
 
             <div className="bg-[#08090C] border border-[#1F242D] p-5 rounded-[2px]">
@@ -1055,12 +1050,12 @@ export default function Home() {
 
             <div className="bg-[#08090C] border border-[#1F242D] p-5 rounded-[2px]">
               <div className="text-2xl sm:text-3xl font-mono font-bold text-[#FF5722]">4.9 / 5</div>
-              <p className="font-mono text-[10px] text-[#9BA3AF] uppercase mt-1">Trustpilot Rating</p>
+              <p className="font-mono text-[10px] text-[#9BA3AF] uppercase mt-1">User Satisfaction Rating</p>
             </div>
 
             <div className="bg-[#08090C] border border-[#1F242D] p-5 rounded-[2px]">
-              <div className="text-2xl sm:text-3xl font-mono font-bold text-[#D2FF00]">&lt;118ms</div>
-              <p className="font-mono text-[10px] text-[#9BA3AF] uppercase mt-1">Mean AST Token Latency</p>
+              <div className="text-2xl sm:text-3xl font-mono font-bold text-[#D2FF00]">&lt;5s</div>
+              <p className="font-mono text-[10px] text-[#9BA3AF] uppercase mt-1">Average Scan Time</p>
             </div>
 
           </div>
@@ -1076,7 +1071,7 @@ export default function Home() {
               Why PandaLime Outperforms Traditional Checkers
             </h2>
             <p className="text-xs sm:text-sm text-[#9BA3AF] mt-1">
-              Contextual vector AST parsing compared against legacy keyword counters.
+              Smart contextual analysis compared against basic keyword counters and expensive agencies.
             </p>
           </div>
 
@@ -1092,17 +1087,17 @@ export default function Home() {
               </thead>
               <tbody className="divide-y divide-[#1F242D] bg-[#08090C] text-[#9BA3AF]">
                 <tr>
-                  <td className="py-3.5 px-4 font-bold text-[#F5F7FA]">Instant AST Match Score (%)</td>
+                  <td className="py-3.5 px-4 font-bold text-[#F5F7FA]">Instant ATS Match Score (%)</td>
                   <td className="py-3.5 px-4 bg-[#D2FF00]/5 text-[#D2FF00] font-bold flex items-center gap-1.5">
-                    <Check className="w-4 h-4 text-[#D2FF00]" /> Instant 118ms
+                    <Check className="w-4 h-4 text-[#D2FF00]" /> Instant Feedback
                   </td>
                   <td className="py-3.5 px-4">Basic Word Count</td>
                   <td className="py-3.5 px-4">Subjective</td>
                 </tr>
                 <tr>
-                  <td className="py-3.5 px-4 font-bold text-[#F5F7FA]">Semantic Keyword Gap Isolation</td>
+                  <td className="py-3.5 px-4 font-bold text-[#F5F7FA]">Skill Gap & Missing Keywords Analysis</td>
                   <td className="py-3.5 px-4 bg-[#D2FF00]/5 text-[#D2FF00] font-bold flex items-center gap-1.5">
-                    <Check className="w-4 h-4 text-[#D2FF00]" /> Contextual Vector
+                    <Check className="w-4 h-4 text-[#D2FF00]" /> In-depth Analysis
                   </td>
                   <td className="py-3.5 px-4 text-[#505763] flex items-center gap-1.5">
                     <X className="w-4 h-4 text-[#FF5722]" /> Exact String Only
@@ -1112,7 +1107,7 @@ export default function Home() {
                 <tr>
                   <td className="py-3.5 px-4 font-bold text-[#F5F7FA]">Google STAR Bullet Rewriting</td>
                   <td className="py-3.5 px-4 bg-[#D2FF00]/5 text-[#D2FF00] font-bold flex items-center gap-1.5">
-                    <Check className="w-4 h-4 text-[#D2FF00]" /> Autonomous
+                    <Check className="w-4 h-4 text-[#D2FF00]" /> Instant AI Assistant
                   </td>
                   <td className="py-3.5 px-4 text-[#505763] flex items-center gap-1.5">
                     <X className="w-4 h-4 text-[#FF5722]" /> None
@@ -1130,7 +1125,7 @@ export default function Home() {
                   <td className="py-3.5 px-4">$500+ Setup</td>
                 </tr>
                 <tr>
-                  <td className="py-3.5 px-4 font-bold text-[#F5F7FA]">Credit Card Barrier</td>
+                  <td className="py-3.5 px-4 font-bold text-[#F5F7FA]">Free Resume Scanning</td>
                   <td className="py-3.5 px-4 bg-[#D2FF00]/5 text-[#D2FF00] font-bold flex items-center gap-1.5">
                     <Check className="w-4 h-4 text-[#D2FF00]" /> 100% Free Scan
                   </td>
@@ -1150,10 +1145,10 @@ export default function Home() {
           
           <div className="text-center mb-12">
             <h2 className="text-2xl sm:text-3xl font-extrabold text-[#F5F7FA] tracking-tight">
-              Frequently Asked Technical Questions
+              Frequently Asked Questions
             </h2>
             <p className="text-xs sm:text-sm text-[#9BA3AF] mt-1">
-              Everything you need to know about ATS architectures, tokenization, and privacy.
+              Everything you need to know about ATS scoring, resume scanning, and privacy.
             </p>
           </div>
 

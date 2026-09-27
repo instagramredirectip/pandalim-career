@@ -252,7 +252,7 @@ export default function Footer() {
         <div className="pt-6 flex flex-col sm:flex-row items-center justify-between gap-4 font-mono text-xs text-[#505763] text-center sm:text-left">
           <p>© {currentYear} PandaLime Career Services. All rights reserved.</p>
           <p className="flex items-center justify-center gap-4">
-            <span>ATS Core Engine v4.8</span>
+            <span>Free AI Career Suite</span>
             <span>•</span>
             <Link to="/contact" className="hover:text-[#9BA3AF]">Support: microapkdeveolper@gmail.com</Link>
           </p>

@@ -67,19 +67,22 @@ function generatePageHtml({ title, description, canonicalPath, lang = 'en', json
   html = html.replace(/(<meta\s+name="twitter:description"\s+content=")[^"]*(")/i, `$1${safeDescription}$2`);
   html = html.replace(/(<meta\s+name="twitter:url"\s+content=")[^"]*(")/i, `$1${canonicalUrl}$2`);
 
-  // 5. Remove any previous hreflang tags if any, then inject
-  html = html.replace(/<link\s+rel="alternate"\s+href="[^"]*"\s+hreflang="[^"]*"\s*\/?>/gi, '');
-  const hreflangTags = `
+  // 5. Remove any previous hreflang tags, then inject ONLY for home variants
+  html = html.replace(/<link\s+rel="alternate"[^>]*hreflang="[^"]*"[^>]*\/?>/gi, '');
+  const cleanPath = canonicalPath.startsWith('/') ? canonicalPath : `/${canonicalPath}`;
+  const isHomeVariant = cleanPath === '/' || ['/hi', '/ta', '/te', '/kn', '/mr', '/bn'].includes(cleanPath);
+  if (isHomeVariant) {
+    const hreflangTags = `
   <link rel="alternate" href="${BASE_URL}/" hreflang="x-default" />
   <link rel="alternate" href="${BASE_URL}/" hreflang="en" />
-  <link rel="alternate" href="${BASE_URL}/en-IN" hreflang="en-IN" />
   <link rel="alternate" href="${BASE_URL}/hi" hreflang="hi" />
   <link rel="alternate" href="${BASE_URL}/ta" hreflang="ta" />
   <link rel="alternate" href="${BASE_URL}/te" hreflang="te" />
   <link rel="alternate" href="${BASE_URL}/kn" hreflang="kn" />
   <link rel="alternate" href="${BASE_URL}/mr" hreflang="mr" />
   <link rel="alternate" href="${BASE_URL}/bn" hreflang="bn" />`;
-  html = html.replace(/<\/head>/i, `${hreflangTags}\n</head>`);
+    html = html.replace(/<\/head>/i, `${hreflangTags}\n</head>`);
+  }
 
   // 6. Inject JSON-LD Schema if present
   if (jsonLd) {
@@ -366,7 +369,7 @@ const toolsHubHtml = generatePageHtml({
       <ul>
         <li>
           <a href="/tools/job-description-keyword-extractor"><strong>Job Description Keyword Extractor</strong></a>
-          <p>Extract hard skills, tech stacks, frameworks, and qualifications from any job listing with 0 latency.</p>
+          <p>Extract hard skills, tech stacks, frameworks, and qualifications from any job listing instantly.</p>
         </li>
         <li>
           <a href="/tools/star-bullet-generator"><strong>AI STAR Method Resume Bullet Generator</strong></a>
@@ -953,27 +956,28 @@ allSlugs.forEach(slug => {
     ]
   };
 
+  const roleFaqs = pData.faqs || [
+    {
+      q: `What keywords does the ATS look for in a ${pData.roleName} resume?`,
+      a: `For ${pData.roleName} roles, applicant tracking systems scan for technical proficiencies like ${pData.topKeywords.slice(0, 5).join(', ')}, alongside demonstrated project architecture and quantified STAR-method accomplishments.`
+    },
+    {
+      q: `How does ${pData.companyName} use ATS to filter ${pData.roleName} applications?`,
+      a: `${pData.companyName} receives thousands of applications per opening and utilizes ${pData.atsType} to parse resumes.`
+    }
+  ];
+
   const faqJsonLd = {
     "@context": "https://schema.org",
     "@type": "FAQPage",
-    "mainEntity": [
-      {
-        "@type": "Question",
-        "name": `What keywords does the ATS look for in a ${pData.roleName} resume?`,
-        "acceptedAnswer": {
-          "@type": "Answer",
-          "text": `For ${pData.roleName} roles, applicant tracking systems scan for technical proficiencies like ${pData.topKeywords.slice(0, 5).join(', ')}, alongside demonstrated project architecture and quantified STAR-method accomplishments.`
-        }
-      },
-      {
-        "@type": "Question",
-        "name": `How does ${pData.companyName} use ATS to filter ${pData.roleName} applications?`,
-        "acceptedAnswer": {
-          "@type": "Answer",
-          "text": `${pData.companyName} receives thousands of applications per opening and utilizes ${pData.atsType} to parse resumes.`
-        }
+    "mainEntity": roleFaqs.map(f => ({
+      "@type": "Question",
+      "name": f.q,
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": f.a
       }
-    ]
+    }))
   };
 
   const relatedRoles = ROLES.filter(r => r.id !== pData.roleId).slice(0, 8);
@@ -986,7 +990,7 @@ allSlugs.forEach(slug => {
       </nav>
     </header>
     <main style="max-width:1100px;margin:0 auto;padding:20px;font-family:sans-serif;line-height:1.6;">
-      <h1>${escapeHtml(pData.title)}</h1>
+      <h1>${escapeHtml(pData.h1 || pData.title)}</h1>
       <p style="font-size:18px;">${escapeHtml(pData.description)}</p>
       
       <section style="margin:30px 0;">
@@ -1003,10 +1007,54 @@ allSlugs.forEach(slug => {
         </ul>
       </section>
 
+      ${pData.bulletExamples && pData.bulletExamples.length > 0 ? `
+      <section style="margin:30px 0;">
+        <h2>High-Scoring ${escapeHtml(pData.roleName)} Resume Bullet Point Examples</h2>
+        <p>Follow Google's X-Y-Z formula: Accomplished [X] as measured by [Y], by doing [Z].</p>
+        ${pData.bulletExamples.map(b => `
+          <div style="margin:16px 0;padding:16px;background:#f9fafb;border-left:4px solid #84cc16;border-radius:4px;">
+            <p><strong>Before (Weak):</strong> <em>"${escapeHtml(b.before)}"</em></p>
+            <p><strong>After (ATS-Optimized):</strong> <strong>"${escapeHtml(b.after)}"</strong></p>
+            <p style="font-size:13px;color:#4b5563;">${escapeHtml(b.explanation)}</p>
+          </div>
+        `).join('')}
+      </section>
+      ` : ''}
+
+      ${pData.commonMistakes && pData.commonMistakes.length > 0 ? `
+      <section style="margin:30px 0;">
+        <h2>Common Resume Mistakes to Avoid for ${escapeHtml(pData.roleName)}</h2>
+        <ul>
+          ${pData.commonMistakes.map(m => `
+            <li style="margin-bottom:12px;"><strong>${escapeHtml(m.mistake)}:</strong> ${escapeHtml(m.fix)}</li>
+          `).join('')}
+        </ul>
+      </section>
+      ` : ''}
+
       <section style="margin:30px 0;padding:20px;background:#f7fee7;border:1px solid #d9f99d;border-radius:12px;">
         <h2>Scan Your Resume Against ${escapeHtml(pData.companyName)} Criteria</h2>
         <p>Get your free instant match score, missing skills breakdown, and AI bullet rewrites.</p>
         <p><a href="/dashboard" style="display:inline-block;background:#84cc16;color:#000;font-weight:bold;padding:12px 24px;border-radius:8px;text-decoration:none;">Launch Free AI Resume Scanner</a></p>
+      </section>
+
+      <section style="margin:30px 0;">
+        <h2>Frequently Asked Questions</h2>
+        ${roleFaqs.map(f => `
+          <div style="margin-bottom:16px;">
+            <h3>${escapeHtml(f.q)}</h3>
+            <p>${escapeHtml(f.a)}</p>
+          </div>
+        `).join('')}
+      </section>
+
+      <section style="margin:40px 0;">
+        <h2>Helpful ATS Resume Guides</h2>
+        <ul>
+          <li><a href="/blog/how-to-beat-applicant-tracking-systems-2026-guide">How to Beat ATS Systems in 2026: Complete Guide</a></li>
+          <li><a href="/blog/google-xyz-formula-resume-bullet-points-examples">Google X-Y-Z Resume Bullet Formula & Examples</a></li>
+          <li><a href="/blog/indian-tech-fresher-ats-resume-guide-tcs-infosys-wipro">Indian Tech Freshers Resume Guide (TCS, Infosys, Wipro)</a></li>
+        </ul>
       </section>
 
       <section style="margin:40px 0;">
@@ -1019,7 +1067,7 @@ allSlugs.forEach(slug => {
       <section style="margin:40px 0;">
         <h2>Explore Top Company ATS Scanners</h2>
         <ul>
-          ${relatedCompanies.map(c => `<li><a href="/scanner/${pData.roleId}-at-${c.id}">${escapeHtml(c.name)} ${escapeHtml(pData.roleName)} ATS Scanner</a></li>`).join('')}
+          ${relatedCompanies.map(c => `<li><a href="/scanner/${pData.roleId || 'software-engineer'}-at-${c.id}">${escapeHtml(c.name)} ${escapeHtml(pData.roleName)} ATS Scanner</a></li>`).join('')}
         </ul>
       </section>
 
@@ -1038,7 +1086,7 @@ allSlugs.forEach(slug => {
   `;
 
   const pageHtml = generatePageHtml({
-    title: `${pData.title} | PandaLime`,
+    title: pData.title,
     description: pData.description,
     canonicalPath: `/scanner/${slug}`,
     jsonLd: [breadcrumbsJsonLd, faqJsonLd],

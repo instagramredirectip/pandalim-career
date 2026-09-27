@@ -6,16 +6,28 @@ const DEFAULT_IMAGE = `${BASE_URL}/og-image.png`;
 
 export default function SEOHead({
   title = 'Free AI Resume Scanner & ATS Resume Checker | PandaLime',
-  description = 'Beat the ATS with PandaLime free AI resume scanner. Get instant ATS match scores, discover missing keywords, and get recruiter-approved bullet rewrites.',
-  canonical = '/',
+  description = 'Check your resume for free with PandaLime AI. Get an instant ATS match score, discover missing keywords, and get bullet point improvements.',
+  canonical,
   ogType = 'website',
   ogImage = DEFAULT_IMAGE,
   noIndex = false,
   lang = 'en',
   jsonLd = null
 }) {
-  const cleanPath = canonical ? (canonical.startsWith('/') ? canonical : `/${canonical}`) : '/';
+  // Determine clean canonical path - ensure self-canonicalization
+  const getPath = () => {
+    if (canonical) return canonical.startsWith('/') ? canonical : `/${canonical}`;
+    if (typeof window !== 'undefined' && window.location?.pathname) {
+      return window.location.pathname;
+    }
+    return '/';
+  };
+
+  const cleanPath = getPath();
   const fullCanonicalUrl = cleanPath === '/' ? `${BASE_URL}/` : `${BASE_URL}${cleanPath}`;
+
+  // Only the homepage and its regional translations share hreflang alternates
+  const isHomeVariant = cleanPath === '/' || ['/hi', '/ta', '/te', '/kn', '/mr', '/bn'].includes(cleanPath);
 
   // Normalize JSON-LD schemas
   const schemas = jsonLd
@@ -51,16 +63,20 @@ export default function SEOHead({
       <meta name="color-scheme" content="dark" />
       <link rel="canonical" href={fullCanonicalUrl} />
 
-      {/* International SEO: Hreflang Tags */}
-      <link rel="alternate" hrefLang="x-default" href={`${BASE_URL}/`} />
-      <link rel="alternate" hrefLang="en" href={`${BASE_URL}/`} />
-      <link rel="alternate" hrefLang="en-IN" href={`${BASE_URL}/`} />
-      <link rel="alternate" hrefLang="hi" href={`${BASE_URL}/hi`} />
-      <link rel="alternate" hrefLang="ta" href={`${BASE_URL}/ta`} />
-      <link rel="alternate" hrefLang="te" href={`${BASE_URL}/te`} />
-      <link rel="alternate" hrefLang="kn" href={`${BASE_URL}/kn`} />
-      <link rel="alternate" hrefLang="mr" href={`${BASE_URL}/mr`} />
-      <link rel="alternate" hrefLang="bn" href={`${BASE_URL}/bn`} />
+      {/* International SEO: Hreflang Tags ONLY for Homepage & its language variants */}
+      {isHomeVariant && (
+        <>
+          <link rel="alternate" hrefLang="x-default" href={`${BASE_URL}/`} />
+          <link rel="alternate" hrefLang="en" href={`${BASE_URL}/`} />
+          <link rel="alternate" hrefLang="en-IN" href={`${BASE_URL}/`} />
+          <link rel="alternate" hrefLang="hi" href={`${BASE_URL}/hi`} />
+          <link rel="alternate" hrefLang="ta" href={`${BASE_URL}/ta`} />
+          <link rel="alternate" hrefLang="te" href={`${BASE_URL}/te`} />
+          <link rel="alternate" hrefLang="kn" href={`${BASE_URL}/kn`} />
+          <link rel="alternate" hrefLang="mr" href={`${BASE_URL}/mr`} />
+          <link rel="alternate" hrefLang="bn" href={`${BASE_URL}/bn`} />
+        </>
+      )}
 
       {/* Crawl Directives */}
       <meta

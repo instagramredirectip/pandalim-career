@@ -124,8 +124,8 @@ export default function Navbar({ onOpenMobileMenu, showLanguage = true }) {
             className="px-3.5 py-1.5 sm:px-4 sm:py-2 bg-[#D2FF00] hover:bg-[#E5FF66] active:scale-95 text-[#08090C] rounded-[2px] font-mono font-bold text-xs sm:text-xs shadow-[0_0_12px_rgba(210,255,0,0.3)] transition-all shrink-0 flex items-center gap-1.5 cursor-pointer whitespace-nowrap uppercase tracking-wider"
           >
             <ScanLine className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-[#08090C]" />
-            <span className="hidden sm:inline">DEPLOY SCAN</span>
-            <span className="sm:hidden">SCAN</span>
+            <span className="hidden sm:inline">Scan Resume</span>
+            <span className="sm:hidden">Scan</span>
           </Link>
 
           {/* Mobile Menu Trigger */}

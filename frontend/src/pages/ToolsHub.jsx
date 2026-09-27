@@ -142,25 +142,25 @@ export default function ToolsHub() {
 
       {/* --- BREADCRUMBS --- */}
       <div className="bg-[#0E1116] border-b border-[#1F242D] py-2">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 font-mono text-xs text-[#505763] flex items-center gap-2">
-          <Link to="/" className="hover:text-[#D2FF00] transition-colors">HOME</Link>
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-xs text-[#505763] flex items-center gap-2">
+          <Link to="/" className="hover:text-[#D2FF00] transition-colors">Home</Link>
           <span>/</span>
-          <span className="text-[#9BA3AF]">FREE_CAREER_TOOLS_SUITE</span>
+          <span className="text-[#9BA3AF]">Free Career Tools</span>
         </div>
       </div>
 
       {/* --- HERO SECTION --- */}
       <header className="bg-[#08090C] py-16 sm:py-20 border-b border-[#1F242D] text-center">
         <div className="max-w-4xl mx-auto px-4">
-          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-[2px] bg-[#0E1116] border border-[#1F242D] text-[#D2FF00] font-mono text-xs uppercase tracking-wider mb-6">
+          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-[2px] bg-[#0E1116] border border-[#1F242D] text-[#D2FF00] text-xs font-semibold uppercase tracking-wider mb-6">
             <Zap className="w-3.5 h-3.5" />
-            <span>// 100% FREE AI CAREER SUITE</span>
+            <span>100% Free AI Career Suite</span>
           </div>
 
           <h1 className="text-3xl sm:text-5xl md:text-6xl font-extrabold text-[#F5F7FA] tracking-tight mb-6 leading-tight">
-            Sovereign ATS Resume &amp; <br />
+            Free ATS Resume &amp; <br />
             <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#D2FF00] via-[#FF5722] to-[#D2FF00]">
-              Career Optimization Suite
+              Career Optimization Tools
             </span>
           </h1>
 

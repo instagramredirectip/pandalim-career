@@ -39,10 +39,10 @@ const loadRazorpayScript = () => {
 };
 
 const SCAN_STAGES = [
-  { id: 'token', stage: 'STAGE 1/4', label: 'TOKENIZING RESUME AST // EXTRACTING RAW BUFFERS', sub: 'Parsing structure, sections & encoding' },
-  { id: 'skills', stage: 'STAGE 2/4', label: 'SEMANTIC GRAPH PARSING // IDENTIFYING HARD SKILLS', sub: 'Mapping technical tooling, frameworks & APIs' },
-  { id: 'vector', stage: 'STAGE 3/4', label: 'COSINE VECTOR EMBEDDING // CROSS-MATCHING JOB SPEC', sub: 'Checking keyword density & phrase semantics' },
-  { id: 'score', stage: 'STAGE 4/4', label: 'HEURISTIC SCORING // COMPILING REJECTION PROBABILITY', sub: 'Evaluating Workday/Greenhouse/Taleo filter rules' }
+  { id: 'token', stage: 'Step 1 of 4', label: 'Reading resume sections and formatting', sub: 'Checking structure, headings, and readability' },
+  { id: 'skills', stage: 'Step 2 of 4', label: 'Identifying technical and domain skills', sub: 'Extracting key tools, languages, and competencies' },
+  { id: 'vector', stage: 'Step 3 of 4', label: 'Comparing against job requirements', sub: 'Checking keyword matches and finding missing skills' },
+  { id: 'score', stage: 'Step 4 of 4', label: 'Calculating your ATS match score', sub: 'Preparing feedback, bullet suggestions, and recommendations' }
 ];
 
 export default function Dashboard({ isAppMode: propAppMode = false }) {
@@ -317,21 +317,21 @@ export default function Dashboard({ isAppMode: propAppMode = false }) {
                 <Terminal className="w-4 h-4" />
               </div>
               <span className="font-black tracking-tight">PANDALIME</span>
-              <span className="text-[10px] font-mono text-[#D2FF00] bg-[#D2FF00]/10 border border-[#D2FF00]/30 px-1.5 py-0.5 rounded-[2px] uppercase hidden sm:inline">
-                ATS Engine // v2.4
+              <span className="text-[10px] text-[#D2FF00] bg-[#D2FF00]/10 border border-[#D2FF00]/30 px-1.5 py-0.5 rounded-[2px] uppercase hidden sm:inline font-semibold">
+                Resume Scanner
               </span>
             </Link>
 
-            <div className="flex items-center gap-3 text-xs font-mono font-bold shrink-0">
+            <div className="flex items-center gap-3 text-xs font-semibold shrink-0">
               <Link to="/" className="text-gray-400 hover:text-[#D2FF00] transition-colors hidden sm:block">
-                [ ← HOME ]
+                Home
               </Link>
               <Link to="/portfolio-builder" className="text-gray-400 hover:text-[#D2FF00] transition-colors hidden md:block">
-                [ PORTFOLIO STUDIO ]
+                Portfolio Studio
               </Link>
               <Link to="/roast-wall" className="text-gray-400 hover:text-[#FF5722] transition-colors flex items-center gap-1">
                 <Flame className="w-3.5 h-3.5 text-[#FF5722]" />
-                <span>ROAST WALL →</span>
+                <span>Roast Wall →</span>
               </Link>
             </div>
           </div>
@@ -353,13 +353,13 @@ export default function Dashboard({ isAppMode: propAppMode = false }) {
         `}
       </style>
 
-      <main className="max-w-4xl mx-auto px-4 py-8 sm:py-12 print:py-4 relative z-10">
+      <main className="max-w-4xl mx-auto px-4 py-8 sm:py-12 print:py-4 relative z-10 font-sans">
         
-        {/* STATE 1: ADVANCED KINETIC LASER SCANNING ANIMATION */}
+        {/* STATE 1: SCANNING PROGRESS ANIMATION */}
         {loading && !result ? (
           <div className="flex flex-col items-center justify-center py-10 sm:py-16">
             
-            {/* Tectonic Scanner Card Container */}
+            {/* Scanner Card Container */}
             <div className="relative w-72 sm:w-80 h-96 bg-[#0E1116] border border-[#1F242D] rounded-[2px] shadow-[0_0_50px_rgba(210,255,0,0.08)] overflow-hidden flex flex-col items-center pt-8 p-6">
               
               {/* Document Icon Header */}
@@ -367,30 +367,30 @@ export default function Dashboard({ isAppMode: propAppMode = false }) {
                  <FileText size={26} className="stroke-[2.2]" />
               </div>
 
-              {/* Fake Monospace Decompiler Code Lines */}
-              <div className="w-full space-y-2.5 font-mono text-[10px] text-gray-500 opacity-60">
-                <div className="h-2 bg-[#1F242D] rounded-none w-3/4 animate-pulse"></div>
-                <div className="h-2 bg-[#1F242D] rounded-none w-full"></div>
-                <div className="h-2 bg-[#1F242D] rounded-none w-5/6"></div>
-                <div className="h-2 bg-[#1F242D] rounded-none w-2/3"></div>
-                <div className="h-2 bg-[#1F242D] rounded-none w-full mt-4"></div>
-                <div className="h-2 bg-[#1F242D] rounded-none w-4/5"></div>
+              {/* Monospace Simulated Resume Lines */}
+              <div className="w-full space-y-2.5 opacity-60">
+                <div className="h-2 bg-[#1F242D] w-3/4 animate-pulse"></div>
+                <div className="h-2 bg-[#1F242D] w-full"></div>
+                <div className="h-2 bg-[#1F242D] w-5/6"></div>
+                <div className="h-2 bg-[#1F242D] w-2/3"></div>
+                <div className="h-2 bg-[#1F242D] w-full mt-4"></div>
+                <div className="h-2 bg-[#1F242D] w-4/5"></div>
               </div>
 
-              {/* Laser Grid Background */}
+              {/* Grid Background */}
               <div className="absolute inset-0 bg-[linear-gradient(to_right,#1F242D_1px,transparent_1px),linear-gradient(to_bottom,#1F242D_1px,transparent_1px)] bg-[size:16px_16px] opacity-30 pointer-events-none" />
 
-              {/* Dual-Glow Laser Beam */}
+              {/* Scan Highlight Beam */}
               <div className="absolute left-0 w-full h-[2.5px] bg-[#D2FF00] shadow-[0_0_16px_4px_rgba(210,255,0,0.8)] animate-laser z-20" />
               <div className="absolute left-0 w-full h-12 bg-gradient-to-b from-[#D2FF00]/10 to-transparent animate-laser z-10 pointer-events-none" />
             </div>
 
-            {/* Live Telemetry Progress Readout */}
-            <div className="mt-8 flex flex-col items-center gap-3 text-center max-w-lg w-full font-mono">
+            {/* Live Progress Readout */}
+            <div className="mt-8 flex flex-col items-center gap-2 text-center max-w-lg w-full">
               
               <div className="flex items-center gap-2">
                 <span className="w-2 h-2 rounded-full bg-[#D2FF00] animate-ping" />
-                <span className="text-xs font-bold text-[#D2FF00] tracking-widest uppercase">
+                <span className="text-xs font-bold text-[#D2FF00] uppercase tracking-wider">
                   {currentStage.stage}
                 </span>
               </div>
@@ -399,7 +399,7 @@ export default function Dashboard({ isAppMode: propAppMode = false }) {
                 {currentStage.label}
               </h2>
 
-              <p className="text-gray-400 text-xs font-sans">
+              <p className="text-gray-400 text-xs sm:text-sm">
                 {currentStage.sub}
               </p>
 
@@ -411,9 +411,9 @@ export default function Dashboard({ isAppMode: propAppMode = false }) {
                 />
               </div>
 
-              <div className="flex justify-between w-full text-[10px] text-gray-500 font-mono pt-1">
-                <span>ESTIMATED LATENCY: &lt;1.8s</span>
-                <span className="text-[#D2FF00] font-bold">{scanProgressPercent}% COMPILED</span>
+              <div className="flex justify-between w-full text-xs text-gray-400 pt-1">
+                <span>Scanning in progress…</span>
+                <span className="text-[#D2FF00] font-semibold">{scanProgressPercent}% complete</span>
               </div>
             </div>
           </div>
@@ -425,26 +425,26 @@ export default function Dashboard({ isAppMode: propAppMode = false }) {
             
             {/* Header Stamp */}
             <div className="text-center space-y-3">
-              <div className="inline-flex items-center gap-2 px-3 py-1 rounded-[2px] bg-[#0E1116] border border-[#1F242D] font-mono font-bold text-xs text-[#D2FF00]">
-                <Sparkles size={14} /> DECOMPILER // STRICT ATS COMPLIANCE
+              <div className="inline-flex items-center gap-2 px-3 py-1 rounded-[2px] bg-[#0E1116] border border-[#1F242D] text-xs font-semibold text-[#D2FF00]">
+                <Sparkles size={14} /> Free AI ATS Resume Checker
               </div>
               
-              <h1 className="text-3xl sm:text-4xl md:text-5xl font-black text-white tracking-tight uppercase font-sans">
-                Beat The Enterprise ATS Filter.
+              <h1 className="text-3xl sm:text-4xl md:text-5xl font-black text-white tracking-tight">
+                Check Your Resume Against Job Description
               </h1>
               
-              <p className="text-gray-400 text-xs sm:text-sm max-w-xl mx-auto font-mono leading-relaxed">
-                Upload your resume PDF to decompile your AST keyword density, extract missing core competencies, and generate Google XYZ bullet rewrites.
+              <p className="text-gray-400 text-xs sm:text-sm max-w-xl mx-auto leading-relaxed">
+                Upload your resume PDF and paste the job description to find missing keywords, check ATS formatting, and get bullet point improvements.
               </p>
             </div>
 
-            {/* Workbench Form Card */}
+            {/* Form Card */}
             <div className="bg-[#0E1116] rounded-[2px] border border-[#1F242D] p-5 sm:p-8 shadow-2xl space-y-6">
               
               {prefilledFromTools && (
-                <div className="p-3.5 bg-[#D2FF00]/10 border border-[#D2FF00]/40 rounded-[2px] flex items-center gap-2.5 text-xs text-[#D2FF00] font-mono font-bold">
+                <div className="p-3.5 bg-[#D2FF00]/10 border border-[#D2FF00]/40 rounded-[2px] flex items-center gap-2.5 text-xs text-[#D2FF00] font-semibold">
                   <CheckCircle className="w-4 h-4 shrink-0" />
-                  <span>Job Description pre-loaded from Keyword Extractor. Upload your PDF below to run the scan.</span>
+                  <span>Job Description loaded from Keyword Extractor. Upload your resume PDF below to scan.</span>
                 </div>
               )}
 
@@ -452,29 +452,29 @@ export default function Dashboard({ isAppMode: propAppMode = false }) {
                 
                 {/* 1. Job Description Textarea */}
                 <div className="space-y-2">
-                  <label className="flex items-center justify-between text-xs font-mono font-bold text-gray-300 uppercase tracking-wider">
+                  <label className="flex items-center justify-between text-xs font-bold text-gray-300 uppercase tracking-wider">
                     <span className="flex items-center gap-2">
                       <Briefcase size={16} className="text-[#D2FF00]" /> 1. Target Job Description
                     </span>
-                    <span className="text-[10px] text-gray-500 font-normal">Paste requirements & tech stack</span>
+                    <span className="text-xs text-gray-400 font-normal">Paste requirements & tech stack</span>
                   </label>
                   <textarea 
                     required 
                     rows={6} 
                     value={jobDescription} 
                     onChange={(e) => setJobDescription(e.target.value)} 
-                    className="w-full px-4 py-3 rounded-[2px] border border-[#1F242D] bg-[#08090C] text-gray-100 placeholder:text-gray-600 focus:border-[#D2FF00] focus:ring-1 focus:ring-[#D2FF00]/30 outline-none resize-none transition-all text-xs sm:text-sm font-mono leading-relaxed" 
+                    className="w-full px-4 py-3 rounded-[2px] border border-[#1F242D] bg-[#08090C] text-gray-100 placeholder:text-gray-500 focus:border-[#D2FF00] focus:ring-1 focus:ring-[#D2FF00]/30 outline-none resize-none transition-all text-xs sm:text-sm leading-relaxed" 
                     placeholder="Paste the job requirements, qualifications, and responsibilities here..." 
                   />
                 </div>
                 
                 {/* 2. Resume PDF File Dropzone */}
                 <div className="space-y-2">
-                  <label className="flex items-center justify-between text-xs font-mono font-bold text-gray-300 uppercase tracking-wider">
+                  <label className="flex items-center justify-between text-xs font-bold text-gray-300 uppercase tracking-wider">
                     <span className="flex items-center gap-2">
                       <FileText size={16} className="text-[#D2FF00]" /> 2. Resume Document (PDF Format)
                     </span>
-                    <span className="text-[10px] text-gray-500 font-normal">Max 10MB</span>
+                    <span className="text-xs text-gray-400 font-normal">Max 10MB</span>
                   </label>
 
                   <div className={`relative border border-dashed rounded-[2px] p-8 sm:p-10 text-center transition-all cursor-pointer group ${resumeFile ? 'border-[#D2FF00] bg-[#D2FF00]/5' : 'border-[#1F242D] bg-[#08090C] hover:border-gray-500'}`}>
@@ -492,14 +492,14 @@ export default function Dashboard({ isAppMode: propAppMode = false }) {
                       </div>
 
                       {resumeFile ? (
-                        <div className="font-mono">
+                        <div>
                            <span className="font-bold text-white text-xs sm:text-sm block">{resumeFile.name}</span>
-                           <span className="text-[11px] text-[#D2FF00] mt-0.5 inline-block">✓ Ready for Heuristic Decompilation</span>
+                           <span className="text-xs text-[#D2FF00] mt-0.5 inline-block">✓ Ready to scan</span>
                         </div>
                       ) : (
-                        <div className="font-mono">
+                        <div>
                           <span className="font-bold text-gray-200 text-xs sm:text-sm block">Click or Drag & Drop Resume PDF here</span>
-                          <span className="text-[10px] text-gray-500 mt-0.5 block">Parses standard ATS resumes in &lt;1.8s</span>
+                          <span className="text-xs text-gray-400 mt-0.5 block">Supports standard PDF resumes up to 10MB</span>
                         </div>
                       )}
                     </div>
@@ -510,35 +510,35 @@ export default function Dashboard({ isAppMode: propAppMode = false }) {
                 <button 
                   type="submit" 
                   disabled={!jobDescription || !resumeFile} 
-                  className="w-full flex items-center justify-center gap-2 bg-[#D2FF00] hover:bg-[#b8e000] text-[#08090C] py-3.5 rounded-[2px] font-mono font-black text-xs sm:text-sm transition-all disabled:opacity-40 disabled:hover:bg-[#D2FF00] disabled:cursor-not-allowed shadow-[0_0_20px_rgba(210,255,0,0.25)] active:scale-[0.99] cursor-pointer border border-[#D2FF00] uppercase tracking-wider"
+                  className="w-full flex items-center justify-center gap-2 bg-[#D2FF00] hover:bg-[#b8e000] text-[#08090C] py-3.5 rounded-[2px] font-bold text-xs sm:text-sm transition-all disabled:opacity-40 disabled:hover:bg-[#D2FF00] disabled:cursor-not-allowed shadow-[0_0_20px_rgba(210,255,0,0.25)] active:scale-[0.99] cursor-pointer border border-[#D2FF00] uppercase tracking-wider"
                 >
                   <Zap size={18} />
-                  <span>Execute Heuristic ATS Scan</span>
+                  <span>Scan My Resume Now</span>
                 </button>
               </form>
             </div>
           </div>
         ) : 
 
-        /* STATE 3: RESULTS TELEMETRY VIEW */
+        /* STATE 3: RESULTS VIEW */
         (
           <div className="space-y-6">
              <div id="premium-report-content" className="bg-[#0E1116] rounded-[2px] border border-[#1F242D] overflow-hidden shadow-2xl relative font-sans">
                  
                  {/* Top Score Banner */}
                  <div className="p-6 sm:p-10 text-center border-b border-[#1F242D] bg-[#08090C]/80 relative overflow-hidden">
-                    <div className="inline-flex items-center gap-2 px-3 py-0.5 rounded-[2px] bg-[#151921] border border-[#1F242D] font-mono text-[10px] text-gray-400 uppercase tracking-widest mb-3">
-                      <span>AUDIT RESULT // ATS TELEMETRY</span>
+                    <div className="inline-flex items-center gap-2 px-3 py-0.5 rounded-[2px] bg-[#151921] border border-[#1F242D] text-xs text-gray-400 uppercase tracking-wider mb-3">
+                      <span>ATS Match Results</span>
                     </div>
 
-                    <div className={`text-6xl sm:text-8xl font-mono font-black tracking-tighter my-3 ${result.match_score >= 75 ? 'text-[#D2FF00] drop-shadow-[0_0_25px_rgba(210,255,0,0.3)]' : 'text-[#FF5722] drop-shadow-[0_0_25px_rgba(255,87,34,0.3)]'}`}>
+                    <div className={`text-6xl sm:text-8xl font-black tracking-tighter my-3 ${result.match_score >= 75 ? 'text-[#D2FF00] drop-shadow-[0_0_25px_rgba(210,255,0,0.3)]' : 'text-[#FF5722] drop-shadow-[0_0_25px_rgba(255,87,34,0.3)]'}`}>
                         {result.match_score}%
                     </div>
 
-                    <p className="text-gray-300 text-xs sm:text-sm font-mono max-w-md mx-auto leading-relaxed">
+                    <p className="text-gray-300 text-xs sm:text-sm max-w-md mx-auto leading-relaxed">
                         {result.match_score >= 75 
-                          ? "✓ L6+ ATS BENCHMARK PASSED: High keyword density match against target requisitions." 
-                          : "⚠️ REJECTION RISK DETECTED: Missing critical hard tech skills & keywords required by corporate bots."}
+                          ? "✓ Strong Match: Your resume covers the key skills and experience required for this role." 
+                          : "⚠️ Needs Optimization: Your resume is missing important keywords found in the job description. Review the breakdown below."}
                     </p>
                  </div>
 
@@ -547,7 +547,7 @@ export default function Dashboard({ isAppMode: propAppMode = false }) {
                   <button
                     onClick={handleShareToWall}
                     disabled={isSharedToWall}
-                    className={`px-4 py-2 rounded-[2px] font-mono font-bold text-xs transition-all flex items-center gap-1.5 cursor-pointer border ${
+                    className={`px-4 py-2 rounded-[2px] font-bold text-xs transition-all flex items-center gap-1.5 cursor-pointer border ${
                       isSharedToWall 
                         ? 'bg-[#151921] text-gray-400 border-[#1F242D]'
                         : 'bg-[#FF5722]/10 text-[#FF5722] hover:bg-[#FF5722]/20 border-[#FF5722]/40 shadow-[0_0_12px_rgba(255,87,34,0.15)]'
@@ -561,7 +561,7 @@ export default function Dashboard({ isAppMode: propAppMode = false }) {
                     ) : (
                       <>
                         <Flame className="w-4 h-4" />
-                        <span>Post Score to Anonymous Roast Wall</span>
+                        <span>Share Score to Anonymous Roast Wall</span>
                       </>
                     )}
                   </button>
@@ -572,39 +572,39 @@ export default function Dashboard({ isAppMode: propAppMode = false }) {
                     
                     {/* Critical Missing Keywords */}
                     <div className="space-y-3">
-                      <h3 className="text-sm sm:text-base font-mono font-bold text-white flex items-center gap-2 uppercase tracking-wider">
-                        <Zap className="text-[#FF5722]" size={18} /> Critical Missing Keywords ({result.missing_keywords?.length || 0})
+                      <h3 className="text-sm sm:text-base font-bold text-white flex items-center gap-2 uppercase tracking-wider">
+                        <Zap className="text-[#FF5722]" size={18} /> Missing Keywords ({result.missing_keywords?.length || 0})
                       </h3>
                       
                       <div className="flex flex-wrap gap-2">
                           {result.missing_keywords?.map((word, index) => (
-                              <span key={index} className="px-3 py-1 bg-[#FF5722]/10 border border-[#FF5722]/30 rounded-[2px] text-xs font-mono font-bold text-[#FF5722] shadow-sm">
+                              <span key={index} className="px-3 py-1 bg-[#FF5722]/10 border border-[#FF5722]/30 rounded-[2px] text-xs font-semibold text-[#FF5722] shadow-sm">
                                 {word}
                               </span>
                           ))}
                       </div>
                     </div>
 
-                    {/* AI Resume Critique */}
+                    {/* Resume Feedback */}
                     <div className="space-y-3">
-                      <h3 className="text-sm sm:text-base font-mono font-bold text-white flex items-center gap-2 uppercase tracking-wider">
-                        <ScanSearch className="text-[#D2FF00]" size={18} /> Deep Heuristic Critique
+                      <h3 className="text-sm sm:text-base font-bold text-white flex items-center gap-2 uppercase tracking-wider">
+                        <ScanSearch className="text-[#D2FF00]" size={18} /> Detailed Resume Feedback
                       </h3>
                       <div className="bg-[#08090C] p-4 sm:p-5 rounded-[2px] border border-[#1F242D]">
-                        <p className="text-gray-300 leading-relaxed text-xs sm:text-sm font-sans">{result.resume_critique}</p>
+                        <p className="text-gray-300 leading-relaxed text-xs sm:text-sm">{result.resume_critique}</p>
                       </div>
                     </div>
 
-                    {/* AI-Rewritten Bullet Points */}
+                    {/* Rewritten Bullet Points */}
                     <div className="space-y-3 pt-4 border-t border-[#1F242D]">
-                        <h3 className="text-sm sm:text-base font-mono font-bold text-white flex items-center gap-2 uppercase tracking-wider">
-                          <Sparkles className="text-[#D2FF00]" size={18} /> Google XYZ Rewritten Bullet Points
+                        <h3 className="text-sm sm:text-base font-bold text-white flex items-center gap-2 uppercase tracking-wider">
+                          <Sparkles className="text-[#D2FF00]" size={18} /> Suggested Bullet Point Improvements (Google X-Y-Z Format)
                         </h3>
                         <div className="space-y-2.5">
                             {result.rewritten_bullets?.map((bullet, i) => (
                                 <div key={i} className="p-3.5 sm:p-4 bg-[#08090C] rounded-[2px] border border-[#1F242D] flex gap-3 items-start">
                                     <CheckCircle2 className="text-[#D2FF00] shrink-0 mt-0.5" size={18} />
-                                    <p className="text-gray-200 leading-relaxed text-xs sm:text-sm font-sans">{bullet}</p>
+                                    <p className="text-gray-200 leading-relaxed text-xs sm:text-sm">{bullet}</p>
                                 </div>
                             ))}
                         </div>
@@ -612,10 +612,10 @@ export default function Dashboard({ isAppMode: propAppMode = false }) {
 
                     {/* Tailored Cover Letter */}
                     <div className="space-y-3 pt-4 border-t border-[#1F242D]">
-                        <h3 className="text-sm sm:text-base font-mono font-bold text-white flex items-center gap-2 uppercase tracking-wider">
-                          <FileText className="text-[#D2FF00]" size={18} /> Tailored Recruiter Cover Letter
+                        <h3 className="text-sm sm:text-base font-bold text-white flex items-center gap-2 uppercase tracking-wider">
+                          <FileText className="text-[#D2FF00]" size={18} /> Tailored Cover Letter Draft
                         </h3>
-                        <div className="p-5 bg-[#08090C] rounded-[2px] border border-[#1F242D] text-gray-300 whitespace-pre-wrap font-mono leading-relaxed text-xs shadow-inner">
+                        <div className="p-5 bg-[#08090C] rounded-[2px] border border-[#1F242D] text-gray-300 whitespace-pre-wrap leading-relaxed text-xs sm:text-sm shadow-inner">
                             {result.cover_letter}
                         </div>
                     </div>
@@ -624,12 +624,12 @@ export default function Dashboard({ isAppMode: propAppMode = false }) {
 
              {/* Bottom Action / Unlock Bars */}
              {!isUnlocked ? (
-                 <div className="fixed bottom-0 left-0 right-0 z-50 flex flex-col items-center justify-center bg-[#08090C]/95 backdrop-blur-xl border-t border-[#1F242D] p-4 text-center shadow-[0_-20px_40px_rgba(0,0,0,0.6)] print:hidden font-mono">
-                    <h2 className="text-sm sm:text-base font-bold text-white mb-1 flex items-center justify-center gap-2 uppercase">
-                      <Lock size={16} className="text-[#D2FF00]"/> Unlock Full Audit &amp; Bullet Rewrites
+                 <div className="fixed bottom-0 left-0 right-0 z-50 flex flex-col items-center justify-center bg-[#08090C]/95 backdrop-blur-xl border-t border-[#1F242D] p-4 text-center shadow-[0_-20px_40px_rgba(0,0,0,0.6)] print:hidden">
+                    <h2 className="text-sm sm:text-base font-bold text-white mb-1 flex items-center justify-center gap-2">
+                      <Lock size={16} className="text-[#D2FF00]"/> Unlock Full Breakdown &amp; Bullet Rewrites
                     </h2>
-                    <p className="text-gray-400 max-w-md mx-auto mb-3 text-[11px]">
-                      Get all missing keywords, 3 XYZ bullet rewrites, and the tailored cover letter.
+                    <p className="text-gray-400 max-w-md mx-auto mb-3 text-xs">
+                      See all missing keywords, 3 Google X-Y-Z bullet rewrites, and the full tailored cover letter.
                     </p>
                     
                     <div className="flex flex-col sm:flex-row gap-2.5 w-full max-w-lg">
@@ -651,18 +651,18 @@ export default function Dashboard({ isAppMode: propAppMode = false }) {
                             type="button"
                             onClick={handleUnlock} 
                             disabled={loading}
-                            className="flex-1 bg-[#D2FF00] hover:bg-[#b8e000] text-[#08090C] px-4 py-2.5 rounded-[2px] font-black text-xs shadow-[0_0_16px_rgba(210,255,0,0.3)] transition-all flex items-center justify-center gap-1.5 disabled:opacity-70 active:scale-95 cursor-pointer uppercase"
+                            className="flex-1 bg-[#D2FF00] hover:bg-[#b8e000] text-[#08090C] px-4 py-2.5 rounded-[2px] font-bold text-xs shadow-[0_0_16px_rgba(210,255,0,0.3)] transition-all flex items-center justify-center gap-1.5 disabled:opacity-70 active:scale-95 cursor-pointer uppercase tracking-wider"
                         >
                             {loading ? <Loader2 className="animate-spin" size={16} /> : (isDiscounted ? 'Unlock for ₹49' : 'Unlock for ₹99')}
                         </button>
                     </div>
                 </div>
              ) : (
-                <div className="flex flex-col sm:flex-row gap-3 pt-4 print:hidden font-mono">
+                <div className="flex flex-col sm:flex-row gap-3 pt-4 print:hidden">
                     <button 
                         type="button"
                         onClick={downloadPDF} 
-                        className="flex-1 flex items-center justify-center gap-2 bg-[#D2FF00] hover:bg-[#b8e000] text-[#08090C] py-3 rounded-[2px] font-black text-xs sm:text-sm transition-all shadow-[0_0_16px_rgba(210,255,0,0.25)] active:scale-95 cursor-pointer uppercase"
+                        className="flex-1 flex items-center justify-center gap-2 bg-[#D2FF00] hover:bg-[#b8e000] text-[#08090C] py-3 rounded-[2px] font-bold text-xs sm:text-sm transition-all shadow-[0_0_16px_rgba(210,255,0,0.25)] active:scale-95 cursor-pointer uppercase tracking-wider"
                     >
                         <Download size={18} /> Download PDF Report
                     </button>
@@ -675,7 +675,7 @@ export default function Dashboard({ isAppMode: propAppMode = false }) {
                           setIsUnlocked(false); 
                           setIsDiscounted(false); 
                         }} 
-                        className="flex-1 flex items-center justify-center gap-2 bg-[#151921] hover:bg-[#1F242D] text-gray-200 border border-[#1F242D] py-3 rounded-[2px] font-bold text-xs sm:text-sm transition-all active:scale-95 cursor-pointer uppercase"
+                        className="flex-1 flex items-center justify-center gap-2 bg-[#151921] hover:bg-[#1F242D] text-gray-200 border border-[#1F242D] py-3 rounded-[2px] font-semibold text-xs sm:text-sm transition-all active:scale-95 cursor-pointer uppercase tracking-wider"
                     >
                         <RefreshCw size={16} /> Scan Another Resume
                     </button>
