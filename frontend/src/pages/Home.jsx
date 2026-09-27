@@ -34,6 +34,7 @@ import SEOHead from '../components/SEOHead';
 import MobileDrawer from '../components/MobileDrawer';
 import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
+import SocialShare from '../components/SocialShare';
 import { ROLES, COMPANIES, SPECIAL_NICHES } from '../data/pseoData';
 import { BLOG_POSTS } from '../data/blogPosts';
 import { prefetchRoute } from '../utils/prefetch';
@@ -1296,6 +1297,20 @@ export default function Home() {
               </Link>
             ))}
           </div>
+        </div>
+      </section>
+
+      {/* --- SECTION 14: COMMUNITY SOCIAL SHARE --- */}
+      <section className="py-12 bg-[#08090C] border-b border-[#1F242D]">
+        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+          <SocialShare 
+            variant="card"
+            title="Free AI Resume Scanner & ATS Score Checker | PandaLime"
+            description="Scan your resume for free with PandaLime AI. Uncover missing keywords, get instant ATS scoring, and build your recruiter-ready portfolio."
+            url="/"
+            hashtags={['ATSResume', 'ResumeScanner', 'TechJobs', 'JobSearch2026']}
+            customCallout="Share PandaLime Free Resume Scanner with Your Network"
+          />
         </div>
       </section>
 

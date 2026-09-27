@@ -26,6 +26,7 @@ import SEOHead from '../components/SEOHead';
 import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
 import MobileDrawer from '../components/MobileDrawer';
+import SocialShare from '../components/SocialShare';
 import { getBlogPostBySlug, BLOG_POSTS } from '../data/blogPosts';
 import { prefetchRoute } from '../utils/prefetch';
 
@@ -525,7 +526,6 @@ export default function BlogPost() {
   const { slug } = useParams();
   const post = getBlogPostBySlug(slug);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-  const [copied, setCopied] = useState(false);
   const [scrollProgress, setScrollProgress] = useState(0);
 
   useEffect(() => {
@@ -554,12 +554,6 @@ export default function BlogPost() {
       </div>
     );
   }
-
-  const handleShare = () => {
-    navigator.clipboard.writeText(window.location.href);
-    setCopied(true);
-    setTimeout(() => setCopied(false), 2000);
-  };
 
   const isDarkTechnical = post.category === 'AI & Workflows' || post.slug.includes('model-context-protocol');
 
@@ -877,18 +871,13 @@ export default function BlogPost() {
                 )}
               </div>
 
-              <button
-                onClick={handleShare}
-                className={`px-3 py-1.5 text-xs font-mono font-bold flex items-center gap-1.5 transition-colors cursor-pointer border rounded-[2px] ${
-                  isDarkTechnical
-                    ? 'bg-[#22252D] hover:bg-[#ff5722] hover:text-[#121316] text-[#f3f4f6] border-[#2E323D]'
-                    : 'bg-gray-100 hover:bg-gray-200 text-gray-700 rounded-lg'
-                }`}
-                title="Copy share link"
-              >
-                <Share2 className="w-3.5 h-3.5" />
-                <span>{copied ? 'Link Copied!' : 'Share Guide'}</span>
-              </button>
+              <SocialShare 
+                variant="compact" 
+                title={post.title} 
+                description={post.excerpt} 
+                url={`/blog/${post.slug}`} 
+                hashtags={post.tags}
+              />
             </div>
 
             <h1 className={`text-2xl sm:text-4xl lg:text-5xl font-extrabold tracking-tight leading-tight relative z-10 ${
@@ -1042,6 +1031,18 @@ export default function BlogPost() {
                 The PandaLime AI Research & ATS Calibration Lab reverse-engineers enterprise recruitment workflows and explores next-generation agentic protocols (Model Context Protocol, LangChain, semantic AST parsers) to keep engineers ahead of automated hiring filters.
               </p>
             </div>
+          </div>
+
+          {/* Social Share Box */}
+          <div className="my-8">
+            <SocialShare 
+              variant="card"
+              title={post.title}
+              description={post.excerpt}
+              url={`/blog/${post.slug}`}
+              hashtags={post.tags}
+              customCallout="Share This Research Guide with Your Network"
+            />
           </div>
 
           {/* Related Articles Grid */}

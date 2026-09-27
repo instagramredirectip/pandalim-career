@@ -22,6 +22,7 @@ import SEOHead from '../components/SEOHead';
 import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
 import MobileDrawer from '../components/MobileDrawer';
+import SocialShare from '../components/SocialShare';
 import { getPseoData, ROLES, COMPANIES } from '../data/pseoData';
 import { haptics } from '../utils/haptics';
 import { asmrAudio } from '../utils/asmrAudio';
@@ -440,6 +441,20 @@ export default function ScannerLanding() {
               </div>
             ))}
           </div>
+        </div>
+      </section>
+
+      {/* SECTION: Social Media Sharing */}
+      <section className="border-t border-[#1F242D] py-10 px-4 bg-[#08090C]">
+        <div className="max-w-4xl mx-auto">
+          <SocialShare 
+            variant="card"
+            title={`${pageData.h1} | PandaLime`}
+            description={pageData.description}
+            url={`/scanner/${slug}`}
+            hashtags={[pageData.roleName.replace(/[^a-zA-Z0-9]/g, ''), 'ResumeTips', 'ATSScanner', 'TechJobs']}
+            customCallout={`Share This ${pageData.roleName} ATS Guide with Your Network`}
+          />
         </div>
       </section>
 

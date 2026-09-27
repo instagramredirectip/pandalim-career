@@ -22,6 +22,7 @@ import LanguageSelector from '../components/LanguageSelector';
 import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
 import MobileDrawer from '../components/MobileDrawer';
+import SocialShare from '../components/SocialShare';
 import { apiRequest } from '../config/api';
 
 export default function StarBulletGenerator() {
@@ -441,6 +442,21 @@ export default function StarBulletGenerator() {
               </div>
             ))}
           </div>
+        </div>
+      </section>
+
+      {/* --- SOCIAL SHARE SECTION --- */}
+      <section className="bg-white py-12 border-t border-gray-200">
+        <div className="max-w-4xl mx-auto px-4">
+          <SocialShare 
+            variant="card"
+            theme="light"
+            title="AI STAR Method Resume Bullet Generator (Google X-Y-Z Formula) | PandaLime"
+            description="Transform passive job duties into recruiter-ready, quantified STAR bullet points using Google's X-Y-Z formula."
+            url="/tools/star-bullet-generator"
+            hashtags={['STARMethod', 'GoogleXYZ', 'ResumeBullets', 'CareerTips']}
+            customCallout="Share This Free STAR Bullet Generator with Colleagues"
+          />
         </div>
       </section>
 

@@ -23,6 +23,7 @@ import LanguageSelector from '../components/LanguageSelector';
 import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
 import MobileDrawer from '../components/MobileDrawer';
+import SocialShare from '../components/SocialShare';
 import { ACTION_VERB_CATEGORIES } from '../data/toolsData';
 
 export default function AtsActionVerbs() {
@@ -350,6 +351,21 @@ export default function AtsActionVerbs() {
               </div>
             ))}
           </div>
+        </div>
+      </section>
+
+      {/* --- SOCIAL SHARE SECTION --- */}
+      <section className="bg-white py-12 border-t border-gray-200">
+        <div className="max-w-4xl mx-auto px-4">
+          <SocialShare 
+            variant="card"
+            theme="light"
+            title="250+ Powerful ATS Resume Action Verbs & Power Words | PandaLime"
+            description="Search and filter 250+ powerful resume action verbs for Engineering, Leadership, and Scale with real bullet point examples."
+            url="/tools/ats-action-verbs"
+            hashtags={['ActionVerbs', 'ResumeKeywords', 'ATSResume', 'CareerTips']}
+            customCallout="Share This 250+ Action Verbs Directory with Your Network"
+          />
         </div>
       </section>
 

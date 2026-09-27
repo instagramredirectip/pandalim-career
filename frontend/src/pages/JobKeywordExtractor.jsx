@@ -27,6 +27,7 @@ import LanguageSelector from '../components/LanguageSelector';
 import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
 import MobileDrawer from '../components/MobileDrawer';
+import SocialShare from '../components/SocialShare';
 import { SKILL_CATEGORIES, SAMPLE_JOB_DESCRIPTIONS } from '../data/toolsData';
 
 export default function JobKeywordExtractor() {
@@ -393,6 +394,21 @@ export default function JobKeywordExtractor() {
               </div>
             ))}
           </div>
+        </div>
+      </section>
+
+      {/* --- SOCIAL SHARE SECTION --- */}
+      <section className="bg-white py-12 border-t border-gray-200">
+        <div className="max-w-4xl mx-auto px-4">
+          <SocialShare 
+            variant="card"
+            theme="light"
+            title="Free Job Description Keyword Extractor & ATS Skill Finder | PandaLime"
+            description="Extract required technical skills, cloud tools, and keywords from any job description to pass ATS filters."
+            url="/tools/job-description-keyword-extractor"
+            hashtags={['JobKeywords', 'ResumeOptimization', 'ATSChecker', 'TechCareers']}
+            customCallout="Share This Free Keyword Extractor Tool"
+          />
         </div>
       </section>
 

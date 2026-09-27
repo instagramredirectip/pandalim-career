@@ -15,6 +15,7 @@ import SEOHead from '../components/SEOHead';
 import MobileDrawer from '../components/MobileDrawer';
 import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
+import SocialShare from '../components/SocialShare';
 
 export default function ToolsHub() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -267,6 +268,20 @@ export default function ToolsHub() {
               </div>
             ))}
           </div>
+        </div>
+      </section>
+
+      {/* --- SOCIAL SHARE SECTION --- */}
+      <section className="bg-[#08090C] py-12 border-t border-[#1F242D]">
+        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+          <SocialShare 
+            variant="card"
+            title="Free AI Career & ATS Resume Optimization Tools Suite | PandaLime"
+            description="Extract job keywords, generate Google X-Y-Z STAR bullet points, and explore 250+ recruiter action verbs for free."
+            url="/tools"
+            hashtags={['CareerTools', 'ResumeBuilder', 'ATSResume', 'JobSearch']}
+            customCallout="Share These Free Career Tools with Your Network"
+          />
         </div>
       </section>
 

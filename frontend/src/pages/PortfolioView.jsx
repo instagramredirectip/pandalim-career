@@ -20,6 +20,7 @@ import {
   Terminal
 } from 'lucide-react';
 import SEOHead from '../components/SEOHead';
+import SocialShare from '../components/SocialShare';
 import { THEMES, ACCENT_COLORS, ROLE_PRESETS } from '../data/portfolioTemplates';
 import { apiRequest } from '../config/api';
 import { sanitizeUrl } from '../utils/sanitize';
@@ -32,7 +33,6 @@ export default function PortfolioView() {
   const [portfolio, setPortfolio] = useState(null);
   const [loading, setLoading] = useState(true);
   const [copiedEmail, setCopiedEmail] = useState(false);
-  const [copiedLink, setCopiedLink] = useState(false);
 
   useEffect(() => {
     let isMounted = true;
@@ -155,14 +155,6 @@ export default function PortfolioView() {
     }
   };
 
-  const copyLink = () => {
-    haptics.success();
-    asmrAudio.playPop();
-    navigator.clipboard.writeText(publicUrl);
-    setCopiedLink(true);
-    setTimeout(() => setCopiedLink(false), 3000);
-  };
-
   // Schema.org Person & ProfilePage
   const sameAsLinks = Object.values(p.socialLinks || {}).filter(url => url && url.startsWith('http'));
   const jsonLd = [
@@ -200,14 +192,13 @@ export default function PortfolioView() {
           </Link>
 
           <div className="flex items-center gap-2 shrink-0">
-            <button
-              onClick={copyLink}
-              className="px-2.5 py-1 bg-[#151921] hover:bg-[#1F242D] text-gray-300 border border-[#1F242D] rounded-[2px] text-xs font-mono flex items-center gap-1.5 transition-all cursor-pointer"
-              title="Share Portfolio"
-            >
-              {copiedLink ? <Check className="w-3.5 h-3.5 text-[#D2FF00]" /> : <Share2 className="w-3.5 h-3.5" />}
-              <span className="hidden sm:inline">{copiedLink ? 'Copied!' : 'Share'}</span>
-            </button>
+            <SocialShare 
+              variant="compact"
+              title={`${p.fullName} — ${p.title} | PandaLime Portfolio`}
+              description={p.bio || p.tagline}
+              url={`/p/${slug || p.slug}`}
+              hashtags={['DeveloperPortfolio', 'TechHiring', 'SoftwareEngineer']}
+            />
 
             <Link
               to="/portfolio-builder"
@@ -218,7 +209,8 @@ export default function PortfolioView() {
               className="px-3 py-1 bg-[#D2FF00] hover:bg-[#b8e000] text-[#08090C] rounded-[2px] text-xs font-mono font-bold shadow-[0_0_12px_rgba(210,255,0,0.25)] flex items-center gap-1.5 transition-all whitespace-nowrap"
             >
               <Zap className="w-3 h-3" />
-              <span>Create Your Studio</span>
+              <span className="hidden sm:inline">Create Your Studio</span>
+              <span className="sm:hidden">Create</span>
             </Link>
           </div>
         </div>
@@ -529,6 +521,18 @@ export default function PortfolioView() {
             </div>
           </section>
         )}
+
+        {/* --- SOCIAL SHARE SECTION --- */}
+        <section className="max-w-5xl mx-auto w-full">
+          <SocialShare 
+            variant="card"
+            title={`${p.fullName} — ${p.title} | PandaLime Portfolio`}
+            description={p.bio || p.tagline}
+            url={`/p/${slug || p.slug}`}
+            hashtags={['DeveloperPortfolio', 'Hiring', 'TechTalent']}
+            customCallout={`Share ${p.fullName}'s Portfolio with Recruiters & Teams`}
+          />
+        </section>
 
         {/* --- BOTTOM CTA --- */}
         <section className="bg-[#08090C] border border-[#D2FF00]/40 rounded-[2px] p-6 sm:p-8 text-center space-y-4 shadow-2xl text-white">
