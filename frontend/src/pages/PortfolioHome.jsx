@@ -7,27 +7,25 @@ import {
   Check, 
   Briefcase, 
   Code2, 
-  Flame, 
   ExternalLink, 
   Download, 
   Github, 
-  Star, 
   Layers, 
-  Zap, 
-  ChevronRight,
-  Eye,
-  Terminal,
+  Eye, 
   Trophy,
-  Users
+  ChevronDown
 } from 'lucide-react';
 import SEOHead from '../components/SEOHead';
 import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
+import WebGLLiquidCanvas from '../components/portfolio/WebGLLiquidCanvas';
+import ThemePreviewCard from '../components/portfolio/ThemePreviewCard';
 import { asmrAudio } from '../utils/asmrAudio';
 import { haptics } from '../utils/haptics';
 
 export default function PortfolioHome() {
   const [activePersona, setActivePersona] = useState('recruiter'); // 'recruiter' | 'developer'
+  const [openFaq, setOpenFaq] = useState(null);
 
   const themes = [
     {
@@ -85,6 +83,25 @@ export default function PortfolioHome() {
     { name: 'Karthik Rao', role: 'DevOps Specialist', company: 'Atlassian', college: 'NIT Surathkal', slug: 'devon-cloud', avatar: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=200&auto=format&fit=crop&q=80', package: '₹38 LPA' }
   ];
 
+  const faqs = [
+    {
+      q: 'How long does it take to create a portfolio?',
+      a: 'Under 60 seconds! Just upload your resume PDF and we automatically organize your projects, skills, education, and links into an interactive site.'
+    },
+    {
+      q: 'Are the portfolios ATS-friendly and recruiter-tested?',
+      a: 'Yes. Every portfolio includes a dedicated Recruiter View with an instant one-click PDF download, verified skill tags, and key achievement metrics.'
+    },
+    {
+      q: 'Can I change my theme or vibe later?',
+      a: 'Anytime in one click. All your information, projects, and work history stay intact regardless of which visual theme you choose.'
+    },
+    {
+      q: 'Is hosting really 100% free forever?',
+      a: 'Yes. Your custom site lives forever at pandalime.com/p/yourname with SSL, blazing fast speed, and zero hosting fees.'
+    }
+  ];
+
   return (
     <div className="min-h-screen bg-[#0B0B0B] text-white font-sans selection:bg-[#D4FF3F] selection:text-black antialiased relative overflow-x-hidden">
       <SEOHead
@@ -96,55 +113,24 @@ export default function PortfolioHome() {
       {/* Main Global Navbar */}
       <Navbar />
 
-      {/* Background Animated Liquid Wave Ribbons */}
-      <div className="fixed inset-0 pointer-events-none z-0 overflow-hidden opacity-25">
-        <svg className="w-full h-full" viewBox="0 0 1440 900" fill="none" preserveAspectRatio="none">
-          <motion.path
-            d="M-100,250 C350,50 650,450 1050,150 C1350,-50 1550,350 1650,250"
-            stroke="#FF2DAB"
-            strokeWidth="90"
-            strokeLinecap="round"
-            fill="none"
-            animate={{ 
-              d: [
-                "M-100,250 C350,50 650,450 1050,150 C1350,-50 1550,350 1650,250",
-                "M-100,230 C370,120 620,380 1080,210 C1320,10 1520,320 1650,230",
-                "M-100,250 C350,50 650,450 1050,150 C1350,-50 1550,350 1650,250"
-              ]
-            }}
-            transition={{ duration: 14, repeat: Infinity, ease: "easeInOut" }}
-          />
-          <motion.path
-            d="M-100,650 C250,850 750,450 1150,750 C1400,950 1550,600 1650,700"
-            stroke="#D4FF3F"
-            strokeWidth="70"
-            strokeLinecap="round"
-            fill="none"
-            animate={{ 
-              d: [
-                "M-100,650 C250,850 750,450 1150,750 C1400,950 1550,600 1650,700",
-                "M-100,680 C280,780 720,510 1180,710 C1430,900 1520,650 1650,680",
-                "M-100,650 C250,850 750,450 1150,750 C1400,950 1550,600 1650,700"
-              ]
-            }}
-            transition={{ duration: 18, repeat: Infinity, ease: "easeInOut" }}
-          />
-        </svg>
+      {/* Real 60fps WebGL Liquid Ribbon Canvas Background */}
+      <div className="fixed inset-0 pointer-events-none z-0 overflow-hidden opacity-30">
+        <WebGLLiquidCanvas />
       </div>
 
       {/* HERO SECTION */}
-      <section className="relative z-10 pt-16 sm:pt-24 pb-16 sm:pb-24 px-4 sm:px-8 max-w-6xl mx-auto text-center space-y-8">
+      <section className="relative z-10 pt-16 sm:pt-28 pb-16 sm:pb-24 px-4 sm:px-8 max-w-6xl mx-auto text-center space-y-8">
         
         {/* Viral Badge */}
         <motion.div
           initial={{ opacity: 0, y: -10 }}
           animate={{ opacity: 1, y: 0 }}
-          className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-[#141414] border border-[#262626] text-xs font-mono"
+          className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-[#141414]/90 backdrop-blur-md border border-[#262626] text-xs font-mono shadow-xl"
         >
-          <span className="w-2 h-2 rounded-full bg-[#D4FF3F] animate-ping" />
+          <span className="w-2.5 h-2.5 rounded-full bg-[#D4FF3F] animate-ping inline-block" />
           <span className="text-[#FF2DAB] font-bold">#1 FOR CAMPUS PLACEMENTS</span>
-          <span className="text-zinc-500">•</span>
-          <span className="text-zinc-300">100% Free & Hosted at pandalime.com/p/yourname</span>
+          <span className="text-zinc-600">•</span>
+          <span className="text-zinc-300">Free & Hosted at pandalime.com/p/yourname</span>
         </motion.div>
 
         {/* Kinetic Headline */}
@@ -165,8 +151,8 @@ export default function PortfolioHome() {
           transition={{ duration: 0.5, delay: 0.2 }}
           className="text-zinc-400 text-base sm:text-xl max-w-2xl mx-auto leading-relaxed"
         >
-          No coding. No boring cookie-cutter templates. Upload your resume and get an interactive, 
-          animated portfolio that campus recruiters and hiring managers actually remember.
+          No coding. No boring templates. Upload your resume and get an interactive, 
+          animated site recruiters actually remember.
         </motion.p>
 
         {/* Action CTAs */}
@@ -182,7 +168,7 @@ export default function PortfolioHome() {
               haptics.heavy();
               asmrAudio.playClick();
             }}
-            className="px-8 py-4 rounded-full bg-[#D4FF3F] hover:bg-[#c2ee2d] text-[#0B0B0B] font-black text-base transition-all hover:scale-105 active:scale-95 shadow-[0_0_25px_rgba(212,255,63,0.35)] flex items-center gap-2 group cursor-pointer"
+            className="px-8 py-4 rounded-full bg-[#D4FF3F] hover:bg-[#c2ee2d] text-[#0B0B0B] font-black text-base transition-all hover:scale-105 active:scale-95 shadow-[0_0_30px_rgba(212,255,63,0.35)] flex items-center gap-2 group cursor-pointer"
           >
             <span>Build Mine in 60 Seconds</span>
             <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
@@ -194,7 +180,7 @@ export default function PortfolioHome() {
               haptics.light();
               asmrAudio.playPop();
             }}
-            className="px-6 py-4 rounded-full bg-[#141414] hover:bg-[#1a1a1a] text-white font-bold text-base border border-[#262626] hover:border-[#FF2DAB] transition-colors flex items-center gap-2 cursor-pointer"
+            className="px-6 py-4 rounded-full bg-[#141414]/90 hover:bg-[#1a1a1a] text-white font-bold text-base border border-[#262626] hover:border-[#FF2DAB] transition-colors flex items-center gap-2 cursor-pointer shadow-xl backdrop-blur-md"
           >
             <Eye className="w-4 h-4 text-[#FF2DAB]" />
             <span>Explore Live Themes</span>
@@ -202,14 +188,14 @@ export default function PortfolioHome() {
         </motion.div>
 
         {/* Feature Pills */}
-        <div className="pt-8 flex flex-wrap items-center justify-center gap-6 text-xs text-zinc-400 font-mono">
+        <div className="pt-6 flex flex-wrap items-center justify-center gap-6 text-xs text-zinc-400 font-mono">
           <div className="flex items-center gap-2">
             <Check className="w-4 h-4 text-[#D4FF3F]" />
             <span>1-Click PDF Resume Import</span>
           </div>
           <div className="flex items-center gap-2">
             <Check className="w-4 h-4 text-[#D4FF3F]" />
-            <span>Custom pandalime.com/p/yourname</span>
+            <span>Free pandalime.com/p/yourname URL</span>
           </div>
           <div className="flex items-center gap-2">
             <Check className="w-4 h-4 text-[#D4FF3F]" />
@@ -218,24 +204,24 @@ export default function PortfolioHome() {
         </div>
       </section>
 
-      {/* RECRUITER MODE STRIP & INTERACTIVE TOGGLE */}
+      {/* RECRUITER VS DEVELOPER MODE COMPARISON STRIP */}
       <section className="relative z-10 px-4 sm:px-8 py-12 max-w-5xl mx-auto">
-        <div className="bg-[#141414] border border-[#262626] rounded-3xl p-6 sm:p-10 shadow-2xl space-y-6">
+        <div className="bg-[#141414]/95 backdrop-blur-xl border border-[#262626] rounded-3xl p-6 sm:p-10 shadow-2xl space-y-6">
           <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-[#262626] pb-6">
             <div>
               <div className="text-xs font-mono uppercase text-[#D4FF3F] font-bold">
-                ADAPTIVE INTELLIGENCE
+                DUAL PERSONALITY ENGINE
               </div>
               <h2 className="text-2xl sm:text-3xl font-black text-white tracking-tight mt-1">
-                One Link. Two Perfect Views.
+                One Link. Two Tailored Views.
               </h2>
               <p className="text-xs sm:text-sm text-zinc-400 mt-1">
-                See how a single portfolio dynamically morphs for busy recruiters vs technical interviewers.
+                A single portfolio that seamlessly adapts for busy recruiters vs technical interviewers.
               </p>
             </div>
 
             {/* Persona Switcher Toggle */}
-            <div className="inline-flex p-1 rounded-full bg-[#0B0B0B] border border-[#262626] self-start sm:self-auto">
+            <div className="inline-flex p-1 rounded-full bg-[#0B0B0B] border border-[#262626] self-start sm:self-auto shadow-inner">
               <button
                 onClick={() => {
                   asmrAudio.playSwitch();
@@ -287,7 +273,7 @@ export default function PortfolioHome() {
                   </div>
                   <h3 className="text-base font-bold text-white">Instant 1-Click Resume</h3>
                   <p className="text-xs text-zinc-400 leading-relaxed">
-                    Zero friction for hiring managers. Your exact ATS-optimized resume PDF downloads with one tap.
+                    Zero friction for hiring managers. Your exact ATS-friendly resume PDF downloads with one tap.
                   </p>
                 </div>
 
@@ -297,7 +283,7 @@ export default function PortfolioHome() {
                   </div>
                   <h3 className="text-base font-bold text-white">High-Impact Metrics</h3>
                   <p className="text-xs text-zinc-400 leading-relaxed">
-                    Highlights CGPA, verified campus hackathon wins, latency improvements, and revenue numbers upfront.
+                    Highlights your CGPA, hackathon awards, latency reductions, and verified accomplishments upfront.
                   </p>
                 </div>
 
@@ -307,7 +293,7 @@ export default function PortfolioHome() {
                   </div>
                   <h3 className="text-base font-bold text-white">Verified Tech Stack</h3>
                   <p className="text-xs text-zinc-400 leading-relaxed">
-                    Grouped by seniority and proven project usage, making skill matrix checks effortless in under 10 seconds.
+                    Clear categorization of your frameworks and languages so talent recruiters can verify skills in 5 seconds.
                   </p>
                 </div>
               </motion.div>
@@ -326,7 +312,7 @@ export default function PortfolioHome() {
                   </div>
                   <h3 className="text-base font-bold text-white">Live GitHub Repos</h3>
                   <p className="text-xs text-zinc-400 leading-relaxed">
-                    Direct links to real clean code, commit heatmaps, pull requests, and starred open-source libraries.
+                    Direct access to your real code repositories, commit activity graphs, and pull requests.
                   </p>
                 </div>
 
@@ -334,9 +320,9 @@ export default function PortfolioHome() {
                   <div className="w-8 h-8 rounded-lg bg-[#FF2DAB]/20 text-[#FF2DAB] flex items-center justify-center font-bold">
                     <Layers className="w-4 h-4" />
                   </div>
-                  <h3 className="text-base font-bold text-white">Deep Architecture</h3>
+                  <h3 className="text-base font-bold text-white">System Architecture</h3>
                   <p className="text-xs text-zinc-400 leading-relaxed">
-                    Explains database schemas, Docker & Kubernetes pipelines, caching layers, and throughput trade-offs.
+                    Showcases database choices, API design, Docker setups, and caching solutions with clarity.
                   </p>
                 </div>
 
@@ -344,9 +330,9 @@ export default function PortfolioHome() {
                   <div className="w-8 h-8 rounded-lg bg-[#FF2DAB]/20 text-[#FF2DAB] flex items-center justify-center font-bold">
                     <ExternalLink className="w-4 h-4" />
                   </div>
-                  <h3 className="text-base font-bold text-white">Playable Live Demos</h3>
+                  <h3 className="text-base font-bold text-white">Interactive Live Demos</h3>
                   <p className="text-xs text-zinc-400 leading-relaxed">
-                    Peer developers can test actual live production URLs right in browser with one-click sandbox testing.
+                    Engineers can test your actual web applications and sandboxes straight from the browser.
                   </p>
                 </div>
               </motion.div>
@@ -355,7 +341,7 @@ export default function PortfolioHome() {
         </div>
       </section>
 
-      {/* LIVE INTERACTIVE THEME CAROUSEL */}
+      {/* 5-CARD VISUAL BENTO GRID SHOWCASING THEMES */}
       <section id="themes" className="relative z-10 px-4 sm:px-8 py-16 max-w-6xl mx-auto space-y-8">
         <div className="text-center space-y-2">
           <div className="text-xs font-mono uppercase text-[#FF2DAB] font-bold">
@@ -365,68 +351,18 @@ export default function PortfolioHome() {
             Five Flagship Themes. <br className="hidden sm:inline" /> Zero Boring Templates.
           </h2>
           <p className="text-zinc-400 text-sm sm:text-base max-w-xl mx-auto">
-            Switch between vibes in one click without re-entering your projects or experience.
+            Switch between vibes in one click without losing your projects, skills, or timeline.
           </p>
         </div>
 
-        {/* Themes Grid */}
+        {/* Bento Grid with Live Animated Theme Cards */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 pt-4">
           {themes.map((th) => (
-            <motion.div
+            <ThemePreviewCard
               key={th.id}
-              whileHover={{ y: -6 }}
-              className="bg-[#141414] border border-[#262626] hover:border-[#D4FF3F] rounded-3xl p-6 transition-all flex flex-col justify-between space-y-5 group shadow-xl"
-            >
-              <div className="space-y-3">
-                <div className="flex items-center justify-between">
-                  <span className="px-3 py-1 rounded-full bg-[#1f1f1f] border border-[#2c2c2c] text-xs font-mono text-[#D4FF3F]">
-                    {th.badge}
-                  </span>
-                  <span className="text-xs text-zinc-500 font-mono">Theme #{th.id}</span>
-                </div>
-
-                <div className={`h-24 rounded-2xl bg-gradient-to-tr ${th.color} opacity-85 group-hover:opacity-100 transition-opacity flex items-center justify-center p-4 text-black font-black text-xl shadow-inner`}>
-                  {th.name}
-                </div>
-
-                <div className="space-y-1">
-                  <h3 className="text-xl font-bold text-white group-hover:text-[#D4FF3F] transition-colors">
-                    {th.name}
-                  </h3>
-                  <div className="text-xs text-[#FF2DAB] font-mono font-semibold">
-                    {th.vibe}
-                  </div>
-                  <p className="text-xs text-zinc-400 leading-relaxed pt-1">
-                    {th.desc}
-                  </p>
-                </div>
-              </div>
-
-              <div className="flex items-center gap-2 pt-2 border-t border-[#262626]">
-                <Link
-                  to={`/p/${th.demoSlug}`}
-                  onClick={() => {
-                    haptics.light();
-                    asmrAudio.playClick();
-                  }}
-                  className="flex-1 py-2 rounded-xl bg-[#1f1f1f] hover:bg-white hover:text-black text-xs font-bold text-center transition-colors flex items-center justify-center gap-1.5"
-                >
-                  <Eye className="w-3.5 h-3.5" />
-                  <span>Test Drive Theme</span>
-                </Link>
-
-                <Link
-                  to="/portfolio-builder"
-                  onClick={() => {
-                    haptics.medium();
-                    asmrAudio.playPop();
-                  }}
-                  className="py-2 px-3 rounded-xl bg-[#D4FF3F] hover:bg-[#c2ee2d] text-black text-xs font-extrabold transition-transform hover:scale-105"
-                >
-                  Use This →
-                </Link>
-              </div>
-            </motion.div>
+              theme={th}
+              showActions={true}
+            />
           ))}
         </div>
       </section>
@@ -484,6 +420,53 @@ export default function PortfolioHome() {
         </div>
       </section>
 
+      {/* FAQ ACCORDION SECTION */}
+      <section className="relative z-10 px-4 sm:px-8 py-20 max-w-4xl mx-auto space-y-8">
+        <div className="text-center space-y-2">
+          <div className="text-xs font-mono uppercase text-[#D4FF3F] font-bold">
+            COMMON QUESTIONS
+          </div>
+          <h2 className="text-3xl sm:text-4xl font-black text-white tracking-tight uppercase">
+            Everything You Need To Know
+          </h2>
+        </div>
+
+        <div className="space-y-3">
+          {faqs.map((faq, idx) => (
+            <div 
+              key={idx}
+              className="bg-[#141414] border border-[#262626] rounded-2xl overflow-hidden transition-colors hover:border-zinc-600"
+            >
+              <button
+                onClick={() => {
+                  asmrAudio.playPop();
+                  setOpenFaq(openFaq === idx ? null : idx);
+                }}
+                className="w-full p-5 text-left flex items-center justify-between gap-4 cursor-pointer"
+              >
+                <span className="text-sm sm:text-base font-bold text-white">{faq.q}</span>
+                <ChevronDown className={`w-4 h-4 text-[#D4FF3F] transition-transform duration-200 shrink-0 ${openFaq === idx ? 'rotate-180' : ''}`} />
+              </button>
+              <AnimatePresence>
+                {openFaq === idx && (
+                  <motion.div
+                    initial={{ height: 0, opacity: 0 }}
+                    animate={{ height: 'auto', opacity: 1 }}
+                    exit={{ height: 0, opacity: 0 }}
+                    transition={{ duration: 0.2 }}
+                    className="overflow-hidden"
+                  >
+                    <div className="p-5 pt-0 text-xs sm:text-sm text-zinc-400 leading-relaxed border-t border-[#1f1f1f]">
+                      {faq.a}
+                    </div>
+                  </motion.div>
+                )}
+              </AnimatePresence>
+            </div>
+          ))}
+        </div>
+      </section>
+
       {/* BOTTOM VIRAL CTA */}
       <section className="relative z-10 px-4 sm:px-8 py-20 max-w-4xl mx-auto text-center space-y-6">
         <h2 className="text-4xl sm:text-6xl font-black text-white tracking-tight uppercase leading-none">
@@ -491,7 +474,7 @@ export default function PortfolioHome() {
           <span className="text-[#D4FF3F]">nobody forgets?</span>
         </h2>
         <p className="text-zinc-400 text-base sm:text-lg max-w-xl mx-auto">
-          Takes under 60 seconds. Free forever on PandaLime.
+          Takes under 60 seconds. 100% free forever on PandaLime.
         </p>
         <div className="pt-2">
           <Link
