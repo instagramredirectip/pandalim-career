@@ -56,18 +56,18 @@ export default function Navbar({ onOpenMobileMenu, showLanguage = true }) {
           </Link>
 
           <Link
-            to="/portfolio-builder"
-            onMouseEnter={() => prefetchRoute('/portfolio-builder')}
-            onTouchStart={() => prefetchRoute('/portfolio-builder')}
+            to="/portfolios"
+            onMouseEnter={() => prefetchRoute('/portfolios')}
+            onTouchStart={() => prefetchRoute('/portfolios')}
             className={`px-3 py-1.5 rounded-[2px] text-xs xl:text-xs font-mono font-bold transition-all flex items-center gap-1.5 border ${
-              isActive('/portfolio-builder') || isActive('/p/')
-                ? 'bg-[#151921] text-[#FF5722] border-[#FF5722]/40' 
-                : 'text-[#9BA3AF] hover:text-[#FF5722] hover:bg-[#0E1116] border-transparent hover:border-[#1F242D]'
+              isActive('/portfolios') || isActive('/portfolio-builder') || isActive('/p/')
+                ? 'bg-[#151921] text-[#D4FF3F] border-[#D4FF3F]/40' 
+                : 'text-[#9BA3AF] hover:text-[#D4FF3F] hover:bg-[#0E1116] border-transparent hover:border-[#1F242D]'
             }`}
           >
-            <Globe className="w-3.5 h-3.5 text-[#FF5722]" />
-            <span>AI PORTFOLIO</span>
-            <span className="text-[8px] bg-[#FF5722]/20 text-[#FF5722] font-mono font-bold px-1 py-0.2 rounded-[2px] border border-[#FF5722]/40 uppercase tracking-wider">NEW</span>
+            <Globe className="w-3.5 h-3.5 text-[#D4FF3F]" />
+            <span>PORTFOLIOS</span>
+            <span className="text-[8px] bg-[#D4FF3F]/20 text-[#D4FF3F] font-mono font-bold px-1 py-0.2 rounded-[2px] border border-[#D4FF3F]/40 uppercase tracking-wider">NEW</span>
           </Link>
 
           <Link

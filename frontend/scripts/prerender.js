@@ -654,9 +654,46 @@ const portfolioBuilderHtml = generatePageHtml({
 });
 writeStaticFile('/tools/portfolio-builder', portfolioBuilderHtml);
 writeStaticFile('/portfolio-builder', portfolioBuilderHtml);
+writeStaticFile('/studio', portfolioBuilderHtml);
 addSitemapUrl('/portfolio-builder', '0.9', 'weekly');
 console.log('✓ Pre-rendered: /portfolio-builder (canonical: /portfolio-builder)');
-console.log('✓ Pre-rendered: /tools/portfolio-builder & /portfolio-builder');
+console.log('✓ Pre-rendered: /tools/portfolio-builder & /portfolio-builder & /studio');
+
+// 4f. Portfolios Showcase Home Page
+const portfolioHomeHtml = generatePageHtml({
+  title: 'Student Portfolios That Recruiters Remember | PandaLime',
+  description: 'Turn your resume into an interactive, viral portfolio in 60 seconds. Featuring Netflix-style binge themes, 3D doors, and macOS bento layouts built for campus placements.',
+  canonicalPath: '/portfolios',
+  jsonLd: [
+    {
+      "@context": "https://schema.org",
+      "@type": "SoftwareApplication",
+      "name": "PandaLime Student Portfolios",
+      "operatingSystem": "All Web Browsers",
+      "applicationCategory": "BusinessApplication",
+      "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
+      "description": "Interactive portfolio builder and student showcase for campus placements."
+    },
+    {
+      "@context": "https://schema.org",
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        { "@type": "ListItem", "position": 1, "name": "Home", "item": `${BASE_URL}/` },
+        { "@type": "ListItem", "position": 2, "name": "Portfolios", "item": `${BASE_URL}/portfolios` }
+      ]
+    }
+  ],
+  bodyContent: `
+    <main style="max-width:1000px;margin:0 auto;padding:40px 20px;font-family:sans-serif;">
+      <h1>Turn Your Resume Into A Showstopper.</h1>
+      <p>No coding. No boring templates. Upload your resume and get an interactive site recruiters actually remember.</p>
+      <p><a href="/portfolio-builder">Build Mine in 60 Seconds</a></p>
+    </main>
+  `
+});
+writeStaticFile('/portfolios', portfolioHomeHtml);
+addSitemapUrl('/portfolios', '0.9', 'weekly');
+console.log('✓ Pre-rendered: /portfolios');
 
 // 4f. Pre-render Showcase Hosted Portfolios
 ROLE_PRESETS.forEach(preset => {

@@ -47,11 +47,11 @@ export default function MobileDrawer({ isOpen, onClose }) {
       badge: "FREE SCAN"
     },
     {
-      title: "AI Portfolio Studio",
-      desc: "Build and host your personal developer portfolio at /p/:username",
-      path: "/portfolio-builder",
-      icon: <Globe className="w-4 h-4 text-[#FF5722]" />,
-      badge: "5 THEMES"
+      title: "Portfolio Showcase & Studio",
+      desc: "Turn your resume into an interactive portfolio at pandalime.com/p/:username",
+      path: "/portfolios",
+      icon: <Globe className="w-4 h-4 text-[#D4FF3F]" />,
+      badge: "VIRAL"
     },
     {
       title: "JD Keyword Extractor",

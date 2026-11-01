@@ -35,9 +35,10 @@ import {
   HelpCircle,
   ArrowRight,
   ShieldCheck,
-  ChevronRight,
   ChevronLeft,
-  Share2
+  ChevronRight,
+  Share2,
+  QrCode
 } from 'lucide-react';
 import SEOHead from '../components/SEOHead';
 import { THEMES, ACCENT_COLORS, PRESET_AVATARS, ROLE_PRESETS } from '../data/portfolioTemplates';
@@ -45,6 +46,11 @@ import { apiRequest } from '../config/api';
 import { AppHeader, AppBottomNav } from '../components/AppNavigation';
 import { haptics } from '../utils/haptics';
 import { asmrAudio } from '../utils/asmrAudio';
+import BingeTheme from '../components/portfolio/BingeTheme';
+import DoorsTheme from '../components/portfolio/DoorsTheme';
+import SoundWavesTheme from '../components/portfolio/SoundWavesTheme';
+import BentoTheme from '../components/portfolio/BentoTheme';
+import ArcadeTheme from '../components/portfolio/ArcadeTheme';
 
 // Framer Motion spring presets
 const fadeUp = {
@@ -91,6 +97,7 @@ export default function PortfolioBuilder({ isAppMode: propAppMode = false }) {
   const [statusMessage, setStatusMessage] = useState('');
   const [slugStatus, setSlugStatus] = useState({ state: 'idle', message: '', isOwner: false });
   const [slugErrorAlert, setSlugErrorAlert] = useState('');
+  const [qrModalOpen, setQrModalOpen] = useState(false);
   
   // Audio state
   const [soundEnabled, setSoundEnabled] = useState(() => asmrAudio.isEnabled());
@@ -391,7 +398,7 @@ export default function PortfolioBuilder({ isAppMode: propAppMode = false }) {
     haptics.heavy();
     asmrAudio.playClick();
     setIsParsingPdf(true);
-    setStatusMessage('📄 Parsing resume PDF AST tokens...');
+    setStatusMessage('📄 Reading your resume PDF...');
 
     try {
       const formData = new FormData();
@@ -665,58 +672,57 @@ export default function PortfolioBuilder({ isAppMode: propAppMode = false }) {
   const selectedAccent = ACCENT_COLORS.find(c => c.id === portfolioData.accentColor) || ACCENT_COLORS[0];
 
   const TABS = [
-    { id: 'theme', icon: Palette, label: 'Theme & Style' },
-    { id: 'profile', icon: User, label: 'Identity & Bio' },
-    { id: 'social', icon: Globe, label: 'Links' },
-    { id: 'skills', icon: Code2, label: 'Skills Stack' },
-    { id: 'projects', icon: Layers, label: 'Projects' },
-    { id: 'experience', icon: Briefcase, label: 'Career Log' },
+    { id: 'theme', icon: Palette, label: '1. Pick a Vibe' },
+    { id: 'profile', icon: User, label: '2. About You' },
+    { id: 'skills', icon: Code2, label: '3. Skills' },
+    { id: 'projects', icon: Layers, label: '4. Projects & Proof' },
+    { id: 'experience', icon: Briefcase, label: '5. Timeline & College' },
   ];
 
   const TUTORIAL_STEPS = [
     {
-      title: "⚡ 1-Click Resume Auto-Fill & Presets",
-      desc: "Drag and drop your PDF resume to parse all bio details, quantified metrics, projects, and skills into your portfolio in <800ms. Or click any 1-click role preset.",
-      actionLabel: "Next: Choose Aesthetics →",
-      badge: "STEP 1 // SPEED"
+      title: "⚡ Import Resume PDF or Pick a Preset",
+      desc: "Upload your resume PDF to instantly fill your bio, skills, college info, and projects in seconds. Or click any 1-click role preset to start with proven mock data.",
+      actionLabel: "Next: Pick a Vibe →",
+      badge: "QUICK START"
     },
     {
-      title: "🎨 10 Visual Themes (Minecraft, Sakura, Light)",
-      desc: "Switch between 10 hand-crafted themes: Dark Terminal, Minimalist Ivory Paper, Neo-Brutalist Pop, Minecraft 8-Bit Pixel, Sakura Blossom, and Rose Gold Velvet.",
-      actionLabel: "Next: Quantify Impact →",
-      badge: "STEP 2 // THEMES"
+      title: "🎨 Pick Your Vibe (Binge, 3D Doors, Sound Waves...)",
+      desc: "Choose from 5 flagship animated themes: Netflix-style Binge Series, Behind The Doors 3D, Acid Sound Waves, MacOS Bento, and Retro Arcade 99.",
+      actionLabel: "Next: Highlight Projects →",
+      badge: "SHOWSTOPPER THEMES"
     },
     {
-      title: "🛠️ Quantified Impact & Tech Stack",
-      desc: "Craft Google XYZ bullet points with measurable impact metrics (e.g. '+4.2x Throughput, $180k AWS Savings') to trigger top ATS & recruiter shortlist algorithms.",
-      actionLabel: "Next: Deploy & Share →",
-      badge: "STEP 3 // ATS WEIGHT"
+      title: "🚀 Quantified Projects & Proof",
+      desc: "Showcase your real-world projects with measurable metrics, live sandbox demos, and GitHub repository links that campus recruiters can verify.",
+      actionLabel: "Next: Publish & Share →",
+      badge: "STAND OUT"
     },
     {
-      title: "🌐 Instant Free URL (pandalime.com/p/you)",
-      desc: "Claim your vanity link with 1-click publishing, QR code generation, and direct recruitment contact buttons. Everything is 100% free with zero hosting fees.",
+      title: "🌐 Your Custom Link & Resume QR Code",
+      desc: "Publish your site instantly at pandalime.com/p/yourname. Download a scannable QR code to print directly onto your paper resume for campus placements.",
       actionLabel: "Start Building Now 🎉",
-      badge: "STEP 4 // PUBLISH"
+      badge: "INSTANT HOSTING"
     }
   ];
 
   return (
-    <div className="min-h-screen bg-[#08090C] text-[#F0F4FC] flex flex-col font-sans w-full max-w-full overflow-x-hidden selection:bg-[#D2FF00]/30 selection:text-black antialiased">
+    <div className="min-h-screen bg-[#0B0B0B] text-[#F0F4FC] flex flex-col font-sans w-full max-w-full overflow-x-hidden selection:bg-[#D4FF3F]/30 selection:text-black antialiased">
       <SEOHead 
-        title="AI Developer & Cyber Portfolio Studio | Free Hosted Portfolio Page | PandaLime"
-        description="Build and host your sharp developer or cyber portfolio on pandalime.com/p/:username. Choose from 10 modern themes (Minecraft, Sakura, Light Ivory, Neo-Brutalist) with ASMR micro-interactions."
+        title="Student Portfolios & Personal Showcases | Free Host | PandaLime"
+        description="Build and host your sharp developer or student portfolio on pandalime.com/p/:username. Choose from 5 flagship animated themes with ASMR micro-interactions."
         canonical="/portfolio-builder"
       />
 
       {/* Subtle Hairline Grid Background */}
       <div className="fixed inset-0 pointer-events-none z-0 opacity-20">
-        <div className="absolute inset-0 bg-[linear-gradient(to_right,#1F242D_1px,transparent_1px),linear-gradient(to_bottom,#1F242D_1px,transparent_1px)] bg-[size:4rem_4rem] [mask-image:radial-gradient(ellipse_60%_50%_at_50%_0%,#000_70%,transparent_100%)]" />
+        <div className="absolute inset-0 bg-[linear-gradient(to_right,#262626_1px,transparent_1px),linear-gradient(to_bottom,#262626_1px,transparent_1px)] bg-[size:4rem_4rem] [mask-image:radial-gradient(ellipse_60%_50%_at_50%_0%,#000_70%,transparent_100%)]" />
       </div>
 
       {isAppMode ? (
         <div className="relative z-40">
           <AppHeader 
-            title="DevFolio Studio" 
+            title="Portfolio Studio" 
             showBack={true} 
             rightAction={
               <div className="flex items-center gap-2">
@@ -726,68 +732,76 @@ export default function PortfolioBuilder({ isAppMode: propAppMode = false }) {
                     asmrAudio.playSwitch();
                     setMobileView(mobileView === 'editor' ? 'preview' : 'editor');
                   }}
-                  className="text-[11px] font-mono font-bold text-gray-300 bg-[#0E1116] border border-[#1F242D] px-2.5 py-1.5 rounded-[2px] flex items-center gap-1 active:scale-95 transition-all cursor-pointer"
+                  className="text-[11px] font-mono font-bold text-gray-300 bg-[#141414] border border-[#262626] px-2.5 py-1.5 rounded-lg flex items-center gap-1 active:scale-95 transition-all cursor-pointer"
                 >
-                  <Eye className="w-3.5 h-3.5 text-[#D2FF00]" />
+                  <Eye className="w-3.5 h-3.5 text-[#D4FF3F]" />
                   <span>{mobileView === 'editor' ? 'Preview' : 'Editor'}</span>
                 </button>
 
                 <button
                   onClick={handlePublish}
                   disabled={isPublishing}
-                  className="px-3 py-1.5 bg-[#D2FF00] hover:bg-[#b8e000] text-[#08090C] font-mono font-bold text-[11px] rounded-[2px] shadow-[0_0_12px_rgba(210,255,0,0.3)] flex items-center gap-1.5 transition-all active:scale-95 cursor-pointer shrink-0"
+                  className="px-3.5 py-1.5 bg-[#D4FF3F] hover:bg-[#c2ee2d] text-[#0B0B0B] font-bold text-[11px] rounded-lg shadow-[0_0_12px_rgba(212,255,63,0.3)] flex items-center gap-1.5 transition-all active:scale-95 cursor-pointer shrink-0"
                 >
                   {isPublishing ? <RefreshCw className="w-3 h-3 animate-spin" /> : <Globe className="w-3 h-3" />}
-                  <span>Deploy</span>
+                  <span>Publish</span>
                 </button>
               </div>
             }
           />
         </div>
       ) : (
-        <header className="bg-[#08090C]/90 border-b border-[#1F242D] sticky top-0 z-40 backdrop-blur-xl px-4 py-2.5">
+        <header className="bg-[#0B0B0B]/95 border-b border-[#262626] sticky top-0 z-40 backdrop-blur-xl px-4 py-2.5">
           <div className="max-w-[1600px] mx-auto flex items-center justify-between gap-3">
             
             {/* Left: Brand & Telemetry Status */}
             <div className="flex items-center gap-3">
               <Link 
-                to="/" 
+                to="/portfolios" 
                 onClick={() => {
                   haptics.light();
                   asmrAudio.playClick();
                 }}
-                className="flex items-center gap-2 font-mono font-bold text-white text-sm sm:text-base tracking-tight hover:opacity-90 transition-opacity"
+                className="flex items-center gap-2 font-bold text-white text-sm sm:text-base tracking-tight hover:opacity-90 transition-opacity"
               >
-                <div className="w-7 h-7 bg-[#D2FF00] text-[#08090C] rounded-[2px] flex items-center justify-center shadow-[0_0_12px_rgba(210,255,0,0.3)] shrink-0">
-                  <Terminal className="w-4 h-4 stroke-[2.5]" />
+                <div className="w-7 h-7 bg-[#D4FF3F] text-[#0B0B0B] rounded-lg flex items-center justify-center shadow-[0_0_12px_rgba(212,255,63,0.3)] shrink-0 font-black">
+                  <Sparkles className="w-4 h-4 fill-black" />
                 </div>
-                <span className="hidden sm:inline tracking-tight font-black">PANDALIME</span>
-                <span className="text-[10px] font-mono text-[#D2FF00] bg-[#D2FF00]/10 border border-[#D2FF00]/30 px-1.5 py-0.5 rounded-[2px] uppercase">
-                  Studio // v2.4
-                </span>
+                <span className="tracking-tight font-black">PandaLime Portfolios</span>
               </Link>
 
-              {/* Status HUD Beacon */}
-              <div className="hidden lg:flex items-center gap-2 pl-3 border-l border-[#1F242D] text-[11px] font-mono text-gray-400">
-                <span className="w-1.5 h-1.5 rounded-full bg-[#D2FF00] animate-ping" />
-                <span>SYSTEM ONLINE</span>
+              {/* Status Indicator */}
+              <div className="hidden lg:flex items-center gap-2 pl-3 border-l border-[#262626] text-xs font-mono text-zinc-400">
+                <span className="w-1.5 h-1.5 rounded-full bg-[#D4FF3F] animate-ping" />
+                <span>Live Cloud Sync</span>
               </div>
             </div>
 
-            {/* Center: Live Vanity URL Bar */}
-            <div className="hidden md:flex items-center bg-[#0E1116] border border-[#1F242D] px-3 py-1 rounded-[2px] gap-2 text-xs font-mono max-w-xs truncate">
-              <span className="text-gray-500">pandalime.com/p/</span>
-              <span className="text-[#D2FF00] font-bold truncate">{portfolioData.slug || 'preview'}</span>
+            {/* Center: Live Vanity URL Bar with Copy & QR Code */}
+            <div className="hidden md:flex items-center bg-[#141414] border border-[#262626] px-3.5 py-1.5 rounded-full gap-2 text-xs font-mono max-w-sm truncate">
+              <span className="text-zinc-500">pandalime.com/p/</span>
+              <span className="text-[#D4FF3F] font-bold truncate">{portfolioData.slug || 'yourname'}</span>
               <button 
                 onClick={copyShareLink} 
-                className="text-gray-400 hover:text-white transition-colors cursor-pointer ml-1 p-0.5"
+                className="text-zinc-400 hover:text-white transition-colors cursor-pointer ml-1 p-0.5"
                 title="Copy Live URL"
               >
-                {copiedLink ? <Check className="w-3.5 h-3.5 text-[#D2FF00]" /> : <Copy className="w-3.5 h-3.5" />}
+                {copiedLink ? <Check className="w-3.5 h-3.5 text-[#D4FF3F]" /> : <Copy className="w-3.5 h-3.5" />}
+              </button>
+              <button
+                onClick={() => {
+                  haptics.light();
+                  asmrAudio.playPop();
+                  setQrModalOpen(true);
+                }}
+                className="text-zinc-400 hover:text-[#D4FF3F] transition-colors cursor-pointer p-0.5 ml-0.5"
+                title="Generate Resume QR Code"
+              >
+                <QrCode className="w-3.5 h-3.5" />
               </button>
             </div>
 
-            {/* Right: Actions, Audio ASMR, Tour, Completeness & Deploy */}
+            {/* Right: Actions, Audio ASMR, Tour, Completeness & Publish Site */}
             <div className="flex items-center gap-2 sm:gap-3">
               
               {/* Completeness Score Gauge Dropdown */}
@@ -798,17 +812,17 @@ export default function PortfolioBuilder({ isAppMode: propAppMode = false }) {
                     asmrAudio.playSwitch();
                     setCompletenessOpen(!completenessOpen);
                   }}
-                  className="flex items-center gap-2 bg-[#0E1116] hover:bg-[#151921] border border-[#1F242D] hover:border-[#D2FF00]/40 px-2.5 py-1.5 rounded-[2px] text-xs font-mono transition-all cursor-pointer"
+                  className="flex items-center gap-2 bg-[#141414] hover:bg-[#1a1a1a] border border-[#262626] hover:border-[#D4FF3F]/40 px-3 py-1.5 rounded-full text-xs font-mono transition-all cursor-pointer"
                   title="Profile Completeness Score"
                 >
                   <div className="w-3 h-3 rounded-full border border-gray-600 flex items-center justify-center">
                     <div 
                       className="w-1.5 h-1.5 rounded-full" 
-                      style={{ backgroundColor: completeness.score >= 80 ? '#D2FF00' : completeness.score >= 50 ? '#FF5722' : '#8C96A8' }} 
+                      style={{ backgroundColor: completeness.score >= 80 ? '#D4FF3F' : completeness.score >= 50 ? '#FF5722' : '#8C96A8' }} 
                     />
                   </div>
                   <span className="font-bold text-white">{completeness.score}%</span>
-                  <span className="hidden xl:inline text-gray-400 text-[11px]">OPTIMIZED</span>
+                  <span className="hidden xl:inline text-zinc-400 text-[11px]">Complete</span>
                 </button>
 
                 {/* Completeness Checklist Modal */}
@@ -816,14 +830,14 @@ export default function PortfolioBuilder({ isAppMode: propAppMode = false }) {
                   {completenessOpen && (
                     <motion.div 
                       initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: 8 }}
-                      className="absolute right-0 top-full mt-2 w-72 bg-[#0E1116] border border-[#1F242D] shadow-2xl p-4 rounded-[2px] z-50 space-y-3 font-mono"
+                      className="absolute right-0 top-full mt-2 w-72 bg-[#141414] border border-[#262626] shadow-2xl p-4 rounded-2xl z-50 space-y-3 font-mono"
                     >
-                      <div className="flex justify-between items-center border-b border-[#1F242D] pb-2">
-                        <span className="text-[11px] font-bold text-white uppercase tracking-wider">ATS Score Telemetry</span>
-                        <span className="text-xs font-bold text-[#D2FF00]">{completeness.score}/100</span>
+                      <div className="flex justify-between items-center border-b border-[#262626] pb-2">
+                        <span className="text-[11px] font-bold text-white uppercase tracking-wider">Candidate Quality Score</span>
+                        <span className="text-xs font-bold text-[#D4FF3F]">{completeness.score}/100</span>
                       </div>
-                      <div className="w-full bg-[#08090C] h-1.5 rounded-[2px] overflow-hidden border border-[#1F242D]">
-                        <div className="bg-[#D2FF00] h-full transition-all duration-500" style={{ width: `${completeness.score}%` }} />
+                      <div className="w-full bg-[#0B0B0B] h-1.5 rounded-full overflow-hidden border border-[#262626]">
+                        <div className="bg-[#D4FF3F] h-full transition-all duration-500" style={{ width: `${completeness.score}%` }} />
                       </div>
                       <div className="space-y-1.5 text-[11px]">
                         {completeness.items.map((item, idx) => (
@@ -836,13 +850,13 @@ export default function PortfolioBuilder({ isAppMode: propAppMode = false }) {
                                 setCompletenessOpen(false);
                               }
                             }}
-                            className={`flex items-center justify-between p-1.5 rounded-[2px] ${item.done ? 'text-gray-400 bg-black/20' : 'text-[#D2FF00] bg-[#D2FF00]/5 hover:bg-[#D2FF00]/10 cursor-pointer border border-[#D2FF00]/20'}`}
+                            className={`flex items-center justify-between p-1.5 rounded-lg ${item.done ? 'text-zinc-500 bg-black/20' : 'text-[#D4FF3F] bg-[#D4FF3F]/5 hover:bg-[#D4FF3F]/10 cursor-pointer border border-[#D4FF3F]/20'}`}
                           >
                             <span className="flex items-center gap-1.5 truncate">
-                              {item.done ? <Check className="w-3.5 h-3.5 text-[#D2FF00] shrink-0" /> : <Plus className="w-3.5 h-3.5 shrink-0" />}
+                              {item.done ? <Check className="w-3.5 h-3.5 text-[#D4FF3F] shrink-0" /> : <Plus className="w-3.5 h-3.5 shrink-0" />}
                               <span className="truncate">{item.label}</span>
                             </span>
-                            <span className="text-[10px] text-gray-500 shrink-0">+{item.points}</span>
+                            <span className="text-[10px] text-zinc-500 shrink-0">+{item.points}</span>
                           </div>
                         ))}
                       </div>
@@ -854,7 +868,7 @@ export default function PortfolioBuilder({ isAppMode: propAppMode = false }) {
               {/* ASMR Sound Toggle Button */}
               <button
                 onClick={toggleSound}
-                className={`p-2 rounded-[2px] border transition-all cursor-pointer ${soundEnabled ? 'bg-[#D2FF00]/10 border-[#D2FF00]/40 text-[#D2FF00]' : 'bg-[#0E1116] border-[#1F242D] text-gray-500 hover:text-gray-300'}`}
+                className={`p-2 rounded-full border transition-all cursor-pointer ${soundEnabled ? 'bg-[#D4FF3F]/10 border-[#D4FF3F]/40 text-[#D4FF3F]' : 'bg-[#141414] border-[#262626] text-zinc-500 hover:text-zinc-300'}`}
                 title={soundEnabled ? 'ASMR Haptic Sound: Active' : 'Sound: Muted'}
               >
                 {soundEnabled ? <Volume2 className="w-4 h-4" /> : <VolumeX className="w-4 h-4" />}
@@ -868,15 +882,15 @@ export default function PortfolioBuilder({ isAppMode: propAppMode = false }) {
                   setTutorialStep(0);
                   setTutorialOpen(true);
                 }}
-                className="hidden sm:flex items-center gap-1 px-2.5 py-1.5 bg-[#0E1116] hover:bg-[#151921] border border-[#1F242D] text-xs font-mono text-gray-300 hover:text-white rounded-[2px] transition-all cursor-pointer"
-                title="Beginner Walkthrough Tour"
+                className="hidden sm:flex items-center gap-1 px-3 py-1.5 bg-[#141414] hover:bg-[#1a1a1a] border border-[#262626] text-xs font-mono text-zinc-300 hover:text-white rounded-full transition-all cursor-pointer"
+                title="Interactive Guide"
               >
-                <HelpCircle className="w-3.5 h-3.5 text-[#D2FF00]" />
-                <span className="hidden md:inline">Tour</span>
+                <HelpCircle className="w-3.5 h-3.5 text-[#D4FF3F]" />
+                <span className="hidden md:inline">Guide</span>
               </button>
 
               {/* Mobile View Toggle (Editor vs Preview) */}
-              <div className="lg:hidden flex bg-[#0E1116] rounded-[2px] p-0.5 border border-[#1F242D] text-xs font-mono font-bold">
+              <div className="lg:hidden flex bg-[#141414] rounded-full p-0.5 border border-[#262626] text-xs font-mono font-bold">
                 {['editor', 'preview'].map(view => (
                   <button
                     key={view} 
@@ -885,7 +899,7 @@ export default function PortfolioBuilder({ isAppMode: propAppMode = false }) {
                       asmrAudio.playSwitch();
                       setMobileView(view);
                     }}
-                    className={`px-2.5 py-1 rounded-[2px] transition-all capitalize ${mobileView === view ? 'bg-[#D2FF00] text-[#08090C] font-bold shadow-sm' : 'text-gray-400 hover:text-white'}`}
+                    className={`px-3 py-1 rounded-full transition-all capitalize ${mobileView === view ? 'bg-[#D4FF3F] text-[#0B0B0B] font-bold shadow-sm' : 'text-zinc-400 hover:text-white'}`}
                   >
                     {view}
                   </button>
@@ -893,7 +907,7 @@ export default function PortfolioBuilder({ isAppMode: propAppMode = false }) {
               </div>
 
               {/* Desktop Viewport Switchers */}
-              <div className="hidden lg:flex items-center bg-[#0E1116] rounded-[2px] p-0.5 border border-[#1F242D]">
+              <div className="hidden lg:flex items-center bg-[#141414] rounded-full p-0.5 border border-[#262626]">
                 {[
                   { id: 'desktop', icon: Monitor, label: '1440px' },
                   { id: 'tablet', icon: Tablet, label: '768px' },
@@ -906,7 +920,7 @@ export default function PortfolioBuilder({ isAppMode: propAppMode = false }) {
                       asmrAudio.playSwitch();
                       setPreviewMode(mode.id);
                     }}
-                    className={`px-2 py-1 rounded-[2px] text-[11px] font-mono flex items-center gap-1 transition-all cursor-pointer ${previewMode === mode.id ? 'bg-[#1F242D] text-[#D2FF00] font-bold' : 'text-gray-500 hover:text-gray-300'}`}
+                    className={`px-2.5 py-1 rounded-full text-[11px] font-mono flex items-center gap-1 transition-all cursor-pointer ${previewMode === mode.id ? 'bg-[#262626] text-[#D4FF3F] font-bold' : 'text-zinc-500 hover:text-zinc-300'}`}
                     title={`Preview in ${mode.label}`}
                   >
                     <mode.icon className="w-3.5 h-3.5" />
@@ -917,23 +931,23 @@ export default function PortfolioBuilder({ isAppMode: propAppMode = false }) {
 
               {/* JSON Export/Import */}
               <div className="hidden sm:flex items-center gap-1.5">
-                <label className="cursor-pointer flex items-center justify-center w-8 h-8 rounded-[2px] border border-[#1F242D] bg-[#0E1116] hover:bg-[#151921] text-gray-400 hover:text-white transition-colors" title="Import JSON Config">
+                <label className="cursor-pointer flex items-center justify-center w-8 h-8 rounded-full border border-[#262626] bg-[#141414] hover:bg-[#1a1a1a] text-zinc-400 hover:text-white transition-colors" title="Import JSON Config">
                   <Upload className="w-3.5 h-3.5" />
                   <input type="file" accept=".json" onChange={handleImportJson} className="hidden" />
                 </label>
-                <button onClick={handleExportJson} className="flex items-center justify-center w-8 h-8 rounded-[2px] border border-[#1F242D] bg-[#0E1116] hover:bg-[#151921] text-gray-400 hover:text-white transition-colors cursor-pointer" title="Export JSON Config">
+                <button onClick={handleExportJson} className="flex items-center justify-center w-8 h-8 rounded-full border border-[#262626] bg-[#141414] hover:bg-[#1a1a1a] text-zinc-400 hover:text-white transition-colors cursor-pointer" title="Export JSON Config">
                   <Download className="w-3.5 h-3.5" />
                 </button>
               </div>
 
-              {/* Primary High-Impact Deploy Button */}
+              {/* Primary High-Impact Publish Site Button */}
               <motion.button
-                whileHover={{ scale: 1.01 }} whileTap={{ scale: 0.98 }}
+                whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }}
                 onClick={handlePublish} disabled={isPublishing}
-                className="px-3.5 sm:px-4 py-1.5 sm:py-2 bg-[#D2FF00] hover:bg-[#b8e000] text-[#08090C] font-mono font-black text-xs sm:text-sm rounded-[2px] shadow-[0_0_16px_rgba(210,255,0,0.35)] flex items-center gap-1.5 transition-all cursor-pointer shrink-0 border border-[#D2FF00]"
+                className="px-4 sm:px-5 py-2 bg-[#D4FF3F] hover:bg-[#c2ee2d] text-[#0B0B0B] font-black text-xs sm:text-sm rounded-full shadow-[0_0_16px_rgba(212,255,63,0.35)] flex items-center gap-1.5 transition-all cursor-pointer shrink-0"
               >
-                {isPublishing ? <RefreshCw className="w-4 h-4 animate-spin" /> : <Globe className="w-4 h-4 stroke-[2.5]" />}
-                <span className="tracking-tight uppercase">Deploy</span>
+                {isPublishing ? <RefreshCw className="w-4 h-4 animate-spin" /> : <Globe className="w-4 h-4" />}
+                <span className="tracking-tight">Publish Site</span>
               </motion.button>
             </div>
           </div>
@@ -956,39 +970,39 @@ export default function PortfolioBuilder({ isAppMode: propAppMode = false }) {
             initial={{ opacity: 0, y: -20, scale: 0.98 }}
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, y: -20, scale: 0.98 }}
-            className="fixed top-4 sm:top-5 left-1/2 -translate-x-1/2 z-50 bg-[#0E1116] border border-[#D2FF00]/40 px-4 py-2 rounded-[2px] shadow-[0_0_25px_rgba(210,255,0,0.15)] flex items-center gap-2 max-w-[90vw] font-mono pointer-events-none"
+            className="fixed top-4 sm:top-5 left-1/2 -translate-x-1/2 z-50 bg-[#141414] border border-[#D4FF3F]/40 px-4 py-2 rounded-full shadow-[0_0_25px_rgba(212,255,63,0.15)] flex items-center gap-2 max-w-[90vw] font-mono pointer-events-none"
           >
-            <Sparkles className="w-4 h-4 text-[#D2FF00] shrink-0" />
+            <Sparkles className="w-4 h-4 text-[#D4FF3F] shrink-0" />
             <span className="text-xs font-bold text-white">{statusMessage}</span>
           </motion.div>
         )}
       </AnimatePresence>
 
-      {/* --- AI PROMPT & RESUME PDF HERO BANNER --- */}
-      <section className="relative z-10 bg-[#0E1116]/80 border-b border-[#1F242D] py-3 px-4 backdrop-blur-md">
+      {/* --- QUICK IMPORT & MAKE MAGIC HERO BAR --- */}
+      <section className="relative z-10 bg-[#0B0B0B]/80 border-b border-[#262626] py-3 px-4 backdrop-blur-md">
         <div className="max-w-[1600px] mx-auto flex flex-col md:flex-row gap-3 items-center justify-between">
           
-          {/* AI Custom Prompt Input */}
+          {/* Natural Language Prompt Input */}
           <div className="flex-1 w-full relative">
-            <div className="absolute inset-y-0 left-3 flex items-center pointer-events-none text-gray-500 font-mono text-xs">
-              <Sparkles className="w-4 h-4 text-[#D2FF00]" />
+            <div className="absolute inset-y-0 left-3 flex items-center pointer-events-none text-zinc-500">
+              <Sparkles className="w-4 h-4 text-[#D4FF3F]" />
             </div>
             <input
               type="text"
               value={aiPrompt}
               onChange={(e) => setAiPrompt(e.target.value)}
-              placeholder="Describe your role to auto-craft portfolio blocks (e.g. 'Staff Security Architect specializing in eBPF')..."
-              className="w-full bg-[#08090C] border border-[#1F242D] focus:border-[#D2FF00] rounded-[2px] pl-9 pr-24 py-2.5 text-xs sm:text-sm text-gray-100 placeholder-gray-500 focus:outline-none transition-all font-mono"
+              placeholder="Tell us what you do in one line (e.g., 'Final year CS student who loves building mobile apps')..."
+              className="w-full bg-[#141414] border border-[#262626] focus:border-[#D4FF3F] rounded-full pl-9 pr-28 py-2.5 text-xs sm:text-sm text-zinc-100 placeholder-zinc-500 focus:outline-none transition-all"
               onKeyDown={(e) => e.key === 'Enter' && handleGenerateFromAi()}
             />
             <div className="absolute inset-y-1 right-1 flex items-center">
               <button
                 onClick={handleGenerateFromAi}
                 disabled={isGeneratingAi || !aiPrompt.trim()}
-                className="h-full px-3 bg-[#151921] hover:bg-[#1F242D] border border-[#1F242D] disabled:opacity-40 text-[#D2FF00] font-mono font-bold text-xs rounded-[2px] flex items-center gap-1 transition-all cursor-pointer"
+                className="h-full px-4 bg-[#D4FF3F] hover:bg-[#c2ee2d] disabled:opacity-40 text-black font-bold text-xs rounded-full flex items-center gap-1 transition-all cursor-pointer"
               >
                 {isGeneratingAi ? <RefreshCw className="w-3.5 h-3.5 animate-spin" /> : <Zap className="w-3.5 h-3.5" />}
-                <span className="hidden sm:inline">Synthesize</span>
+                <span>Make Magic</span>
               </button>
             </div>
           </div>
@@ -1004,11 +1018,11 @@ export default function PortfolioBuilder({ isAppMode: propAppMode = false }) {
                 pdfInputRef.current?.click();
               }}
               disabled={isParsingPdf}
-              className="px-3.5 py-1.5 bg-[#D2FF00]/10 hover:bg-[#D2FF00]/20 border border-[#D2FF00]/40 text-[#D2FF00] font-mono font-bold text-xs rounded-[2px] flex items-center gap-1.5 transition-all shadow-[0_0_12px_rgba(210,255,0,0.1)] active:scale-95 cursor-pointer whitespace-nowrap shrink-0"
+              className="px-4 py-2 bg-[#141414] hover:bg-[#1f1f1f] border border-[#262626] hover:border-[#D4FF3F] text-[#D4FF3F] font-bold text-xs rounded-full flex items-center gap-1.5 transition-all active:scale-95 cursor-pointer whitespace-nowrap shrink-0"
               title="Upload your resume PDF to instantly auto-fill all profile fields"
             >
               {isParsingPdf ? <RefreshCw className="w-3.5 h-3.5 animate-spin" /> : <FileText className="w-3.5 h-3.5" />}
-              <span>{isParsingPdf ? 'Parsing AST...' : '⚡ PDF Auto-Fill'}</span>
+              <span>{isParsingPdf ? 'Reading Resume...' : 'Import Resume PDF'}</span>
             </button>
 
             {/* Quick Presets */}
@@ -1016,7 +1030,7 @@ export default function PortfolioBuilder({ isAppMode: propAppMode = false }) {
               <button
                 key={preset.id} 
                 onClick={() => loadPreset(preset.id)}
-                className="px-2.5 py-1.5 bg-[#08090C] hover:bg-[#151921] border border-[#1F242D] hover:border-gray-500 rounded-[2px] text-xs font-mono text-gray-400 hover:text-white transition-all whitespace-nowrap shrink-0 cursor-pointer"
+                className="px-3 py-1.5 bg-[#141414] hover:bg-[#1f1f1f] border border-[#262626] hover:border-zinc-500 rounded-full text-xs font-mono text-zinc-400 hover:text-white transition-all whitespace-nowrap shrink-0 cursor-pointer"
               >
                 {preset.id === 'cybersecurity' && '🛡️ SecOps'}
                 {preset.id === 'fullstack' && '🚀 Full-Stack'}
@@ -1071,32 +1085,37 @@ export default function PortfolioBuilder({ isAppMode: propAppMode = false }) {
                   <div className="space-y-6">
                     <div>
                       <div className="flex items-center justify-between mb-3">
-                        <h3 className="text-xs font-mono font-bold text-gray-400 uppercase tracking-widest flex items-center gap-1.5">
-                          <Palette className="w-3.5 h-3.5 text-[#D2FF00]" /> 1. Select Visual Aesthetic ({THEMES.length} Themes)
+                        <h3 className="text-xs font-mono font-bold text-zinc-400 uppercase tracking-widest flex items-center gap-1.5">
+                          <Palette className="w-3.5 h-3.5 text-[#D4FF3F]" /> 1. Pick Your Portfolio Vibe ({THEMES.length} Themes)
                         </h3>
                       </div>
                       
-                      <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
-                        {THEMES.map(theme => (
-                          <div
-                            key={theme.id} 
-                            onClick={() => {
-                              haptics.light();
-                              asmrAudio.playSwitch();
-                              handleInputChange('theme', theme.id);
-                              if (theme.accentColor) {
-                                handleInputChange('accentColor', theme.accentColor);
-                              }
-                            }}
-                            className={`p-3 rounded-[2px] border cursor-pointer transition-all ${portfolioData.theme === theme.id ? 'border-[#D2FF00] bg-[#D2FF00]/5 shadow-[0_0_14px_rgba(210,255,0,0.12)]' : 'border-[#1F242D] bg-[#08090C]/60 hover:border-gray-600'}`}
-                          >
-                            <div className="flex items-center justify-between mb-1">
-                              <span className="font-bold text-xs text-white truncate">{theme.name}</span>
-                              <span className="text-[9px] font-mono font-bold px-1.5 py-0.5 rounded-[2px] bg-[#151921] text-gray-300 shrink-0">{theme.badge}</span>
+                      <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                        {THEMES.map(theme => {
+                          const isSelected = portfolioData.theme === theme.id;
+                          return (
+                            <div
+                              key={theme.id} 
+                              onClick={() => {
+                                haptics.light();
+                                asmrAudio.playSwitch();
+                                handleInputChange('theme', theme.id);
+                                if (theme.accentColor) {
+                                  handleInputChange('accentColor', theme.accentColor);
+                                }
+                              }}
+                              className={`p-3.5 rounded-2xl border cursor-pointer transition-all ${isSelected ? 'border-[#D4FF3F] bg-[#141414] shadow-[0_0_20px_rgba(212,255,63,0.15)] ring-1 ring-[#D4FF3F]' : 'border-[#262626] bg-[#141414]/70 hover:border-zinc-600'}`}
+                            >
+                              <div className="flex items-center justify-between mb-1.5">
+                                <span className="font-bold text-xs text-white truncate">{theme.name}</span>
+                                <span className={`text-[9px] font-mono font-bold px-2 py-0.5 rounded-full shrink-0 ${isSelected ? 'bg-[#D4FF3F] text-black' : 'bg-[#1f1f1f] text-zinc-300'}`}>
+                                  {theme.badge}
+                                </span>
+                              </div>
+                              <p className="text-[11px] text-zinc-400 line-clamp-2 leading-relaxed">{theme.desc}</p>
                             </div>
-                            <p className="text-[11px] text-gray-400 line-clamp-2 leading-relaxed">{theme.desc}</p>
-                          </div>
-                        ))}
+                          );
+                        })}
                       </div>
                     </div>
 
@@ -1366,10 +1385,10 @@ export default function PortfolioBuilder({ isAppMode: propAppMode = false }) {
               <button
                 onClick={handlePublish}
                 disabled={isPublishing}
-                className="w-full py-2.5 bg-[#D2FF00] hover:bg-[#b8e000] text-[#08090C] font-mono font-black text-xs sm:text-sm rounded-[2px] shadow-[0_0_14px_rgba(210,255,0,0.3)] flex items-center justify-center gap-2 transition-all cursor-pointer border border-[#D2FF00]"
+                className="w-full py-2.5 bg-[#D4FF3F] hover:bg-[#c2ee2d] text-[#0B0B0B] font-black text-xs sm:text-sm rounded-full shadow-[0_0_14px_rgba(212,255,63,0.3)] flex items-center justify-center gap-2 transition-all cursor-pointer"
               >
                 {isPublishing ? <RefreshCw className="w-4 h-4 animate-spin" /> : <Globe className="w-4 h-4 stroke-[2.5]" />}
-                <span>DEPLOY & PUBLISH TO DOMAIN</span>
+                <span>Publish My Site</span>
               </button>
             </div>
           </div>
@@ -1379,9 +1398,9 @@ export default function PortfolioBuilder({ isAppMode: propAppMode = false }) {
         <div className={`lg:col-span-7 flex flex-col items-center h-[calc(100vh-170px)] ${mobileView === 'editor' ? 'hidden lg:flex' : 'flex'}`}>
           
           <div className="w-full flex items-center justify-between mb-2 px-1">
-            <div className="flex items-center gap-2 text-xs font-mono font-bold text-gray-400">
-              <span className="w-2 h-2 rounded-full bg-[#D2FF00] animate-pulse" />
-              <span>LIVE COMPILATION // {selectedTheme.name}</span>
+            <div className="flex items-center gap-2 text-xs font-mono font-bold text-zinc-400">
+              <span className="w-2 h-2 rounded-full bg-[#D4FF3F] animate-pulse" />
+              <span>Live Preview // {selectedTheme.name}</span>
             </div>
             
             {/* Mobile Top Switch Back */}
@@ -1392,7 +1411,7 @@ export default function PortfolioBuilder({ isAppMode: propAppMode = false }) {
                   asmrAudio.playSwitch();
                   setMobileView('editor');
                 }}
-                className="text-[11px] font-mono font-bold text-gray-300 bg-[#0E1116] border border-[#1F242D] px-2.5 py-1 rounded-[2px] flex items-center gap-1 cursor-pointer"
+                className="text-[11px] font-mono font-bold text-zinc-300 bg-[#141414] border border-[#262626] px-3 py-1 rounded-full flex items-center gap-1 cursor-pointer"
               >
                 <span>Edit Content</span>
               </button>
@@ -1400,164 +1419,147 @@ export default function PortfolioBuilder({ isAppMode: propAppMode = false }) {
               <button
                 onClick={handlePublish}
                 disabled={isPublishing}
-                className="text-[11px] font-mono font-black text-[#08090C] bg-[#D2FF00] hover:bg-[#b8e000] px-3 py-1 rounded-[2px] flex items-center gap-1 shadow-md shadow-[#D2FF00]/20 cursor-pointer"
+                className="text-[11px] font-mono font-black text-black bg-[#D4FF3F] hover:bg-[#c2ee2d] px-3.5 py-1 rounded-full flex items-center gap-1 shadow-md shadow-[#D4FF3F]/20 cursor-pointer"
               >
-                <span>Deploy</span>
+                <span>Publish</span>
               </button>
             </div>
           </div>
 
           {/* Browser Window Mockup Frame */}
-          <div className={`w-full h-full bg-[#0E1116] border border-[#1F242D] rounded-[2px] shadow-2xl flex flex-col overflow-hidden transition-all duration-300 ${previewMode === 'mobile' ? 'max-w-sm mx-auto' : previewMode === 'tablet' ? 'max-w-2xl mx-auto' : 'max-w-full'}`}>
+          <div className={`w-full h-full bg-[#141414] border border-[#262626] rounded-2xl shadow-2xl flex flex-col overflow-hidden transition-all duration-300 ${previewMode === 'mobile' ? 'max-w-sm mx-auto' : previewMode === 'tablet' ? 'max-w-2xl mx-auto' : 'max-w-full'}`}>
             
             {/* Window Header */}
-            <div className="h-8 border-b border-[#1F242D] bg-[#08090C] flex items-center px-3 gap-2 shrink-0 justify-between">
+            <div className="h-8 border-b border-[#262626] bg-[#0B0B0B] flex items-center px-3 gap-2 shrink-0 justify-between">
                <div className="flex items-center gap-1.5">
                  <div className="w-2.5 h-2.5 rounded-full bg-red-500/80" />
                  <div className="w-2.5 h-2.5 rounded-full bg-yellow-500/80" />
                  <div className="w-2.5 h-2.5 rounded-full bg-green-500/80" />
                </div>
 
-               <div className="flex items-center justify-center bg-[#151921] rounded-[2px] px-3 py-0.5 border border-[#1F242D] max-w-[280px] truncate">
-                 <span className="text-[10px] text-gray-400 font-mono truncate">https://pandalime.com/p/{portfolioData.slug || 'preview'}</span>
+               <div className="flex items-center justify-center bg-[#141414] rounded-full px-3 py-0.5 border border-[#262626] max-w-[280px] truncate">
+                 <span className="text-[10px] text-zinc-400 font-mono truncate">pandalime.com/p/{portfolioData.slug || 'yourname'}</span>
                </div>
 
-               <div className="text-[9px] font-mono text-[#D2FF00] font-bold">
-                 LATENCY: 8ms
+               <div className="text-[9px] font-mono text-[#D4FF3F] font-bold">
+                 60 FPS • Real-time
                </div>
             </div>
 
-            {/* Inner Portfolio Render Area */}
-            <div className={`flex-1 overflow-y-auto custom-scrollbar ${selectedTheme.bgClass} p-5 sm:p-7 space-y-6`}>
-              
-              {/* Profile Hero Header */}
-              <div className="flex flex-col sm:flex-row items-center sm:items-start gap-4 pb-5 border-b border-current/10">
-                <img 
-                  src={portfolioData.avatarUrl || PRESET_AVATARS[0].url} 
-                  alt={portfolioData.fullName || 'User Avatar'} 
-                  className="w-20 h-20 sm:w-24 sm:h-24 rounded-[2px] object-cover shadow-xl shrink-0" 
-                  style={{ border: `2px solid ${selectedAccent.hex}` }} 
-                />
-                
-                <div className="text-center sm:text-left space-y-1 flex-1">
-                  <div className="flex flex-wrap items-center justify-center sm:justify-start gap-2">
-                    <h2 className="text-xl sm:text-2xl font-black tracking-tight">{portfolioData.fullName || 'Alex Vance'}</h2>
-                    {portfolioData.availabilityStatus && (
-                      <span className="text-[9px] font-mono font-bold px-1.5 py-0.5 rounded-[2px] bg-emerald-500/10 border border-emerald-500/30 text-emerald-400">
-                        AVAILABLE
-                      </span>
-                    )}
+            {/* Inner Portfolio Render Area with Active Theme Engine */}
+            <div className="flex-1 overflow-y-auto custom-scrollbar">
+              {portfolioData.theme === 'soundwaves' ? (
+                <SoundWavesTheme portfolio={portfolioData} />
+              ) : portfolioData.theme === 'binge' ? (
+                <BingeTheme portfolio={portfolioData} isPreview={true} />
+              ) : portfolioData.theme === 'doors' ? (
+                <DoorsTheme portfolio={portfolioData} />
+              ) : portfolioData.theme === 'bento' ? (
+                <BentoTheme portfolio={portfolioData} />
+              ) : portfolioData.theme === 'arcade99' ? (
+                <ArcadeTheme portfolio={portfolioData} />
+              ) : (
+                <div className={`${selectedTheme.bgClass} p-5 sm:p-7 space-y-6 min-h-full`}>
+                  {/* Classic Card Header */}
+                  <div className="flex flex-col sm:flex-row items-center sm:items-start gap-4 pb-5 border-b border-current/10">
+                    <img 
+                      src={portfolioData.avatarUrl || PRESET_AVATARS[0].url} 
+                      alt={portfolioData.fullName || 'User Avatar'} 
+                      className="w-20 h-20 sm:w-24 sm:h-24 rounded-2xl object-cover shadow-xl shrink-0 border-2" 
+                      style={{ borderColor: selectedAccent.hex }} 
+                    />
+                    
+                    <div className="text-center sm:text-left space-y-1 flex-1">
+                      <div className="flex flex-wrap items-center justify-center sm:justify-start gap-2">
+                        <h2 className="text-xl sm:text-2xl font-black tracking-tight">{portfolioData.fullName || 'Alex Vance'}</h2>
+                        {portfolioData.availabilityStatus && (
+                          <span className="text-[9px] font-mono font-bold px-2 py-0.5 rounded-full bg-emerald-500/10 border border-emerald-500/30 text-emerald-400">
+                            AVAILABLE
+                          </span>
+                        )}
+                      </div>
+
+                      <p className="text-xs sm:text-sm font-bold tracking-wide uppercase font-mono" style={{ color: selectedAccent.hex }}>
+                        {portfolioData.title || 'Senior Engineer'}
+                      </p>
+
+                      {portfolioData.location && (
+                        <p className="text-[11px] opacity-70 flex items-center justify-center sm:justify-start gap-1">
+                          <MapPin className="w-3 h-3 shrink-0" />
+                          <span>{portfolioData.location}</span>
+                        </p>
+                      )}
+
+                      {portfolioData.bio && (
+                        <p className="text-xs opacity-80 leading-relaxed pt-1">{portfolioData.bio}</p>
+                      )}
+                    </div>
                   </div>
 
-                  <p className="text-xs sm:text-sm font-bold tracking-wide uppercase font-mono" style={{ color: selectedAccent.hex }}>
-                    {portfolioData.title || 'Senior Engineer'}
-                  </p>
-
-                  {portfolioData.location && (
-                    <p className="text-[11px] opacity-70 flex items-center justify-center sm:justify-start gap-1">
-                      <MapPin className="w-3 h-3 shrink-0" />
-                      <span>{portfolioData.location}</span>
-                    </p>
+                  {/* Technical Skills Matrix */}
+                  {portfolioData.skills && Object.keys(portfolioData.skills).length > 0 && (
+                    <div className="space-y-2.5">
+                      <h4 className="text-[11px] font-mono font-bold uppercase tracking-wider opacity-70 flex items-center gap-1.5">
+                        <Code2 className="w-3.5 h-3.5" style={{ color: selectedAccent.hex }} /> Technical Stack & Tooling
+                      </h4>
+                      <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
+                        {Object.entries(portfolioData.skills).map(([cat, skList]) => (
+                          <div key={cat} className={`p-2.5 rounded-xl ${selectedTheme.cardClass} space-y-1.5`}>
+                            <p className="text-[10px] font-mono font-bold uppercase tracking-wider opacity-90">{cat}</p>
+                            <div className="flex flex-wrap gap-1">
+                              {skList.map((skill, sIdx) => (
+                                <span key={sIdx} className="text-[10px] font-mono px-2 py-0.5 rounded-md bg-black/20 border border-current/15">
+                                  {skill}
+                                </span>
+                              ))}
+                            </div>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
                   )}
 
-                  {portfolioData.bio && (
-                    <p className="text-xs opacity-80 leading-relaxed pt-1">{portfolioData.bio}</p>
+                  {/* Featured Projects */}
+                  {portfolioData.projects && portfolioData.projects.length > 0 && (
+                    <div className="space-y-2.5">
+                      <h4 className="text-[11px] font-mono font-bold uppercase tracking-wider opacity-70 flex items-center gap-1.5">
+                        <Layers className="w-3.5 h-3.5" style={{ color: selectedAccent.hex }} /> Featured Projects
+                      </h4>
+                      <div className="space-y-2.5">
+                        {portfolioData.projects.map((proj, pIdx) => (
+                          <div key={pIdx} className={`p-3.5 rounded-xl ${selectedTheme.cardClass} space-y-2`}>
+                            <div className="flex justify-between items-start gap-2">
+                              <h5 className="font-bold text-xs sm:text-sm">{proj.title}</h5>
+                              {proj.metric && (
+                                <span className="text-[9px] font-mono font-bold px-2 py-0.5 rounded-full bg-black/30 border border-current/20 shrink-0" style={{ color: selectedAccent.hex }}>
+                                  {proj.metric}
+                                </span>
+                              )}
+                            </div>
+                            {proj.description && (
+                              <p className="text-xs opacity-75 leading-relaxed">{proj.description}</p>
+                            )}
+                            {(proj.demoUrl || proj.githubUrl) && (
+                              <div className="flex items-center gap-3 pt-1 border-t border-current/10 text-[11px] font-mono font-bold">
+                                {proj.demoUrl && (
+                                  <a href={proj.demoUrl} target="_blank" rel="noreferrer" className="hover:underline flex items-center gap-1" style={{ color: selectedAccent.hex }}>
+                                    <span>Live Demo</span> <ExternalLink className="w-3 h-3" />
+                                  </a>
+                                )}
+                                {proj.githubUrl && (
+                                  <a href={proj.githubUrl} target="_blank" rel="noreferrer" className="opacity-70 hover:opacity-100 flex items-center gap-1">
+                                    <span>Code</span> <Github className="w-3 h-3" />
+                                  </a>
+                                )}
+                              </div>
+                            )}
+                          </div>
+                        ))}
+                      </div>
+                    </div>
                   )}
                 </div>
-              </div>
-
-              {/* Technical Skills Matrix */}
-              {portfolioData.skills && Object.keys(portfolioData.skills).length > 0 && (
-                <div className="space-y-2.5">
-                  <h4 className="text-[11px] font-mono font-bold uppercase tracking-wider opacity-70 flex items-center gap-1.5">
-                    <Code2 className="w-3.5 h-3.5" style={{ color: selectedAccent.hex }} /> Technical Stack & Tooling
-                  </h4>
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
-                    {Object.entries(portfolioData.skills).map(([cat, skList]) => (
-                      <div key={cat} className={`p-2.5 rounded-[2px] ${selectedTheme.cardClass} space-y-1.5`}>
-                        <p className="text-[10px] font-mono font-bold uppercase tracking-wider opacity-90">{cat}</p>
-                        <div className="flex flex-wrap gap-1">
-                          {skList.map((skill, sIdx) => (
-                            <span key={sIdx} className="text-[10px] font-mono px-1.5 py-0.5 rounded-[2px] bg-black/20 border border-current/15">
-                              {skill}
-                            </span>
-                          ))}
-                        </div>
-                      </div>
-                    ))}
-                  </div>
-                </div>
               )}
-
-              {/* Featured Projects */}
-              {portfolioData.projects && portfolioData.projects.length > 0 && (
-                <div className="space-y-2.5">
-                  <h4 className="text-[11px] font-mono font-bold uppercase tracking-wider opacity-70 flex items-center gap-1.5">
-                    <Layers className="w-3.5 h-3.5" style={{ color: selectedAccent.hex }} /> Featured Deployments & Architecture
-                  </h4>
-                  <div className="space-y-2.5">
-                    {portfolioData.projects.map((proj, pIdx) => (
-                      <div key={pIdx} className={`p-3.5 rounded-[2px] ${selectedTheme.cardClass} space-y-2`}>
-                        <div className="flex justify-between items-start gap-2">
-                          <h5 className="font-bold text-xs sm:text-sm">{proj.title}</h5>
-                          {proj.metric && (
-                            <span className="text-[9px] font-mono font-bold px-1.5 py-0.5 rounded-[2px] bg-black/30 border border-current/20 shrink-0" style={{ color: selectedAccent.hex }}>
-                              {proj.metric}
-                            </span>
-                          )}
-                        </div>
-                        {proj.description && (
-                          <p className="text-xs opacity-75 leading-relaxed">{proj.description}</p>
-                        )}
-                        {(proj.demoUrl || proj.githubUrl) && (
-                          <div className="flex items-center gap-3 pt-1 border-t border-current/10 text-[11px] font-mono font-bold">
-                            {proj.demoUrl && (
-                              <a href={proj.demoUrl} target="_blank" rel="noreferrer" className="hover:underline flex items-center gap-1" style={{ color: selectedAccent.hex }}>
-                                <span>Live Demo</span> <ExternalLink className="w-3 h-3" />
-                              </a>
-                            )}
-                            {proj.githubUrl && (
-                              <a href={proj.githubUrl} target="_blank" rel="noreferrer" className="opacity-70 hover:opacity-100 flex items-center gap-1">
-                                <Github className="w-3 h-3" /> <span>Source</span>
-                              </a>
-                            )}
-                          </div>
-                        )}
-                      </div>
-                    ))}
-                  </div>
-                </div>
-              )}
-
-              {/* Work Experience */}
-              {portfolioData.experience && portfolioData.experience.length > 0 && (
-                <div className="space-y-2.5">
-                  <h4 className="text-[11px] font-mono font-bold uppercase tracking-wider opacity-70 flex items-center gap-1.5">
-                    <Briefcase className="w-3.5 h-3.5" style={{ color: selectedAccent.hex }} /> Career Timeline
-                  </h4>
-                  <div className="space-y-2.5">
-                    {portfolioData.experience.map((exp, eIdx) => (
-                      <div key={eIdx} className={`p-3.5 rounded-[2px] ${selectedTheme.cardClass} space-y-1.5`}>
-                        <div className="flex justify-between items-start">
-                          <div>
-                            <h5 className="font-bold text-xs sm:text-sm">{exp.role}</h5>
-                            <p className="text-xs font-mono font-semibold" style={{ color: selectedAccent.hex }}>{exp.company}</p>
-                          </div>
-                          <span className="text-[10px] font-mono opacity-60">{exp.period}</span>
-                        </div>
-                        {exp.bullets && exp.bullets.length > 0 && (
-                          <ul className="space-y-1 pt-1 text-xs opacity-80 list-disc list-outside ml-3.5">
-                            {exp.bullets.map((bullet, bIdx) => (
-                              <li key={bIdx} className="leading-relaxed">{bullet}</li>
-                            ))}
-                          </ul>
-                        )}
-                      </div>
-                    ))}
-                  </div>
-                </div>
-              )}
-
             </div>
           </div>
         </div>
@@ -1655,31 +1657,79 @@ export default function PortfolioBuilder({ isAppMode: propAppMode = false }) {
         )}
       </AnimatePresence>
 
+      {/* --- QR CODE GENERATOR MODAL FOR RESUMES --- */}
+      <AnimatePresence>
+        {qrModalOpen && (
+          <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="fixed inset-0 z-50 bg-black/85 backdrop-blur-md flex items-center justify-center p-4">
+            <motion.div initial={{ scale: 0.95, y: 16 }} animate={{ scale: 1, y: 0 }} exit={{ scale: 0.95, opacity: 0 }} className="bg-[#141414] border border-[#262626] rounded-3xl p-6 sm:p-8 max-w-sm w-full space-y-5 text-white shadow-2xl text-center">
+              <div className="space-y-1">
+                <div className="w-10 h-10 rounded-full bg-[#D4FF3F]/10 border border-[#D4FF3F]/30 text-[#D4FF3F] flex items-center justify-center mx-auto mb-2">
+                  <QrCode className="w-5 h-5" />
+                </div>
+                <h3 className="text-xl font-black text-white">Print On Your Resume</h3>
+                <p className="text-xs text-zinc-400">Recruiters scan this right from your paper or PDF resume to view your live interactive site.</p>
+              </div>
+
+              <div className="bg-white p-4 rounded-2xl w-48 h-48 mx-auto flex items-center justify-center shadow-lg">
+                <img 
+                  src={`https://api.qrserver.com/v1/create-qr-code/?size=250x250&data=${encodeURIComponent(publicUrl)}`} 
+                  alt="Portfolio QR Code" 
+                  className="w-full h-full object-contain" 
+                />
+              </div>
+
+              <div className="text-xs font-mono text-[#D4FF3F] truncate bg-[#0B0B0B] p-2 rounded-xl border border-[#262626]">
+                {publicUrl}
+              </div>
+
+              <div className="flex gap-2">
+                <a
+                  href={`https://api.qrserver.com/v1/create-qr-code/?size=500x500&data=${encodeURIComponent(publicUrl)}`}
+                  download={`${portfolioData.slug || 'portfolio'}-qr.png`}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="flex-1 py-2.5 rounded-full bg-[#D4FF3F] text-black font-bold text-xs flex items-center justify-center gap-1.5 shadow-md shadow-[#D4FF3F]/20"
+                >
+                  <Download className="w-3.5 h-3.5" />
+                  <span>Download Image</span>
+                </a>
+                <button
+                  onClick={() => setQrModalOpen(false)}
+                  className="px-4 py-2.5 rounded-full bg-[#1f1f1f] hover:bg-[#2a2a2a] text-zinc-300 font-bold text-xs cursor-pointer"
+                >
+                  Close
+                </button>
+              </div>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
       {/* --- PUBLISH DEPLOYMENT MODAL --- */}
       <AnimatePresence>
         {publishModalOpen && (
           <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="fixed inset-0 z-50 bg-black/85 backdrop-blur-md flex items-center justify-center p-4">
-            <motion.div initial={{ scale: 0.95, y: 16 }} animate={{ scale: 1, y: 0 }} exit={{ scale: 0.95, opacity: 0 }} className="bg-[#0E1116] border border-[#D2FF00]/40 rounded-[2px] p-6 sm:p-8 max-w-md w-full space-y-5 text-white shadow-[0_0_50px_rgba(210,255,0,0.15)] font-sans">
+            <motion.div initial={{ scale: 0.95, y: 16 }} animate={{ scale: 1, y: 0 }} exit={{ scale: 0.95, opacity: 0 }} className="bg-[#141414] border border-[#262626] rounded-3xl p-6 sm:p-8 max-w-md w-full space-y-5 text-white shadow-2xl">
               <div className="text-center space-y-2">
-                <div className="w-12 h-12 bg-[#D2FF00]/10 text-[#D2FF00] rounded-[2px] flex items-center justify-center mx-auto border border-[#D2FF00]/30 shadow-[0_0_20px_rgba(210,255,0,0.2)]">
+                <div className="w-12 h-12 bg-[#D4FF3F]/10 text-[#D4FF3F] rounded-full flex items-center justify-center mx-auto border border-[#D4FF3F]/30 shadow-[0_0_20px_rgba(212,255,63,0.2)]">
                   <CheckCircle2 className="w-6 h-6 stroke-[2.5]" />
                 </div>
-                <h3 className="text-xl sm:text-2xl font-mono font-black tracking-tight uppercase">Portfolio is Live!</h3>
-                <p className="text-xs text-gray-400 font-mono">Compiled & deployed to cloud edge. Ready for recruiters.</p>
+                <h3 className="text-2xl font-black text-white tracking-tight">Your Site is Live!</h3>
+                <p className="text-xs text-zinc-400">Deployed globally to cloud edge. Ready for campus placements & recruiters.</p>
               </div>
 
-              <div className="bg-[#08090C] p-3.5 rounded-[2px] border border-[#1F242D] space-y-1.5">
-                <label className="text-[10px] font-mono font-bold uppercase tracking-wider text-gray-500">Public Hosted Link</label>
+              <div className="bg-[#0B0B0B] p-4 rounded-2xl border border-[#262626] space-y-1.5">
+                <label className="text-[10px] font-mono font-bold uppercase tracking-wider text-zinc-400">Your Live Link</label>
                 <div className="flex items-center justify-between gap-2">
-                  <span className="text-xs sm:text-sm font-mono text-[#D2FF00] font-bold truncate">{publicUrl}</span>
-                  <button onClick={copyShareLink} className="p-1.5 bg-[#151921] hover:bg-[#1F242D] rounded-[2px] transition-all shrink-0 cursor-pointer border border-[#1F242D]" title="Copy Link">
-                    {copiedLink ? <Check className="w-4 h-4 text-[#D2FF00]" /> : <Copy className="w-4 h-4 text-gray-300" />}
+                  <span className="text-xs sm:text-sm font-mono text-[#D4FF3F] font-bold truncate">{publicUrl}</span>
+                  <button onClick={copyShareLink} className="p-2 bg-[#1f1f1f] hover:bg-[#2c2c2c] rounded-xl transition-all shrink-0 cursor-pointer border border-[#262626]" title="Copy Link">
+                    {copiedLink ? <Check className="w-4 h-4 text-[#D4FF3F]" /> : <Copy className="w-4 h-4 text-zinc-300" />}
                   </button>
                 </div>
               </div>
 
-              <div className="space-y-2 pt-1 font-mono">
-                <a href={publicUrl} target="_blank" rel="noreferrer" className="w-full py-2.5 bg-[#D2FF00] hover:bg-[#b8e000] text-[#08090C] font-black rounded-[2px] text-xs sm:text-sm flex items-center justify-center gap-2 transition-all shadow-[0_0_16px_rgba(210,255,0,0.3)]">
+              <div className="space-y-2.5 pt-1">
+                <a href={publicUrl} target="_blank" rel="noreferrer" className="w-full py-3 bg-[#D4FF3F] hover:bg-[#c2ee2d] text-black font-black rounded-full text-xs sm:text-sm flex items-center justify-center gap-2 transition-all shadow-[0_0_20px_rgba(212,255,63,0.3)]">
                   <span>Open Live Portfolio</span> <ExternalLink className="w-4 h-4" />
                 </a>
                 <button 
@@ -1688,9 +1738,9 @@ export default function PortfolioBuilder({ isAppMode: propAppMode = false }) {
                     asmrAudio.playSwitch();
                     setPublishModalOpen(false);
                   }} 
-                  className="w-full py-2 bg-transparent hover:bg-white/5 text-gray-400 font-bold rounded-[2px] text-xs transition-colors cursor-pointer"
+                  className="w-full py-2 bg-transparent hover:bg-white/5 text-zinc-400 font-bold rounded-full text-xs transition-colors cursor-pointer"
                 >
-                  Back to Studio Editor
+                  Back to Editor
                 </button>
               </div>
             </motion.div>

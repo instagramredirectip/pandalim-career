@@ -2,13 +2,63 @@
 
 export const THEMES = [
   {
+    id: 'soundwaves',
+    name: 'Sound Waves (Acid Motion & Vinyl)',
+    tag: 'Acid Pop & Liquid Motion',
+    desc: 'Neo-brutalist aesthetic in Jet Black, Hot Pink (#FF2DAB), and Chartreuse (#D4FF3F) with audio equalizer visualizer and spinning vinyl project sleeves.',
+    badge: '⚡ Flagship Acid Vibe',
+    bgClass: 'bg-[#0B0B0B] text-white',
+    cardClass: 'bg-[#141414] border border-[#262626] hover:border-[#D4FF3F] shadow-[0_0_20px_rgba(212,255,63,0.12)]',
+    accentColor: 'lime'
+  },
+  {
+    id: 'binge',
+    name: 'The Binge Series (Netflix Style)',
+    tag: 'Viral Storytelling & Episodes',
+    desc: 'Interactive "Who\'s watching?" recruiter gate, cinematic billboard hero, episode cards with progress bars, and screenplay timeline.',
+    badge: '🔥 Viral Student Pick',
+    bgClass: 'bg-[#0e0e12] text-zinc-100',
+    cardClass: 'bg-[#181820]/90 border border-zinc-800 hover:border-red-500/50 shadow-2xl',
+    accentColor: 'rose'
+  },
+  {
+    id: 'doors',
+    name: 'Behind The Doors (3D Interactive)',
+    tag: '3D Doors & Year Scrubber',
+    desc: 'Spiral 3D flip-book card on warm paper, 4 interactive 3D doors that swing open on hover, and an animated year scrubber timeline.',
+    badge: '✨ Architectural 3D',
+    bgClass: 'bg-[#111612] text-stone-100',
+    cardClass: 'bg-[#19221b]/90 border border-emerald-900/60 hover:border-emerald-400/50 shadow-xl',
+    accentColor: 'emerald'
+  },
+  {
+    id: 'bento',
+    name: 'MacOS Bento Workspace (Dark Glass)',
+    tag: 'Apple & Linear Speed-Run',
+    desc: 'Dark glass bento grid with macOS window controls, GitHub commit heat-map style tiles, interactive dock, and live terminal.',
+    badge: '💎 Recruiter Favorite',
+    bgClass: 'bg-[#0a0a0f] text-slate-100',
+    cardClass: 'bg-[#12131c]/80 border border-slate-800/80 hover:border-cyan-400/50 backdrop-blur-xl shadow-xl',
+    accentColor: 'cyan'
+  },
+  {
+    id: 'arcade99',
+    name: 'Arcade 99 (Gamified RPG & Quests)',
+    tag: 'Retro Character Select & Stats',
+    desc: 'Gamified character select with HP/Mana bars, stats radar, projects as quest bounties with loot drops, and legendary inventory skills.',
+    badge: '🎮 Gaming & Quests',
+    bgClass: 'bg-[#0d071a] text-purple-100',
+    cardClass: 'bg-[#170e2c]/90 border border-purple-500/40 hover:border-yellow-400/60 shadow-[0_0_25px_rgba(168,85,247,0.15)]',
+    accentColor: 'neo_yellow'
+  },
+  {
     id: 'cyber',
     name: 'Cyber Defense & Terminal Hacker',
     tag: 'Tech & Cyber Enthusiasts',
     desc: 'Dark obsidian terminal with green/cyan neon accents, security pills, glitch highlights, and monospace code aesthetic.',
     badge: 'Popular for SecOps & Devs',
     bgClass: 'bg-[#0a0d14] text-gray-100',
-    cardClass: 'bg-[#111622]/90 border border-emerald-500/30 hover:border-emerald-400/60 shadow-[0_0_20px_rgba(16,185,129,0.08)]',
+    cardClass: 'bg-[#111622]/90 border border-emerald-500/30 hover:border-emerald-400/60 shadow-[0_0_20px_rgba(168,85,247,0.08)]',
     accentColor: 'lime'
   },
   {
@@ -104,7 +154,8 @@ export const THEMES = [
 ];
 
 export const ACCENT_COLORS = [
-  { id: 'lime', name: 'Neon Lime', hex: '#84cc16', ring: 'ring-lime-400', bg: 'bg-lime-500', text: 'text-lime-400', border: 'border-lime-400', glow: 'shadow-lime-500/20' },
+  { id: 'lime', name: 'Acid Lime', hex: '#D4FF3F', ring: 'ring-[#D4FF3F]', bg: 'bg-[#D4FF3F]', text: 'text-[#D4FF3F]', border: 'border-[#D4FF3F]', glow: 'shadow-[#D4FF3F]/30' },
+  { id: 'hot_pink', name: 'Hot Pink', hex: '#FF2DAB', ring: 'ring-[#FF2DAB]', bg: 'bg-[#FF2DAB]', text: 'text-[#FF2DAB]', border: 'border-[#FF2DAB]', glow: 'shadow-[#FF2DAB]/30' },
   { id: 'cyan', name: 'Cyber Cyan', hex: '#06b6d4', ring: 'ring-cyan-400', bg: 'bg-cyan-500', text: 'text-cyan-400', border: 'border-cyan-400', glow: 'shadow-cyan-500/20' },
   { id: 'purple', name: 'Electric Purple', hex: '#a855f7', ring: 'ring-purple-400', bg: 'bg-purple-500', text: 'text-purple-400', border: 'border-purple-400', glow: 'shadow-purple-500/20' },
   { id: 'emerald', name: 'Matrix Emerald', hex: '#10b981', ring: 'ring-emerald-400', bg: 'bg-emerald-500', text: 'text-emerald-400', border: 'border-emerald-400', glow: 'shadow-emerald-500/20' },
